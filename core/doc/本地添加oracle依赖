@@ -1,0 +1,21 @@
+请查看如下网站操作
+http://blog.sina.com.cn/s/blog_3f7823220100z6j5.html
+
+项目默认使用oracle 11g
+默认本机安装maven，并配置了M2HOME变量
+步骤1：搜索ojdbc6.jar
+步骤2：复制ojdbc6.jar 到D: 根目录下：
+步骤3：开始 --》 运行 --》cmd
+       依次运行一下命令：
+       cd D:
+       D:
+       mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=ojdbc6.jar
+
+步骤4：执行成功：进入.m2目录确认有com\oracle\ojdbc6\11.2.0.1.0目录，安装ok！
+步骤5：项目中core中的pom文件中引入
+    <dependency>
+        <groupId>com.oracle</groupId>
+        <artifactId>ojdbc6</artifactId>
+        <version>11.2.0.1.0</version>
+    </dependency>
+步骤6：项目编译，完成。
