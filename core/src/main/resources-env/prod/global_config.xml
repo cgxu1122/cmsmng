@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>ordermon 全局配置,放在此xml中</comment>
+    <entry key="qmq.autoticket.group">flightqm.autoticket.group</entry>
+    <entry key="qmq.autoticket.consumer">flightqm.autoticket.consumer</entry>
+    <entry key="qmq.autoticket.ticket">flightqm.autoticket.ticket</entry>
+    <entry key="qmq.autoticket.callback">flightqm.autoticket.callback</entry>
+    <entry key="command.switch">true</entry>
+</properties>

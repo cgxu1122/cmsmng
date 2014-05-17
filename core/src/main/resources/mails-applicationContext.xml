@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+       default-lazy-init="false">
+
+    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="resourceLoaderPath" value="classpath:/META-INF/spring/template/"/>
+        <property name="velocityPropertiesMap">
+            <props>
+                <prop key="input.encoding">utf-8</prop>
+                <prop key="output.encoding">utf-8</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="alert" class="com.ifhz.core.service.mail.bean.BasicMailConfig">
+        <property name="user" value="${mail.base.user}"/>
+        <property name="from" value="${mail.base.from}"/>
+        <property name="pwd" value="${mail.base.pwd}"/>
+        <property name="hosts" value="${mail.base.hosts}"/>
+        <property name="to" value="${sms.fmtnotfound.mail.to}"/>
+        <property name="cc" value="${sms.fmtnotfound.mail.cc}"/>
+        <property name="subject" value="${sms.fmtnotfound.mail.subject}"/>
+        <property name="vmName" value="${sms.fmtnotfound.mail.vmName}"/>
+    </bean>
+
+
+    <bean id="commonsMailEngine" class="com.ifhz.core.service.mail.impl.CommonsMailEngine">
+        <property name="velocityEngine" ref="velocityEngine"/>
+        <property name="templateContainer">
+            <map>
+                <entry key="alert" value-ref="alert"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="30"/>
+        <property name="maxPoolSize" value="50"/>
+    </bean>
+</beans>

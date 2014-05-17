@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.tech.nzyw.jcyw.mapper.BatchInfoMapper">
+
+    <!--
+    create table TY_EXAMPLE
+    (
+      id   NUMBER(15) not null,
+      name VARCHAR2(100)
+    )
+    comment on column TY_EXAMPLE.id is '唯一主键';
+    comment on column TY_EXAMPLE.name is '名称';
+    alter table TY_EXAMPLE add constraint PK_TY_EXAMPLE primary key (ID);
+
+    create sequence SEQ_EXAMPLE;
+    -->
+
+
+    <sql id="TABLE_NAME">TY_EXAMPLE</sql>
+    <resultMap id="ExampleResultMap" type="com.ifhz.core.po.Example">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="CommonColumnSql">
+        ID,NAME
+    </sql>
+
+    <select id="getById" parameterType="long" resultMap="BatchInfoResultMap">
+        select
+        <include refid="CommonColumnSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.Example">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_EXAMPLE.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        <![CDATA[
+        (NAME)
+        values
+        (SEQ_EXAMPLE.NEXTVAL,#{name})
+        ]]>
+    </insert>
+    <update id="update" parameterType="com.ifhz.core.po.Example">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <select id="queryByVo" parameterType="com.ifhz.core.po.Example" resultMap="BatchInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.name != null and record.name != ''">
+            and NAME = #{record.name}
+        </if>
+    </select>
+    <delete id="delete" parameterType="com.ifhz.tech.nzyw.jcyw.po.BatchInfo">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id}
+    </delete>
+</mapper>

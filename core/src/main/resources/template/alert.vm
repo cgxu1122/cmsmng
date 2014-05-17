@@ -1,0 +1,65 @@
+<style type="text/css">
+    body {
+        font-family: '微软雅黑';
+        font-size: 10pt;
+        padding: 5px 20px;
+    }
+
+    div {
+        margin: 10px auto;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .infoTip {
+        line-height: 22px;
+    }
+
+    .linkTip {
+        margin-top: 5px;
+        color: gray;
+    }
+
+    .fraudTip {
+        color: red;
+    }
+
+    .mailTip {
+        color: gray;
+    }
+
+    .indent2 {
+        text-indent: 2em;
+    }
+</style>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+<div>尊敬的用户：</div>
+
+<div class="indent2">您好！</div>
+
+<div class="infoTip indent2">
+    <span class="linkTip">系统报错：</span>
+</div>
+
+
+<div class="fraudTip indent2">
+    ${errorMsg}
+</div>
+
+<div class="mailTip indent2">本邮件包含登录信息，<b>请勿转发他人</b>。系统自动发出，<b>请勿直接回复</b>。</div>
+
+<br/>
+<br/>
+<br/>
+
+<div>内置业务系统</div>
+<div>${nowDate}</div>
+<br/>
+<br/>
+</body>
+</html>
