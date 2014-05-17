@@ -61,7 +61,7 @@ function saverow() {
     }
 
     $('#fm').form('submit', {
-        url: '<%=basePath%>/staff/insert',
+        url: '<%=basePath%>/auth/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -89,13 +89,14 @@ function saveUpdatePassword() {
         return;
     }
     $('#upfm').form('submit', {
-        url: '<%=basePath%>/staff/updatePassowrd',
+        url: '<%=basePath%>/auth/updatePassowrd',
         onSubmit: function () {
             return $(this).form('validate');
         },
 
         data: {"id": $('#id').val, "password": $('#passwordUp').val},
         success: function (result) {
+            r
             var result = eval('(' + result + ')');
             if (result.code == -1) {
                 $.messager.alert('失败', result.message);
@@ -124,7 +125,7 @@ function updaterow() {
 
 
     $('#fm1').form('submit', {
-        url: '<%=basePath%>/staff/update',
+        url: '<%=basePath%>/auth/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -138,14 +139,14 @@ function updaterow() {
                 $('#dg').datagrid('reload');
             }
         }
-    });
-}
+        });
+    }
 function deleterow() {
     var row = $('#dg').datagrid('getSelected');
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.name + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/staff/delete', {id: row.id}, function (result) {
+                $.post('<%=basePath%>/auth/delete', {id: row.id}, function (result) {
                     if (result.success) {
                         $('#dg').datagrid('reload');
                     } else {
@@ -170,7 +171,7 @@ function initPage() {
         height: '522',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/staff/getAll',
+        url: '<%=basePath%>/auth/getAll',
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         fitColumns: true,
@@ -202,7 +203,7 @@ function initPage() {
 
     //设置角色选择下拉框去获取所有角色列表
     $("#allRoles").combobox({
-        url: "<%=basePath%>/staff/getAllRole",
+        url: "<%=basePath%>/auth/getAllRole",
         valueField: "id",
         textField: "roleName"
     });
@@ -215,7 +216,7 @@ function initPage() {
 function search() {
     var value = $('#searchValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/staff/getAll",
+        url: "<%=basePath%>/auth/getAll",
         queryParams: { 'searchValue': value}
     });
 }
@@ -230,17 +231,15 @@ function search() {
             <tr>
 
                 <td>
-                    <input type="text" name="searchValue" id="searchValue" placeholder="姓名/邮箱/角色名称"/>
+                <input type="text" name="searchValue" id="searchValue" placeholder="姓名/邮箱/角色名称"/>
                 </td>
                 <td align="center">
                     <a id="searchbtn" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
                 </td>
 
-                <shiro:hasPermission name="C0402">
-                    <td align="center">
-                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
-                    </td>
-                </shiro:hasPermission>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
+                </td>
 
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改用户信息</a>
@@ -306,13 +305,13 @@ function search() {
 		        ">
             </select>
         </div>
-        <div class="fitem">
-            <label><font color="red">*</font>系统状态:</label>
-            <input type="radio" name="status" value="1" id="enable"/><span>启用</span>
-            <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
-        </div>
-    </form>
-</div>
+            <div class="fitem">
+                <label><font color="red">*</font>系统状态:</label>
+                <input type="radio" name="status" value="1" id="enable"/><span>启用</span>
+                <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
+            </div>
+        </form>
+    </div>
 <div id="dlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saverow()">保存</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
@@ -349,12 +348,11 @@ function search() {
          buttons="#dlg1-buttons">
         <div class="ftitle">用户</div>
         <br/>
-
         <form id="fm1" method="post" novalidate>
             <input type="hidden" id="id" name="id"/>
 
             <div class="fitem" style="margin-left:25px">
-                <label><font color="red">*</font>邮箱:</label>
+            <label><font color="red">*</font>邮箱:</label>
                 <input id="emailUp" name="email" class="easyui-validatebox" validType="email" required="true">
             </div>
             <div class="fitem" style="margin-left:25px">
