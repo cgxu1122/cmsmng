@@ -13,7 +13,7 @@ public class ExampleServiceImplTest extends BaseTest {
 
     @Test
     public void testGetById() throws Exception {
-        log(exampleService.getById(11111L));
+        log(exampleService.getById(1L));
     }
 
     @Test

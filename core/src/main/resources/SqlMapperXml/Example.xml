@@ -41,7 +41,7 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        (NAME)
+        (ID,NAME)
         values
         (SEQ_EXAMPLE.NEXTVAL,#{name})
         ]]>
