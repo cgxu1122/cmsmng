@@ -109,11 +109,21 @@
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
     <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
-        <div title="demo" selected="true" style="overflow: auto;">
+        <div title="样例" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统账户管理','<%=basePath%>/demo/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
-                    <span>demo</span>
+                    <span>样例</span>
+                </a>
+            </div>
+        </div>
+
+
+        <div title="系统用户管理" selected="true" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('系统用户管理','<%=basePath%>/staff/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>系统用户管理</span>
                 </a>
             </div>
         </div>
