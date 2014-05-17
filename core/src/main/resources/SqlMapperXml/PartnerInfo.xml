@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.PartnerInfoMapper">
+
+    <sql id="TABLE_NAME">TY_PARTNER_INFO</sql>
+
+    <resultMap id="PartnerInfoResultMap" type="com.ifhz.core.po.PartnerInfo">
+        <id column="PARTNER_ID" property="partnerId" jdbcType="BIGINT"/>
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="QUERY_IMEI_SOURCE" property="queryImeiSource" jdbcType="VARCHAR"/>
+        <result column="EXPORT_IMEI_SOURCE" property="exportImeiSource" jdbcType="VARCHAR"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="PartnerInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where PARTNER_ID = #{partnerId}
+    </select>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PartnerInfo">
+        <selectKey resultType="long" keyProperty="partnerId">
+            SELECT SEQ_PARTNER_INFO.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        <![CDATA[
+        ( PARTNER_ID,PARTNER_NAME,USER_ID,QUERY_IMEI_SOURCE,EXPORT_IMEI_SOURCE)
+        values
+        ("SEQ_PARTNER_INFO".nextval,#{partnerName},#{userId},#{queryImeiSource},#{exportImeiSource})
+        ]]>
+    </insert>
+    <update id="update" parameterType="com.ifhz.core.po.PartnerInfo">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="partnerName != null">
+                PARTNER_NAME = #{partnerName},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId},
+            </if>
+            <if test="queryImeiSource != null">
+                QUERY_IMEI_SOURCE = #{queryImeiSource},
+            </if>
+            <if test="exportImeiSource != null">
+                EXPORT_IMEI_SOURCE = #{exportImeiSource},
+            </if>
+            <if test="active != null">
+                ACTIVE = #{active},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        where PARTNER_ID = #{partnerId}
+    </update>
+    <select id="queryByVo" parameterType="com.ifhz.core.po.PartnerInfo" resultMap="PartnerInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.partnerName != null and record.partnerName != ''">
+            and PARTNER_NAME = #{record.partnerName}
+        </if>
+        <if test="record.userId != null and record.userId != ''">
+            and USER_ID = #{record.userId}
+        </if>
+        <if test="record.queryImeiSource != null and record.queryImeiSource != ''">
+            and QUERY_IMEI_SOURCE = #{record.queryImeiSource}
+        </if>
+        <if test="record.exportImeiSource != null and record.exportImeiSource != ''">
+            and EXPORT_IMEI_SOURCE = #{record.exportImeiSource}
+        </if>
+        <if test="record.active != null and record.active != ''">
+            and ACTIVE = #{record.active}
+        </if>
+    </select>
+    <delete id="delete" parameterType="com.ifhz.core.po.PartnerInfo">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where PARTNER_ID = #{partnerId}
+    </delete>
+</mapper>

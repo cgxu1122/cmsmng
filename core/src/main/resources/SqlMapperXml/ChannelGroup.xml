@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.ChannelGroupMapper">
+
+    <sql id="TABLE_NAME">TY_CHANNEL_GROUP</sql>
+
+    <resultMap id="ChannelGroupResultMap" type="com.ifhz.core.po.ChannelGroup">
+        <id column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="ChannelGroupResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID = #{groupId}
+    </select>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.ChannelGroup">
+        <selectKey resultType="long" keyProperty="groupId">
+            SELECT SEQ_CHANNEL_GROUP.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        GROUP_ID,GROUP_NAME
+        )
+        values
+        (
+        "SEQ_CHANNEL_GROUP".nextval,#{groupName}
+        )
+    </insert>
+</mapper>

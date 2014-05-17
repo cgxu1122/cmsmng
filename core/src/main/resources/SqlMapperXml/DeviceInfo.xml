@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.DeviceInfoMapper">
+
+    <sql id="TABLE_NAME">TY_DEVICE_INFO</sql>
+
+    <resultMap id="DeviceInfoResultMap" type="com.ifhz.core.po.DeviceInfo">
+        <id column="DEVICE_ID" property="deviceId" jdbcType="BIGINT"/>
+        <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="DeviceInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where DEVICE_ID = #{deviceId}
+    </select>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.DeviceInfo">
+        <selectKey resultType="long" keyProperty="deviceId">
+            SELECT SEQ_DEVICE_INFO.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        <![CDATA[
+        ( DEVICE_ID,DEVICE_CODE,GROUP_ID,CHANNEL_ID)
+        values
+        ("SEQ_DEVICE_INFO".nextval,#{deviceCode},#{groupId},#{channelId})
+        ]]>
+    </insert>
+    <update id="update" parameterType="com.ifhz.core.po.DeviceInfo">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="deviceCode != null">
+                DEVICE_CODE = #{deviceCode},
+            </if>
+            <if test="groupId != null">
+                GROUP_ID = #{groupId},
+            </if>
+            <if test="channelId != null">
+                CHANNEL_ID = #{channelId},
+            </if>
+            <if test="active != null">
+                ACTIVE = #{active},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        where DEVICE_ID = #{deviceId}
+    </update>
+    <select id="queryByVo" parameterType="com.ifhz.core.po.DeviceInfo" resultMap="DeviceInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.deviceCode != null and record.deviceCode != ''">
+            and DEVICE_CODE = #{record.deviceCode}
+        </if>
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
+        <if test="record.active != null and record.active != ''">
+            and ACTIVE = #{record.active}
+        </if>
+    </select>
+    <delete id="delete" parameterType="com.ifhz.core.po.DeviceInfo">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where DEVICE_ID = #{deviceId}
+    </delete>
+</mapper>
