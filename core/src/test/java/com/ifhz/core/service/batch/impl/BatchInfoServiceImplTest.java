@@ -13,7 +13,7 @@ public class BatchInfoServiceImplTest extends BaseTest {
 
     @Test
     public void testGetById() throws Exception {
-        System.out.println(batchInfoService.getById(4L));
+        log(batchInfoService.getById(4L));
         log(batchInfoService.getById(4L));
     }
 
@@ -24,7 +24,7 @@ public class BatchInfoServiceImplTest extends BaseTest {
         Pagination page = new Pagination();
         page.setCurrentPage(1);
         page.setPageSize(10);
-        System.out.print("result:" + batchInfoService.queryByVo(page, po));
+        log(batchInfoService.queryByVo(page, po));
     }
 
     @Test
@@ -32,8 +32,7 @@ public class BatchInfoServiceImplTest extends BaseTest {
         BatchInfo po = new BatchInfo();
         po.setBatchCode("1.0.0");
         po.setGroupId(1L);
-        System.out.print(batchInfoService.insert(po));
-        System.out.print("id:" + po.getBatchId());
+        log(batchInfoService.insert(po));
     }
 
     @Test
@@ -41,13 +40,13 @@ public class BatchInfoServiceImplTest extends BaseTest {
         BatchInfo po = new BatchInfo();
         po.setBatchId(4L);
         po.setBatchCode("1.0.2");
-        batchInfoService.update(po);
+        log(batchInfoService.update(po));
     }
 
     @Test
     public void testDelete() throws Exception {
         BatchInfo po = new BatchInfo();
         po.setBatchId(4L);
-        batchInfoService.delete(po);
+        log(batchInfoService.delete(po));
     }
 }
