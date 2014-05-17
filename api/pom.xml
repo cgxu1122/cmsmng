@@ -31,8 +31,8 @@
         </dependency>
     </dependencies>
     <profiles>
-    <profile>
-			<id>prod</id>
+        <profile>
+        <id>prod</id>
 			<properties>
 				<deploy.type>prod</deploy.type>
 			</properties>
