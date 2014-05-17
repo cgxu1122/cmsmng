@@ -8,7 +8,7 @@
        default-lazy-init="false">
 
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-        <property name="resourceLoaderPath" value="classpath:/META-INF/spring/template/"/>
+        <property name="resourceLoaderPath" value="classpath:/template/"/>
         <property name="velocityPropertiesMap">
             <props>
                 <prop key="input.encoding">utf-8</prop>

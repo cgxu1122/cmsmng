@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ifhz.tech.nzyw.jcyw.mapper.BatchInfoMapper">
+<mapper namespace="com.ifhz.core.mapper.ExampleMapper">
 
     <!--
     create table TY_EXAMPLE
@@ -26,8 +26,8 @@
         ID,NAME
     </sql>
 
-    <select id="getById" parameterType="long" resultMap="BatchInfoResultMap">
-        select
+    <select id="getById" parameterType="long" resultMap="ExampleResultMap">
+    select
         <include refid="CommonColumnSql"/>
         from
         <include refid="TABLE_NAME"/>
@@ -57,16 +57,16 @@
         where ID = #{id}
     </update>
 
-    <select id="queryByVo" parameterType="com.ifhz.core.po.Example" resultMap="BatchInfoResultMap">
-        select * from
+    <select id="queryByVo" parameterType="com.ifhz.core.po.Example" resultMap="ExampleResultMap">
+    select * from
         <include refid="TABLE_NAME"/>
         where 1=1
         <if test="record.name != null and record.name != ''">
             and NAME = #{record.name}
         </if>
     </select>
-    <delete id="delete" parameterType="com.ifhz.tech.nzyw.jcyw.po.BatchInfo">
-        delete from
+    <delete id="delete">
+    delete from
         <include refid="TABLE_NAME"/>
         where ID = #{id}
     </delete>

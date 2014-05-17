@@ -1,4 +1,4 @@
-package com.ifhz.core.adapter;
+package com.ifhz.core.service.example;
 
 import com.ifhz.core.po.Example;
 
@@ -8,7 +8,7 @@ import com.ifhz.core.po.Example;
  * Date: 2014/5/17
  * Time: 21:52
  */
-public interface ExampleAdapter {
+public interface ExampleService {
 
     public Example getById(Long id);
 
