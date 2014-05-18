@@ -10,7 +10,7 @@ import com.ifhz.core.po.CounterUploadLog;
  */
 public interface CounterUploadLogAdapter {
 
-    public void insert(CounterUploadLog po);
+    public void insert(String tableName, CounterUploadLog po);
 
-    public CounterUploadLog getByImei(String imei);
+    public CounterUploadLog getByImei(String tableName, String imei);
 }

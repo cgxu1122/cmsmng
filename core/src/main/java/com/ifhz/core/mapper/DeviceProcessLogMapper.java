@@ -10,7 +10,8 @@ import org.apache.ibatis.annotations.Param;
  * Time: 11:14
  */
 public interface DeviceProcessLogMapper {
-    public void insert(DeviceProcessLog po);
 
-    public DeviceProcessLog getByImei(@Param("imei") String imei);
+    public void insert(@Param("tableName") String tableName, DeviceProcessLog po);
+
+    public DeviceProcessLog getByImei(@Param("tableName") String tableName, @Param("imei") String imei);
 }

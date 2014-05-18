@@ -39,7 +39,7 @@
     create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG(IMEI);
     -->
     <resultMap id="DeviceProcessLogResultMap" type="com.ifhz.core.po.DeviceProcessLog">
-        <id column="process_id" property="processId" jdbcType="BIGINT"/>
+        <id column="process_id" property="counterId" jdbcType="BIGINT"/>
         <result column="imei" property="imei" jdbcType="VARCHAR"/>
         <result column="ua" property="ua" jdbcType="VARCHAR"/>
         <result column="channel_id" property="channelId" jdbcType="BIGINT"/>

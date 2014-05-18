@@ -12,8 +12,7 @@ import java.util.Date;
 public class CounterUploadLog implements Serializable {
     private static final long serialVersionUID = 3556396710839964295L;
 
-
-    private Long processId;
+    private Long counterId;
     private String imei;
     private String ua;
     private Long channelId;
@@ -24,12 +23,12 @@ public class CounterUploadLog implements Serializable {
     private Date createTime;
     private Integer active;
 
-    public Long getProcessId() {
-        return processId;
+    public Long getCounterId() {
+        return counterId;
     }
 
-    public void setProcessId(Long processId) {
-        this.processId = processId;
+    public void setCounterId(Long counterId) {
+        this.counterId = counterId;
     }
 
     public String getImei() {
@@ -107,7 +106,7 @@ public class CounterUploadLog implements Serializable {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("CounterUploadLog{");
-        sb.append("processId=").append(processId);
+        sb.append("counterId=").append(counterId);
         sb.append(", imei='").append(imei).append('\'');
         sb.append(", ua='").append(ua).append('\'');
         sb.append(", channelId=").append(channelId);

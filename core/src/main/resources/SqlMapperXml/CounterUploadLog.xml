@@ -43,14 +43,14 @@
     create index  IDX_COUNTER_LOG_IMEI on TY_COUNTER_UPLOAD_LOG(IMEI);
     -->
     <resultMap id="CounterUploadLogResultMap" type="com.ifhz.core.po.CounterUploadLog">
-        <id column="counter_id" property="processId" jdbcType="BIGINT"/>
+        <id column="counter_id" property="counterId" jdbcType="BIGINT"/>
         <result column="imei" property="imei" jdbcType="VARCHAR"/>
         <result column="ua" property="ua" jdbcType="VARCHAR"/>
         <result column="channel_id" property="channelId" jdbcType="BIGINT"/>
         <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
         <result column="batch_code" property="batchCode" jdbcType="VARCHAR"/>
         <result column="group_id" property="groupId" jdbcType="BIGINT"/>
-        <result column="active" property="active" jdbcType="INT"/>
+        <result column="active" property="active" jdbcType="INTEGER"/>
         <result column="process_time" property="processTime" jdbcType="DATE"/>
         <result column="create_time" property="createTime" jdbcType="DATE"/>
     </resultMap>

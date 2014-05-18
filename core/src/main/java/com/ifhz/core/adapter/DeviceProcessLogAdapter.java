@@ -10,7 +10,7 @@ import com.ifhz.core.po.DeviceProcessLog;
  */
 public interface DeviceProcessLogAdapter {
 
-    public void insert(DeviceProcessLog po);
+    public void insert(String tableName, DeviceProcessLog po);
 
-    public DeviceProcessLog getByImei(String imei);
+    public DeviceProcessLog getByImei(String tableName, String imei);
 }
