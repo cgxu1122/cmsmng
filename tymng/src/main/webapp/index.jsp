@@ -152,6 +152,12 @@
                     <span>系统用户管理</span>
                 </a>
             </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('角色管理','<%=basePath%>/role/index','menu_icon_wjldgl')">
+                    <span class="menu_icon_wjldgl"></span>
+                    <span>角色管理</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>

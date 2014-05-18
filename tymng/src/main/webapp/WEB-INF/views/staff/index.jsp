@@ -139,8 +139,8 @@ function updaterow() {
                 $('#dg').datagrid('reload');
             }
         }
-        });
-    }
+    });
+}
 function deleterow() {
     var row = $('#dg').datagrid('getSelected');
     if (row) {
@@ -231,7 +231,7 @@ function search() {
             <tr>
 
                 <td>
-                <input type="text" name="searchValue" id="searchValue" placeholder="姓名/邮箱/角色名称"/>
+                    <input type="text" name="searchValue" id="searchValue" placeholder="姓名/邮箱/角色名称"/>
                 </td>
                 <td align="center">
                     <a id="searchbtn" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
@@ -262,12 +262,12 @@ function search() {
 
     <form id="fm" method="post" novalidate>
         <div class="fitem" style="margin-left:25px">
-            <label><font color="red">*</font>邮箱:</label>
-            <input id="email" name="email" class="easyui-validatebox" validType="email" required="true">
+            <label><font color="red">*</font>登录名:</label>
+            <input id="loginName" name="loginName" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem" style="margin-left:25px">
             <label><font color="red">*</font>姓名:</label>
-            <input id="nickname" name="nickname" class="easyui-validatebox" required="true">
+            <input id="real_name" name="real_name" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem" style="margin-left:25px">
             <label><font color="red">*</font>密码:</label>
@@ -284,8 +284,8 @@ function search() {
             <input name="cellphone" class="easyui-numberbox" validType="digits">
         </div>
         <div class="fitem" style="margin-left:30px">
-            <label>座机:</label>
-            <input name="telephone" class="easyui-numberbox" validType="digits">
+            <label>地址:</label>
+            <input name="address" class="easyui-numberbox" maxlength="200">
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>角色:</label>
@@ -305,13 +305,18 @@ function search() {
 		        ">
             </select>
         </div>
-            <div class="fitem">
-                <label><font color="red">*</font>系统状态:</label>
-                <input type="radio" name="status" value="1" id="enable"/><span>启用</span>
-                <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
-            </div>
-        </form>
-    </div>
+        <div class="fitem">
+            <label><font color="red">*</font>状态:</label>
+            <input type="radio" name="status" value="1" id="enable"/><span>启用</span>
+            <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
+        </div>
+        <div class="fitem">
+            <label><font color="red">*</font>用户类型:</label>
+            <input type="radio" name="type" value="1" id="normal"/><span>普通用户</span>
+            <input type="radio" name="type" value="2" id="manager"/><span>负责人</span>
+        </div>
+    </form>
+</div>
 <div id="dlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saverow()">保存</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
@@ -348,11 +353,12 @@ function search() {
          buttons="#dlg1-buttons">
         <div class="ftitle">用户</div>
         <br/>
+
         <form id="fm1" method="post" novalidate>
             <input type="hidden" id="id" name="id"/>
 
             <div class="fitem" style="margin-left:25px">
-            <label><font color="red">*</font>邮箱:</label>
+                <label><font color="red">*</font>邮箱:</label>
                 <input id="emailUp" name="email" class="easyui-validatebox" validType="email" required="true">
             </div>
             <div class="fitem" style="margin-left:25px">
