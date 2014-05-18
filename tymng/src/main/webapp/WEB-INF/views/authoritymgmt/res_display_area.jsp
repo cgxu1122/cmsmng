@@ -33,7 +33,7 @@
                             width: 100
                         },
                         {
-                            field: 'levels',
+                            field: 'level',
                             title: '层级',
                             align: 'center',
                             width: 50
