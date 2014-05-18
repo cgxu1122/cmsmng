@@ -3,6 +3,7 @@ package com.ifhz.core.service.common.impl;
 import com.google.common.collect.Lists;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.common.SplitTableService;
+import com.ifhz.core.service.common.bean.SplitTableBean;
 import com.ifhz.core.service.common.enums.SplitTableEnums;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,16 @@ public class SplitTableServiceImpl implements SplitTableService {
         return counterTablePrefix + getTableSuffix(now);
     }
 
+    @Override
+    public List<String> getTableListForDeviceByNow(Date now) {
+        return getQueryTableList(deviceTablePrefix, now);
+    }
+
+    @Override
+    public List<String> getTableListForCounterByNow(Date now) {
+        return getQueryTableList(counterTablePrefix, now);
+    }
+
     private String getTableSuffix(Date now) {
         StringBuffer buff = new StringBuffer("");
         //获取当前时间年和月
@@ -52,22 +63,15 @@ public class SplitTableServiceImpl implements SplitTableService {
     }
 
 
-    private List<String> getQueryTableList(Date now) {
+    private List<String> getQueryTableList(String prefix, Date now) {
         List<String> tableList = Lists.newArrayList();
-
+        Date initDate = dictInfoCacheService.getSystemInitDate();
+        SplitTableBean bean = new SplitTableBean(initDate, now);
+        List<String> suffixList = bean.getSuffixList();
+        for (String suffix : suffixList) {
+            tableList.add(prefix + suffix);
+        }
 
         return tableList;
     }
-
-
-    private List<String> getTableForYear(String prefix, int year, int startReason, int endReason) {
-        List<String> result = Lists.newArrayList();
-        for (int i = startReason; i <= endReason; i++) {
-            result.add(prefix + year + i);
-        }
-
-        return result;
-    }
-
-
 }

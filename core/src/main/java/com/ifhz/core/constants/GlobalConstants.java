@@ -24,6 +24,12 @@ public final class GlobalConstants {
     public static final String DATE_FORMAT_DPT = "yyyy-MM-dd";
     public static final String DATE_FORMAT_DPT_ZH = "yyyy年MM月dd日";
 
+
+    /**
+     * 系统初始化时间Key
+     */
+    public static final String KEY_SYS_INIT_DATE = "system_init_date";
+
     private GlobalConstants() {
     }
 }
