@@ -9,7 +9,6 @@ import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DictInfo;
 import com.ifhz.core.service.cache.DictInfoCacheService;
-import com.ifhz.core.service.common.constants.SplitTableConstants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +66,7 @@ public class DictInfoCacheServiceImpl implements DictInfoCacheService {
     @Override
     public Date getSystemInitDate() {
         Date result = null;
-        DictInfo po = getByKeyCode(SplitTableConstants.KEY_SYS_INIT_DATE);
+        DictInfo po = getByKeyCode(GlobalConstants.KEY_SYS_INIT_DATE);
         if (po != null) {
             String keyValue = po.getKeyValue();
             result = DateFormatUtils.parse(keyValue, GlobalConstants.DATE_FORMAT_DPT);
