@@ -21,15 +21,15 @@ public class DeviceProcessLogAdapterImpl implements DeviceProcessLogAdapter {
     private DeviceProcessLogMapper deviceProcessLogMapper;
 
     @Override
-    public void insert(DeviceProcessLog po) {
-        deviceProcessLogMapper.insert(po);
+    public void insert(String tableName, DeviceProcessLog po) {
+        deviceProcessLogMapper.insert(tableName, po);
     }
 
     @Override
-    public DeviceProcessLog getByImei(String imei) {
+    public DeviceProcessLog getByImei(String tableName, String imei) {
         if (StringUtils.isBlank(imei)) {
             return null;
         }
-        return deviceProcessLogMapper.getByImei(imei);
+        return deviceProcessLogMapper.getByImei(tableName, imei);
     }
 }

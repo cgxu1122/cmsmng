@@ -21,15 +21,15 @@ public class CounterUploadLogAdapterImpl implements CounterUploadLogAdapter {
     private CounterUploadLogMapper counterUploadLogMapper;
 
     @Override
-    public void insert(CounterUploadLog po) {
-        counterUploadLogMapper.insert(po);
+    public void insert(String tableName, CounterUploadLog po) {
+        counterUploadLogMapper.insert(tableName, po);
     }
 
     @Override
-    public CounterUploadLog getByImei(String imei) {
+    public CounterUploadLog getByImei(String tableName, String imei) {
         if (StringUtils.isBlank(imei)) {
             return null;
         }
-        return counterUploadLogMapper.getByImei(imei);
+        return counterUploadLogMapper.getByImei(tableName, imei);
     }
 }
