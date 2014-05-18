@@ -65,7 +65,7 @@ tfoot tr td {
 }
 
 .ph_button {
-    word-spacing 5px;
+    /*word-spacing 5px;*/
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;

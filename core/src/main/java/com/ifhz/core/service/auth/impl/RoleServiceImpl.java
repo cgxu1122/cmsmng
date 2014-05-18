@@ -23,7 +23,6 @@ import java.util.*;
 @Service
 public class RoleServiceImpl implements RoleService {
     protected StringBuffer sbXml;
-
     @Autowired
     RoleMapper roleMapper;
 
