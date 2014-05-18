@@ -61,6 +61,8 @@
                 <value>classpath:SqlMapperXml/BatchInfo.xml</value>
                 <value>classpath:SqlMapperXml/BatchProductRef.xml</value>
                 <value>classpath:SqlMapperXml/DeviceSystem.xml</value>
+                <value>classpath:SqlMapperXml/DeviceProcessLog.xml</value>
+                <value>classpath:SqlMapperXml/CounterUploadLog.xml</value>
             </list>
         </property>
     </bean>
@@ -113,6 +115,15 @@
     </bean>
     <bean id="deviceSystemMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.DeviceSystemMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="deviceProcessLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.DeviceProcessLogMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="counterUploadLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterUploadLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 </beans>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.CounterUploadLogMapper">
+
+    <!--
+
+create table TY_DICT_INFO
+(
+  dict_id     number(15) not null,
+  key_code    varchar2(50) not null,
+  key_value   varchar2(50) not null,
+  remark      varchar2(1000),
+  create_time date default SYSDATE not null,
+  update_time date default SYSDATE not null
+);
+alter table TY_DICT_INFO
+  add constraint PK_TY_DICT_INFO primary key (DICT_ID);
+alter table TY_DICT_INFO
+  add constraint UNIQ_TY_DICT_INFO_KEY unique (KEY);
+    -->
+
+    <resultMap id="CounterUploadLogResultMap" type="com.ifhz.core.po.CounterUploadLog">
+        <id column="dict_id" property="dictId" jdbcType="BIGINT"/>
+        <result column="key_code" property="keyCode" jdbcType="VARCHAR"/>
+        <result column="key_value" property="keyValue" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="update_time" property="updateTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="TABLE_NAME">TY_DICT_INFO</sql>
+    <sql id="CommonFieldSql">
+        DICT_ID,
+        KEY_CODE,
+        KEY_VALUE,
+        CREATE_TIME,
+        UPDATE_TIME,
+        REMARK
+    </sql>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.CounterUploadLog">
+        <selectKey resultType="long" keyProperty="batchId">
+            SELECT SEQ_TY_DICT_INFO.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (SEQ_TY_DICT_INFO.NEXTVAL,#{keyCode},#{keyValue},#{createTime},#{updateTime},#{remark})
+    </insert>
+
+    <select id="getByKeyCode">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where key_code = #{keyCode}
+    </select>
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.CounterUploadLogMapper">
+
+    <!--
+   create table TY_COUNTER_UPLOAD_LOG
+    (
+      counter_id   number(15) not null,
+      imei         varchar2(50),
+      ua           varchar2(100),
+      channel_id   number(15),
+      device_code  varchar2(100),
+      group_id     number(15),
+      batch_code   varchar2(100),
+      process_time date,
+      create_time  date default SYSDATE not null,
+      active       number(1) not null
+    );
+
+    comment on column TY_COUNTER_UPLOAD_LOG.counter_id
+      is '唯一主键';
+    comment on column TY_COUNTER_UPLOAD_LOG.imei
+      is '手机imei码';
+    comment on column TY_COUNTER_UPLOAD_LOG.ua
+      is '手机ua';
+    comment on column TY_COUNTER_UPLOAD_LOG.channel_id
+      is '渠道id';
+    comment on column TY_COUNTER_UPLOAD_LOG.device_code
+      is '设备编码';
+    comment on column TY_COUNTER_UPLOAD_LOG.group_id
+      is '渠道组id';
+    comment on column TY_COUNTER_UPLOAD_LOG.batch_code
+      is '批次号';
+    comment on column TY_COUNTER_UPLOAD_LOG.process_time
+      is '加工日期';
+    comment on column TY_COUNTER_UPLOAD_LOG.create_time
+      is '上传时间';
+    comment on column TY_COUNTER_UPLOAD_LOG.active
+      is '1：有效到达，2：无效-替换，3：无效-卸载';
+
+    alter table TY_COUNTER_UPLOAD_LOG
+      add constraint PK_TY_COUNTER_UPLOAD_LOG primary key (COUNTER_ID);
+    create index  IDX_COUNTER_LOG_IMEI on TY_COUNTER_UPLOAD_LOG(IMEI);
+    -->
+    <resultMap id="CounterUploadLogResultMap" type="com.ifhz.core.po.CounterUploadLog">
+        <id column="counter_id" property="processId" jdbcType="BIGINT"/>
+        <result column="imei" property="imei" jdbcType="VARCHAR"/>
+        <result column="ua" property="ua" jdbcType="VARCHAR"/>
+        <result column="channel_id" property="channelId" jdbcType="BIGINT"/>
+        <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="batch_code" property="batchCode" jdbcType="VARCHAR"/>
+        <result column="group_id" property="groupId" jdbcType="BIGINT"/>
+        <result column="active" property="active" jdbcType="INT"/>
+        <result column="process_time" property="processTime" jdbcType="DATE"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="CommonFieldSql">
+        PROCESS_ID,
+        IMEI,
+        UA,
+        CHANNEL_ID,
+        DEVICE_CODE,
+        GROUP_ID,
+        BATCH_CODE,
+        PROCESS_TIME,
+        CREATE_TIME,
+        ACTIVE
+    </sql>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.CounterUploadLog">
+        <selectKey resultType="long" keyProperty="batchId">
+            SELECT SEQ_TY_COUNTER_UPLOAD_LOG.CURRVAL FROM DUAL
+        </selectKey>
+        insert into ${tableName}
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (SEQ_TY_COUNTER_UPLOAD_LOG.NEXTVAL,#{imei},#{ua},#{channelId},#{deviceCode},#{groupId},#{batchCode},#{processTime},#{createTime},#{active})
+    </insert>
+
+    <select id="getByImei">
+        select
+        <include refid="CommonFieldSql"/>
+        from ${tableName}
+        where imei = #{imei}
+    </select>
+</mapper>

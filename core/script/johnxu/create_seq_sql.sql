@@ -1,0 +1,3 @@
+create sequence SEQ_TY_DEVICE_PROCESS_LOG;
+create sequence SEQ_TY_COUNTER_UPLOAD_LOG;
+create sequence SEQ_TY_DICT_INFO;
