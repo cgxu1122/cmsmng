@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 @Repository("dictInfoAdapter")
 public class DictInfoAdapterImpl implements DictInfoAdapter {
 
-    @Resource(name = "dictInfoAdapter")
+    @Resource(name = "dictInfoMapper")
     private DictInfoMapper dictInfoMapper;
 
     @Override
