@@ -1,4 +1,4 @@
-create table TY_DEVICE_PROCESS_LOG
+create table TY_DEVICE_PROCESS_LOG_20142
 (
   process_id   NUMBER(15) not null,
   imei         varchar2(50),
@@ -10,35 +10,35 @@ create table TY_DEVICE_PROCESS_LOG
   process_time date,
   create_time  date default SYSDATE not null
 );
-comment on column TY_DEVICE_PROCESS_LOG.process_id
+comment on column TY_DEVICE_PROCESS_LOG_20142.process_id
   is '唯一主键';
-comment on column TY_DEVICE_PROCESS_LOG.imei
+comment on column TY_DEVICE_PROCESS_LOG_20142.imei
   is '手机imei码';
-comment on column TY_DEVICE_PROCESS_LOG.ua
+comment on column TY_DEVICE_PROCESS_LOG_20142.ua
   is '手机ua';
-comment on column TY_DEVICE_PROCESS_LOG.channel_id
+comment on column TY_DEVICE_PROCESS_LOG_20142.channel_id
   is '渠道id';
-comment on column TY_DEVICE_PROCESS_LOG.device_code
+comment on column TY_DEVICE_PROCESS_LOG_20142.device_code
   is '设备编码';
-comment on column TY_DEVICE_PROCESS_LOG.group_id
+comment on column TY_DEVICE_PROCESS_LOG_20142.group_id
   is '渠道组id';
-comment on column TY_DEVICE_PROCESS_LOG.batch_code
+comment on column TY_DEVICE_PROCESS_LOG_20142.batch_code
   is '批次号';
-comment on column TY_DEVICE_PROCESS_LOG.process_time
+comment on column TY_DEVICE_PROCESS_LOG_20142.process_time
   is '加工时间';
-comment on column TY_DEVICE_PROCESS_LOG.create_time
+comment on column TY_DEVICE_PROCESS_LOG_20142.create_time
   is '上传时间';
 
 
-alter table TY_DEVICE_PROCESS_LOG
-  add constraint PK_TY_DEVICE_PROCESS_LOG primary key (PROCESS_ID)
+alter table TY_DEVICE_PROCESS_LOG_20142
+  add constraint PK_TY_DEVICE_PROCESS_LOG_20142 primary key (PROCESS_ID)
   using index ;
-create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG(IMEI);
+create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG_20142(IMEI);
 
 
 
   -- Create table
-create table TY_COUNTER_UPLOAD_LOG
+create table TY_COUNTER_UPLOAD_LOG_20142
 (
   counter_id   number(15) not null,
   imei         varchar2(50),
@@ -53,31 +53,31 @@ create table TY_COUNTER_UPLOAD_LOG
 )
 ;
 -- Add comments to the columns
-comment on column TY_COUNTER_UPLOAD_LOG.counter_id
+comment on column TY_COUNTER_UPLOAD_LOG_20142.counter_id
   is '唯一主键';
-comment on column TY_COUNTER_UPLOAD_LOG.imei
+comment on column TY_COUNTER_UPLOAD_LOG_20142.imei
   is '手机imei码';
-comment on column TY_COUNTER_UPLOAD_LOG.ua
+comment on column TY_COUNTER_UPLOAD_LOG_20142.ua
   is '手机ua';
-comment on column TY_COUNTER_UPLOAD_LOG.channel_id
+comment on column TY_COUNTER_UPLOAD_LOG_20142.channel_id
   is '渠道id';
-comment on column TY_COUNTER_UPLOAD_LOG.device_code
+comment on column TY_COUNTER_UPLOAD_LOG_20142.device_code
   is '设备编码';
-comment on column TY_COUNTER_UPLOAD_LOG.group_id
+comment on column TY_COUNTER_UPLOAD_LOG_20142.group_id
   is '渠道组id';
-comment on column TY_COUNTER_UPLOAD_LOG.batch_code
+comment on column TY_COUNTER_UPLOAD_LOG_20142.batch_code
   is '批次号';
-comment on column TY_COUNTER_UPLOAD_LOG.process_time
+comment on column TY_COUNTER_UPLOAD_LOG_20142.process_time
   is '加工日期';
-comment on column TY_COUNTER_UPLOAD_LOG.create_time
+comment on column TY_COUNTER_UPLOAD_LOG_20142.create_time
   is '上传时间';
-comment on column TY_COUNTER_UPLOAD_LOG.active
+comment on column TY_COUNTER_UPLOAD_LOG_20142.active
   is '1：有效到达，2：无效-替换，3：无效-卸载';
 
 
-alter table TY_COUNTER_UPLOAD_LOG
-  add constraint PK_TY_COUNTER_UPLOAD_LOG primary key (COUNTER_ID);
-create index  IDX_COUNTER_LOG_IMEI on TY_COUNTER_UPLOAD_LOG(IMEI);
+alter table TY_COUNTER_UPLOAD_LOG_20142
+  add constraint PK_TY_COUNTER_UPLOAD_LOG_20142 primary key (COUNTER_ID);
+create index  IDX_COUNTER_LOG_IMEI on TY_COUNTER_UPLOAD_LOG_20142(IMEI);
 
 
 
