@@ -43,11 +43,18 @@
         <property name="initialPoolSize" value="1"/>
         <property name="maxIdleTime" value="20"/>
     </bean>
+    <!-- 分页拦截器 -->
+    <bean id="paginationInterceptor" class="com.ifhz.core.base.page.PaginationInterceptor"/>
     <!-- ota sqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation"
                   value="classpath:conf/mybatis-applicationContext.xml"/>
+        <property name="plugins">
+            <list>
+                <ref bean="paginationInterceptor"/>
+            </list>
+        </property>
         <property name="mapperLocations">
             <list>
                 <value>classpath:SqlMapperXml/Example.xml</value>

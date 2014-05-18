@@ -1,5 +1,6 @@
 package com.ifhz.core.service.channel.impl;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.test.BaseTest;
@@ -20,16 +21,17 @@ public class ChannelInfoServiceImplTest extends BaseTest {
     public void testQueryByVo() throws Exception {
         ChannelInfo po = new ChannelInfo();
         po.setActive("Y");
-        log(channelInfoService.queryByVo(null, po));
+        Pagination page = new Pagination();
+        page.setPageSize(10);
+        page.setCurrentPage(1);
+        log(channelInfoService.queryByVo(page, po));
     }
 
     @Test
     public void testInsert() throws Exception {
         ChannelInfo po = new ChannelInfo();
         po.setChannelName("北京仓");
-        po.setDesc("beijingde");
         po.setGroupId(1L);
-        po.setMngId(1L);
         po.setParentId(-1L);
         channelInfoService.insert(po);
         log(po.getChannelId());

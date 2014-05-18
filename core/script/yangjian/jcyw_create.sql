@@ -25,7 +25,7 @@ CREATE TABLE "TY_CHANNEL_INFO"
    "CHANNEL_ID"         NUMBER(15)           NOT NULL,
    "PARENT_ID"          NUMBER(15)           NOT NULL,
    "GROUP_ID"           NUMBER(15)           NOT NULL,
-   "MNG_ID"             NUMBER(15)           NOT NULL,
+   "MNG_ID"             NUMBER(15),
    "USER_ID"            NUMBER(15),
    "CHANNEL_NAME"       VARCHAR2(200)        NOT NULL,
    "DESC"               VARCHAR2(2000),

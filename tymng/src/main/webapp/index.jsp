@@ -109,6 +109,32 @@
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
     <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
+        <div title="渠道管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道','<%=basePath%>/channelInfo/index?groupId=1','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道','<%=basePath%>/channelInfo/index?groupId=2','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道','<%=basePath%>/channelInfo/index?groupId=3','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('劳务渠道','<%=basePath%>/channelInfo/index?groupId=4','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>劳务渠道</span>
+                </a>
+            </div>
+        </div>
         <div title="样例" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统账户管理','<%=basePath%>/demo/index','menu_icon_datadeal')">

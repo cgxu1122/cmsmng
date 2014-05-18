@@ -10,6 +10,7 @@
 <script type="text/javascript" src="<%=basePath %>/common/js/dot.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>/plug/easyUI/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="<%=basePath %>/common/js/validateExtends.js"></script>
+<script type="text/javascript" src="<%=basePath %>/common/js/dateCommon.js"></script>
 <style>
     table {
         text-align: center !important;

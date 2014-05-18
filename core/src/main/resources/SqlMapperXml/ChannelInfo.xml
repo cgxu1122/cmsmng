@@ -17,6 +17,8 @@
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ChannelInfoResultMap">
@@ -32,9 +34,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        ( CHANNEL_ID,PARENT_ID,GROUP_ID,MNG_ID,CHANNEL_NAME,"DESC")
+        ( CHANNEL_ID,PARENT_ID,GROUP_ID,MNG_ID,USER_ID,CHANNEL_NAME,"DESC")
         values
-        ("SEQ_CHANNEL_INFO".nextval,#{parentId},#{groupId},#{mngId},#{channelName},#{desc})
+        ("SEQ_CHANNEL_INFO".nextval,#{parentId},#{groupId},#{mngId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{channelName},#{desc,jdbcType=VARCHAR})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.ChannelInfo">
@@ -75,33 +77,39 @@
         where CHANNEL_ID = #{channelId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.ChannelInfo" resultMap="ChannelInfoResultMap">
-        select * from
+        select ci.*,cg.GROUP_NAME from
         <include refid="TABLE_NAME"/>
+        ci
+        JOIN TY_CHANNEL_GROUP cg on ci.GROUP_ID = cg.GROUP_ID
         where 1=1
         <if test="record.parentId != null and record.parentId != ''">
-            and PARENT_ID = #{record.parentId}
+            and ci.PARENT_ID = #{record.parentId}
         </if>
         <if test="record.groupId != null and record.groupId != ''">
-            and GROUP_ID = #{record.groupId}
+            and ci.GROUP_ID = #{record.groupId}
         </if>
         <if test="record.mngId != null and record.mngId != ''">
-            and MNG_ID = #{record.mngId}
+            and ci.MNG_ID = #{record.mngId}
         </if>
         <if test="record.userId != null and record.userId != ''">
-            and USER_ID = #{record.userId}
+            and ci.USER_ID = #{record.userId}
         </if>
         <if test="record.channelName != null and record.channelName != ''">
-            and CHANNEL_NAME = #{record.channelName}
+            and ci.CHANNEL_NAME = #{record.channelName}
+        </if>
+        <if test="record.channelNameCondition != null and record.channelNameCondition != ''">
+            and ci.CHANNEL_NAME LIKE concat(concat('%',#{record.channelNameCondition}),'%' )
         </if>
         <if test="record.leaf != null and record.leaf != ''">
-            and LEAF = #{record.leaf}
+            and ci.LEAF = #{record.leaf}
         </if>
         <if test="record.type != null and record.type != ''">
-            and "TYPE" = #{record.type}
+            and ci.TYPE = #{record.type}
         </if>
         <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
+            and ci.ACTIVE = #{record.active}
         </if>
+        ORDER BY ci.CHANNEL_ID DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.ChannelInfo">
         delete from
