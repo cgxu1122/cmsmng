@@ -68,50 +68,46 @@
         </dependency>
 	</dependencies>
 
-
     <profiles>
         <profile>
-			<id>prod</id>
-			<properties>
-				<deploy.type>prod</deploy.type>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<properties>
-				<deploy.type>dev</deploy.type>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>test</id>
-			<properties>
-				<deploy.type>test</deploy.type>
-			</properties>
-		</profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-env/prod</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-env/test</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
     </profiles>
-<!--
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                    </archive>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/${package.target}</directory>
-                            <targetPath>WEB-INF/classes</targetPath>
-                            <filtering>true</filtering>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-	-->
 	<build>
         <finalName>tymng</finalName>
         <plugins>

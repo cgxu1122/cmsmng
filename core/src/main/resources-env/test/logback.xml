@@ -3,8 +3,9 @@
     <jmxConfigurator/>
     <property name="log.dir" value="logs/nzyw"/>
     <property name="encoding" value="UTF-8"/>
-    <property name="console-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n"/>
-    <property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n"/>
+    <property name="console-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L  %msg%n"/>
+    <property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L  %msg%n"/>
+    <!--<property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n"/>-->
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -23,14 +24,22 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/nzyw.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/flightchangemon.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
+
+    <!-- project default level -->
+    <logger name="com.ifhz" level="INFO"/>
 
     <!-- root -->
     <root level="INFO">
         <appender-ref ref="console"/>
         <appender-ref ref="rollingFile"/>
     </root>
+
+    <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.apache" level="INFO"/>
 </configuration>
