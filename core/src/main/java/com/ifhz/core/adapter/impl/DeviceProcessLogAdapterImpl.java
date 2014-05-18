@@ -22,7 +22,8 @@ public class DeviceProcessLogAdapterImpl implements DeviceProcessLogAdapter {
 
     @Override
     public void insert(String tableName, DeviceProcessLog po) {
-        deviceProcessLogMapper.insert(tableName, po);
+        po.setTableName(tableName);
+        deviceProcessLogMapper.insert(po);
     }
 
     @Override

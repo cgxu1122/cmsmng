@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface DeviceProcessLogMapper {
 
-    public void insert(@Param("tableName") String tableName, DeviceProcessLog po);
+    public void insert(DeviceProcessLog po);
 
     public DeviceProcessLog getByImei(@Param("tableName") String tableName, @Param("imei") String imei);
 }

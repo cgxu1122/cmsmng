@@ -30,16 +30,16 @@
     </appender>
 
     <!-- project default level -->
-    <logger name="com.ifhz" level="INFO"/>
+    <logger name="com.ifhz" level="DEBUG"/>
 
     <!-- root -->
-    <root level="INFO">
-    <appender-ref ref="console"/>
+    <root level="DEBUG">
+        <appender-ref ref="console"/>
         <appender-ref ref="rollingFile"/>
     </root>
 
     <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
 
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.apache" level="INFO"/>
+    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.apache" level="DEBUG"/>
 </configuration>

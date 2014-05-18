@@ -39,15 +39,15 @@
     create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG(IMEI);
     -->
     <resultMap id="DeviceProcessLogResultMap" type="com.ifhz.core.po.DeviceProcessLog">
-        <id column="process_id" property="counterId" jdbcType="BIGINT"/>
+        <id column="process_id" property="processId" jdbcType="BIGINT"/>
         <result column="imei" property="imei" jdbcType="VARCHAR"/>
         <result column="ua" property="ua" jdbcType="VARCHAR"/>
         <result column="channel_id" property="channelId" jdbcType="BIGINT"/>
         <result column="device_code" property="deviceCode" jdbcType="VARCHAR"/>
         <result column="batch_code" property="batchCode" jdbcType="VARCHAR"/>
         <result column="group_id" property="groupId" jdbcType="BIGINT"/>
-        <result column="process_time" property="processTime" jdbcType="DATE"/>
-        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="process_time" property="processTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="CommonFieldSql">
@@ -63,21 +63,31 @@
     </sql>
 
     <insert id="insert" parameterType="com.ifhz.core.po.DeviceProcessLog">
-        <selectKey resultType="long" keyProperty="batchId">
-            SELECT SEQ_TY_DEVICE_PROCESS_LOG.CURRVAL FROM DUAL
+        <selectKey resultType="long" keyProperty="processId">
+        SELECT SEQ_TY_DEVICE_PROCESS_LOG.CURRVAL FROM DUAL
         </selectKey>
         insert into ${tableName}
         (
         <include refid="CommonFieldSql"/>
         )
         values
-        (SEQ_TY_DEVICE_PROCESS_LOG.NEXTVAL,#{imei},#{ua},#{channelId},#{deviceCode},#{groupId},#{batchCode},#{processTime},#{createTime})
+        (
+        SEQ_TY_DEVICE_PROCESS_LOG.NEXTVAL,
+        #{imei,jdbcType=VARCHAR},
+        #{ua,jdbcType=VARCHAR},
+        #{channelId,jdbcType=BIGINT},
+        #{deviceCode,jdbcType=VARCHAR},
+        #{groupId,jdbcType=BIGINT},
+        #{batchCode,jdbcType=VARCHAR},
+        #{processTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP}
+        )
     </insert>
 
     <select id="getByImei">
         select
         <include refid="CommonFieldSql"/>
         from ${tableName}
-        where imei = #{imei}
+        where imei = #{imei,jdbcType=VARCHAR}
     </select>
 </mapper>

@@ -23,6 +23,16 @@ public class CounterUploadLog implements Serializable {
     private Date createTime;
     private Integer active;
 
+    private String tableName;
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
     public Long getCounterId() {
         return counterId;
     }
@@ -102,6 +112,7 @@ public class CounterUploadLog implements Serializable {
     public void setActive(Integer active) {
         this.active = active;
     }
+
 
     @Override
     public String toString() {

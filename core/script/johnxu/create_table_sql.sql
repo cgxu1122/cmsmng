@@ -31,9 +31,9 @@ comment on column TY_DEVICE_PROCESS_LOG_20142.create_time
 
 
 alter table TY_DEVICE_PROCESS_LOG_20142
-  add constraint PK_TY_DEVICE_PROCESS_LOG_20142 primary key (PROCESS_ID)
+  add constraint PK_TY_DEVICE_PROCESS_LOG_20142 primary key (process_id)
   using index ;
-create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG_20142(IMEI);
+create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG_20142(imei);
 
 
 
@@ -76,8 +76,8 @@ comment on column TY_COUNTER_UPLOAD_LOG_20142.active
 
 
 alter table TY_COUNTER_UPLOAD_LOG_20142
-  add constraint PK_TY_COUNTER_UPLOAD_LOG_20142 primary key (COUNTER_ID);
-create index  IDX_COUNTER_LOG_IMEI on TY_COUNTER_UPLOAD_LOG_20142(IMEI);
+  add constraint PK_TY_COUNTER_UPLOAD_LOG_20142 primary key (counter_id);
+create index  IDX_COUNTER_LOG_IMEI on TY_COUNTER_UPLOAD_LOG_20142(imei);
 
 
 
@@ -93,8 +93,8 @@ create table TY_DICT_INFO
 );
 -- Create/Recreate primary, unique and foreign key constraints
 alter table TY_DICT_INFO
-  add constraint PK_TY_DICT_INFO primary key (DICT_ID);
+  add constraint PK_TY_DICT_INFO primary key (dict_id);
 alter table TY_DICT_INFO
-  add constraint UNIQ_TY_DICT_INFO_KEYCODE unique (KEY_CODE);
+  add constraint UNIQ_TY_DICT_INFO_KEYCODE unique (key_code);
 
 

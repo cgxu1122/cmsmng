@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface DictInfoMapper {
 
-    public void insert(DictInfo po);
+    public void insert(@Param("po") DictInfo po);
 
     public DictInfo getByKeyCode(@Param("keyCode") String keyCode);
 }

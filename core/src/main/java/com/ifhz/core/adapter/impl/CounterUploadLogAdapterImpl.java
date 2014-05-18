@@ -22,7 +22,8 @@ public class CounterUploadLogAdapterImpl implements CounterUploadLogAdapter {
 
     @Override
     public void insert(String tableName, CounterUploadLog po) {
-        counterUploadLogMapper.insert(tableName, po);
+        po.setTableName(tableName);
+        counterUploadLogMapper.insert(po);
     }
 
     @Override

@@ -9,6 +9,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -34,6 +36,7 @@ public class CounterUploadLogServiceImpl implements CounterUploadLogService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void insert(CounterUploadLog po) {
         Date now = new Date();
         String tableName = splitTableService.getTableNameForCounterByNow(now);

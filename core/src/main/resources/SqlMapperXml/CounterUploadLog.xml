@@ -51,12 +51,12 @@
         <result column="batch_code" property="batchCode" jdbcType="VARCHAR"/>
         <result column="group_id" property="groupId" jdbcType="BIGINT"/>
         <result column="active" property="active" jdbcType="INTEGER"/>
-        <result column="process_time" property="processTime" jdbcType="DATE"/>
-        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="process_time" property="processTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="CommonFieldSql">
-        PROCESS_ID,
+        COUNTER_ID,
         IMEI,
         UA,
         CHANNEL_ID,
@@ -69,7 +69,7 @@
     </sql>
 
     <insert id="insert" parameterType="com.ifhz.core.po.CounterUploadLog">
-        <selectKey resultType="long" keyProperty="batchId">
+        <selectKey resultType="java.lang.Long" keyProperty="counterId" order="AFTER">
             SELECT SEQ_TY_COUNTER_UPLOAD_LOG.CURRVAL FROM DUAL
         </selectKey>
         insert into ${tableName}
@@ -77,13 +77,24 @@
         <include refid="CommonFieldSql"/>
         )
         values
-        (SEQ_TY_COUNTER_UPLOAD_LOG.NEXTVAL,#{imei},#{ua},#{channelId},#{deviceCode},#{groupId},#{batchCode},#{processTime},#{createTime},#{active})
+        (
+        SEQ_TY_COUNTER_UPLOAD_LOG.NEXTVAL,
+        #{imei,jdbcType=VARCHAR},
+        #{ua,jdbcType=VARCHAR},
+        #{channelId,jdbcType=BIGINT},
+        #{deviceCode,jdbcType=VARCHAR},
+        #{groupId,jdbcType=BIGINT},
+        #{batchCode,jdbcType=VARCHAR},
+        #{processTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{active,jdbcType=INTEGER}
+        )
     </insert>
 
     <select id="getByImei">
         select
         <include refid="CommonFieldSql"/>
         from ${tableName}
-        where imei = #{imei}
+        where imei = #{imei,jdbcType=VARCHAR}
     </select>
 </mapper>

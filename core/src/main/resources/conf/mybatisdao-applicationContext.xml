@@ -70,6 +70,7 @@
                 <value>classpath:SqlMapperXml/DeviceSystem.xml</value>
                 <value>classpath:SqlMapperXml/DeviceProcessLog.xml</value>
                 <value>classpath:SqlMapperXml/CounterUploadLog.xml</value>
+                <value>classpath:SqlMapperXml/DictInfo.xml</value>
             </list>
         </property>
     </bean>

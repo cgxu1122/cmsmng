@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ifhz.core.mapper.CounterUploadLogMapper">
+<mapper namespace="com.ifhz.core.mapper.DictInfoMapper">
 
     <!--
 
@@ -19,13 +19,13 @@ alter table TY_DICT_INFO
   add constraint UNIQ_TY_DICT_INFO_KEY unique (KEY);
     -->
 
-    <resultMap id="CounterUploadLogResultMap" type="com.ifhz.core.po.CounterUploadLog">
+    <resultMap id="DictInfoResultMap" type="com.ifhz.core.po.DictInfo">
         <id column="dict_id" property="dictId" jdbcType="BIGINT"/>
         <result column="key_code" property="keyCode" jdbcType="VARCHAR"/>
         <result column="key_value" property="keyValue" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
-        <result column="create_time" property="createTime" jdbcType="DATE"/>
-        <result column="update_time" property="updateTime" jdbcType="DATE"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="TABLE_NAME">TY_DICT_INFO</sql>
@@ -38,9 +38,9 @@ alter table TY_DICT_INFO
         REMARK
     </sql>
 
-    <insert id="insert" parameterType="com.ifhz.core.po.CounterUploadLog">
-        <selectKey resultType="long" keyProperty="batchId">
-            SELECT SEQ_TY_DICT_INFO.CURRVAL FROM DUAL
+    <insert id="insert" parameterType="com.ifhz.core.po.DictInfo">
+        <selectKey resultType="long" keyProperty="dictId">
+        SELECT SEQ_TY_DICT_INFO.CURRVAL FROM DUAL
         </selectKey>
         insert into
         <include refid="TABLE_NAME"/>
@@ -48,7 +48,13 @@ alter table TY_DICT_INFO
         <include refid="CommonFieldSql"/>
         )
         values
-        (SEQ_TY_DICT_INFO.NEXTVAL,#{keyCode},#{keyValue},#{createTime},#{updateTime},#{remark})
+        (
+        SEQ_TY_DICT_INFO.NEXTVAL,
+        #{po.keyCode,jdbcType=VARCHAR},
+        #{po.keyValue,jdbcType=VARCHAR},
+        #{po.createTime,jdbcType=TIMESTAMP},
+        #{po.updateTime,jdbcType=TIMESTAMP},
+        #{po.remark,jdbcType=VARCHAR})
     </insert>
 
     <select id="getByKeyCode">
@@ -56,6 +62,6 @@ alter table TY_DICT_INFO
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
-        where key_code = #{keyCode}
+        where key_code = #{keyCode,jdbcType=VARCHAR}
     </select>
 </mapper>

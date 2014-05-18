@@ -34,6 +34,16 @@ public class DeviceProcessLog implements Serializable {
     private Date processTime;
     private Date createTime;
 
+    private String tableName;
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
     public Long getProcessId() {
         return processId;
     }

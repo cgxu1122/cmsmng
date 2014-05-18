@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface CounterUploadLogMapper {
 
-    public void insert(@Param("tableName") String tableName, CounterUploadLog po);
+    public void insert(CounterUploadLog po);
 
     public CounterUploadLog getByImei(@Param("tableName") String tableName, @Param("imei") String imei);
 }
