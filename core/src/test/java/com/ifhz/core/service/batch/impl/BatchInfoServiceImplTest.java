@@ -14,7 +14,6 @@ public class BatchInfoServiceImplTest extends BaseTest {
     @Test
     public void testGetById() throws Exception {
         log(batchInfoService.getById(4L));
-        log(batchInfoService.getById(4L));
     }
 
     @Test
