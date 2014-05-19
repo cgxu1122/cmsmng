@@ -15,13 +15,14 @@ public class CounterUploadLog implements Serializable {
     private Long counterId;
     private String imei;
     private String ua;
-    private Long channelId;
+    private String modelName;
+    private String channelId;
     private Long groupId;
     private String deviceCode;
     private String batchCode;
-    private Date processTime;
+    private String processTime;
     private Date createTime;
-    private Integer active;
+    private String active;
 
     private String tableName;
 
@@ -57,11 +58,19 @@ public class CounterUploadLog implements Serializable {
         this.ua = ua;
     }
 
-    public Long getChannelId() {
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(Long channelId) {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 
@@ -89,11 +98,11 @@ public class CounterUploadLog implements Serializable {
         this.batchCode = batchCode;
     }
 
-    public Date getProcessTime() {
+    public String getProcessTime() {
         return processTime;
     }
 
-    public void setProcessTime(Date processTime) {
+    public void setProcessTime(String processTime) {
         this.processTime = processTime;
     }
 
@@ -105,14 +114,13 @@ public class CounterUploadLog implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getActive() {
+    public String getActive() {
         return active;
     }
 
-    public void setActive(Integer active) {
+    public void setActive(String active) {
         this.active = active;
     }
-
 
     @Override
     public String toString() {

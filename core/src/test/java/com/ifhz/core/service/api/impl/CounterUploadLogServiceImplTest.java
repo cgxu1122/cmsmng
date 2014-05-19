@@ -17,14 +17,14 @@ public class CounterUploadLogServiceImplTest extends BaseTest {
     public void testInsert() throws Exception {
         CounterUploadLog log = new CounterUploadLog();
         log.setBatchCode("11111");
-        log.setChannelId(11111L);
+        log.setChannelId("2222");
         log.setGroupId(11111L);
         log.setUa("11111");
         log.setDeviceCode("11111");
         log.setCreateTime(new Date());
         log.setImei("11111");
-        log.setProcessTime(new Date());
-        log.setActive(1);
+        log.setProcessTime(new Date().getTime() + "");
+        log.setActive("1");
 
         counterUploadLogService.insert(log);
         log(log);

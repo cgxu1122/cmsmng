@@ -11,27 +11,16 @@ import java.util.Date;
  */
 public class DeviceProcessLog implements Serializable {
     private static final long serialVersionUID = -8831800335295638799L;
-    /*
-     process_id   NUMBER(15) not null,
-  imei         varchar2(50),
-  ua           varchar2(100),
-  channel_id   number(15),
-  device_code  varchar2(100),
-  group_id     number(15),
-  batch_code   varchar2(100),
-  process_time date,
-  create_time  date default SYSDATE not null,
-     */
-
 
     private Long processId;
     private String imei;
     private String ua;
-    private Long channelId;
+    private String modelName;
+    private String channelId;
     private Long groupId;
     private String deviceCode;
     private String batchCode;
-    private Date processTime;
+    private String processTime;
     private Date createTime;
 
     private String tableName;
@@ -68,11 +57,19 @@ public class DeviceProcessLog implements Serializable {
         this.ua = ua;
     }
 
-    public Long getChannelId() {
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(Long channelId) {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 
@@ -100,11 +97,11 @@ public class DeviceProcessLog implements Serializable {
         this.batchCode = batchCode;
     }
 
-    public Date getProcessTime() {
+    public String getProcessTime() {
         return processTime;
     }
 
-    public void setProcessTime(Date processTime) {
+    public void setProcessTime(String processTime) {
         this.processTime = processTime;
     }
 

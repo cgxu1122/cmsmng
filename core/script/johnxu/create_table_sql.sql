@@ -3,11 +3,12 @@ create table TY_DEVICE_PROCESS_LOG_20142
   process_id   NUMBER(15) not null,
   imei         varchar2(50),
   ua           varchar2(100),
-  channel_id   number(15),
+  model_name  varchar2(100),
+  channel_id   varchar2(100),
   device_code  varchar2(100),
   group_id     number(15),
   batch_code   varchar2(100),
-  process_time date,
+  process_time varchar2(100),
   create_time  date default SYSDATE not null
 );
 comment on column TY_DEVICE_PROCESS_LOG_20142.process_id
@@ -16,6 +17,8 @@ comment on column TY_DEVICE_PROCESS_LOG_20142.imei
   is '手机imei码';
 comment on column TY_DEVICE_PROCESS_LOG_20142.ua
   is '手机ua';
+comment on column TY_DEVICE_PROCESS_LOG_20142.model_name
+  is '机型名称';
 comment on column TY_DEVICE_PROCESS_LOG_20142.channel_id
   is '渠道id';
 comment on column TY_DEVICE_PROCESS_LOG_20142.device_code
@@ -41,15 +44,16 @@ create index  IDX_PROCESS_LOG_IMEI on TY_DEVICE_PROCESS_LOG_20142(imei);
 create table TY_COUNTER_UPLOAD_LOG_20142
 (
   counter_id   number(15) not null,
-  imei         varchar2(50),
-  ua           varchar2(100),
-  channel_id   number(15),
+  imei          varchar2(50),
+  ua            varchar2(100),
+  model_name   varchar2(100),
+  channel_id   varchar2(100),,
   device_code  varchar2(100),
   group_id     number(15),
   batch_code   varchar2(100),
-  process_time date,
+  process_time varchar2(100),,
   create_time  date default SYSDATE not null,
-  active       number(1) not null
+  active        varchar2(100), not null
 )
 ;
 -- Add comments to the columns
@@ -59,6 +63,8 @@ comment on column TY_COUNTER_UPLOAD_LOG_20142.imei
   is '手机imei码';
 comment on column TY_COUNTER_UPLOAD_LOG_20142.ua
   is '手机ua';
+comment on column TY_COUNTER_UPLOAD_LOG_20142.model_name
+  is '机型名称';
 comment on column TY_COUNTER_UPLOAD_LOG_20142.channel_id
   is '渠道id';
 comment on column TY_COUNTER_UPLOAD_LOG_20142.device_code
