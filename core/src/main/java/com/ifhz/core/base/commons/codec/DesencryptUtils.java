@@ -2,11 +2,11 @@ package com.ifhz.core.base.commons.codec;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 
 import javax.annotation.Nonnull;
+import java.io.File;
 import java.nio.charset.Charset;
 
 /**
@@ -23,14 +23,8 @@ public final class DesencryptUtils {
      * @param value 非空字符串
      * @return
      */
-    public static String md5(@Nonnull String value) {
-        Preconditions.checkArgument(value != null, "value");
-        HashFunction function = Hashing.md5();
-        HashCode hashCode = function.newHasher()
-                .putString(value, Charsets.UTF_8)
-                .hash();
-
-        return hashCode.toString();
+    public static String md5Str(@Nonnull String value) {
+        return md5Str(value, Charsets.UTF_8);
     }
 
     /**
@@ -40,14 +34,23 @@ public final class DesencryptUtils {
      * @param charset 编码格式
      * @return
      */
-    public static String md5(@Nonnull String value, @Nonnull Charset charset) {
+    public static String md5Str(@Nonnull String value, @Nonnull Charset charset) {
         Preconditions.checkArgument(value != null, "value");
-        HashFunction function = Hashing.md5();
-        HashCode hashCode = function.newHasher()
-                .putString(value, charset)
-                .hash();
+        return Hashing.md5().hashString(value, charset).toString();
+    }
 
-        return hashCode.toString();
+    /**
+     * MD5 加密算法
+     *
+     * @param file 加密文件
+     * @return
+     */
+    public static String md5File(@Nonnull File file) throws Exception {
+        Preconditions.checkArgument(file != null, "value");
+        if (file.exists() && file.isFile()) {
+            return Files.hash(file, Hashing.md5()).toString();
+        }
+        throw new Exception("file must be exists and must be file");
     }
 
     private DesencryptUtils() {
