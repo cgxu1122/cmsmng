@@ -6,6 +6,15 @@ package com.ifhz.core.base.commons.constants;
  * @author yangjian
  */
 public final class JcywConstants {
+
+    /**
+     * 渠道组ID
+     */
+    public static final Long CHANNEL_GROUP_TY_ID_1 = 1L;
+    public static final Long CHANNEL_GROUP_DB_ID_2 = 2L;
+    public static final Long CHANNEL_GROUP_QT_ID_3 = 3L;
+    public static final Long CHANNEL_GROUP_LW_ID_4 = 4L;
+
     /**
      * 字段取值 活动状态
      */
@@ -17,10 +26,10 @@ public final class JcywConstants {
     public static final Long CHANNEL_ROOT_PARENT_ID = -1L;
 
     /**
-     * 字段取值 是否叶子节点
+     * 字段取值 是否
      */
-    public static final String LEAF_Y = "Y";
-    public static final String LEAF_N = "N";
+    public static final String BASE_CONSTANT_Y = "Y";
+    public static final String BASE_CONSTANT_N = "N";
 
     /**
      * 字段取值 渠道类型
@@ -30,5 +39,6 @@ public final class JcywConstants {
     public static final String CHANNEL_TYPE_C = "C";//子渠道
     public static final String CHANNEL_TYPE_S = "S";//门店
     public static final String CHANNEL_TYPE_O = "O";//其他
+
 
 }

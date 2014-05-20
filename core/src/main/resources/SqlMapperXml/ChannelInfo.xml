@@ -14,6 +14,8 @@
         <result column="DESC" property="desc" jdbcType="VARCHAR"/>
         <result column="LEAF" property="leaf" jdbcType="VARCHAR"/>
         <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
+        <result column="QUERY_IMEI_SOURCE" property="queryImeiSource" jdbcType="VARCHAR"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
@@ -34,9 +36,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        ( CHANNEL_ID,PARENT_ID,GROUP_ID,MNG_ID,USER_ID,CHANNEL_NAME,"DESC")
+        ( CHANNEL_ID,PARENT_ID,GROUP_ID,MNG_ID,USER_ID,CHANNEL_NAME,"DESC",LAOWU_ID,QUERY_IMEI_SOURCE)
         values
-        ("SEQ_CHANNEL_INFO".nextval,#{parentId},#{groupId},#{mngId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{channelName},#{desc,jdbcType=VARCHAR})
+        ("SEQ_CHANNEL_INFO".nextval,#{parentId},#{groupId},#{mngId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{channelName},#{desc,jdbcType=VARCHAR},#{laowuId,jdbcType=BIGINT},#{queryImeiSource,jdbcType=VARCHAR})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.ChannelInfo">
@@ -66,6 +68,12 @@
             </if>
             <if test="type != null">
                 "TYPE" = #{type},
+            </if>
+            <if test="queryImeiSource != null">
+                QUERY_IMEI_SOURCE = #{queryImeiSource},
+            </if>
+            <if test="laowuId != null">
+                LAOWU_ID = #{laowuId},
             </if>
             <if test="active != null">
                 ACTIVE = #{active},
@@ -105,6 +113,12 @@
         </if>
         <if test="record.type != null and record.type != ''">
             and ci.TYPE = #{record.type}
+        </if>
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and ci.LAOWU_ID = #{record.laowuId}
+        </if>
+        <if test="record.queryImeiSource != null and record.queryImeiSource != ''">
+            and ci.QUERY_IMEI_SOURCE = #{record.queryImeiSource}
         </if>
         <if test="record.active != null and record.active != ''">
             and ci.ACTIVE = #{record.active}

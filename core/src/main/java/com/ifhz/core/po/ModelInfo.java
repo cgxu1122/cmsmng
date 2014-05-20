@@ -17,6 +17,25 @@ public class ModelInfo {
     private Date createTime;
     private Date updateTime;
 
+    private String groupName;
+    private String modelNameCondition;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getModelNameCondition() {
+        return modelNameCondition;
+    }
+
+    public void setModelNameCondition(String modelNameCondition) {
+        this.modelNameCondition = modelNameCondition;
+    }
+
     public Long getModelId() {
         return modelId;
     }

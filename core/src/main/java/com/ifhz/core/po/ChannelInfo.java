@@ -15,6 +15,8 @@ public class ChannelInfo {
     private String channelName;
     private String desc;
     private String leaf;
+    private Long laowuId;
+    private String queryImeiSource;
     private String type;
     private String active;
     private Date createTime;
@@ -95,6 +97,22 @@ public class ChannelInfo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Long getLaowuId() {
+        return laowuId;
+    }
+
+    public void setLaowuId(Long laowuId) {
+        this.laowuId = laowuId;
+    }
+
+    public String getQueryImeiSource() {
+        return queryImeiSource;
+    }
+
+    public void setQueryImeiSource(String queryImeiSource) {
+        this.queryImeiSource = queryImeiSource;
     }
 
     public String getActive() {

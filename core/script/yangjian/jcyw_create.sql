@@ -31,6 +31,8 @@ CREATE TABLE "TY_CHANNEL_INFO"
    "DESC"               VARCHAR2(2000),
    "LEAF"               VARCHAR2(1)          DEFAULT 'Y' NOT NULL,
    "TYPE"               VARCHAR2(1)          DEFAULT 'O' NOT NULL,
+   "LAOWU_ID"           NUMBER(15),
+   "QUERY_IMEI_SOURCE"  VARCHAR2(1)          DEFAULT 'Y',
    "ACTIVE"             VARCHAR2(1)          DEFAULT 'Y' NOT NULL,
    "CREATE_TIME"        DATE                 DEFAULT SYSDATE NOT NULL,
    "UPDATE_TIME"        DATE                 DEFAULT SYSDATE NOT NULL,
@@ -67,6 +69,12 @@ COMMENT ON COLUMN "TY_CHANNEL_INFO"."LEAF" IS
 COMMENT ON COLUMN "TY_CHANNEL_INFO"."TYPE" IS
 '渠道类型（L:劳务公司，M:主渠道，C:子渠道，O:其他）';
 
+COMMENT ON COLUMN "TY_CHANNEL_INFO"."LAOWU_ID" IS
+'劳务公司ID';
+
+COMMENT ON COLUMN "TY_CHANNEL_INFO"."QUERY_IMEI_SOURCE" IS
+'是否可以查询IMEI（Y:可以，N:不可以）';
+
 COMMENT ON COLUMN "TY_CHANNEL_INFO"."ACTIVE" IS
 '活动状态（Y:有效，D:删除）';
 
@@ -83,8 +91,8 @@ CREATE TABLE "TY_MODEL_INFO"
    "UA"                 VARCHAR2(100)        NOT NULL,
    "MODEL_NAME"         VARCHAR2(200)        NOT NULL,
    "GROUP_ID"           NUMBER(15)           NOT NULL,
-   "TAGNUM"             NUMBER(5)            NOT NULL,
-   "TAGPRICE"           NUMBER(8,4)          NOT NULL,
+   "TAGNUM"             NUMBER(15)            NOT NULL,
+   "TAGPRICE"           NUMBER(15,3)          NOT NULL,
    "CREATE_TIME"        DATE                 DEFAULT SYSDATE NOT NULL,
    "UPDATE_TIME"        DATE                 DEFAULT SYSDATE NOT NULL,
    "ACTIVE"             VARCHAR2(1)          DEFAULT 'Y' NOT NULL,

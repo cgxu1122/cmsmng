@@ -135,6 +135,26 @@
                 </a>
             </div>
         </div>
+        <div title="机型管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道机型','<%=basePath%>/modelInfo/index?groupId=1','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道机型</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道机型','<%=basePath%>/modelInfo/index?groupId=2','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道机型</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道机型','<%=basePath%>/modelInfo/index?groupId=3','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道机型</span>
+                </a>
+            </div>
+        </div>
         <div title="样例" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统账户管理','<%=basePath%>/demo/index','menu_icon_datadeal')">

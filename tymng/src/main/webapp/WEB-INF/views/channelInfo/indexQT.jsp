@@ -37,21 +37,54 @@
             });
         }
 
+        function editrow() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $('#updatedlg').dialog('open').dialog('setTitle', '修改');
+                $('#upfm').form('load', row);
+            }
+        }
+        function saveUpdate() {
+            $('#upfm').form('submit', {
+                url: '<%=basePath%>/channelInfo/update',
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        $('#updatedlg').dialog('close');
+                        $('#dg').datagrid('reload');
+                    }
+                }
+            });
+        }
+
+        function delrow() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $.messager.confirm('提示', '确定要删除[' + row.channelName + ']?', function (r) {
+                    if (r) {
+                        $.post('<%=basePath%>/channelInfo/delete', {channelId: row.channelId}, function (result) {
+                            if (result.errorMsg) {
+                                $.messager.alert('错误', result.errorMsg);
+                            } else {
+                                $('#dg').datagrid('reload');
+                            }
+                        }, 'json');
+                    }
+                });
+            }
+        }
+
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/channelInfo/list",
                 queryParams: {groupId: '${groupId}', channelNameCondition: value}
             });
-        }
-
-        function editrow() {
-            alert("editrow");
-        }
-
-
-        function delrow() {
-            alert("deleterow");
         }
 
         function initPage() {
@@ -76,11 +109,6 @@
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
-                        },
-                        {field: 'action', title: '操作', align: 'center', width: 200,
-                            formatter: function () {
-                                return "<a href='javascript:void(0)' onclick='editrow()'>修改</a>&nbsp;&nbsp;<a href='javascript:void(0)' onclick='delrow()'>删除</a>";
-                            }
                         }
                     ]
                 ]
@@ -102,6 +130,12 @@
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
+                </td>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
+                </td>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
                 </td>
             </tr>
         </table>
@@ -135,5 +169,33 @@
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
+
+<div id="updatedlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
+     buttons="#update-buttons">
+    <form id="upfm" method="post" novalidate>
+        <input type="hidden" id="channelId" name="channelId"/>
+
+        <div class="fitem">
+            <label><font color="red">*</font>仓库名称:</label>
+            <input type="text" name="channelName" class="easyui-validatebox" required="true"
+                    >
+        </div>
+        <div class="fitem" style="margin-left:13px">
+            <label><font color="red">*</font>用户名:</label>
+            <input type="text" name="username" readonly="readonly">
+        </div>
+        <div class="fitem" style="margin-left:25px">
+            <label><font color="red">*</font>密码:</label>
+            <input type="text" name="password" class="easyui-validatebox"
+                   required="true">
+        </div>
+    </form>
+</div>
+<div id="update-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdate()">确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
+</div>
+
 </body>
 </html>

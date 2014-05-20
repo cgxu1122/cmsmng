@@ -8,6 +8,7 @@
         <id column="MODEL_ID" property="modelId" jdbcType="BIGINT"/>
         <result column="UA" property="ua" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="TAGNUM" property="tagNum" jdbcType="INTEGER"/>
         <result column="TAGPRICE" property="tagPrice" jdbcType="NUMERIC"/>
@@ -63,26 +64,31 @@
         where MODEL_ID = #{modelId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.ModelInfo" resultMap="ModelInfoResultMap">
-        select * from
+        select mi.*,cg.GROUP_NAME from
         <include refid="TABLE_NAME"/>
+        mi
+        JOIN TY_CHANNEL_GROUP cg on mi.GROUP_ID = cg.GROUP_ID
         where 1=1
         <if test="record.ua != null and record.ua != ''">
-            and UA = #{record.ua}
+            and mi.UA = #{record.ua}
         </if>
         <if test="record.groupId != null and record.groupId != ''">
-            and GROUP_ID = #{record.groupId}
+            and mi.GROUP_ID = #{record.groupId}
         </if>
         <if test="record.modelName != null and record.modelName != ''">
-            and MODEL_NAME = #{record.modelName}
+            and mi.MODEL_NAME = #{record.modelName}
         </if>
         <if test="record.tagNum != null and record.tagNum != ''">
-            and TAGNUM = #{record.tagNum}
+            and mi.TAGNUM = #{record.tagNum}
         </if>
         <if test="record.tagPrice != null and record.tagPrice != ''">
-            and TAGPRICE = #{record.tagPrice}
+            and mi.TAGPRICE = #{record.tagPrice}
         </if>
         <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
+            and mi.ACTIVE = #{record.active}
+        </if>
+        <if test="record.modelNameCondition != null and record.modelNameCondition != ''">
+            and mi.MODEL_NAME LIKE concat(concat('%',#{record.modelNameCondition}),'%' )
         </if>
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.ModelInfo">
