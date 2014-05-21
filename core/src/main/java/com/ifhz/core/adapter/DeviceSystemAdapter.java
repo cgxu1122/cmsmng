@@ -4,6 +4,7 @@ package com.ifhz.core.adapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DeviceSystem;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface DeviceSystemAdapter {
     public int update(DeviceSystem record);
 
     public int delete(DeviceSystem record);
+
+    public DeviceSystem queryNewestVersion(Date currentTime);
 }

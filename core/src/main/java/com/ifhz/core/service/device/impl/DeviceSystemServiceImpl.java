@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,5 +46,10 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
     @Override
     public int delete(DeviceSystem record) {
         return deviceSystemAdapter.delete(record);
+    }
+
+    @Override
+    public DeviceSystem queryNewestVersion(Date currentTime) {
+        return deviceSystemAdapter.queryNewestVersion(currentTime);
     }
 }

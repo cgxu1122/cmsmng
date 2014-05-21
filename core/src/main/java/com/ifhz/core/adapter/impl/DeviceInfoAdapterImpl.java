@@ -51,4 +51,9 @@ public class DeviceInfoAdapterImpl implements DeviceInfoAdapter {
         record.setUpdateTime(new Date());
         return deviceInfoMapper.update(record);
     }
+
+    @Override
+    public DeviceInfo queryByDeviceCode(String deviceCode) {
+        return deviceInfoMapper.queryByDeviceCode(deviceCode);
+    }
 }

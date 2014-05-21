@@ -57,6 +57,15 @@
             and FTP_PATH = #{record.ftpPath}
         </if>
     </select>
+
+    <select id="queryNewestVersion" resultMap="DeviceSystemResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where EFFECTIVE_TIME &gt;= #{currentTime,jdbcType=TIMESTAMP}
+        order by EFFECTIVE_TIME desc
+        limit 1
+    </select>
+
     <delete id="delete" parameterType="com.ifhz.core.po.DeviceSystem">
         delete from
         <include refid="TABLE_NAME"/>

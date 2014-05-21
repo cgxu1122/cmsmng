@@ -8,6 +8,7 @@ import com.ifhz.core.po.DeviceSystem;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,5 +46,10 @@ public class DeviceSystemAdapterImpl implements DeviceSystemAdapter {
     @Override
     public int delete(DeviceSystem record) {
         return deviceSystemMapper.delete(record);
+    }
+
+    @Override
+    public DeviceSystem queryNewestVersion(Date currentTime) {
+        return deviceSystemMapper.queryNewestVersion(currentTime);
     }
 }

@@ -71,6 +71,7 @@
                 <value>classpath:SqlMapperXml/DeviceProcessLog.xml</value>
                 <value>classpath:SqlMapperXml/CounterUploadLog.xml</value>
                 <value>classpath:SqlMapperXml/DictInfo.xml</value>
+                <value>classpath:SqlMapperXml/CounterFailLog.xml</value>
             </list>
         </property>
     </bean>
@@ -134,12 +135,21 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.CounterUploadLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+    <bean id="counterFailLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterFailLogMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
     <bean id="dictInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.DictInfoMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
     <bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.RoleMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="channelVersionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.ChannelVersionMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 </beans>

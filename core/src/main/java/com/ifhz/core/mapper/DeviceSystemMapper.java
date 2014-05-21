@@ -5,6 +5,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DeviceSystem;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +15,8 @@ import java.util.List;
 public interface DeviceSystemMapper {
 
     public DeviceSystem getById(Long id);
+
+    public DeviceSystem queryNewestVersion(@Param("currentTime") Date currentTime);
 
     public List<DeviceSystem> queryByVo(Pagination page, @Param(value = "record") DeviceSystem record);
 

@@ -46,30 +46,30 @@ public class CounterUploadLogServiceImpl implements CounterUploadLogService {
     }
 
     @Override
-    public boolean queryHasImei(String imei) {
+    public CounterUploadLog queryHasImei(String imei) {
         if (StringUtils.isBlank(imei)) {
-            return false;
+            return null;
         }
         Date now = new Date();
-        boolean result = false;
-        List<Future<Boolean>> futures = Lists.newArrayList();
-        CompletionService<Boolean> ecs = new ExecutorCompletionService<Boolean>(executor);
+        CounterUploadLog result = null;
+        List<Future<CounterUploadLog>> futures = Lists.newArrayList();
+        CompletionService<CounterUploadLog> ecs = new ExecutorCompletionService<CounterUploadLog>(executor);
         try {
             int count = 0;
             List<String> tableList = splitTableService.getTableListForCounterByNow(now);
             for (String tableName : tableList) {
                 QueryHasImeiTask task = new QueryHasImeiTask(imei, tableName);
-                Future<Boolean> future = ecs.submit(task);
+                Future<CounterUploadLog> future = ecs.submit(task);
                 futures.add(future);
                 count++;
             }
             for (int i = 0; i < count; i++) {
                 try {
-                    Future<Boolean> future = ecs.poll(10, TimeUnit.SECONDS);
+                    Future<CounterUploadLog> future = ecs.poll(10, TimeUnit.SECONDS);
                     if (future != null) {
-                        Boolean has = future.get();
-                        if (has) {
-                            result = true;
+                        CounterUploadLog ret = future.get();
+                        if (ret != null) {
+                            result = ret;
                             break;
                         }
                     }
@@ -84,7 +84,7 @@ public class CounterUploadLogServiceImpl implements CounterUploadLogService {
     }
 
 
-    private class QueryHasImeiTask implements Callable<Boolean> {
+    private class QueryHasImeiTask implements Callable<CounterUploadLog> {
         private String imei;
         private String tableName;
 
@@ -94,19 +94,16 @@ public class CounterUploadLogServiceImpl implements CounterUploadLogService {
         }
 
         @Override
-        public Boolean call() throws Exception {
+        public CounterUploadLog call() throws Exception {
             try {
                 if (StringUtils.isNotBlank(tableName) && StringUtils.isNotBlank(imei)) {
-                    CounterUploadLog log = counterUploadLogAdapter.getByImei(tableName, imei);
-                    if (log != null && log.getCounterId() > 0) {
-                        return true;
-                    }
+                    return counterUploadLogAdapter.getByImei(tableName, imei);
                 }
             } catch (Exception e) {
                 LOGGER.warn("QueryHasImeiTask[{},{}] error", tableName, imei);
             }
 
-            return false;
+            return null;
         }
     }
 }

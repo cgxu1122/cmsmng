@@ -5,6 +5,7 @@
     <property name="encoding" value="UTF-8"/>
     <property name="console-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L  %msg%n"/>
     <property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L  %msg%n"/>
+    <property name="data-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n"/>
     <!--<property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n"/>-->
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -29,13 +30,44 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="DeviceProcessErrorLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/device_error.log</file>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${data-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/device_error.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="CounterUploadErrorLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/counter_error.log</file>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${data-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/counter_error.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
     <!-- project default level -->
     <logger name="com.ifhz" level="INFO"/>
 
     <!-- root -->
     <root level="INFO">
         <appender-ref ref="console"/>
-        <appender-ref ref="rollingFile"/>
+        <appender-ref ref="fileDefault"/>
+        <appender-ref ref="DeviceProcessErrorLog"/>
+        <appender-ref ref="CounterUploadErrorLog"/>
     </root>
 
     <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->

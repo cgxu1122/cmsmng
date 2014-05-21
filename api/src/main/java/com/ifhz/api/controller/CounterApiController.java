@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * 类描述
@@ -47,8 +48,11 @@ public class CounterApiController {
                     source = StringUtils.replaceOnce(source, CodecUtils.START_CHAR, "");
                     LOGGER.info("receive decode data={}", source);
                     String[] array = StringUtils.split(source, "|");
-                    //#手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳|手机到达状态
+                    //^手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
                     if (array.length == 7 && valid(array)) {
+                        if (StringUtils.isBlank(array[7])) {
+                            LOGGER.error("data={} ,active is null", source);
+                        }
                         CounterUploadLog log = new CounterUploadLog();
                         log.setImei(StringUtils.trimToEmpty(array[0]));
                         log.setUa(StringUtils.trimToEmpty(array[1]));
@@ -57,9 +61,12 @@ public class CounterApiController {
                         log.setBatchCode(StringUtils.trimToEmpty(array[4]));
                         log.setProcessTime(StringUtils.trimToEmpty(array[5]));
                         log.setActive(StringUtils.trimToEmpty(array[6]));
+                        log.setCreateTime(new Date());
 
                         apiUploadService.save(log);
                         result = ApiJsonHandler.genJsonRet(ResultType.Succ);
+                    } else {
+                        LOGGER.warn("data is non-valid,data={}", data);
                     }
                 }
             }

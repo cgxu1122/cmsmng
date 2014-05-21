@@ -20,4 +20,6 @@ public interface DeviceInfoService {
     public int update(DeviceInfo record);
 
     public int delete(DeviceInfo record);
+
+    public DeviceInfo queryByDeviceCode(String deviceCode);
 }

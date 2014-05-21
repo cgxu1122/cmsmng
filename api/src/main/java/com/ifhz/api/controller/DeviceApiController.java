@@ -52,7 +52,7 @@ public class DeviceApiController {
                             source = StringUtils.replaceOnce(source, CodecUtils.START_CHAR, "");
                             LOGGER.info("receive decode processLog={}", source);
                             String[] array = StringUtils.split(source, "|");
-                            //#手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
+                            //^手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
                             if (array.length == 6 && valid(array)) {
                                 DeviceProcessLog log = new DeviceProcessLog();
                                 log.setImei(StringUtils.trimToEmpty(array[0]));

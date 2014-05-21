@@ -13,5 +13,5 @@ public interface CounterUploadLogService {
 
     public void insert(CounterUploadLog po);
 
-    public boolean queryHasImei(String imei);
+    public CounterUploadLog queryHasImei(String imei);
 }

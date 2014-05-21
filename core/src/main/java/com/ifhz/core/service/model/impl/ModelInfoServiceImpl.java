@@ -46,4 +46,9 @@ public class ModelInfoServiceImpl implements ModelInfoService {
     public int delete(ModelInfo record) {
         return modelInfoAdapter.delete(record);
     }
+
+    @Override
+    public ModelInfo getByGroupIdAndUa(Long groupId, String ua) {
+        return modelInfoAdapter.getByGroupIdAndUa(groupId, ua);
+    }
 }

@@ -15,6 +15,8 @@ public interface DeviceInfoMapper {
 
     public DeviceInfo getById(Long id);
 
+    public DeviceInfo queryByDeviceCode(@Param("deviceCode") String deviceCode);
+
     public List<DeviceInfo> queryByVo(Pagination page, @Param(value = "record") DeviceInfo record);
 
     public int insert(DeviceInfo record);

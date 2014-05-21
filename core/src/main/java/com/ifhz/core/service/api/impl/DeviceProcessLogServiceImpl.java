@@ -46,30 +46,30 @@ public class DeviceProcessLogServiceImpl implements DeviceProcessLogService {
     }
 
     @Override
-    public boolean queryHasImei(String imei) {
+    public DeviceProcessLog queryHasImei(String imei) {
         if (StringUtils.isBlank(imei)) {
-            return false;
+            return null;
         }
         Date now = new Date();
-        boolean result = false;
-        List<Future<Boolean>> futures = Lists.newArrayList();
-        CompletionService<Boolean> ecs = new ExecutorCompletionService<Boolean>(executor);
+        DeviceProcessLog result = null;
+        List<Future<DeviceProcessLog>> futures = Lists.newArrayList();
+        CompletionService<DeviceProcessLog> ecs = new ExecutorCompletionService<DeviceProcessLog>(executor);
         try {
             int count = 0;
             List<String> tableList = splitTableService.getTableListForCounterByNow(now);
             for (String tableName : tableList) {
                 QueryHasImeiTask task = new QueryHasImeiTask(imei, tableName);
-                Future<Boolean> future = ecs.submit(task);
+                Future<DeviceProcessLog> future = ecs.submit(task);
                 futures.add(future);
                 count++;
             }
             for (int i = 0; i < count; i++) {
                 try {
-                    Future<Boolean> future = ecs.poll(10, TimeUnit.SECONDS);
+                    Future<DeviceProcessLog> future = ecs.poll(10, TimeUnit.SECONDS);
                     if (future != null) {
-                        Boolean has = future.get();
-                        if (has) {
-                            result = true;
+                        DeviceProcessLog log = future.get();
+                        if (log != null && log.getProcessId() != null) {
+                            result = log;
                             break;
                         }
                     }
@@ -84,7 +84,7 @@ public class DeviceProcessLogServiceImpl implements DeviceProcessLogService {
     }
 
 
-    private class QueryHasImeiTask implements Callable<Boolean> {
+    private class QueryHasImeiTask implements Callable<DeviceProcessLog> {
         private String imei;
         private String tableName;
 
@@ -94,19 +94,16 @@ public class DeviceProcessLogServiceImpl implements DeviceProcessLogService {
         }
 
         @Override
-        public Boolean call() throws Exception {
+        public DeviceProcessLog call() throws Exception {
             try {
                 if (StringUtils.isNotBlank(tableName) && StringUtils.isNotBlank(imei)) {
-                    DeviceProcessLog log = deviceProcessLogAdapter.getByImei(tableName, imei);
-                    if (log != null && log.getProcessId() > 0) {
-                        return true;
-                    }
+                    return deviceProcessLogAdapter.getByImei(tableName, imei);
                 }
             } catch (Exception e) {
                 LOGGER.warn("QueryHasImeiTask[{},{}] error", tableName, imei);
             }
 
-            return false;
+            return null;
         }
     }
 }

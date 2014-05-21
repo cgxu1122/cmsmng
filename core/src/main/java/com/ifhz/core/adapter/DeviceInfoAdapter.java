@@ -21,4 +21,6 @@ public interface DeviceInfoAdapter {
     public int update(DeviceInfo record);
 
     public int delete(DeviceInfo record);
+
+    public DeviceInfo queryByDeviceCode(String deviceCode);
 }

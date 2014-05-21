@@ -22,4 +22,6 @@ public interface ModelInfoMapper {
     public int update(ModelInfo record);
 
     public int delete(ModelInfo record);
+
+    public ModelInfo getByGroupIdAndUa(@Param(value = "groupId") Long groupId, @Param(value = "ua") String ua);
 }

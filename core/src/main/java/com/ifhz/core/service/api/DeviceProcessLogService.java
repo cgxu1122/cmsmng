@@ -12,5 +12,5 @@ public interface DeviceProcessLogService {
 
     public void insert(DeviceProcessLog po);
 
-    public boolean queryHasImei(String imei);
+    public DeviceProcessLog queryHasImei(String imei);
 }

@@ -21,4 +21,6 @@ public interface ModelInfoAdapter {
     public int update(ModelInfo record);
 
     public int delete(ModelInfo record);
+
+    public ModelInfo getByGroupIdAndUa(Long groupId, String ua);
 }

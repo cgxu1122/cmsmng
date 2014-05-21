@@ -51,4 +51,9 @@ public class ModelInfoAdapterImpl implements ModelInfoAdapter {
         record.setUpdateTime(new Date());
         return modelInfoMapper.update(record);
     }
+
+    @Override
+    public ModelInfo getByGroupIdAndUa(Long groupId, String ua) {
+        return modelInfoMapper.getByGroupIdAndUa(groupId, ua);
+    }
 }

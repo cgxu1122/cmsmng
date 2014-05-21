@@ -3,10 +3,22 @@
 <mapper namespace="com.ifhz.core.mapper.ModelInfoMapper">
 
     <sql id="TABLE_NAME">TY_MODEL_INFO</sql>
+    <sql id="CommonFieldSql">
+        MODEL_ID,
+        UA,
+        GROUP_ID,
+        GROUP_NAME,
+        MODEL_NAME,
+        TAGNUM,
+        TAGPRICE,
+        ACTIVE,
+        CREATE_TIME,
+        UPDATE_TIME
+    </sql>
 
     <resultMap id="ModelInfoResultMap" type="com.ifhz.core.po.ModelInfo">
         <id column="MODEL_ID" property="modelId" jdbcType="BIGINT"/>
-        <result column="UA" property="ua" jdbcType="BIGINT"/>
+        <result column="UA" property="ua" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
@@ -96,4 +108,13 @@
         <include refid="TABLE_NAME"/>
         where MODEL_ID = #{modelId}
     </delete>
+
+    <select id="getByGroupIdAndUa" resultMap="ModelInfoResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID = #{groupId}
+        and UA = #{ua}
+    </select>
 </mapper>

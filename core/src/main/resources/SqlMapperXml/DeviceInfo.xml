@@ -76,4 +76,11 @@
         <include refid="TABLE_NAME"/>
         where DEVICE_ID = #{deviceId}
     </delete>
+
+
+    <select id="queryByDeviceCode" resultMap="DeviceInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where DEVICE_CODE = #{deviceCode}
+    </select>
 </mapper>

@@ -46,4 +46,9 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
     public int delete(DeviceInfo record) {
         return deviceInfoAdapter.delete(record);
     }
+
+    @Override
+    public DeviceInfo queryByDeviceCode(String deviceCode) {
+        return deviceInfoAdapter.queryByDeviceCode(deviceCode);
+    }
 }
