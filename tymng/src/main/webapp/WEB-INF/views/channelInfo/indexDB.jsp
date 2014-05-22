@@ -30,6 +30,7 @@
                     } else {
                         $('#dlg').dialog('close');
                         $('#dg').datagrid('reload');
+                        reloadTree();
                     }
                 }
             });
@@ -55,6 +56,7 @@
                     } else {
                         $('#updatedlg').dialog('close');
                         $('#dg').datagrid('reload');
+                        reloadTree();
                     }
                 }
             });
@@ -70,6 +72,7 @@
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
                                 $('#dg').datagrid('reload');
+                                reloadTree();
                             }
                         }, 'json');
                     }
@@ -87,24 +90,14 @@
         }
 
         function initPage() {
-            var parentIdCondition = $('#parentIdCondition').val();
-            $('#tt').tree({
-                url: "<%=basePath%>/channelInfo/listTree?groupId=${groupId}&parentIdCondition=" + parentIdCondition,
-                onClick: function (node) {
-                    $('#parentIdCondition').val(node.id);
-                    searchEvt();
-                },
-                onBeforeExpand: function (node, param) {
-                    $('#tt').tree('options').url = "<%=basePath%>/channelInfo/listTree?groupId=${groupId}&parentIdCondition=" + node.id;
-                }
-            });
+            reloadTree();
             $('#dg').datagrid({
                 width: 'auto',
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/channelInfo/list',
-                queryParams: {groupId: '${groupId}', parentIdCondition: parentIdCondition},
+                queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -115,10 +108,10 @@
                         {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
                         {field: 'username', title: '用户名', align: 'center', width: 100},
                         {field: 'password', title: '密码', align: 'center', width: 100},
-                        {field: 'password', title: '地址', align: 'center', width: 100},
-                        {field: 'password', title: '联系人', align: 'center', width: 100},
-                        {field: 'password', title: '联系方式', align: 'center', width: 100},
-                        {field: 'password', title: '劳务公司', align: 'center', width: 100},
+                        {field: 'address', title: '地址', align: 'center', width: 100},
+                        {field: 'contact', title: '联系人', align: 'center', width: 100},
+                        {field: 'phone', title: '联系方式', align: 'center', width: 100},
+                        {field: 'laowuName', title: '劳务公司', align: 'center', width: 100},
                         {field: 'createTime', title: '创建日期', align: 'center', width: 100,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
@@ -127,6 +120,68 @@
                     ]
                 ]
             });
+        }
+
+        function reloadTree() {
+            $('#tt').tree({
+                url: "<%=basePath%>/channelInfo/listTree?groupId=${groupId}",
+                onClick: function (node) {
+                    $('#parentIdCondition').val(node.id);
+                    searchEvt();
+                },
+                onBeforeExpand: function (node, param) {
+                    $('#tt').tree('options').url = "<%=basePath%>/channelInfo/listTree?groupId=${groupId}&parentIdCondition=" + node.id;
+                }
+            });
+        }
+
+        function showLaowuDialog(type, upLaowuId) {
+            $('#laowudlg').dialog('open').dialog('setTitle', '选择劳务公司');
+            $('#laowudg').datagrid({
+                width: 'auto',
+                height: 'auto',
+                striped: true,
+                singleSelect: true,
+                url: '<%=basePath%>/channelInfo/list',
+                queryParams: {groupId: '4'},
+                loadMsg: '数据加载中请稍后……',
+                pagination: true,
+                rownumbers: true,
+                columns: [
+                    [
+                        {field: 'channelId', title: '劳务id', align: 'center', width: 50},
+                        {field: 'channelName', title: '劳务名称', align: 'center', width: 200},
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 150,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd");
+                            }
+                        },
+                        {field: 'action', title: '操作', align: 'center', width: 100,
+                            formatter: function (value, row, index) {
+                                return "<a href='javascript:void(0)' onclick=javascript:selectLaowu('" + row.channelId + "','" + row.channelName + "','" + type + "')>选择</a>";
+                            }
+                        }
+                    ]
+                ]
+            });
+        }
+        function searchLaowuEvt() {
+            var value = $('#searchLaowuValue').val();
+            $('#laowudg').datagrid({
+                url: "<%=basePath%>/channelInfo/list",
+                queryParams: {groupId: '4', channelNameCondition: value}
+            });
+        }
+        function selectLaowu(laowuId, laowuName, type) {
+            if (type == 2) {//修改
+                $("#upLaowuId").val(laowuId);
+                $("#upLaowuName").val(laowuName);
+            } else if (type == 1) {//新增
+                $("#laowuId").val(laowuId);
+                $("#laowuName").val(laowuName);
+            }
+            $('#laowudlg').dialog('close');
+
         }
     </script>
 </head>
@@ -140,8 +195,8 @@
             <table>
                 <tr>
                     <td>
-                        <input type="text" name="searchValue" id="searchValue" placeholder="仓库名称"/>
-                        <input type="hidden" name="parentIdCondition" id="parentIdCondition" value="-1"/>
+                        <input type="text" name="searchValue" id="searchValue" placeholder="渠道名称"/>
+                        <input type="hidden" name="parentIdCondition" id="parentIdCondition"/>
                     </td>
                     <td align="center">
                         <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
@@ -189,15 +244,21 @@
         </div>
         <div class="fitem" style="margin-left:13px">
             <label><font color="red">*</font>联系人:</label>
-            <input id="mngId" name="mngId" class="easyui-validatebox" required="true" maxlength="50">
+            <input id="contact" name="contact" class="easyui-validatebox" required="true" maxlength="50">
         </div>
         <div class="fitem" style="margin-left:6px">
             <label>联系方式:</label>
             <input id="phone" name="phone" class="easyui-validatebox" maxlength="50">
         </div>
+        <div class="fitem" style="margin-left:13px">
+            <label>负责人:</label>
+            <input id="mngId" name="mngId" class="easyui-validatebox" maxlength="50">
+        </div>
         <div class="fitem">
             <label><font color="red">*</font>劳务公司:</label>
-            <input id="laowuId" name="laowuId" class="easyui-validatebox" required="true" maxlength="50">
+            <input type="hidden" id="laowuId" name="laowuId">
+            <input type="text" id="laowuName" name="laowuName" readonly="readonly">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="showLaowuDialog(1)">选择劳务公司</a>
         </div>
     </form>
 </div>
@@ -207,13 +268,13 @@
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
-<div id="updatedlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
+<div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
         <input type="hidden" id="channelId" name="channelId"/>
 
         <div class="fitem">
-            <label><font color="red">*</font>仓库名称:</label>
+            <label><font color="red">*</font>渠道名称:</label>
             <input type="text" name="channelName" class="easyui-validatebox" required="true"
                     >
         </div>
@@ -226,6 +287,33 @@
             <input type="text" name="password" class="easyui-validatebox"
                    required="true">
         </div>
+        <div class="fitem" style="margin-left:25px">
+            <label><font color="red">*</font>地址:</label>
+            <input type="text" name="address" class="easyui-validatebox"
+                   required="true">
+        </div>
+        <div class="fitem" style="margin-left:25px">
+            <label><font color="red">*</font>联系人:</label>
+            <input type="text" name="contact" class="easyui-validatebox"
+                   required="true">
+        </div>
+        <div class="fitem" style="margin-left:25px">
+            <label><font color="red">*</font>联系方式:</label>
+            <input type="text" name="phone" class="easyui-validatebox"
+                   required="true">
+        </div>
+        <div class="fitem" style="margin-left:25px">
+            <label><font color="red">*</font>负责人:</label>
+            <input type="text" name="mngId" class="easyui-validatebox"
+                   required="true">
+        </div>
+        <div class="fitem" style="margin-left:25px">
+            <label><font color="red">*</font>劳务公司:</label>
+            <input type="hidden" name="laowuId" id="upLaowuId">
+            <input type="text" name="laowuName" id="upLaowuName" readonly="readonly">
+            <a href="javascript:void(0)" class="easyui-linkbutton"
+               onclick="javascript:showLaowuDialog(2,$('#upLaowuId').val())">选择劳务公司</a>
+        </div>
     </form>
 </div>
 <div id="update-buttons" style="text-align: center;">
@@ -233,5 +321,30 @@
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
 </div>
+
+<div id="laowudlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     buttons="#laowudlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="searchLaowuValue" id="searchLaowuValue" placeholder="劳务名称"/>
+                    </td>
+                    <td align="center">
+                        <a id="searchLaowubtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
+                           onclick="searchLaowuEvt()">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="laowudg"></div>
+</div>
+<div id="laowudlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#laowudlg').dialog('close')">取消</a>
+</div>
+
 </body>
 </html>

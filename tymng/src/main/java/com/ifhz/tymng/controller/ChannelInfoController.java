@@ -57,16 +57,27 @@ public class ChannelInfoController extends BaseController {
         //查询条件
         String groupId = request.getParameter("groupId");
         String parentIdStr = request.getParameter("parentIdCondition");
-        Long parentId = JcywConstants.CHANNEL_ROOT_PARENT_ID;
+        Long parentId = null;
+        JSONArray result = new JSONArray();
         if (!StringUtils.isEmpty(parentIdStr)) {
             parentId = Long.parseLong(parentIdStr);
+        } else {//返回根节点
+            JSONObject jo = new JSONObject();
+            jo.put("id", JcywConstants.CHANNEL_ROOT_PARENT_ID);
+            if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
+                jo.put("text", "地包渠道");
+            } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
+                jo.put("text", "其他渠道");
+            }
+            jo.put("state", "closed");
+            result.add(jo);
+            return result;
         }
         ChannelInfo ci = new ChannelInfo();
         ci.setActive(JcywConstants.ACTIVE_Y);
         ci.setGroupId(Long.parseLong(groupId));
         ci.setParentId(parentId);
         List<ChannelInfo> list = channelInfoService.queryByVo(null, ci);
-        JSONArray result = new JSONArray();
         if (list != null && list.size() > 0) {
             for (ChannelInfo channelInfo : list) {
                 JSONObject jo = new JSONObject();
@@ -125,10 +136,13 @@ public class ChannelInfoController extends BaseController {
             errorMsg = "系统错误，请联系管理员！";
         } else if (StringUtils.isEmpty(channelName) || channelName.length() > 50) {
             errorMsg = "请正确输入名称！";
-        } else if (StringUtils.isEmpty(username) || username.length() > 50) {
-            errorMsg = "请正确输入用户名！";
-        } else if (StringUtils.isEmpty(password) || password.length() > 50) {
-            errorMsg = "请正确输入用户密码！";
+        }
+        if (!JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {//其他渠道不需要验证用户名和密码
+            if (StringUtils.isEmpty(username) || username.length() > 50) {
+                errorMsg = "请正确输入用户名！";
+            } else if (StringUtils.isEmpty(password) || password.length() > 50) {
+                errorMsg = "请正确输入用户密码！";
+            }
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -155,13 +169,24 @@ public class ChannelInfoController extends BaseController {
                 channelInfoService.update(parentChannelInfo);
             }
         }
+        String laowuId = request.getParameter("laowuId");
+        if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
+            ci.setLaowuId(Long.parseLong(laowuId));
+        }
         String queryImeiSource = request.getParameter("queryImeiSource");
         if (!StringUtils.isEmpty(queryImeiSource)) {
             ci.setQueryImeiSource(queryImeiSource);
         }
+        //TODO 添加负责人id
         //TODO 添加用户账号密码
         if (JcywConstants.CHANNEL_GROUP_LW_ID_4.equals(groupId)) {
             ci.setType(JcywConstants.CHANNEL_TYPE_L);
+        } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(groupId)) {
+            if (JcywConstants.CHANNEL_ROOT_PARENT_ID == ci.getParentId()) {
+                ci.setType(JcywConstants.CHANNEL_TYPE_M);//主渠道
+            } else {
+                ci.setType(JcywConstants.CHANNEL_TYPE_C);//主渠道
+            }
         } else {
             ci.setType(JcywConstants.CHANNEL_TYPE_O);
         }
@@ -181,10 +206,13 @@ public class ChannelInfoController extends BaseController {
         if (StringUtils.isEmpty(channelId)) {
             errorMsg = "系统错误，请联系管理员！";
         } else if (StringUtils.isEmpty(channelName) || channelName.length() > 50) {
-            errorMsg = "请正确输入仓库名称！";
-        } else if (StringUtils.isEmpty(password) || password.length() > 50) {
-            errorMsg = "请正确输入用户密码！";
+            errorMsg = "请正确输入渠道名称！";
         }
+        /*if(!JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {//其他渠道不需要验证用户名和密码
+            if (StringUtils.isEmpty(password) || password.length() > 50) {
+                errorMsg = "请正确输入用户密码！";
+            }
+        }*/
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
             result.put("errorMsg", errorMsg);
@@ -213,6 +241,14 @@ public class ChannelInfoController extends BaseController {
             if (!StringUtils.isEmpty(queryImeiSource)) {
                 ci.setQueryImeiSource(queryImeiSource);
             }
+            String laowuId = request.getParameter("laowuId");
+            if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
+                ci.setLaowuId(Long.parseLong(laowuId));
+            }
+            String mngId = request.getParameter("mngId");
+            if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
+                ci.setMngId(Long.parseLong(mngId));
+            }
             channelInfoService.update(ci);
             //TODO 修改用户账号密码
             result.put("msg", "修改成功!");
@@ -237,6 +273,22 @@ public class ChannelInfoController extends BaseController {
         if (ci == null) {
             result.put("errorMsg", "数据已被其他人操作，请刷新!");
         } else {
+            //查看是否需要更新父节点leaf状态
+            Long parentId = ci.getParentId();
+            if (JcywConstants.CHANNEL_ROOT_PARENT_ID != parentId) {
+                ChannelInfo ciCondition = new ChannelInfo();
+                ciCondition.setParentId(parentId);
+                ciCondition.setActive(JcywConstants.ACTIVE_Y);
+                Pagination page = new Pagination();
+                page.setCurrentPage(1);
+                page.setPageSize(1);
+                List<ChannelInfo> list = channelInfoService.queryByVo(page, ciCondition);
+                if (list != null || list.size() <= 0) {
+                    ChannelInfo parentCi = channelInfoService.getById(parentId);
+                    parentCi.setLeaf(JcywConstants.BASE_CONSTANT_Y);
+                    channelInfoService.update(parentCi);
+                }
+            }
             channelInfoService.delete(ci);
             result.put("msg", "删除成功!");
         }

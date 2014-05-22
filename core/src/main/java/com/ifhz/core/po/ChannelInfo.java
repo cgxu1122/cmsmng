@@ -24,8 +24,12 @@ public class ChannelInfo {
 
     private String channelNameCondition;
     private String groupName;
+    private String laowuName;
     private String username;
     private String password;
+    private String address;
+    private String contact;
+    private String phone;
 
     public Long getChannelId() {
         return channelId;
@@ -169,5 +173,37 @@ public class ChannelInfo {
 
     public void setChannelNameCondition(String channelNameCondition) {
         this.channelNameCondition = channelNameCondition;
+    }
+
+    public String getLaowuName() {
+        return laowuName;
+    }
+
+    public void setLaowuName(String laowuName) {
+        this.laowuName = laowuName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

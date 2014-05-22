@@ -21,6 +21,7 @@
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
 
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="LAOWU_NAME" property="laowuName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ChannelInfoResultMap">
@@ -85,10 +86,11 @@
         where CHANNEL_ID = #{channelId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.ChannelInfo" resultMap="ChannelInfoResultMap">
-        select ci.*,cg.GROUP_NAME from
+        select ci.*,cg.GROUP_NAME,ci2.CHANNEL_NAME as LAOWU_NAME from
         <include refid="TABLE_NAME"/>
         ci
-        JOIN TY_CHANNEL_GROUP cg on ci.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg on ci.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_CHANNEL_INFO ci2 on ci.LAOWU_ID = ci2.CHANNEL_ID
         where 1=1
         <if test="record.parentId != null and record.parentId != ''">
             and ci.PARENT_ID = #{record.parentId}
