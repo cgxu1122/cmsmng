@@ -42,31 +42,47 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     @Override
     public void save(CounterUploadLog po) {
         if (po != null) {
-            //脏数据进入脏数据表
-            if (StringUtils.isBlank(po.getChannelId()) || StringUtils.isBlank(po.getProcessTime()) || StringUtils.isBlank(po.getBatchCode())) {
-                if (StringUtils.isNotBlank(po.getImei())) {//必须有imei
-                    CounterFailLog failLog = translate(po);
-                    counterFailLogService.insert(failLog);
+            if (StringUtils.isNotBlank(po.getImei())) {
+                CounterUploadLog uploadLog = counterUploadLogService.queryHasImei(po.getImei());
+                CounterFailLog counterFailLog = null;
+                if (uploadLog == null) {
+                    counterFailLog = counterFailLogService.queryByImei(po.getImei());
                 }
-            }
-            // 通过渠道id 获取渠道组id
-            ChannelInfo channelInfo = channelInfoService.getById(Long.parseLong(po.getChannelId()));
-            if (channelInfo != null) {
-                String modelName = "未知";
-                Long groupId = channelInfo.getGroupId();
-                String usTemp = StringUtils.replace(po.getUa(), " +", " ");
-                po.setUa(StringUtils.replace(usTemp, " ", "_"));
-                if (StringUtils.isNotBlank(po.getUa())) {
-                    ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, po.getUa());
-                    modelName = modelInfo.getModelName();
+                if (uploadLog != null || counterFailLog != null) {
+                    LOGGER.info("imei={} is exists!", po.getImei());
+                    return;
                 }
-                po.setGroupId(groupId);
-                po.setModelName(modelName);
+                //脏数据进入脏数据表
+                if (StringUtils.isBlank(po.getChannelId()) || StringUtils.isBlank(po.getProcessTime()) || StringUtils.isBlank(po.getBatchCode())) {
+                    if (StringUtils.isNotBlank(po.getImei())) {//必须有imei
+                        CounterFailLog failLog = translate(po);
+                        counterFailLogService.insert(failLog);
+                    } else {
+                        LOGGER.info("{} 不完整无法保存", po);
+                    }
+                }
+                // 通过渠道id 获取渠道组id
+                ChannelInfo channelInfo = channelInfoService.getById(Long.parseLong(po.getChannelId()));
+                if (channelInfo != null) {
+                    String modelName = "未知";
+                    Long groupId = channelInfo.getGroupId();
+                    String usTemp = StringUtils.replace(po.getUa(), " +", " ");
+                    po.setUa(StringUtils.replace(usTemp, " ", "_"));
+                    if (StringUtils.isNotBlank(po.getUa())) {
+                        ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, po.getUa());
+                        modelName = modelInfo.getModelName();
+                    }
+                    po.setGroupId(groupId);
+                    po.setModelName(modelName);
 
-                counterUploadLogService.insert(po);
+                    counterUploadLogService.insert(po);
+                } else {
+                    LOGGER.error("渠道id[{}]--不在系统范围内", po.getChannelId());
+                }
             } else {
-                LOGGER.error("渠道id[{}]--不在系统范围内", po.getChannelId());
+
             }
+
         }
     }
 

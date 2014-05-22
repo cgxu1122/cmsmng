@@ -18,6 +18,8 @@ public interface CounterFailLogMapper {
 
     public void delete(Long failId);
 
+    public CounterFailLog queryByImei(@Param("imei") String imei);
+
 
     public long queryTotalCount(@Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);

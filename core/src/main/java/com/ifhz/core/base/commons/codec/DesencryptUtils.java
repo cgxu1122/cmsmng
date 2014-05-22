@@ -53,6 +53,16 @@ public final class DesencryptUtils {
         throw new Exception("file must be exists and must be file");
     }
 
+    public static void main(String[] args) throws Exception {
+        String fileName = "D:\\instantclient-basic-win32-10.2.0.5.zip";
+        String fileName2 = "D:\\instantclient-basic-win32-10.2.0.5 - 副本.zip";
+
+        System.out.println(md5File(new File(fileName)));
+        System.out.println(md5File(new File(fileName2)));
+
+
+    }
+
     private DesencryptUtils() {
     }
 }

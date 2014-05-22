@@ -17,5 +17,7 @@ public interface CounterFailLogAdapter {
 
     public long queryTotalCount(Date startTime, Date endTime);
 
+    public CounterFailLog queryByImei(String imei);
+
     public List<CounterFailLog> queryPage(int pageSize, int pageNum, Date startTime, Date endTime);
 }

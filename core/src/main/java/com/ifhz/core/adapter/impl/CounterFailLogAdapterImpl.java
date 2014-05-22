@@ -32,6 +32,11 @@ public class CounterFailLogAdapterImpl implements CounterFailLogAdapter {
     }
 
     @Override
+    public CounterFailLog queryByImei(String imei) {
+        return counterFailLogMapper.queryByImei(imei);
+    }
+
+    @Override
     public List<CounterFailLog> queryPage(int pageSize, int pageNum, Date startTime, Date endTime) {
         return null;
     }

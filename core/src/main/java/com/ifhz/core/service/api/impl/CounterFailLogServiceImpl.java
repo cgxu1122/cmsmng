@@ -30,6 +30,11 @@ public class CounterFailLogServiceImpl implements CounterFailLogService {
     }
 
     @Override
+    public CounterFailLog queryByImei(String imei) {
+        return counterFailLogAdapter.queryByImei(imei);
+    }
+
+    @Override
     public long queryTotalCount(Date startTime, Date endTime) {
         return 0;
     }

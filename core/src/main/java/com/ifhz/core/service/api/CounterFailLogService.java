@@ -15,6 +15,8 @@ public interface CounterFailLogService {
 
     public void insert(CounterFailLog po);
 
+    public CounterFailLog queryByImei(String imei);
+
     public long queryTotalCount(Date startTime, Date endTime);
 
     public List<CounterFailLog> queryPage(int pageSize, int pageNum, Date startTime, Date endTime);
