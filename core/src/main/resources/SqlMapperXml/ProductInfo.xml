@@ -12,6 +12,8 @@
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+
+        <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ProductInfoResultMap">
@@ -55,20 +57,25 @@
         where PRODUCT_ID = #{productId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.ProductInfo" resultMap="ProductInfoResultMap">
-        select * from
+        select pi.*,pi2.PARTNER_NAME from
         <include refid="TABLE_NAME"/>
+        pi
+        LEFT OUTER JOIN TY_PARTNER_INFO pi2 ON pi.PARTNER_ID = pi2.PARTNER_ID
         where 1=1
         <if test="record.productName != null and record.productName != ''">
-            and PRODUCT_NAME = #{record.productName}
+            and pi.PRODUCT_NAME = #{record.productName}
+        </if>
+        <if test="record.productNameCondition != null and record.productNameCondition != ''">
+            and pi.PRODUCT_NAME LIKE concat(concat('%', #{record.productNameCondition}),'%' )
         </if>
         <if test="record.partnerId != null and record.partnerId != ''">
-            and PARTNER_ID = #{record.partnerId}
+            and pi.PARTNER_ID = #{record.partnerId}
         </if>
         <if test="record.queryDataSource != null and record.queryDataSource != ''">
-            and QUERY_DATA_SOURCE = #{record.queryDataSource}
+            and pi.QUERY_DATA_SOURCE = #{record.queryDataSource}
         </if>
         <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
+            and pi.ACTIVE = #{record.active}
         </if>
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.ProductInfo">

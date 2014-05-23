@@ -15,6 +15,25 @@ public class ProductInfo {
     private Date createTime;
     private Date updateTime;
 
+    private String productNameCondition;
+    private String partnerName;
+
+    public String getPartnerName() {
+        return partnerName;
+    }
+
+    public void setPartnerName(String partnerName) {
+        this.partnerName = partnerName;
+    }
+
+    public String getProductNameCondition() {
+        return productNameCondition;
+    }
+
+    public void setProductNameCondition(String productNameCondition) {
+        this.productNameCondition = productNameCondition;
+    }
+
     public Long getProductId() {
         return productId;
     }

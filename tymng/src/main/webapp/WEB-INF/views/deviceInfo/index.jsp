@@ -187,7 +187,6 @@
                 $("#channelName").val(channelName);
             }
             $('#channeldlg').dialog('close');
-
         }
 
     </script>
