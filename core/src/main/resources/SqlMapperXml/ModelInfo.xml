@@ -79,7 +79,7 @@
         select mi.*,cg.GROUP_NAME from
         <include refid="TABLE_NAME"/>
         mi
-        JOIN TY_CHANNEL_GROUP cg on mi.GROUP_ID = cg.GROUP_ID
+        LEFT_OUTER JOIN TY_CHANNEL_GROUP cg on mi.GROUP_ID = cg.GROUP_ID
         where 1=1
         <if test="record.ua != null and record.ua != ''">
             and mi.UA = #{record.ua}
@@ -102,6 +102,7 @@
         <if test="record.modelNameCondition != null and record.modelNameCondition != ''">
             and mi.MODEL_NAME LIKE concat(concat('%',#{record.modelNameCondition}),'%' )
         </if>
+        ORDER by mi.MODEL_ID DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.ModelInfo">
         delete from

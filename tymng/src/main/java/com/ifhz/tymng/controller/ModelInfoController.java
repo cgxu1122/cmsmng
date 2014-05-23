@@ -88,11 +88,11 @@ public class ModelInfoController extends BaseController {
             return result;
         }
         //机型名称唯一性校验
-        ModelInfo ci = new ModelInfo();
-        ci.setModelName(modelName.trim());
-        ci.setGroupId(Long.parseLong(groupId));
-        ci.setActive(JcywConstants.ACTIVE_Y);
-        List<ModelInfo> list = modelInfoService.queryByVo(null, ci);
+        ModelInfo mi = new ModelInfo();
+        mi.setModelName(modelName.trim());
+        mi.setGroupId(Long.parseLong(groupId));
+        mi.setActive(JcywConstants.ACTIVE_Y);
+        List<ModelInfo> list = modelInfoService.queryByVo(null, mi);
         if (list != null && list.size() > 0) {
             errorMsg = "机型全名重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -100,20 +100,20 @@ public class ModelInfoController extends BaseController {
         }
         //机型UA唯一性校验
         ua = ua.trim().replaceAll("\\s+", "_");
-        ci = new ModelInfo();
-        ci.setUa(ua);
-        ci.setGroupId(Long.parseLong(groupId));
-        ci.setActive(JcywConstants.ACTIVE_Y);
-        list = modelInfoService.queryByVo(null, ci);
+        mi = new ModelInfo();
+        mi.setUa(ua);
+        mi.setGroupId(Long.parseLong(groupId));
+        mi.setActive(JcywConstants.ACTIVE_Y);
+        list = modelInfoService.queryByVo(null, mi);
         if (list != null && list.size() > 0) {
             errorMsg = "UA重复，请重新输入！";
             result.put("errorMsg", errorMsg);
             return result;
         }
-        ci.setModelName(modelName);
-        ci.setTagNum(Integer.parseInt(tagNum));
-        ci.setTagPrice(Double.parseDouble(tagPrice));
-        modelInfoService.insert(ci);
+        mi.setModelName(modelName);
+        mi.setTagNum(Integer.parseInt(tagNum));
+        mi.setTagPrice(Double.parseDouble(tagPrice));
+        modelInfoService.insert(mi);
         result.put("msg", "添加成功!");
         return result;
     }

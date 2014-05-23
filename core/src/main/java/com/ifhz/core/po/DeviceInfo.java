@@ -15,6 +15,34 @@ public class DeviceInfo {
     private Date createTime;
     private Date updateTime;
 
+    private String deviceCodeCondition;
+    private String groupName;
+    private String channelName;
+
+    public String getDeviceCodeCondition() {
+        return deviceCodeCondition;
+    }
+
+    public void setDeviceCodeCondition(String deviceCodeCondition) {
+        this.deviceCodeCondition = deviceCodeCondition;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
     public Long getDeviceId() {
         return deviceId;
     }

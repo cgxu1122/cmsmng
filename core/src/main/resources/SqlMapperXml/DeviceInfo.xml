@@ -12,6 +12,9 @@
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="DeviceInfoResultMap">
@@ -55,21 +58,28 @@
         where DEVICE_ID = #{deviceId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.DeviceInfo" resultMap="DeviceInfoResultMap">
-        select * from
+        select di.*,cg.GROUP_NAME,ci.CHANNEL_NAME from
         <include refid="TABLE_NAME"/>
+        di
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg on di.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_CHANNEL_INFO ci on di.CHANNEL_ID = ci.CHANNEL_ID
         where 1=1
         <if test="record.deviceCode != null and record.deviceCode != ''">
-            and DEVICE_CODE = #{record.deviceCode}
+            and di.DEVICE_CODE = #{record.deviceCode}
         </if>
         <if test="record.groupId != null and record.groupId != ''">
-            and GROUP_ID = #{record.groupId}
+            and di.GROUP_ID = #{record.groupId}
         </if>
         <if test="record.channelId != null and record.channelId != ''">
-            and CHANNEL_ID = #{record.channelId}
+            and di.CHANNEL_ID = #{record.channelId}
         </if>
         <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
+            and di.ACTIVE = #{record.active}
         </if>
+        <if test="record.deviceCodeCondition != null and record.deviceCodeCondition != ''">
+            and di.DEVICE_CODE LIKE concat(concat('%',#{record.deviceCodeCondition},'%' ))
+        </if>
+        ORDER by di.DEVICE_ID DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.DeviceInfo">
         delete from

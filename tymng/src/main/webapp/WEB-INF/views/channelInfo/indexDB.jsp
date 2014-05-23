@@ -181,7 +181,6 @@
                 $("#laowuName").val(laowuName);
             }
             $('#laowudlg').dialog('close');
-
         }
     </script>
 </head>

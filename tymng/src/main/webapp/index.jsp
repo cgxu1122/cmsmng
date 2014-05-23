@@ -155,6 +155,14 @@
                 </a>
             </div>
         </div>
+        <div title="工装管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('工装管理','<%=basePath%>/deviceInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>工装管理</span>
+                </a>
+            </div>
+        </div>
         <div title="样例" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统账户管理','<%=basePath%>/demo/index','menu_icon_datadeal')">
