@@ -16,6 +16,16 @@ public class PartnerInfo {
     private Date createTime;
     private Date updateTime;
 
+    private String partnerNameCondition;
+
+    public String getPartnerNameCondition() {
+        return partnerNameCondition;
+    }
+
+    public void setPartnerNameCondition(String partnerNameCondition) {
+        this.partnerNameCondition = partnerNameCondition;
+    }
+
     public Long getPartnerId() {
         return partnerId;
     }

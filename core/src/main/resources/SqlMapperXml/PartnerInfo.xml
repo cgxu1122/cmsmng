@@ -30,7 +30,7 @@
         <![CDATA[
         ( PARTNER_ID,PARTNER_NAME,USER_ID,QUERY_IMEI_SOURCE,EXPORT_IMEI_SOURCE)
         values
-        ("SEQ_PARTNER_INFO".nextval,#{partnerName},#{userId},#{queryImeiSource},#{exportImeiSource})
+        ("SEQ_PARTNER_INFO".nextval,#{partnerName},#{userId,jdbcType=BIGINT},#{queryImeiSource},#{exportImeiSource})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.PartnerInfo">
@@ -64,6 +64,9 @@
         where 1=1
         <if test="record.partnerName != null and record.partnerName != ''">
             and PARTNER_NAME = #{record.partnerName}
+        </if>
+        <if test="record.partnerNameCondition != null and record.partnerNameCondition != ''">
+            and PARTNER_NAME LIKE concat(concat('%', #{record.partnerNameCondition}),'%' )
         </if>
         <if test="record.userId != null and record.userId != ''">
             and USER_ID = #{record.userId}

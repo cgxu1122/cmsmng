@@ -191,7 +191,6 @@ public class ChannelInfoController extends BaseController {
             ci.setType(JcywConstants.CHANNEL_TYPE_O);
         }
         channelInfoService.insert(ci);
-        //TODO 更新用户id
         result.put("msg", "添加成功!");
         return result;
     }
@@ -218,12 +217,16 @@ public class ChannelInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
+        ChannelInfo ci = channelInfoService.getById(Long.parseLong(channelId));
+        if (ci == null) {
+            result.put("errorMsg", "数据已被删除，请刷新!");
+            return result;
+        }
         //仓库名称唯一性校验
-        ChannelInfo ci = new ChannelInfo();
-        ci.setChannelName(channelName.trim());
-        ci.setActive(JcywConstants.ACTIVE_Y);
-        List<ChannelInfo> list = channelInfoService.queryByVo(null, ci);
-        ci = channelInfoService.getById(Long.parseLong(channelId));
+        ChannelInfo ciCondition = new ChannelInfo();
+        ciCondition.setChannelName(channelName.trim());
+        ciCondition.setActive(JcywConstants.ACTIVE_Y);
+        List<ChannelInfo> list = channelInfoService.queryByVo(null, ciCondition);
         if (list != null && list.size() > 0) {
             for (ChannelInfo repeatNameCi : list) {
                 if (repeatNameCi.getChannelId() != ci.getChannelId()) {
@@ -232,27 +235,22 @@ public class ChannelInfoController extends BaseController {
                 }
             }
         }
-        ci = channelInfoService.getById(Long.parseLong(channelId));
-        if (ci == null) {
-            result.put("errorMsg", "数据已被删除，请刷新!");
-        } else {
-            ci.setChannelName(channelName.trim());
-            String queryImeiSource = request.getParameter("queryImeiSource");
-            if (!StringUtils.isEmpty(queryImeiSource)) {
-                ci.setQueryImeiSource(queryImeiSource);
-            }
-            String laowuId = request.getParameter("laowuId");
-            if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
-                ci.setLaowuId(Long.parseLong(laowuId));
-            }
-            String mngId = request.getParameter("mngId");
-            if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
-                ci.setMngId(Long.parseLong(mngId));
-            }
-            channelInfoService.update(ci);
-            //TODO 修改用户账号密码
-            result.put("msg", "修改成功!");
+        ci.setChannelName(channelName.trim());
+        String queryImeiSource = request.getParameter("queryImeiSource");
+        if (!StringUtils.isEmpty(queryImeiSource)) {
+            ci.setQueryImeiSource(queryImeiSource);
         }
+        String laowuId = request.getParameter("laowuId");
+        if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
+            ci.setLaowuId(Long.parseLong(laowuId));
+        }
+        String mngId = request.getParameter("mngId");
+        if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
+            ci.setMngId(Long.parseLong(mngId));
+        }
+        channelInfoService.update(ci);
+        //TODO 修改用户账号密码
+        result.put("msg", "修改成功!");
         return result;
     }
 

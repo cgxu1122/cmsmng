@@ -163,6 +163,14 @@
                 </a>
             </div>
         </div>
+        <div title="合作方管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('合作方管理','<%=basePath%>/partnerInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>合作方管理</span>
+                </a>
+            </div>
+        </div>
         <div title="样例" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统账户管理','<%=basePath%>/demo/index','menu_icon_datadeal')">

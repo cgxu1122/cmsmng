@@ -84,7 +84,6 @@ public class DeviceInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
-        di.setDeviceCode(deviceCode.trim());
         di.setChannelId(Long.parseLong(channelId));
         di.setGroupId(Long.parseLong(groupId));
         deviceInfoService.insert(di);
@@ -133,7 +132,7 @@ public class DeviceInfoController extends BaseController {
                 }
             }
         }
-        deviceInfo.setDeviceCode(deviceCode);
+        deviceInfo.setDeviceCode(deviceCode.trim());
         deviceInfo.setGroupId(Long.parseLong(groupId));
         deviceInfo.setChannelId(Long.parseLong(channelId));
         deviceInfoService.update(deviceInfo);

@@ -178,7 +178,7 @@ public class ModelInfoController extends BaseController {
                 }
             }
         }
-        modelInfo.setModelName(modelName);
+        modelInfo.setModelName(modelName.trim());
         modelInfo.setUa(ua);
         modelInfo.setTagPrice(Double.parseDouble(tagPrice));
         modelInfo.setTagNum(Integer.parseInt(tagNum));
