@@ -90,16 +90,14 @@
             }
         }
     </script>
-    <title>金库管理系统</title>
+    <title>内置业务管理系统</title>
 </head>
 <body class="easyui-layout">
 <div region="north" class="iheader">
     <div class="iheadercont">
-        <div class="iheadertit">金库管理系统</div>
+        <div class="iheadertit">内置业务管理系统</div>
         <div class="iheadermsg">
-            <!--
             <span class="iheadername">欢迎：</span>
-            -->
             <a class="iheaderout" style="" href="<%=basePath%>/logout">退出</a>
         </div>
     </div>
@@ -109,7 +107,7 @@
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
     <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
-        <div title="渠道管理" style="overflow: auto;">
+        <div title="渠道管理" selected="true" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道','<%=basePath%>/channelInfo/index?groupId=1','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
@@ -179,17 +177,28 @@
                 </a>
             </div>
         </div>
-        <div title="样例" style="overflow: auto;">
+        <div title="批次管理" style="overflow: auto;">
             <div class="nav-item">
-                <a href="javascript:addTab('系统账户管理','<%=basePath%>/demo/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('天音渠道批次','<%=basePath%>/batchInfo/index?groupId=1','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
-                    <span>样例</span>
+                    <span>天音渠道批次</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道批次','<%=basePath%>/batchInfo/index?groupId=2','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道批次</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道批次','<%=basePath%>/batchInfo/index?groupId=3','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道批次</span>
                 </a>
             </div>
         </div>
 
-
-        <div title="系统用户管理" selected="true" style="overflow: auto;">
+        <div title="系统用户管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统用户管理','<%=basePath%>/staff/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
@@ -211,7 +220,7 @@
             <img src=""></img>
 
             <div style="margin-top: 20px;">
-                <h1>金库管理系统</h1>
+                <h1>内置业务管理系统</h1>
             </div>
         </div>
     </div>

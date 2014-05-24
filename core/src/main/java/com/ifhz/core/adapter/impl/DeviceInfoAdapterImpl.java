@@ -36,6 +36,7 @@ public class DeviceInfoAdapterImpl implements DeviceInfoAdapter {
 
     @Override
     public int insert(DeviceInfo record) {
+        record.setCreateTime(new Date());
         return deviceInfoMapper.insert(record);
     }
 

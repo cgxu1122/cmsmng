@@ -8,11 +8,28 @@
         <id column="BATCH_ID" property="batchId" jdbcType="BIGINT"/>
         <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="START_TIME" property="startTime" jdbcType="DATE"/>
+        <result column="BATCH_PRODUCT_NAME" property="batchProductName" jdbcType="VARCHAR"/>
+        <result column="BATCH_PRODUCT_NUM" property="batchProductNum" jdbcType="INTEGER"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
+        <collection property="productInfoList" column="BATCH_ID" javaType="ArrayList"
+                    ofType="com.ifhz.core.po.ProductInfo"
+                    select="com.ifhz.core.mapper.ProductInfoMapper.queryByBatchId"/>
     </resultMap>
-
+    <select id="getSeqByGroupId" parameterType="long" resultType="long">
+        <if test="_parameter==1">
+            SELECT SEQ_BATCH_INFO_TY.NEXTVAL FROM DUAL
+        </if>
+        <if test="_parameter==2">
+            SELECT SEQ_BATCH_INFO_DB.NEXTVAL FROM DUAL
+        </if>
+        <if test="_parameter==3">
+            SELECT SEQ_BATCH_INFO_QT.NEXTVAL FROM DUAL
+        </if>
+    </select>
     <select id="getById" parameterType="long" resultMap="BatchInfoResultMap">
         select * from
         <include refid="TABLE_NAME"/>
@@ -26,9 +43,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        (BATCH_ID,BATCH_CODE,GROUP_ID)
+        (BATCH_ID,BATCH_CODE,GROUP_ID,START_TIME)
         values
-        (SEQ_BATCH_INFO.NEXTVAL,#{batchCode},#{groupId})
+        (SEQ_BATCH_INFO.NEXTVAL,#{batchCode},#{groupId},#{startTime})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.BatchInfo">
@@ -41,6 +58,15 @@
             <if test="groupId != null">
                 GROUP_ID = #{groupId},
             </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime},
+            </if>
+            <if test="batchProductName != null">
+                BATCH_PRODUCT_NAME = #{batchProductName},
+            </if>
+            <if test="batchProductNum != null">
+                BATCH_PRODUCT_NUM = #{batchProductNum},
+            </if>
             <if test="active != null">
                 ACTIVE = #{active},
             </if>
@@ -51,17 +77,25 @@
         where BATCH_ID = #{batchId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.BatchInfo" resultMap="BatchInfoResultMap">
-        select * from
+        select bi.*,cg.GROUP_NAME from
         <include refid="TABLE_NAME"/>
+        bi
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg ON bi.GROUP_ID=cg.GROUP_ID
         where 1=1
         <if test="record.batchCode != null and record.batchCode != ''">
-            and BATCH_CODE = #{record.batchCode}
+            and bi.BATCH_CODE = #{record.batchCode}
+        </if>
+        <if test="record.batchCodeCondition != null and record.batchCodeCondition != ''">
+            and bi.BATCH_CODE LIKE concat(concat('%',#{record.batchCodeCondition}),'%' )
         </if>
         <if test="record.groupId != null and record.groupId != ''">
-            and GROUP_ID = #{record.groupId}
+            and bi.GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.batchProductName != null and record.batchProductName != ''">
+            and bi.BATCH_PRODUCT_NAME LIKE concat(concat('%', #{record.batchProductName}),'%' )
         </if>
         <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
+            and bi.ACTIVE = #{record.active}
         </if>
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.BatchInfo">

@@ -79,7 +79,7 @@
         select mi.*,cg.GROUP_NAME from
         <include refid="TABLE_NAME"/>
         mi
-        LEFT_OUTER JOIN TY_CHANNEL_GROUP cg on mi.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg on mi.GROUP_ID = cg.GROUP_ID
         where 1=1
         <if test="record.ua != null and record.ua != ''">
             and mi.UA = #{record.ua}

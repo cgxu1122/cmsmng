@@ -36,6 +36,7 @@ public class ChannelInfoAdapterImpl implements ChannelInfoAdapter {
 
     @Override
     public int insert(ChannelInfo record) {
+        record.setCreateTime(new Date());
         return channelInfoMapper.insert(record);
     }
 

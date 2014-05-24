@@ -36,6 +36,7 @@ public class PartnerInfoAdapterImpl implements PartnerInfoAdapter {
 
     @Override
     public int insert(PartnerInfo record) {
+        record.setCreateTime(new Date());
         return partnerInfoMapper.insert(record);
     }
 
