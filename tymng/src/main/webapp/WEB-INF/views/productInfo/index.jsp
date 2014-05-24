@@ -40,6 +40,7 @@
             var row = $('#dg').datagrid('getSelected');
             if (row) {
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
+                row.queryStartTime = new Date(row.queryStartTime).formate("yyyy-MM-dd");
                 $('#upfm').form('load', row);
             }
         }
@@ -107,7 +108,12 @@
                                 if (value == "Y")return "有权限";
                                 if (value == "N")return "无权限";
                             }},
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        {field: 'queryStartTime', title: '查看开始时间', align: 'center', width: 150,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd");
+                            }
+                        },
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 150,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
@@ -217,6 +223,10 @@
                 <option value="N">无权限</option>
             </select>
         </div>
+        <div class="fitem">
+            <label><font color="red">*</font>查看开始时间:</label>
+            <input type="text" id="queryStartTime" name="queryStartTime" class="easyui-datebox" readonly="readonly">
+        </div>
     </form>
 </div>
 <div id="dlg-buttons" style="text-align: center;">
@@ -247,6 +257,10 @@
                 <option value="Y">有权限</option>
                 <option value="N">无权限</option>
             </select>
+        </div>
+        <div class="fitem">
+            <label><font color="red">*</font>查看开始时间:</label>
+            <input type="text" id="upQueryStartTime" name="queryStartTime" class="easyui-datebox" readonly="readonly">
         </div>
     </form>
 </div>

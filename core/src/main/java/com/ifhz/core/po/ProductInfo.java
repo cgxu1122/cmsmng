@@ -11,12 +11,21 @@ public class ProductInfo {
     private String productName;
     private Long partnerId;
     private String queryDataSource;
+    private Date queryStartTime;
     private String active;
     private Date createTime;
     private Date updateTime;
 
     private String productNameCondition;
     private String partnerName;
+
+    public Date getQueryStartTime() {
+        return queryStartTime;
+    }
+
+    public void setQueryStartTime(Date queryStartTime) {
+        this.queryStartTime = queryStartTime;
+    }
 
     public String getPartnerName() {
         return partnerName;

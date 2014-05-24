@@ -9,6 +9,7 @@
         <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
         <result column="PARTNER_ID" property="partnerId" jdbcType="BIGINT"/>
         <result column="QUERY_DATA_SOURCE" property="queryDataSource" jdbcType="VARCHAR"/>
+        <result column="QUERY_START_TIME" property="queryStartTime" jdbcType="DATE"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
@@ -29,9 +30,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        ( PRODUCT_ID,PRODUCT_NAME,PARTNER_ID,QUERY_DATA_SOURCE)
+        ( PRODUCT_ID,PRODUCT_NAME,PARTNER_ID,QUERY_DATA_SOURCE,QUERY_START_TIME)
         values
-        ("SEQ_PRODUCT_INFO".nextval,#{productName},#{partnerId},#{queryDataSource})
+        ("SEQ_PRODUCT_INFO".nextval,#{productName},#{partnerId},#{queryDataSource},#{queryStartTime})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.ProductInfo">
@@ -46,6 +47,9 @@
             </if>
             <if test="queryDataSource != null">
                 QUERY_DATA_SOURCE = #{queryDataSource},
+            </if>
+            <if test="queryStartTime != null">
+                QUERY_START_TIME = #{queryStartTime},
             </if>
             <if test="active != null">
                 ACTIVE = #{active},

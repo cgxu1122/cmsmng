@@ -3,7 +3,9 @@ package com.ifhz.tymng.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ProductInfo;
 import com.ifhz.core.service.product.ProductInfoService;
 import org.apache.commons.lang.StringUtils;
@@ -60,7 +62,7 @@ public class ProductInfoController extends BaseController {
         String productName = request.getParameter("productName");
         String partnerId = request.getParameter("partnerId");
         String queryDataSource = request.getParameter("queryDataSource");
-        //String startTime = request.getParameter("startTime");
+        String queryStartTime = request.getParameter("queryStartTime");
         String errorMsg = null;
         if (StringUtils.isEmpty(productName) || productName.length() > 50) {
             errorMsg = "请正确输入产品名称！";
@@ -68,8 +70,8 @@ public class ProductInfoController extends BaseController {
             errorMsg = "请选择合作方！";
         } else if (StringUtils.isEmpty(queryDataSource)) {
             errorMsg = "请选择查看权限！";
-            // } else if (StringUtils.isEmpty(startTime)) {
-            //   errorMsg = "请选择合作方查看开始时间！";
+        } else if (StringUtils.isEmpty(queryStartTime)) {
+            errorMsg = "请选择合作方查看开始时间！";
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -88,6 +90,7 @@ public class ProductInfoController extends BaseController {
         }
         pi.setPartnerId(Long.parseLong(partnerId));
         pi.setQueryDataSource(queryDataSource);
+        pi.setQueryStartTime(DateFormatUtils.parse(queryStartTime, GlobalConstants.DATE_FORMAT_DPT));
         //TODO 添加用户名密码
         productInfoService.insert(pi);
         result.put("msg", "添加成功!");
@@ -101,7 +104,7 @@ public class ProductInfoController extends BaseController {
         String productName = request.getParameter("productName");
         String partnerId = request.getParameter("partnerId");
         String queryDataSource = request.getParameter("queryDataSource");
-        //String startTime = request.getParameter("startTime");
+        String queryStartTime = request.getParameter("queryStartTime");
         String errorMsg = null;
         if (StringUtils.isEmpty(productId)) {
             errorMsg = "系统错误，请联系管理员！";
@@ -111,8 +114,8 @@ public class ProductInfoController extends BaseController {
             errorMsg = "请选择合作方！";
         } else if (StringUtils.isEmpty(queryDataSource)) {
             errorMsg = "请选择查看权限！";
-            // } else if (StringUtils.isEmpty(startTime)) {
-            //   errorMsg = "请选择合作方查看开始时间！";
+        } else if (StringUtils.isEmpty(queryStartTime)) {
+            errorMsg = "请选择合作方查看开始时间！";
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -140,6 +143,7 @@ public class ProductInfoController extends BaseController {
         productInfo.setProductName(productName.trim());
         productInfo.setPartnerId(Long.decode(partnerId));
         productInfo.setQueryDataSource(queryDataSource);
+        productInfo.setQueryStartTime(DateFormatUtils.parse(queryStartTime, GlobalConstants.DATE_FORMAT_DPT));
         productInfoService.update(productInfo);
         result.put("msg", "修改成功!");
         return result;
