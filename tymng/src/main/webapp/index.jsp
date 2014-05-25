@@ -197,6 +197,14 @@
                 </a>
             </div>
         </div>
+        <div title="设备系统管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('设备系统管理','<%=basePath%>/deviceSystem/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>设备系统管理</span>
+                </a>
+            </div>
+        </div>
 
         <div title="系统用户管理" style="overflow: auto;">
             <div class="nav-item">
@@ -217,8 +225,6 @@
 <div region="center">
     <div id="main-center" class="easyui-tabs" fit="true" border="false">
         <div title="首页" data-options="iconCls:'menu_icon_home',closable : true" style="padding: 20px;">
-            <img src=""></img>
-
             <div style="margin-top: 20px;">
                 <h1>内置业务管理系统</h1>
             </div>

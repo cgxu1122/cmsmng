@@ -18,6 +18,13 @@ public final class GlobalConstants {
      * 全局配置
      */
     public static final ImmutableMap<String, String> GLOBAL_CONFIG = MapConfig.pasreConf("global_config.xml");
+    public static final String FTP_SERVER_URL = "ftp.server.url";
+    public static final String FTP_SERVER_PORT = "ftp.server.port";
+    public static final String FTP_SERVER_USERNAME = "ftp.server.username";
+    public static final String FTP_SERVER_PASSWORD = "ftp.server.password";
+    public static final String FTP_SERVER_DEVICEDIR = "ftp.server.deviceDir";
+    public static final String FTP_SERVER_APKDIR = "ftp.server.apkDir";
+
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DEFAULT_DATE_FORMAT_ZH = "yyyy年MM月dd日 HH时mm分ss秒";

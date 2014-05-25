@@ -27,7 +27,7 @@
         <![CDATA[
         ( SYSTEM_ID,VERSION,FTP_PATH,EFFECTIVE_TIME)
         values
-        ("SEQ_DEVICE_SYSTEM".nextval,#{version},#{ftpPath},#{effectiveTime})
+        ("SEQ_DEVICE_SYSTEM".nextval,#{version},#{ftpPath,jdbcType=VARCHAR},#{effectiveTime})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.DeviceSystem">
@@ -52,6 +52,9 @@
         where 1=1
         <if test="record.version != null and record.version != ''">
             and VERSION = #{record.version}
+        </if>
+        <if test="record.versionCondition != null and record.versionCondition != ''">
+            and VERSION = #{record.versionCondition}
         </if>
         <if test="record.ftpPath != null and record.ftpPath != ''">
             and FTP_PATH = #{record.ftpPath}

@@ -13,6 +13,16 @@ public class DeviceSystem {
     private Date createTime;
     private Date effectiveTime;
 
+    private String versionCondition;
+
+    public String getVersionCondition() {
+        return versionCondition;
+    }
+
+    public void setVersionCondition(String versionCondition) {
+        this.versionCondition = versionCondition;
+    }
+
     public Long getSystemId() {
         return systemId;
     }
