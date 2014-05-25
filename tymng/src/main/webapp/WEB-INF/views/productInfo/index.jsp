@@ -168,7 +168,6 @@
                 $("#partnerName").val(partnerName);
             }
             $('#partnerdlg').dialog('close');
-
         }
     </script>
 </head>

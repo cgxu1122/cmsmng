@@ -8,6 +8,8 @@
         <id column="BATCH_ID" property="batchId" jdbcType="BIGINT"/>
         <id column="PRODUCT_ID" property="productId" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+
+        <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.BatchProductRef">
@@ -20,19 +22,25 @@
         ]]>
     </insert>
     <select id="queryByVo" parameterType="com.ifhz.core.po.BatchProductRef" resultMap="BatchProductRefResultMap">
-        select * from
+        select ref.*,pi.PRODUCT_NAME from
         <include refid="TABLE_NAME"/>
+        ref
+        LEFT OUTER JOIN TY_PRODUCT_INFO pi on ref.PRODUCT_ID = pi.PRODUCT_ID
         where 1=1
         <if test="record.batchId != null and record.batchId != ''">
-            and BATCH_ID = #{record.batchId}
+            and ref.BATCH_ID = #{record.batchId}
         </if>
         <if test="record.productId != null and record.productId != ''">
-            and PRODUCT_ID = #{record.productId}
+            and ref.PRODUCT_ID = #{record.productId}
         </if>
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.BatchProductRef">
         delete from
         <include refid="TABLE_NAME"/>
-        where BATCH_ID = #{batchId} and PRODUCT_ID = #{productId}
+        where BATCH_ID = #{batchId}
+        <if test="productId != null and productId != ''">
+            and PRODUCT_ID = #{productId}
+        </if>
+
     </delete>
 </mapper>

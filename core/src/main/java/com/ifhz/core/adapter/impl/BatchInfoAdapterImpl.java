@@ -36,6 +36,7 @@ public class BatchInfoAdapterImpl implements BatchInfoAdapter {
 
     @Override
     public int insert(BatchInfo record) {
+        record.setCreateTime(new Date());
         return batchInfoMapper.insert(record);
     }
 
@@ -50,5 +51,10 @@ public class BatchInfoAdapterImpl implements BatchInfoAdapter {
         record.setActive(JcywConstants.ACTIVE_D);
         record.setUpdateTime(new Date());
         return batchInfoMapper.update(record);
+    }
+
+    @Override
+    public Long getSeqByGroupId(Long groupId) {
+        return batchInfoMapper.getSeqByGroupId(groupId);
     }
 }

@@ -36,6 +36,7 @@ public class ModelInfoAdapterImpl implements ModelInfoAdapter {
 
     @Override
     public int insert(ModelInfo record) {
+        record.setCreateTime(new Date());
         return modelInfoMapper.insert(record);
     }
 

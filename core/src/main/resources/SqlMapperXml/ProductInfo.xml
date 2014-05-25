@@ -17,6 +17,14 @@
         <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="queryByBatchId" parameterType="long" resultMap="ProductInfoResultMap">
+        select pi.* from
+        <include refid="TABLE_NAME"/>
+        pi
+        JOIN TY_BATCH_PRODUCT_REF bpref on pi.PRODUCT_ID = bpref.PRODUCT_ID
+        where bpref.BATCH_ID = #{batchId}
+    </select>
+
     <select id="getById" parameterType="long" resultMap="ProductInfoResultMap">
         select * from
         <include refid="TABLE_NAME"/>

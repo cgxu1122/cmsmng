@@ -11,6 +11,16 @@ public class BatchProductRef {
     private Long productId;
     private Date createTime;
 
+    private String productName;
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public Long getBatchId() {
         return batchId;
     }

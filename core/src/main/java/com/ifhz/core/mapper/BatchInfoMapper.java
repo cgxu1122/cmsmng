@@ -22,4 +22,6 @@ public interface BatchInfoMapper {
     public int update(BatchInfo record);
 
     public int delete(BatchInfo record);
+
+    public Long getSeqByGroupId(Long groupId);
 }

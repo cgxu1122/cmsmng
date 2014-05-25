@@ -36,6 +36,7 @@ public class ProductInfoAdapterImpl implements ProductInfoAdapter {
 
     @Override
     public int insert(ProductInfo record) {
+        record.setCreateTime(new Date());
         return productInfoMapper.insert(record);
     }
 
