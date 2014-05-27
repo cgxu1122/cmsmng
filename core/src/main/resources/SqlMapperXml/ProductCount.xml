@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ifhz.core.mapper.ProductCountMapper">
+    <sql id="TABLE_NAME">TY_PRODUCT_COUNT</sql>
+    <resultMap id="ProductCountResultMap" type="com.ifhz.core.po.ProductCount">
+        <id column="PRODUCT_COUNT_ID" property="id" jdbcType="BIGINT"/>
+        <result column="MODLE_NAME" property="modleName" jdbcType="VARCHAR"/>
+        <result column="UA" property="ua" jdbcType="BIGINT"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="COUNT_TIME" property="countTime" jdbcType="TIMESTAMP"/>
+        <result column="PROCESS_DAY_COUNT" property="processDayCount" jdbcType="BIGINT"/>
+        <result column="ALLCOUNT" property="allCount" jdbcType="BIGINT"/>
+        <result column="ACTIVE_COUNT" property="activeCount" jdbcType="BIGINT"/>
+        <result column="NONACTIVE_COUNT" property="nonActiveCount" jdbcType="BIGINT"/>
+        <result column="NONACTIVE_UNINSTALL_COUNT" property="nonActiveUninstallCount" jdbcType="BIGINT"/>
+        <result column="NONACTIVE_REPLACE_COUNT" property="nonActiveReplaceCount" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="ProductCountResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where PRODUCT_COUNT_ID = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.ProductCount">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT SEQ_TY_PRODUCT_COUNT.CURRVAL AS id from dual
+        </selectKey>
+        insert into TY_PRODUCT_COUNT (PRODUCT_COUNT_ID, MODLE_NAME,UA,GROUP_ID,COUNT_TIME,PRODUCT_ID,
+        PROCESS_DAY_COUNT,ALLCOUNT,ACTIVE_COUNT,NONACTIVE_COUNT,NONACTIVE_UNINSTALL_COUNT,NONACTIVE_REPLACE_COUNT)
+        values (SEQ_TY_PRODUCT_COUNT.NEXTVAL, #{modleName},#{ua},#{groupId}, #{countTime},#{productId},
+        #{processDayCount},
+        #{allCount},#{activeCount},#{nonActiveCount},#{nonActiveUninstallCount},#{nonActiveReplaceCount}
+        )
+    </insert>
+
+</mapper>
