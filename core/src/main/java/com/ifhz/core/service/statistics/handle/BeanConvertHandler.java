@@ -3,8 +3,10 @@ package com.ifhz.core.service.statistics.handle;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.po.CounterUploadLog;
 import com.ifhz.core.po.DeviceProcessLog;
+import com.ifhz.core.po.LogCount;
 import com.ifhz.core.service.statistics.bean.CounterUploadBean;
 import com.ifhz.core.service.statistics.bean.DeviceProcessBean;
 import com.ifhz.core.service.statistics.constants.CounterActive;
@@ -27,10 +29,81 @@ public final class BeanConvertHandler {
         bean.setGroupId(log.getGroupId());
         bean.setDeviceCode(log.getDeviceCode());
         bean.setBatchCode(log.getBatchCode());
-        bean.setProcessTime(new Date(Long.parseLong(log.getProcessTime())));
+        //bean.setProcessTime(new Date(Long.parseLong(log.getProcessTime())));
+        bean.setProcessTime(DateFormatUtils.convertYYYYMMDD(log.getProcessTime()));
         bean.setCreateTime(log.getCreateTime());
 
         return bean;
+    }
+
+    /*
+    将流水对象传化成统计信息对象
+    countTimeType 统计时间类型。“processTime”表示按加工时间，“createTime”表示按上传时间
+    * */
+    public static LogCount instDeviceLogCount(DeviceProcessLog m, String countTimeType, String key) {
+        LogCount dlc = new LogCount();
+        dlc.setModleName(m.getModelName());
+        dlc.setChannelId(Long.parseLong(m.getChannelId()));
+        dlc.setDeviceCode(m.getDeviceCode());
+        dlc.setGroupId(m.getGroupId());
+        //假如设备是地包渠道，查询该渠道是否有劳务公司
+        if (m.getGroupId() == 2) {
+            //待做
+        }
+        dlc.setBatchCode(m.getBatchCode());
+        if ("processTime".equals(countTimeType))
+            dlc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
+        else {
+            Date d = m.getCreateTime();
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            dlc.setCountTime(d);
+        }
+        dlc.setProcessKey(key);
+        dlc.setProcessDayCount(0l);
+        dlc.setDeviceUploadDayCount(0l);
+        dlc.setAllCount(0l);
+        dlc.setActiveCount(0l);
+        dlc.setNonActiveCount(0l);
+        dlc.setNonActiveReplaceCount(0l);
+        dlc.setNonActiveUninstallCount(0l);
+        dlc.setCounterUploadDayCount(0l);
+        return dlc;
+    }
+
+    public static LogCount instCounterLogCount(CounterUploadLog m, String countTimeType, String key) {
+        LogCount dlc = new LogCount();
+        dlc.setModleName(m.getModelName());
+        dlc.setChannelId(Long.parseLong(m.getChannelId()));
+        dlc.setDeviceCode(m.getDeviceCode());
+        dlc.setGroupId(m.getGroupId());
+        //假如设备是地包渠道，查询该渠道是否有劳务公司
+        if (m.getGroupId() == 2) {
+            //待做
+        }
+        dlc.setBatchCode(m.getBatchCode());
+        //dlc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
+        if ("processTime".equals(countTimeType))
+            dlc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
+        else {
+            Date d = m.getCreateTime();
+            d.setHours(0);
+            d.setMinutes(0);
+            d.setSeconds(0);
+            dlc.setCountTime(d);
+        }
+        dlc.setProcessKey(key);
+        dlc.setProcessDayCount(0l);
+        dlc.setDeviceUploadDayCount(0l);
+        dlc.setAllCount(0l);
+        dlc.setActiveCount(0l);
+        dlc.setNonActiveCount(0l);
+        dlc.setNonActiveReplaceCount(0l);
+        dlc.setNonActiveUninstallCount(0l);
+        dlc.setCounterUploadDayCount(0l);
+
+        return dlc;
     }
 
     public static CounterUploadBean convertCounterBean(CounterUploadLog log) throws Exception {
@@ -41,7 +114,8 @@ public final class BeanConvertHandler {
         bean.setGroupId(log.getGroupId());
         bean.setDeviceCode(log.getDeviceCode());
         bean.setBatchCode(log.getBatchCode());
-        bean.setProcessTime(new Date(Long.parseLong(log.getProcessTime())));
+        // bean.setProcessTime(new Date(Long.parseLong(log.getProcessTime())));
+        bean.setProcessTime(DateFormatUtils.convertYYYYMMDD(log.getProcessTime()));
         bean.setCreateTime(log.getCreateTime());
         bean.setActive(CounterActive.getTypeByValue(log.getActive()));
 

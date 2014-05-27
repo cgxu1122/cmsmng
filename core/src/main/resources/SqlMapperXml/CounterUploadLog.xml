@@ -60,4 +60,33 @@
         from ${tableName}
         where imei = #{imei,jdbcType=VARCHAR}
     </select>
+    <select id="getCounterUploadLog" parameterType="map" resultMap="CounterUploadLogResultMap">
+        <![CDATA[
+
+        select
+        *
+        from (
+                select t2.*,rownum rn from ${tableName} t2
+                         where t2.create_time >= #{startDate,jdbcType=TIMESTAMP}
+                            and t2.create_time< #{endDate,jdbcType=TIMESTAMP}
+        ) t where rn> #{startNum} and rn <= #{endNum}
+
+        ]]>
+    </select>
+    <select id="getYesterdayLogCount" resultType="long" parameterType="map" statementType="STATEMENT">
+        <![CDATA[
+
+        select count(counter_id)  from ${tableName}
+         where  create_time >= trunc(SYSDATE-1) and create_time< trunc(SYSDATE)
+
+        ]]>
+    </select>
+    <select id="getLogCountByTime" resultType="long" parameterType="map">
+        <![CDATA[
+
+        select count(counter_id)  from ${tableName}
+         where  create_time >= #{startDate,jdbcType=TIMESTAMP} and create_time< #{endDate,jdbcType=TIMESTAMP}
+
+        ]]>
+    </select>
 </mapper>

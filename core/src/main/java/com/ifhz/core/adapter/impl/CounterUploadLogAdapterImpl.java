@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -32,5 +34,20 @@ public class CounterUploadLogAdapterImpl implements CounterUploadLogAdapter {
             return null;
         }
         return counterUploadLogMapper.getByImei(tableName, imei);
+    }
+
+    @Override
+    public List<CounterUploadLog> getCounterUploadLog(Map m) {
+        return counterUploadLogMapper.getCounterUploadLog(m);
+    }
+
+    @Override
+    public long getYesterdayLogCount(Map tableName) {
+        return counterUploadLogMapper.getYesterdayLogCount(tableName);
+    }
+
+    @Override
+    public long getLogCountByTime(Map m) {
+        return counterUploadLogMapper.getLogCountByTime(m);
     }
 }

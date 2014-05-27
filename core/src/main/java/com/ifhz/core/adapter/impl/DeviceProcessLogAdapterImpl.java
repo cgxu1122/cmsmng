@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -32,5 +34,20 @@ public class DeviceProcessLogAdapterImpl implements DeviceProcessLogAdapter {
             return null;
         }
         return deviceProcessLogMapper.getByImei(tableName, imei);
+    }
+
+    @Override
+    public List<DeviceProcessLog> getDeviceProcessLog(Map m) {
+        return deviceProcessLogMapper.getDeviceProcessLog(m);
+    }
+
+    @Override
+    public long getYesterdayLogCount(Map tableName) {
+        return deviceProcessLogMapper.getYesterdayLogCount(tableName);
+    }
+
+    @Override
+    public long getLogCountByTime(Map m) {
+        return deviceProcessLogMapper.getLogCountByTime(m);
     }
 }
