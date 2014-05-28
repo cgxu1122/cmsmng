@@ -17,6 +17,10 @@
         function addrow() {
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
+            var data1 = $('#queryImeiSource').combobox('getData');
+            $("#queryImeiSource ").combobox('select', data1[0].value);
+            var data2 = $('#exportImeiSource').combobox('getData');
+            $("#exportImeiSource ").combobox('select', data2[0].value);
         }
         function saverow() {
             $('#fm').form('submit', {
@@ -100,9 +104,9 @@
                 columns: [
                     [
                         {field: 'partnerId', title: '合作方id', align: 'center', width: 100},
-                        {field: 'partnerName', title: '合作方名称', align: 'center', width: 200},
-                        {field: 'username', title: '用户名', align: 'center', width: 100},
-                        {field: 'password', title: '密码', align: 'center', width: 100},
+                        {field: 'partnerName', title: '合作方名称', align: 'center', width: 300},
+                        {field: 'username', title: '用户名', align: 'center', width: 150},
+                        {field: 'password', title: '密码', align: 'center', width: 150},
                         {field: 'queryImeiSource', title: '查看IMEI', align: 'center', width: 100,
                             formatter: function (value) {
                                 if (value == "Y")return "有权限";
@@ -173,15 +177,15 @@
         <div class="fitem" style="margin-left:15px">
             <label><font color="red">*</font>查询IMEI:</label>
             <select class="easyui-combobox" name="queryImeiSource" id="queryImeiSource" style="width:150px;">
-                <option value="Y">有权限</option>
                 <option value="N">无权限</option>
+                <option value="Y">有权限</option>
             </select>
         </div>
         <div class="fitem" style="margin-left:15px">
             <label><font color="red">*</font>导出IMEI:</label>
             <select class="easyui-combobox" name="exportImeiSource" id="exportImeiSource" style="width:150px;">
-                <option value="Y">有权限</option>
                 <option value="N">无权限</option>
+                <option value="Y">有权限</option>
             </select>
         </div>
     </form>
@@ -212,15 +216,15 @@
         <div class="fitem" style="margin-left:15px">
             <label><font color="red">*</font>查询IMEI:</label>
             <select class="easyui-combobox" name="queryImeiSource" id="upqueryImeiSource" style="width:150px;">
-                <option value="Y">有权限</option>
                 <option value="N">无权限</option>
+                <option value="Y">有权限</option>
             </select>
         </div>
         <div class="fitem" style="margin-left:15px">
             <label><font color="red">*</font>导出IMEI:</label>
             <select class="easyui-combobox" name="exportImeiSource" id="upexportImeiSource" style="width:150px;">
-                <option value="Y">有权限</option>
                 <option value="N">无权限</option>
+                <option value="Y">有权限</option>
             </select>
         </div>
     </form>

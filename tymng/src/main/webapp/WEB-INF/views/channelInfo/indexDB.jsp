@@ -92,7 +92,7 @@
         function initPage() {
             reloadTree();
             $('#dg').datagrid({
-                width: 'auto',
+                width: '1001px',
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
@@ -183,6 +183,11 @@
             $('#laowudlg').dialog('close');
         }
     </script>
+    <style type="text/css">
+        .datagrid .datagrid-pager {
+            position: relative;
+        }
+    </style>
 </head>
 <body class="easyui-layout">
 <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
@@ -250,14 +255,14 @@
             <input id="phone" name="phone" class="easyui-validatebox" maxlength="50">
         </div>
         <div class="fitem" style="margin-left:13px">
-            <label>负责人:</label>
+            <label><font color="red">*</font>负责人:</label>
             <input id="mngId" name="mngId" class="easyui-validatebox" maxlength="50">
         </div>
-        <div class="fitem">
-            <label><font color="red">*</font>劳务公司:</label>
+        <div class="fitem" style="margin-left:7px">
+            <label>劳务公司:</label>
             <input type="hidden" id="laowuId" name="laowuId">
             <input type="text" id="laowuName" name="laowuName" readonly="readonly">
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="showLaowuDialog(1)">选择劳务公司</a>
+            <a href="javascript:void(0)" onclick="showLaowuDialog(1)">选择劳务公司</a>
         </div>
     </form>
 </div>
@@ -291,26 +296,26 @@
             <input type="text" name="address" class="easyui-validatebox"
                    required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
+        <div class="fitem" style="margin-left:13px">
             <label><font color="red">*</font>联系人:</label>
             <input type="text" name="contact" class="easyui-validatebox"
                    required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
+        <div class="fitem">
             <label><font color="red">*</font>联系方式:</label>
             <input type="text" name="phone" class="easyui-validatebox"
                    required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
+        <div class="fitem" style="margin-left:13px">
             <label><font color="red">*</font>负责人:</label>
             <input type="text" name="mngId" class="easyui-validatebox"
                    required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
-            <label><font color="red">*</font>劳务公司:</label>
+        <div class="fitem" style="margin-left:7px">
+            <label>劳务公司:</label>
             <input type="hidden" name="laowuId" id="upLaowuId">
             <input type="text" name="laowuName" id="upLaowuName" readonly="readonly">
-            <a href="javascript:void(0)" class="easyui-linkbutton"
+            <a href="javascript:void(0)"
                onclick="javascript:showLaowuDialog(2,$('#upLaowuId').val())">选择劳务公司</a>
         </div>
     </form>
@@ -321,7 +326,7 @@
        onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
 </div>
 
-<div id="laowudlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="laowudlg" class="easyui-dialog" style="width:600px;height:430px;padding:10px 20px" closed="true"
      buttons="#laowudlg-buttons">
     <div>
         <div>

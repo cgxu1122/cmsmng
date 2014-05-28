@@ -99,18 +99,17 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'version', title: '版本号', align: 'center', width: 100},
-                        {field: 'ftpPath', title: '下载路径', align: 'center', width: 300},
+                        {field: 'version', title: '版本号', align: 'center', width: 150},
+                        {field: 'ftpPath', title: '下载路径', align: 'center', width: 500},
                         {field: 'effectiveTime', title: '生效日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
-                            /*},
-                             {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        },
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
                              formatter: function (value) {
                              return new Date(value).formate("yyyy-MM-dd");
                              }
-                             */
                         }
                     ]
                 ]

@@ -17,6 +17,8 @@
         function addrow() {
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
+            var data = $('#queryImeiSource').combobox('getData');
+            $("#queryImeiSource ").combobox('select', data[0].value);
         }
         function saverow() {
             $("#groupId").val("${groupId}");
@@ -170,7 +172,7 @@
         </div>
         <div class="fitem">
             <label>查看imei权限:</label>
-            <select class="easyui-combobox" name="queryImeiSource" style="width:150px;">
+            <select class="easyui-combobox" id="queryImeiSource" name="queryImeiSource" style="width:150px;">
                 <option value="N">无</option>
                 <option value="Y">有</option>
             </select>

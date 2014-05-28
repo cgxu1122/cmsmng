@@ -64,7 +64,9 @@ public class ChannelInfoController extends BaseController {
         } else {//返回根节点
             JSONObject jo = new JSONObject();
             jo.put("id", JcywConstants.CHANNEL_ROOT_PARENT_ID);
-            if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
+            if (JcywConstants.CHANNEL_GROUP_TY_ID_1.toString().equals(groupId)) {
+                jo.put("text", "天音渠道");
+            } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
                 jo.put("text", "地包渠道");
             } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
                 jo.put("text", "其他渠道");
@@ -224,12 +226,13 @@ public class ChannelInfoController extends BaseController {
         }
         //仓库名称唯一性校验
         ChannelInfo ciCondition = new ChannelInfo();
+        ciCondition.setGroupId(ci.getGroupId());
         ciCondition.setChannelName(channelName.trim());
         ciCondition.setActive(JcywConstants.ACTIVE_Y);
         List<ChannelInfo> list = channelInfoService.queryByVo(null, ciCondition);
         if (list != null && list.size() > 0) {
             for (ChannelInfo repeatNameCi : list) {
-                if (repeatNameCi.getChannelId() != ci.getChannelId()) {
+                if (!repeatNameCi.getChannelId().equals(ci.getChannelId())) {
                     result.put("errorMsg", "仓库名称重复，请重新输入！");
                     return result;
                 }

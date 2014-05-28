@@ -128,14 +128,14 @@ function initPage() {
         columns: [
             [
                 {field: 'batchCode', title: '批次', align: 'center', width: 100},
-                {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
-                {field: 'batchProductName', title: '产品名称', align: 'center', width: 300},
-                {field: 'startTime', title: '开始时间', align: 'center', width: 100,
+                {field: 'groupName', title: '渠道组织', align: 'center', width: 150},
+                {field: 'batchProductName', title: '产品名称', align: 'center', width: 450},
+                {field: 'startTime', title: '开始时间', align: 'center', width: 150,
                     formatter: function (value) {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'batchProductNum', title: '产品数量', align: 'center', width: 100},
+                {field: 'batchProductNum', title: '产品数量', align: 'center', width: 150},
                 {field: 'createTime', title: '创建日期', align: 'center', width: 100,
                     formatter: function (value) {
                         return new Date(value).formate("yyyy-MM-dd");
@@ -236,6 +236,11 @@ function importTemplateBatch(type) {
     });
 }
 </script>
+<style type="text/css">
+    .datagrid .datagrid-pager {
+        position: relative;
+    }
+</style>
 </head>
 <body>
 <div id="toolBar">
@@ -274,27 +279,27 @@ function importTemplateBatch(type) {
     <form id="fm" method="post" novalidate>
         <input type="hidden" id="groupId" name="groupId"/>
 
-        <div class="fitem">
+        <div class="fitem" style="margin-left:30px">
             <label><font color="red">*</font>批次号:</label>
             <input type="text" id="batchCode" name="batchCode" readonly="readonly">
         </div>
-        <div class="fitem">
+        <div class="fitem" style="margin-left:18px">
             <label><font color="red">*</font>开始时间:</label>
             <input type="text" id="startTime" name="startTime" class="easyui-datebox">
         </div>
         <div class="fitem">
             <label>原批次号模板:</label>
             <input type="text" id="templateBatchCode" name="templateBatchCode">
-            <a href="javascript:void(0)" class="easyui-linkbutton"
+            <a href="javascript:void(0)"
                onclick="importTemplateBatch(1)">导入</a>
         </div>
-        <div class="fitem">
+        <div class="fitem" style="margin-left:25px">
             <label>选择产品:</label>
+            <a href="javascript:void(0)"
+               onclick="showProductDialog(1)">选择</a>
 
             <div id="productList">
             </div>
-            <a href="javascript:void(0)" class="easyui-linkbutton"
-               onclick="showProductDialog(1)">选择</a>
         </div>
     </form>
 </div>
@@ -304,32 +309,33 @@ function importTemplateBatch(type) {
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
-<div id="updatedlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
         <input type="hidden" id="batchId" name="batchId"/>
 
-        <div class="fitem">
+        <div class="fitem" style="margin-left:30px">
             <label><font color="red">*</font>批次号:</label>
             <input type="text" name="batchCode" readonly="readonly">
         </div>
-        <div class="fitem">
+        <div class="fitem" style="margin-left:18px">
             <label><font color="red">*</font>开始时间:</label>
             <input type="text" id="upStartTime" name="startTime" class="easyui-datebox">
         </div>
         <div class="fitem">
             <label>原批次号模板:</label>
             <input type="text" id="uptemplateBatchCode" name="templateBatchCode">
-            <a href="javascript:void(0)" class="easyui-linkbutton"
+            <a href="javascript:void(0)"
                onclick="importTemplateBatch(2)">导入</a>
         </div>
-        <div class="fitem">
+        <div class="fitem" style="margin-left:30px">
             <label>选择产品:</label>
+            <a href="javascript:void(0)"
+               onclick="showProductDialog(2)">选择</a>
 
             <div id="upProductList">
             </div>
-            <a href="javascript:void(0)" class="easyui-linkbutton"
-               onclick="showProductDialog(2)">选择</a>
+
         </div>
     </form>
 </div>
@@ -340,7 +346,7 @@ function importTemplateBatch(type) {
 </div>
 
 <div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
-     buttons="#partnerdlg-buttons">
+     buttons="#productdlg-buttons">
     <div>
         <div>
             <table>
@@ -358,6 +364,10 @@ function importTemplateBatch(type) {
         </div>
     </div>
     <div id="productdg"></div>
+</div>
+<div id="productdlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#productdlg').dialog('close')">取消</a>
 </div>
 
 </body>

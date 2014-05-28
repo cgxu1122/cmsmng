@@ -17,6 +17,8 @@
         function addrow() {
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
+            var data = $('#queryDataSource').combobox('getData');
+            $("#queryDataSource ").combobox('select', data[0].value);
         }
         function saverow() {
             $('#fm').form('submit', {
@@ -101,19 +103,19 @@
                 columns: [
                     [
                         {field: 'productId', title: '产品id', align: 'center', width: 100},
-                        {field: 'productName', title: '产品名称', align: 'center', width: 200},
+                        {field: 'productName', title: '产品名称', align: 'center', width: 300},
                         {field: 'partnerName', title: '合作方', align: 'center', width: 200},
                         {field: 'queryDataSource', title: '查看权限', align: 'center', width: 100,
                             formatter: function (value) {
                                 if (value == "Y")return "有权限";
                                 if (value == "N")return "无权限";
                             }},
-                        {field: 'queryStartTime', title: '查看开始时间', align: 'center', width: 150,
+                        {field: 'queryStartTime', title: '查看开始时间', align: 'center', width: 200,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 150,
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
@@ -170,6 +172,11 @@
             $('#partnerdlg').dialog('close');
         }
     </script>
+    <style type="text/css">
+        .datagrid .datagrid-pager {
+            position: relative;
+        }
+    </style>
 </head>
 <body>
 <div id="toolBar">
@@ -204,27 +211,27 @@
 
     <form id="fm" method="post" novalidate>
 
-        <div class="fitem" style="margin-left:15px">
+        <div class="fitem" style="margin-left:23px">
             <label><font color="red">*</font>产品名称:</label>
             <input id="productName" name="productName" class="easyui-validatebox" required="true" maxlength="50">
         </div>
-        <div class="fitem" style="margin-left:25px">
+        <div class="fitem" style="margin-left:35px">
             <label><font color="red">*</font>合作方:</label>
             <input type="hidden" id="partnerId" name="partnerId">
-            <input type="text" id="partnerName" name="partnerName">
-            <a href="javascript:void(0)" class="easyui-linkbutton"
+            <input type="text" id="partnerName" name="partnerName" readonly="readonly">
+            <a href="javascript:void(0)"
                onclick="showPartnerDialog(1)">选择合作方</a>
         </div>
-        <div class="fitem" style="margin-left:15px">
+        <div class="fitem" style="margin-left:23px">
             <label><font color="red">*</font>查看权限:</label>
             <select class="easyui-combobox" name="queryDataSource" id="queryDataSource" style="width:150px;">
-                <option value="Y">有权限</option>
                 <option value="N">无权限</option>
+                <option value="Y">有权限</option>
             </select>
         </div>
         <div class="fitem">
             <label><font color="red">*</font>查看开始时间:</label>
-            <input type="text" id="queryStartTime" name="queryStartTime" class="easyui-datebox" readonly="readonly">
+            <input type="text" id="queryStartTime" name="queryStartTime" class="easyui-datebox">
         </div>
     </form>
 </div>
@@ -239,27 +246,27 @@
     <form id="upfm" method="post" novalidate>
         <input type="hidden" id="productId" name="productId"/>
 
-        <div class="fitem" style="margin-left:15px">
+        <div class="fitem" style="margin-left:23px">
             <label><font color="red">*</font>产品名称:</label>
             <input type="text" name="productName" class="easyui-validatebox" required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
+        <div class="fitem" style="margin-left:35px">
             <label><font color="red">*</font>合作方:</label>
             <input type="hidden" name="partnerId" id="upPartnerId">
             <input type="text" name="partnerName" readonly="readonly" id="upPartnerName">
-            <a href="javascript:void(0)" class="easyui-linkbutton"
+            <a href="javascript:void(0)"
                onclick="showPartnerDialog(2,$('#upPartnerId').val())">选择合作方</a>
         </div>
-        <div class="fitem" style="margin-left:15px">
+        <div class="fitem" style="margin-left:23px">
             <label><font color="red">*</font>查看权限:</label>
             <select class="easyui-combobox" name="queryDataSource" id="upQueryDataSource" style="width:150px;">
-                <option value="Y">有权限</option>
                 <option value="N">无权限</option>
+                <option value="Y">有权限</option>
             </select>
         </div>
         <div class="fitem">
             <label><font color="red">*</font>查看开始时间:</label>
-            <input type="text" id="upQueryStartTime" name="queryStartTime" class="easyui-datebox" readonly="readonly">
+            <input type="text" id="upQueryStartTime" name="queryStartTime" class="easyui-datebox">
         </div>
     </form>
 </div>

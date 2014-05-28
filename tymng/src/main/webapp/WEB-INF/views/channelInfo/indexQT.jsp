@@ -129,6 +129,11 @@
             });
         }
     </script>
+    <style type="text/css">
+        .datagrid .datagrid-pager {
+            position: relative;
+        }
+    </style>
 </head>
 <body class="easyui-layout">
 <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
