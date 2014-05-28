@@ -19,6 +19,16 @@ public class ProductCount {
     private Long nonActiveCount;
     private Long nonActiveUninstallCount;
     private Long nonActiveReplaceCount;
+    private String processKey;
+
+    public String getProcessKey() {
+        return processKey;
+    }
+
+    public void setProcessKey(String processKey) {
+        this.processKey = processKey;
+    }
+
 
     public Long getProcessDayCount() {
         return processDayCount;

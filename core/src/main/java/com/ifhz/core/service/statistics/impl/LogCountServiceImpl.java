@@ -4,14 +4,15 @@ import com.ifhz.core.adapter.CounterUploadLogAdapter;
 import com.ifhz.core.adapter.DeviceProcessLogAdapter;
 import com.ifhz.core.adapter.LogCountAdapter;
 import com.ifhz.core.base.commons.codec.DesencryptUtils;
+import com.ifhz.core.base.commons.constants.CommonConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.po.CounterUploadLog;
 import com.ifhz.core.po.DeviceProcessLog;
 import com.ifhz.core.po.LogCount;
+import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.statistics.LogCountService;
 import com.ifhz.core.service.statistics.handle.BeanConvertHandler;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -63,8 +64,8 @@ public class LogCountServiceImpl implements LogCountService {
     private CounterUploadLogAdapter counterUploadLogAdapter;
     @Resource(name = "splitTableService")
     private SplitTableService splitTableService;
-    @Resource(name = "sqlSessionFactory")
-    private SqlSessionFactory sqlSessionFactory;
+    @Resource(name = "channelInfoService")
+    private ChannelInfoService channelInfoService;
 
     public final int pageLogNum = 2;
 
@@ -100,6 +101,7 @@ public class LogCountServiceImpl implements LogCountService {
 
     /*
            liming
+           统计加工流水
         */
     public void deviceCountLog(Date startDate, Date endDate) {
         //获取统计表名
@@ -127,19 +129,25 @@ public class LogCountServiceImpl implements LogCountService {
             List<DeviceProcessLog> list = deviceProcessLogAdapter.getDeviceProcessLog(pageParms);
             //每页流水处理
             for (DeviceProcessLog dpl : list) {
+                //没有新建一条统计信息
+                try {
+                    BeanConvertHandler.convertDeviceBean(dpl);
+                } catch (Exception e) {
+                    LOGGER.error("加工设备数据转化成流水有误", e);
+                    continue;
+                }
                 //针对以下列进行MD5加密model_name+channel_id+device_id+batch_code+process_date
                 String p = "" + dpl.getModelName() + dpl.getChannelId() + dpl.getDeviceCode() + dpl.getBatchCode() + DateFormatUtils.convertYYYYMMDD(dpl.getProcessTime()).getTime();
                 String key = DesencryptUtils.md5Str(p);
                 LogCount lc = logCounts.get(key);
                 if (lc == null) {
-                    //没有新建一条统计信息
-                    try {
-                        BeanConvertHandler.convertDeviceBean(dpl);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        continue;
+                    Long laowuId = null;
+                    //当渠道组是地包时，查询该渠道是否关联劳动公司
+                    if (dpl.getGroupId() == CommonConstants.CHANNAL_DIBAO) {
+                        laowuId = channelInfoService.getById(Long.parseLong(dpl.getChannelId())).getLaowuId();
                     }
-                    lc = BeanConvertHandler.instDeviceLogCount(dpl, "processTime", key);
+                    //没有新建一条统计信息
+                    lc = BeanConvertHandler.instDeviceLogCount(dpl, "processTime", key, laowuId);
                 }
                 lc.setProcessDayCount(lc.getProcessDayCount() + 1);
                 Date pt = DateFormatUtils.convertYYYYMMDD(dpl.getProcessTime());
@@ -156,14 +164,12 @@ public class LogCountServiceImpl implements LogCountService {
                     String key2 = DesencryptUtils.md5Str(p2);
                     LogCount lc2 = logCounts.get(key2);
                     if (lc2 == null) {
-                        //没有新建一条统计信息
-                        try {
-                            BeanConvertHandler.convertDeviceBean(dpl);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            continue;
+                        Long laowuId = null;
+                        //当渠道组是地包时，查询该渠道是否关联劳动公司
+                        if (dpl.getGroupId() == CommonConstants.CHANNAL_DIBAO) {
+                            laowuId = channelInfoService.getById(Long.parseLong(dpl.getChannelId())).getLaowuId();
                         }
-                        lc2 = BeanConvertHandler.instDeviceLogCount(dpl, "createTime", key2);
+                        lc2 = BeanConvertHandler.instDeviceLogCount(dpl, "createTime", key2, laowuId);
                     }
                     lc2.setDeviceUploadDayCount(lc2.getDeviceUploadDayCount() + 1);
                     logCounts.put(key2, lc2);
@@ -180,7 +186,6 @@ public class LogCountServiceImpl implements LogCountService {
     public void counterCountLog(Date startDate, Date endDate) {
         //获取统计表名
         String tableName = splitTableService.getTableNameForCounterByNow(startDate);
-        System.out.println("tableName=" + tableName);
         Map tab = new HashMap();
         tab.put("tableName", tableName);
         tab.put("startDate", startDate);
@@ -203,27 +208,33 @@ public class LogCountServiceImpl implements LogCountService {
             List<CounterUploadLog> list = counterUploadLogAdapter.getCounterUploadLog(pageParms);
             //每页流水处理
             for (CounterUploadLog cul : list) {
+                try {
+                    BeanConvertHandler.convertCounterBean(cul);
+                } catch (Exception e) {
+                    LOGGER.error("计数器数据转化成流水有误", e);
+                    continue;
+                }
                 //针对以下列进行MD5加密model_name+channel_id+device_id+batch_code+process_date
                 String p = "" + cul.getModelName() + cul.getChannelId() + cul.getDeviceCode() + cul.getBatchCode() + DateFormatUtils.convertYYYYMMDD(cul.getProcessTime()).getTime();
                 String key = DesencryptUtils.md5Str(p);
                 LogCount lc = logCounts.get(key);
                 if (lc == null) {
-                    //没有新建一条统计信息
-                    try {
-                        BeanConvertHandler.convertCounterBean(cul);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        continue;
+                    Long laowuId = null;
+                    //当渠道组是地包时，查询该渠道是否关联劳动公司
+                    if (cul.getGroupId() == CommonConstants.CHANNAL_DIBAO) {
+                        laowuId = channelInfoService.getById(Long.parseLong(cul.getChannelId())).getLaowuId();
                     }
-                    lc = BeanConvertHandler.instCounterLogCount(cul, "processTime", key);
+                    //没有新建一条统计信息
+                    lc = BeanConvertHandler.instCounterLogCount(cul, "processTime", key, laowuId);
                 }
                 lc.setAllCount(lc.getAllCount() + 1);
                 String active = cul.getActive();
-                if ("1".equals(active)) lc.setActiveCount(lc.getActiveCount() + 1);
-                else if ("2".equals(active)) {
+                CommonConstants C;
+                if (CommonConstants.ARRIVE_ACTIVE.equals(active)) lc.setActiveCount(lc.getActiveCount() + 1);
+                else if (CommonConstants.ARRIVE_NonActiveReplace.equals(active)) {
                     lc.setNonActiveCount(lc.getNonActiveCount() + 1);
                     lc.setNonActiveReplaceCount(lc.getNonActiveReplaceCount() + 1);
-                } else if ("3".equals(active)) {
+                } else if (CommonConstants.ARRIVE_NonActiveUninstall.equals(active)) {
                     lc.setNonActiveCount(lc.getNonActiveCount() + 1);
                     lc.setNonActiveUninstallCount(lc.getNonActiveUninstallCount() + 1);
                 }
@@ -242,13 +253,12 @@ public class LogCountServiceImpl implements LogCountService {
                     LogCount lc2 = logCounts.get(key2);
                     if (lc2 == null) {
                         //没有新建一条统计信息
-                        try {
-                            BeanConvertHandler.convertCounterBean(cul);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            continue;
+                        Long laowuId = null;
+                        //当渠道组是地包时，查询该渠道是否关联劳动公司
+                        if (cul.getGroupId() == CommonConstants.CHANNAL_DIBAO) {
+                            laowuId = channelInfoService.getById(Long.parseLong(cul.getChannelId())).getLaowuId();
                         }
-                        lc2 = BeanConvertHandler.instCounterLogCount(cul, "createTime", key2);
+                        lc2 = BeanConvertHandler.instCounterLogCount(cul, "createTime", key2, laowuId);
                     }
                     lc2.setCounterUploadDayCount(lc2.getCounterUploadDayCount() + 1);
                     logCounts.put(key2, lc2);

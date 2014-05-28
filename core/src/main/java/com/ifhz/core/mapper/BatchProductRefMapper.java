@@ -22,4 +22,7 @@ public interface BatchProductRefMapper {
     public int update(BatchProductRef record);
 
     public int delete(BatchProductRef record);
+
+    //通过批次号查询所有产品 liming
+    public List<BatchProductRef> queryByBatchCode(String BatchCode);
 }

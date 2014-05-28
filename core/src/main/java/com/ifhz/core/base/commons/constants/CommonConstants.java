@@ -9,4 +9,10 @@ package com.ifhz.core.base.commons.constants;
 public class CommonConstants {
 
     public static final String DEFAULT_CHARSET = "UTF-8";
+    public static final String ARRIVE_ACTIVE = "1";
+    public static final String ARRIVE_NonActiveReplace = "2";
+    public static final String ARRIVE_NonActiveUninstall = "3";
+    public static final int CHANNAL_DIBAO = 2;
+
+
 }

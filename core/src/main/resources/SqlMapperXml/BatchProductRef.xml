@@ -43,4 +43,13 @@
         </if>
 
     </delete>
+    <select id="queryByBatchCode" parameterType="string" resultMap="BatchProductRefResultMap">
+        select ref.* from
+        <include refid="TABLE_NAME"/>
+        ref
+        LEFT OUTER JOIN TY_BATCH_INFO bi on ref.BATCH_ID = bi.BATCH_ID
+        LEFT OUTER JOIN TY_PRODUCT_INFO pi on ref.PRODUCT_ID = pi.PRODUCT_ID
+        where bi.BATCH_CODE = #{BatchCode} AND pi.active='Y'
+
+    </select>
 </mapper>

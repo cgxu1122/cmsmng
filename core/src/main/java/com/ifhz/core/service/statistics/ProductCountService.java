@@ -2,6 +2,7 @@ package com.ifhz.core.service.statistics;
 
 import com.ifhz.core.po.ProductCount;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,4 +18,6 @@ public interface ProductCountService {
     public int update(ProductCount record);
 
     public int delete(ProductCount record);
+
+    public void countProductLogByDate(Date startDate, Date endDate);
 }

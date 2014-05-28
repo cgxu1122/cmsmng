@@ -3,10 +3,12 @@ package com.ifhz.core.service.statistics.handle;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ifhz.core.base.commons.constants.CommonConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.po.CounterUploadLog;
 import com.ifhz.core.po.DeviceProcessLog;
 import com.ifhz.core.po.LogCount;
+import com.ifhz.core.po.ProductCount;
 import com.ifhz.core.service.statistics.bean.CounterUploadBean;
 import com.ifhz.core.service.statistics.bean.DeviceProcessBean;
 import com.ifhz.core.service.statistics.constants.CounterActive;
@@ -40,15 +42,15 @@ public final class BeanConvertHandler {
     将流水对象传化成统计信息对象
     countTimeType 统计时间类型。“processTime”表示按加工时间，“createTime”表示按上传时间
     * */
-    public static LogCount instDeviceLogCount(DeviceProcessLog m, String countTimeType, String key) {
+    public static LogCount instDeviceLogCount(DeviceProcessLog m, String countTimeType, String key, Long laowuId) {
         LogCount dlc = new LogCount();
         dlc.setModleName(m.getModelName());
         dlc.setChannelId(Long.parseLong(m.getChannelId()));
         dlc.setDeviceCode(m.getDeviceCode());
         dlc.setGroupId(m.getGroupId());
         //假如设备是地包渠道，查询该渠道是否有劳务公司
-        if (m.getGroupId() == 2) {
-            //待做
+        if (m.getGroupId() == CommonConstants.CHANNAL_DIBAO && laowuId != null) {
+            dlc.setLaowuId(laowuId);
         }
         dlc.setBatchCode(m.getBatchCode());
         if ("processTime".equals(countTimeType))
@@ -72,15 +74,49 @@ public final class BeanConvertHandler {
         return dlc;
     }
 
-    public static LogCount instCounterLogCount(CounterUploadLog m, String countTimeType, String key) {
+    public static ProductCount instDeviceProductCount(DeviceProcessLog m, Long productId, String key) {
+        ProductCount pc = new ProductCount();
+        pc.setModleName(m.getModelName());
+        pc.setUa(m.getUa());
+        pc.setGroupId(m.getGroupId());
+        pc.setProductId(productId);
+        pc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
+        pc.setProcessKey(key);
+        pc.setProcessDayCount(0l);
+        pc.setAllCount(0l);
+        pc.setActiveCount(0l);
+        pc.setNonActiveCount(0l);
+        pc.setNonActiveReplaceCount(0l);
+        pc.setNonActiveUninstallCount(0l);
+        return pc;
+    }
+
+    public static ProductCount instCounterProductCount(CounterUploadLog m, Long productId, String key) {
+        ProductCount pc = new ProductCount();
+        pc.setModleName(m.getModelName());
+        pc.setUa(m.getUa());
+        pc.setGroupId(m.getGroupId());
+        pc.setProductId(productId);
+        pc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
+        pc.setProcessKey(key);
+        pc.setProcessDayCount(0l);
+        pc.setAllCount(0l);
+        pc.setActiveCount(0l);
+        pc.setNonActiveCount(0l);
+        pc.setNonActiveReplaceCount(0l);
+        pc.setNonActiveUninstallCount(0l);
+        return pc;
+    }
+
+    public static LogCount instCounterLogCount(CounterUploadLog m, String countTimeType, String key, Long laowuId) {
         LogCount dlc = new LogCount();
         dlc.setModleName(m.getModelName());
         dlc.setChannelId(Long.parseLong(m.getChannelId()));
         dlc.setDeviceCode(m.getDeviceCode());
         dlc.setGroupId(m.getGroupId());
         //假如设备是地包渠道，查询该渠道是否有劳务公司
-        if (m.getGroupId() == 2) {
-            //待做
+        if (m.getGroupId() == CommonConstants.CHANNAL_DIBAO && laowuId != null) {
+            dlc.setLaowuId(laowuId);
         }
         dlc.setBatchCode(m.getBatchCode());
         //dlc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));

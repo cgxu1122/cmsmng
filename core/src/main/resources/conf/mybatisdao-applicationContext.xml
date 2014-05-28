@@ -72,7 +72,7 @@
                 <value>classpath:SqlMapperXml/CounterUploadLog.xml</value>
                 <value>classpath:SqlMapperXml/DictInfo.xml</value>
                 <value>classpath:SqlMapperXml/LogCount.xml</value>
-
+                <value>classpath:SqlMapperXml/ProductCount.xml</value>
             </list>
         </property>
     </bean>

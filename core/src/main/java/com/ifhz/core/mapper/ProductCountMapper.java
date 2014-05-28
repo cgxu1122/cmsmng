@@ -19,4 +19,5 @@ public interface ProductCountMapper {
 
     public int delete(ProductCount record);
 
+    public ProductCount getByProcessKey(String processKey);
 }

@@ -17,4 +17,6 @@ public interface ProductCountAdapter {
     public int update(ProductCount record);
 
     public int delete(ProductCount record);
+
+    public ProductCount getByProcessKey(String processKey);
 }

@@ -8,6 +8,8 @@
         <result column="MODLE_NAME" property="modleName" jdbcType="VARCHAR"/>
         <result column="UA" property="ua" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="PRODUCT_ID" property="productId" jdbcType="BIGINT"/>
+        <result column="PROCESS_KEY" property="processKey" jdbcType="VARCHAR"/>
         <result column="COUNT_TIME" property="countTime" jdbcType="TIMESTAMP"/>
         <result column="PROCESS_DAY_COUNT" property="processDayCount" jdbcType="BIGINT"/>
         <result column="ALLCOUNT" property="allCount" jdbcType="BIGINT"/>
@@ -27,12 +29,59 @@
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT SEQ_TY_PRODUCT_COUNT.CURRVAL AS id from dual
         </selectKey>
-        insert into TY_PRODUCT_COUNT (PRODUCT_COUNT_ID, MODLE_NAME,UA,GROUP_ID,COUNT_TIME,PRODUCT_ID,
+        insert into TY_PRODUCT_COUNT (PRODUCT_COUNT_ID, MODLE_NAME,UA,GROUP_ID,COUNT_TIME,PRODUCT_ID,PROCESS_KEY,
         PROCESS_DAY_COUNT,ALLCOUNT,ACTIVE_COUNT,NONACTIVE_COUNT,NONACTIVE_UNINSTALL_COUNT,NONACTIVE_REPLACE_COUNT)
-        values (SEQ_TY_PRODUCT_COUNT.NEXTVAL, #{modleName},#{ua},#{groupId}, #{countTime},#{productId},
+        values (SEQ_TY_PRODUCT_COUNT.NEXTVAL, #{modleName},#{ua},#{groupId}, #{countTime},#{productId},#{processKey},
         #{processDayCount},
         #{allCount},#{activeCount},#{nonActiveCount},#{nonActiveUninstallCount},#{nonActiveReplaceCount}
         )
     </insert>
-
+    <select id="getByProcessKey" parameterType="string" resultMap="ProductCountResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where PROCESS_KEY = #{processKey}
+    </select>
+    <update id="update" parameterType="com.ifhz.core.po.ProductCount">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="modleName != null">
+                MODLE_NAME = #{modleName},
+            </if>
+            <if test="ua != null">
+                ua = #{ua},
+            </if>
+            <if test="groupId != null">
+                GROUP_ID = #{groupId},
+            </if>
+            <if test="productId != null">
+                PRODUCT_ID = #{productId},
+            </if>
+            <if test="countTime != null">
+                COUNT_TIME = #{countTime},
+            </if>
+            <if test="processKey != null">
+                PROCESS_KEY = #{processKey},
+            </if>
+            <if test="processDayCount != null">
+                PROCESS_DAY_COUNT = #{processDayCount},
+            </if>
+            <if test="allCount != null">
+                ALLCOUNT = #{allCount},
+            </if>
+            <if test="activeCount != null">
+                ACTIVE_COUNT = #{activeCount},
+            </if>
+            <if test="nonActiveCount != null">
+                NONACTIVE_COUNT = #{nonActiveCount},
+            </if>
+            <if test="nonActiveUninstallCount != null">
+                NONACTIVE_UNINSTALL_COUNT = #{nonActiveUninstallCount},
+            </if>
+            <if test="nonActiveReplaceCount != null">
+                NONACTIVE_REPLACE_COUNT = #{nonActiveReplaceCount},
+            </if>
+        </set>
+        where PRODUCT_COUNT_ID = #{id}
+    </update>
 </mapper>

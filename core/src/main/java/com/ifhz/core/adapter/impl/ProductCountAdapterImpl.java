@@ -42,4 +42,10 @@ public class ProductCountAdapterImpl implements ProductCountAdapter {
     public int delete(ProductCount record) {
         return productCountMapper.delete(record);
     }
+
+    public ProductCount getByProcessKey(String processKey) {
+        return productCountMapper.getByProcessKey(processKey);
+    }
+
+
 }

@@ -71,7 +71,8 @@ create table TY_PRODUCT_COUNT
   NONACTIVE_COUNT           NUMBER(15) default 0,
   NONACTIVE_UNINSTALL_COUNT NUMBER(15) default 0,
   NONACTIVE_REPLACE_COUNT   NUMBER(15) default 0,
-  PRODUCT_ID                NUMBER(15) default 0 not null
+  PRODUCT_ID                NUMBER(15) default 0 not null,
+  PROCESS_KEY               VARCHAR2(100)
 );
 -- Add comments to the table
 comment on table TY_PRODUCT_COUNT
@@ -101,8 +102,10 @@ comment on column TY_PRODUCT_COUNT.NONACTIVE_REPLACE_COUNT
   is '无效-替换数';
 comment on column TY_PRODUCT_COUNT.PRODUCT_ID
   is '产品ID';
+comment on column TY_PRODUCT_COUNT.PROCESS_KEY
+  is 'md5(ua+count_time+group_id+PRODUCT_ID)';
 -- Create/Recreate primary, unique and foreign key constraints
 alter table TY_PRODUCT_COUNT
   add constraint PK_PRODUCT_COUNT_ID primary key (PRODUCT_COUNT_ID);
 -- Create/Recreate indexes
-create index INDEX_PRODUCTCOUNT_COUNT_TIME on TY_PRODUCT_COUNT (COUNT_TIME)
+create index INDEX_PRODUCTCOUNT_COUNT_TIME on TY_PRODUCT_COUNT (COUNT_TIME);
