@@ -65,18 +65,29 @@ public class DeviceSystemController extends BaseController {
         String version = readInputStreamData(params.get("version").getInputStream());
         String effectiveTime = readInputStreamData(params.get("effectiveTime").getInputStream());
         FileItem file = params.get("file");
-        String fileName = FtpUtils.generateFileName(file.getName());
-        FtpUtils.ftpUpload(file.getInputStream(),
-                GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR),
-                fileName
-        );
         String errorMsg = null;
+        JSONObject result = new JSONObject();
+        if (StringUtils.isEmpty(file.getName())) {
+            errorMsg = "请上传设备升级文件！";
+            result.put("errorMsg", errorMsg);
+            return result;
+        }
+        String fileName = FtpUtils.generateFileName(file.getName());
+        try {
+            FtpUtils.ftpUpload(file.getInputStream(),
+                    GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR),
+                    fileName
+            );
+        } catch (Exception e) {
+            errorMsg = "上传文件出错，请重新上传或者联系管理员！";
+            result.put("errorMsg", errorMsg);
+            return result;
+        }
         if (StringUtils.isEmpty(version) || version.length() > 50) {
             errorMsg = "请正确输入版本号！";
         } else if (StringUtils.isEmpty(effectiveTime)) {
             errorMsg = "请选择生效时间！";
         }
-        JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
             result.put("errorMsg", errorMsg);
             return result;
@@ -92,6 +103,7 @@ public class DeviceSystemController extends BaseController {
         }
         ds.setVersion(version.trim());
         ds.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
+        ds.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR) + fileName);
         deviceSystemService.insert(ds);
         result.put("msg", "添加成功!");
         return result;
@@ -134,8 +146,24 @@ public class DeviceSystemController extends BaseController {
                 }
             }
         }
+        FileItem file = params.get("file");
+        if (StringUtils.isNotEmpty(file.getName())) {
+            try {
+                String fileName = FtpUtils.generateFileName(file.getName());
+                FtpUtils.ftpUpload(file.getInputStream(),
+                        GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR),
+                        fileName
+                );
+                deviceSystem.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR) + fileName);
+            } catch (Exception e) {
+                errorMsg = "上传文件出错，请重新上传或者联系管理员！";
+                result.put("errorMsg", errorMsg);
+                return result;
+            }
+        }
         deviceSystem.setVersion(version.trim());
         deviceSystem.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
+
         deviceSystemService.update(deviceSystem);
         result.put("msg", "修改成功!");
         return result;

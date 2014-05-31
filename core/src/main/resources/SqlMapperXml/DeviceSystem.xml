@@ -59,6 +59,7 @@
         <if test="record.ftpPath != null and record.ftpPath != ''">
             and FTP_PATH = #{record.ftpPath}
         </if>
+        order by CREATE_TIME desc
     </select>
 
     <select id="queryNewestVersion" resultMap="DeviceSystemResultMap">

@@ -16,6 +16,7 @@
         function addrow() {
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
+            $("input[name=file]").val("");
         }
         function saverow() {
             $('#fm').form('submit', {
@@ -41,6 +42,7 @@
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
                 row.effectiveTime = new Date(row.effectiveTime).formate("yyyy-MM-dd");
                 $('#upfm').form('load', row);
+                $("input[name=file]").val("");
             }
         }
         function saveUpdate() {
