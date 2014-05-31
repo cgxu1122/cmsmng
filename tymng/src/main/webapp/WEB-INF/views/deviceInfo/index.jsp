@@ -52,8 +52,10 @@ function editrow() {
     if (row) {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
         $('#upfm').form('load', row);
+        $("#upGroupIdHidden").val(row.groupId);
         $('#upGroupId').combobox({
             onChange: function (newValue, oldValue) {
+                $("#upGroupIdHidden").val(newValue);
                 if (newValue != oldValue) {
                     $("#upChannelId").val("");
                     $("#upChannelName").val("");
@@ -142,11 +144,9 @@ function showChannelDialog(type, upChannelId) {
         }
         groupId = selectGroupId;
     } else if (type == 2) {
-        groupId = $("#upGroupId").combobox("getValue");
+        groupId = $("#upGroupIdHidden").val();
     }
-    if (groupId == 2 || groupId == 3) {
-        reloadTree(groupId);
-    }
+    reloadTree(groupId);
     $("#searchGroupIdValue").val(groupId);
     $('#channeldlg').dialog('open').dialog('setTitle', '选择渠道/仓库');
     $('#channeldg').datagrid({
@@ -286,6 +286,7 @@ function selectChannel(channelId, channelName, type) {
         </div>
         <div class="fitem" style="margin-left:55px">
             <label><font color="red">*</font>渠道组织:</label>
+            <input type="hidden" name="upGroupIdHidden" id="upGroupIdHidden"/>
             <select class="easyui-combobox" name="groupId" id="upGroupId" style="width:150px;">
                 <option value="1">天音渠道</option>
                 <option value="2">地包渠道</option>
@@ -307,7 +308,8 @@ function selectChannel(channelId, channelName, type) {
        onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
 </div>
 
-<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="channeldlg" class="easyui-dialog easyui-layout" style="width:800px;height:400px;padding:10px 20px"
+     closed="true"
      buttons="#channeldlg-buttons">
     <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
         <ul id="tt"></ul>
@@ -330,7 +332,7 @@ function selectChannel(channelId, channelName, type) {
             </table>
         </div>
     </div>
-    <div id="channeldg"></div>
+    <div id="channeldg" region="center"></div>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
