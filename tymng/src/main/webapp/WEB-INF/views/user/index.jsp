@@ -13,16 +13,13 @@ $(document).ready(function () {
 
 
 function addrow() {
-
     $('#dlg').dialog('open').dialog('setTitle', '新建用户');
-
     $('#fm').form('clear');
     $("#enable")[0].checked = true;
 }
 
 
 function editrow(obj) {
-
     var row = $('#dg').datagrid('getSelected');
     if (row) {
         $('#dlg1').dialog('open').dialog('setTitle', '编辑用户');
@@ -31,7 +28,6 @@ function editrow(obj) {
 }
 
 function updatePassword(obj) {
-
     var row = $('#dg').datagrid('getSelected');
     if (row) {
         $('#updatePassworddlg').dialog('open').dialog('setTitle', '修改用户密码');
@@ -59,7 +55,6 @@ function saverow() {
         return;
     }
 
-    alert();
     $('#fm').form('submit', {
         url: '<%=basePath%>/user/insert',
         onSubmit: function () {
@@ -90,7 +85,7 @@ function saveUpdatePassword() {
             return $(this).form('validate');
         },
 
-        data: {"id": $('#id').val, "password": $('#passwordUp').val},
+        data: {"userId": $('#userId').val, "password": $('#passwordUp').val},
         success: function (result) {
             r
             var result = eval('(' + result + ')');
@@ -163,6 +158,33 @@ function initPage() {
         search();
     });
 
+    $("#addUser").combogrid({
+        panelWidth: 300,
+        idField: 'roleId',
+        textField: 'roleName',
+        url: '<%=basePath%>/user/getAllRole',
+        method: 'post',
+        columns: [[
+            {field:'roleId',hidden:true},
+            {field:'roleName',title:'角色名称',width:120}
+        ]],
+        fitColumns: true
+    });
+
+    $("#updateUser").combogrid({
+        panelWidth: 300,
+        idField: 'roleId',
+        textField: 'roleName',
+        url: '<%=basePath%>/user/getAllRole',
+        method: 'post',
+        columns: [[
+            {field:'roleId',hidden:true},
+            {field:'roleName',title:'角色名称',width:120}
+        ]],
+        fitColumns: true
+    });
+
+
     $('#dg').datagrid({
         height: '522',
         striped: true,
@@ -182,16 +204,13 @@ function initPage() {
                 {field: 'telephone', title: '座机', align: 'center', width: 100},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 200},
                 {field: 'status', title: '系统状态', align: 'center', width: 200, formatter: function (value) {
-                    if (value == 1) {
-                        return "启用";
-                    }
-                    return "禁用";
-                }
+                                                                                        if (value == 1) {
+                                                                                            return "启用";
+                                                                                        }
+                                                                                        return "禁用";
+                                                                                    }
                 },
-                {field: 'id', title: 'ID', align: 'center', width: 100},
                 {field: 'id', hidden: true}
-
-
             ]
         ],
         toolbar: "#toolBar"
@@ -200,7 +219,7 @@ function initPage() {
     //设置角色选择下拉框去获取所有角色列表
     $("#allRoles").combobox({
         url: "<%=basePath%>/user/getAllRole",
-        valueField: "id",
+        valueField: "roleId",
         textField: "roleName"
     });
 }
@@ -212,7 +231,7 @@ function initPage() {
 function search() {
     var value = $('#searchValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/auth/getAll",
+        url: "<%=basePath%>/user/getAll",
         queryParams: { 'searchValue': value}
     });
 }
@@ -285,20 +304,7 @@ function search() {
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>角色:</label>
-            <select  name="roleId" class="easyui-combogrido" required="true" style="width:160px"
-                    data-options="
-		            panelWidth: 300,
-		            idField: 'roleId',
-		            textField: 'roleName',
-		            url: '<%=basePath%>/user/getAllRole',
-		            method: 'get',
-		            columns: [[
-		                {field:'roleId',hidden:true},
-		                {field:'roleName',title:'角色名称',width:120}
-		            ]],
-		            fitColumns: true
-		        ">
-            </select>
+            <input id="addUser"  name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
         </div>
         <div class="fitem">
             <label><font color="red">*</font>状态:</label>
@@ -318,7 +324,6 @@ function search() {
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 <div>
-
     <div id="updatePassworddlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
          buttons="#updatePasswprd-buttons">
         <form id="upfm" method="post" novalidate>
@@ -350,8 +355,7 @@ function search() {
         <br/>
 
         <form id="fm1" method="post" novalidate>
-            <input type="hidden" id="id" name="id"/>
-
+            <input type="hidden" id="userId" name="userId"/>
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>邮箱:</label>
                 <input id="emailUp" name="email" class="easyui-validatebox" validType="email" required="true">
@@ -362,24 +366,11 @@ function search() {
             </div>
             <div class="fitem" style="margin-left:30px">
                 <label>角色:</label>
-                <select name="roleId" class="easyui-combogrid" required="true" style="width:160px"
-                        data-options="
-		            panelWidth: 300,
-		            idField: 'roleId',
-		            textField: 'roleName',
-		            url: '<%=basePath%>/user/getAllRole',
-		            method: 'get',
-		            columns: [[
-		                {field:'roleId',hidden:true},
-		                {field:'roleName',title:'角色名称',width:120}
-		            ]],
-		            fitColumns: true
-		        ">
-                </select>
+                <input id="updateUser" name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
             </div>
             <div class="fitem">
                 <label><font color="red">*</font>系统状态:</label>
-                <input type="radio" name="status" value="1" ><span>启用</span>
+                <input type="radio" name="status" value="1"><span>启用</span>
                 <input type="radio" name="status" value="2"/><span>禁用</span>
             </div>
         </form>
@@ -389,5 +380,6 @@ function search() {
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
            onclick="javascript:$('#dlg1').dialog('close')">取消</a>
     </div>
+</div>
 </body>
 </html>
