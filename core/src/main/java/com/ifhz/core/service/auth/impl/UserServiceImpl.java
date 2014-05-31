@@ -4,18 +4,25 @@
  */
 package com.ifhz.core.service.auth.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.UserMapper;
+import com.ifhz.core.mapper.UserRoleRefMapper;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
+import com.ifhz.core.po.UserRoleRef;
 import com.ifhz.core.service.auth.RoleService;
+import com.ifhz.core.service.auth.UserRoleRefService;
 import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -33,17 +40,47 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
     @Resource(name = "roleService")
     private RoleService roleService;
+    @Resource(name = "userRoleRefMapper")
+    private UserRoleRefMapper userRoleRefMapper;
 
 	/**
 	 * 用户新增接口
 	 * 
 	 * @author radish
-	 * @param User
+	 * @param user
 	 * @return
 	 */
 	@Override
-	public boolean insertUser(User User) {
-		return convertRtn(userMapper.insertUser(User));
+    @Transactional(rollbackFor = Exception.class)
+	public Result insertUser(User user,long roleId) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("添加成功");
+
+        try {
+            //save user
+            Integer num = userMapper.insertUser(user);
+            if(num!=1){
+                throw  new Exception("用户保存失败");
+            }
+
+            User dbuser = userMapper.findUserByLoginName(user.getLoginName());
+
+            UserRoleRef urr = new UserRoleRef();
+            urr.setRoleId(roleId);
+            urr.setUserId(dbuser.getUserId());
+            urr.setCreateTime(new Date());
+            //save ref
+            num = userRoleRefMapper.insert(urr);
+            if(num!=1){
+                throw  new Exception("用户角色关联保存失败");
+            }
+        }catch (Exception e){
+            result.setCode(-1);
+            result.setMessage(e.getMessage());
+            return result;
+        }
+		return result;
 	}
 
 	/**
@@ -156,8 +193,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserVo> findAllUser(String searchValue) {
-        Pagination page = new Pagination();
-        return userMapper.queryAllUser(page,searchValue);
+        return userMapper.queryAllUser(new Pagination(),searchValue);
     }
 
     @Override

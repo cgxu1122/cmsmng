@@ -6,11 +6,16 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
+import com.ifhz.core.po.UserRoleRef;
+import com.ifhz.core.service.auth.UserRoleRefService;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.util.MD5keyUtil;
+import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +42,8 @@ import java.util.*;
 public class UserController extends BaseController {
 
 	@Autowired
-	private UserService userService;
+    private UserService userService;
+
 
     /**
      * 登陆管理主页
@@ -83,20 +89,40 @@ public class UserController extends BaseController {
     @RequestMapping("/insert")
     @ResponseBody()
     public String insert(HttpServletRequest req, User user) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("添加成功");
+
+        String roleId = req.getParameter("roleId");
+        if (StringUtils.isBlank(roleId)) {
+            result.setCode(-1);
+            result.setMessage( "请选择角色");
+            return JSON.toJSONString(result);
+        }
+        if(!(user.getType()== UserConstants.USER_TYPE_MANAGER||user.getType()== UserConstants.USER_TYPE_NORMAL)){
+            result.setCode(-1);
+            result.setMessage( "请选择用户类型");
+            return JSON.toJSONString(result);
+        }
+        if(!(user.getStatus()== UserConstants.USER_STATUS_DISABLE||user.getStatus()== UserConstants.USER_STATUS_ENABLE)){
+            result.setCode(-1);
+            result.setMessage( "请选择用户状态");
+            return JSON.toJSONString(result);
+        }
+
 		boolean flag = this.checkUnique(user.getLoginName());
 		if (!flag) {
-			return "用户名称重复";
+            result.setCode(-1);
+            result.setMessage( "用户名称重复");
+			return JSON.toJSONString(result);
 		}
         user.setCreateTime(new Date());
-
-		/**
-		 * 密码加密
-		 */
 		String password = StringUtils.trim(user.getPassword());
         user.setPassword(MD5keyUtil.getMD5Str(password));
-		// user.setStatus(UserStatusEnum.ENABLE.getStatusValue());
-		userService.insertUser(user);
-        return "添加成功";
+
+        //save user
+        result = userService.insertUser(user,Long.valueOf(roleId));
+        return JSON.toJSONString(result);
     }
 
     /**
@@ -193,31 +219,17 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.POST)
     @ResponseBody
-    public String getAllUser(HttpServletRequest request) {
+    public JSONObject getAllUser(HttpServletRequest request) {
 		String searchValue = request.getParameter("searchValue");
 		// 查询记录
 		List<UserVo> userDtoList = userService.findAllUser(searchValue);
-		List<UserVo> userVoList = new ArrayList();
-		UserVo userVo = null;
-		User user = null;
-		Role role = null;
-		for (int i = 0; i < userDtoList.size(); i++) {
-			userVo = new UserVo();
-			user = userDtoList.get(i).getUser();
-			role = userDtoList.get(i).getRole();
-			userVo.setCellphone(user.getCellphone());
-			userVo.setCreateTime(user.getCreateTime());
-			userVo.setStatus(user.getStatus());
-			userVo.setUserId(user.getUserId());
-			userVoList.add(userVo);
-		}
 		// 记录数
 		Long counts = userService.getUserVoCount(searchValue);
 
-		Map dataGridJsonData = new HashMap();
-		dataGridJsonData.put("total", counts);
-		dataGridJsonData.put("rows", userVoList);
-		return JSON.toJSONString(dataGridJsonData);
+        JSONObject result = new JSONObject();
+        result.put("total", counts);
+        result.put("rows", userDtoList);
+		return result;
 
     }
 
@@ -228,17 +240,17 @@ public class UserController extends BaseController {
      * @return
      * @useror radish
      */
-    @RequestMapping("/getByName/{name}")
-    @ResponseBody
-    public String getByName(HttpServletRequest req,
-                            @PathVariable("name") String name) {
-		if (StringUtils.isBlank(name)) {
-			return this.getAllUser(req);
-		} else {
-			User user = userService.findUserByLoginName(name);
-			return JSON.toJSONString(user);
-		}
-    }
+//    @RequestMapping("/getByName/{name}")
+//    @ResponseBody
+//    public String getByName(HttpServletRequest req,
+//                            @PathVariable("name") String name) {
+//		if (StringUtils.isBlank(name)) {
+//			return this.getAllUser(req);
+//		} else {
+//			User user = userService.findUserByLoginName(name);
+//			return JSON.toJSONString(user);
+//		}
+//    }
 
     /**
      * 获取所有用户类型

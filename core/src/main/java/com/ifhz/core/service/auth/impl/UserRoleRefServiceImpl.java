@@ -29,4 +29,9 @@ public class UserRoleRefServiceImpl implements UserRoleRefService{
     public UserRoleRef findRoleIdByUserId(Long userId) {
         return userRoleRefMapper.findRoleIdByUserId(userId);
     }
+
+    @Override
+    public Integer insert(UserRoleRef urr) {
+        return userRoleRefMapper.insert(urr);
+    }
 }

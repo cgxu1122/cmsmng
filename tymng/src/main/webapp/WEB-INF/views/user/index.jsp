@@ -16,6 +16,7 @@ function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新建用户');
     $('#fm').form('clear');
     $("#enable")[0].checked = true;
+    $("#normal")[0].checked = true;
 }
 
 
@@ -62,9 +63,11 @@ function saverow() {
         },
         success: function (result) {
             var result = eval('(' + result + ')');
-            if (result.errorMsg) {
-                $.messager.alert('错误', result.errorMsg);
+            result = eval('(' + result + ')');
+            if (result.code==-1) {
+                $.messager.alert('错误', result.message);
             } else {
+                $.messager.alert('成功', result.message);
                 $('#dlg').dialog('close');
                 $('#dg').datagrid('reload');
             }
@@ -102,21 +105,21 @@ function saveUpdatePassword() {
 }
 function updaterow() {
 
-    var nickname = $('#nicknameUp').val().trim();
-    if (nickname == null || nickname == "" || nickname.length > 15) {
-        $.messager.alert('提示', "输入正确姓名!");
+    var cellphone = $('#cellphoneUp').val();
+    if (cellphone == null || cellphone == "" || cellphone.length > 15) {
+        $.messager.alert('提示', "输入手机号!");
         return;
     }
 
-    var email = $('#emailUp').val();
-    if (email.length > 23) {
-        $.messager.alert('提示', "邮箱长度过长!");
+    var address = $('#addressUp').val();
+    if (address.length > 100) {
+        $.messager.alert('提示', "地址长度过长!");
         return;
     }
 
 
     $('#fm1').form('submit', {
-        url: '<%=basePath%>/auth/update',
+        url: '<%=basePath%>/user/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -197,13 +200,23 @@ function initPage() {
         fit: true,
         columns: [
             [
-                {field: 'roleName', title: '系统角色', align: 'center', width: 200},
-                {field: 'nickname', title: '姓名', align: 'center', width: 100},
-                {field: 'email', title: '邮箱', align: 'center', width: 100},
+                {field: 'loginName', title: '登录名', align: 'center', width: 100},
+                {field: 'realName', title: '姓名', align: 'center', width: 100},
+                {field: 'roleName', title: '角色', align: 'center', width: 100},
+                {field: 'type', title: '用户类型', align: 'center', width: 100, formatter: function (value) {
+                                                                                    if (value == 1) {
+                                                                                        return "普通用户";
+                                                                                    }else if(value == 2){
+                                                                                        return "负责人";
+                                                                                    }else{
+                                                                                        return null;
+                                                                                    }
+                                                                                }
+                },
                 {field: 'cellphone', title: '手机', align: 'center', width: 200},
-                {field: 'telephone', title: '座机', align: 'center', width: 100},
+                {field: 'address', title: '地址', align: 'center', width: 200},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 200},
-                {field: 'status', title: '系统状态', align: 'center', width: 200, formatter: function (value) {
+                {field: 'status', title: '状态', align: 'center', width: 100, formatter: function (value) {
                                                                                         if (value == 1) {
                                                                                             return "启用";
                                                                                         }
@@ -246,7 +259,7 @@ function search() {
             <tr>
 
                 <td>
-                    <input type="text" name="searchValue" id="searchValue" placeholder="姓名/邮箱/角色名称"/>
+                    <input type="text" name="searchValue" id="searchValue" placeholder="姓名/角色名称"/>
                 </td>
                 <td align="center">
                     <a id="searchbtn" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
@@ -286,13 +299,11 @@ function search() {
         </div>
         <div class="fitem" style="margin-left:25px">
             <label><font color="red">*</font>密码:</label>
-            <input type="password" id="password" name="password" class="easyui-validatebox" required="true"
-                   validType="isPasswd">
+            <input type="password" id="password" name="password" class="easyui-validatebox" required="true" validType="isPasswd">
         </div>
         <div class="fitem">
             <label><font color="red">*</font>确认密码:</label>
-            <input type="password" id="comfirmPassword" name="comfirmPassword" class="easyui-validatebox"
-                   required="true">
+            <input type="password" id="comfirmPassword" name="comfirmPassword" class="easyui-validatebox"  required="true">
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>手机:</label>
@@ -303,7 +314,7 @@ function search() {
             <input name="address" class="easyui-numberbox" maxlength="200">
         </div>
         <div class="fitem" style="margin-left:30px">
-            <label>角色:</label>
+            <label><font color="red">*</font>角色:</label>
             <input id="addUser"  name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
         </div>
         <div class="fitem">
@@ -357,21 +368,26 @@ function search() {
         <form id="fm1" method="post" novalidate>
             <input type="hidden" id="userId" name="userId"/>
             <div class="fitem" style="margin-left:25px">
-                <label><font color="red">*</font>邮箱:</label>
-                <input id="emailUp" name="email" class="easyui-validatebox" validType="email" required="true">
+                <label><font color="red">*</font>手机:</label>
+                <input id="cellphoneUp" name="cellphone" class="easyui-numberbox" required="true" validType="digits">
             </div>
             <div class="fitem" style="margin-left:25px">
-                <label><font color="red">*</font>姓名:</label>
-                <input id="nicknameUp" name="nickname" class="easyui-validatebox" required="true">
+                <label><font color="red">*</font>地址:</label>
+                <input id="addressUp" name="address" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem" style="margin-left:30px">
                 <label>角色:</label>
                 <input id="updateUser" name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
             </div>
             <div class="fitem">
-                <label><font color="red">*</font>系统状态:</label>
+                <label><font color="red">*</font>状态:</label>
                 <input type="radio" name="status" value="1"><span>启用</span>
                 <input type="radio" name="status" value="2"/><span>禁用</span>
+            </div>
+            <div class="fitem">
+                <label><font color="red">*</font>用户类型:</label>
+                <input type="radio" name="type" value="1" id="normal"/><span>普通用户</span>
+                <input type="radio" name="type" value="2" id="manager"/><span>负责人</span>
             </div>
         </form>
     </div>

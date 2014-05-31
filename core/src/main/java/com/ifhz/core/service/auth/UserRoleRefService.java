@@ -17,4 +17,6 @@ import java.util.List;
 public interface UserRoleRefService {
 
     UserRoleRef findRoleIdByUserId(Long userId);
+
+    Integer insert(UserRoleRef urr);
 }

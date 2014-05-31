@@ -119,11 +119,11 @@ public interface UserMapper {
     public List<User> findUserByRoleId(long roleId);
 
 
-    public Long findUserByLoginNameAndNotId(Pagination papge,@Param("loginName") String loginName,
+    public Long findUserByLoginNameAndNotId(Pagination page,@Param("loginName") String loginName,
                                                @Param("userId") long userId);
 
 
-    List<UserVo> queryAllUser(@Param("pape") Pagination pape ,@Param("searchValue") String searchValue);
+    List<UserVo> queryAllUser(Pagination pape ,@Param("searchValue") String searchValue);
 
     Long queryUserVoCount(String searchValue);
 }

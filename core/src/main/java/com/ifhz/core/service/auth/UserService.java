@@ -6,6 +6,7 @@ package com.ifhz.core.service.auth;
 
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
+import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 
 import java.util.List;
@@ -23,28 +24,28 @@ public interface UserService {
 	 * 用户新增接口
 	 * 
 	 * @author radish
-	 * @param User
+	 * @param user
 	 * @return
 	 */
-	public boolean insertUser(User User);
+	public Result insertUser(User user,long roleId);
 
 	/**
 	 * 用户更新接口
 	 * 
 	 * @author radish
-	 * @param User
+	 * @param user
 	 * @return
 	 */
-	public boolean updateUser(User User);
+	public boolean updateUser(User user);
 
 	/**
 	 * 管理员修改用户信息
 	 * 
 	 * @author wangshaofen
-	 * @param User
+	 * @param user
 	 * @return
 	 */
-	public boolean updateUserAdmin(User User);
+	public boolean updateUserAdmin(User user);
 
 	/**
 	 * 用户删除接口

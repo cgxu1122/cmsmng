@@ -4,7 +4,7 @@
  */
 package com.ifhz.core.po;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 /**
