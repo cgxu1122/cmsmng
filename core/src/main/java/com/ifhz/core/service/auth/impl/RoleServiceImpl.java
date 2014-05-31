@@ -4,7 +4,7 @@
  */
 package com.ifhz.core.service.auth.impl;
 
-import com.ifhz.core.constants.AuthrityTreeConstants;
+import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.RoleMapper;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
@@ -13,7 +13,6 @@ import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.vo.RoleVo;
-import com.ifhz.core.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

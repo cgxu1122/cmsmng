@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.ifhz.core.constants.AuthrityTreeConstants;
+import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.ResourceMapper;
 import com.ifhz.core.po.Resource;
 import com.ifhz.core.service.auth.ResourceService;

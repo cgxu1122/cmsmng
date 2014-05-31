@@ -5,6 +5,7 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
@@ -194,35 +195,35 @@ public class UserController extends BaseController {
     @ResponseBody
     public String getAllUser(HttpServletRequest request) {
 
-		String searchValue = request.getParameter("searchValue");
-
-		// 查询记录
-		List<UserVo> userDtoList = userService.findAllUser(searchValue);
-		/**
-		 * 将dto转换为vo
-		 */
-		List<UserVo> userVoList = new ArrayList();
-		UserVo userVo = null;
-		User user = null;
-		Role role = null;
-		for (int i = 0; i < userDtoList.size(); i++) {
-			userVo = new UserVo();
-			user = userDtoList.get(i).getUser();
-			role = userDtoList.get(i).getRole();
-			userVo.setCellphone(user.getCellphone());
-			userVo.setCreateTime(user.getCreateTime());
-			userVo.setStatus(user.getStatus());
-			userVo.setUserId(user.getUserId());
-			userVoList.add(userVo);
-
-		}
-
-		// 记录数
-		Long counts = userService.getUserVoCount(searchValue);
+//		String searchValue = request.getParameter("searchValue");
+//
+//		// 查询记录
+//		List<UserVo> userDtoList = userService.findAllUser(searchValue);
+//		/**
+//		 * 将dto转换为vo
+//		 */
+//		List<UserVo> userVoList = new ArrayList();
+//		UserVo userVo = null;
+//		User user = null;
+//		Role role = null;
+//		for (int i = 0; i < userDtoList.size(); i++) {
+//			userVo = new UserVo();
+//			user = userDtoList.get(i).getUser();
+//			role = userDtoList.get(i).getRole();
+//			userVo.setCellphone(user.getCellphone());
+//			userVo.setCreateTime(user.getCreateTime());
+//			userVo.setStatus(user.getStatus());
+//			userVo.setUserId(user.getUserId());
+//			userVoList.add(userVo);
+//
+//		}
+//
+//		// 记录数
+//		Long counts = userService.getUserVoCount(searchValue);
 
 		Map dataGridJsonData = new HashMap();
-		dataGridJsonData.put("total", counts);
-		dataGridJsonData.put("rows", userVoList);
+//		dataGridJsonData.put("total", counts);
+//		dataGridJsonData.put("rows", userVoList);
 		return JSON.toJSONString(dataGridJsonData);
 
     }
@@ -255,9 +256,9 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/getAllRole")
     @ResponseBody
-    public String getAllRole() {
+    public JSONArray getAllRole() {
 		List<Role> roleList = userService.findAllRole();
-		return JSON.toJSONString(roleList);
+		return JSON.parseArray(JSON.toJSONString(roleList));
     }
 
 }

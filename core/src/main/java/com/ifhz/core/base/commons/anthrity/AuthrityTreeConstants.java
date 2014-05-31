@@ -2,7 +2,7 @@
  * Copyright(c) 2013-2013 by Puhuifinance Inc.
  * All Rights Reserved
  */
-package com.ifhz.core.constants;
+package com.ifhz.core.base.commons.anthrity;
 
 /**
  * @author radishlee

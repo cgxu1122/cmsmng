@@ -45,7 +45,7 @@ function updatePassword(obj) {
 function saverow() {
     var cp = $('#comfirmPassword').val();
     var p = $('#password').val();
-    var nickname = $('#nickname').val().trim();
+    var nickname = $('#loginName').val().trim();
     if (nickname == null || nickname == "" || nickname.length > 15) {
         $.messager.alert('提示', "输入正确姓名!");
         return;
@@ -54,14 +54,14 @@ function saverow() {
         $.messager.alert('提示', "两次输入密码不一致!");
         return;
     }
-    var email = $('#email').val();
-    if (email.length > 23) {
-        $.messager.alert('提示', "邮箱长度过长!");
+    if (cp.length > 16) {
+        $.messager.alert('提示', "密码长度过长!");
         return;
     }
 
+    alert();
     $('#fm').form('submit', {
-        url: '<%=basePath%>/auth/insert',
+        url: '<%=basePath%>/user/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -69,10 +69,6 @@ function saverow() {
             var result = eval('(' + result + ')');
             if (result.errorMsg) {
                 $.messager.alert('错误', result.errorMsg);
-                /*  $.messager.show({
-                 title: 'Error',
-                 msg: result.errorMsg
-                 }); */
             } else {
                 $('#dlg').dialog('close');
                 $('#dg').datagrid('reload');
@@ -171,7 +167,7 @@ function initPage() {
         height: '522',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/auth/getAll',
+        url: '<%=basePath%>/user/getAll',
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         fitColumns: true,
@@ -203,7 +199,7 @@ function initPage() {
 
     //设置角色选择下拉框去获取所有角色列表
     $("#allRoles").combobox({
-        url: "<%=basePath%>/auth/getAllRole",
+        url: "<%=basePath%>/user/getAllRole",
         valueField: "id",
         textField: "roleName"
     });
@@ -261,13 +257,13 @@ function search() {
     <br/>
 
     <form id="fm" method="post" novalidate>
-        <div class="fitem" style="margin-left:25px">
+        <div class="fitem" style="margin-left:11px">
             <label><font color="red">*</font>登录名:</label>
             <input id="loginName" name="loginName" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem" style="margin-left:25px">
             <label><font color="red">*</font>姓名:</label>
-            <input id="real_name" name="real_name" class="easyui-validatebox" required="true">
+            <input id="realName" name="realName" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem" style="margin-left:25px">
             <label><font color="red">*</font>密码:</label>
@@ -289,17 +285,16 @@ function search() {
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>角色:</label>
-            <select id="roleId" name="roleId" class="easyui-combogrid" required="true" style="width:160px"
+            <select  name="roleId" class="easyui-combogrido" required="true" style="width:160px"
                     data-options="
 		            panelWidth: 300,
-		            idField: 'id',
+		            idField: 'roleId',
 		            textField: 'roleName',
 		            url: '<%=basePath%>/user/getAllRole',
 		            method: 'get',
 		            columns: [[
-		                {field:'id',hidden:true},
+		                {field:'roleId',hidden:true},
 		                {field:'roleName',title:'角色名称',width:120}
-		               
 		            ]],
 		            fitColumns: true
 		        ">
@@ -307,12 +302,12 @@ function search() {
         </div>
         <div class="fitem">
             <label><font color="red">*</font>状态:</label>
-            <input type="radio" name="status" value="1" id="enable"/><span>启用</span>
+            <input type="radio" name="status" value="1" id="enable" checked="checked"/><span>启用</span>
             <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
         </div>
         <div class="fitem">
             <label><font color="red">*</font>用户类型:</label>
-            <input type="radio" name="type" value="1" id="normal"/><span>普通用户</span>
+            <input type="radio" name="type" value="1" id="normal" checked="checked"/><span>普通用户</span>
             <input type="radio" name="type" value="2" id="manager"/><span>负责人</span>
         </div>
     </form>
@@ -365,28 +360,18 @@ function search() {
                 <label><font color="red">*</font>姓名:</label>
                 <input id="nicknameUp" name="nickname" class="easyui-validatebox" required="true">
             </div>
-            <!-- <div class="fitem" style="margin-left:25px">
-                <label>手机:</label>
-                <input name="cellphone" class="easyui-numberbox" validType="digits">
-            </div> -->
-            <!--   <div class="fitem" style="margin-left:25px">
-                  <label>座机:</label>
-                  <input name="telephone" class="easyui-numberbox" validType="digits">
-              </div> -->
-
             <div class="fitem" style="margin-left:30px">
                 <label>角色:</label>
-                <select id="roleId" name="roleId" class="easyui-combogrid" required="true" style="width:160px"
+                <select name="roleId" class="easyui-combogrid" required="true" style="width:160px"
                         data-options="
 		            panelWidth: 300,
-		            idField: 'id',
+		            idField: 'roleId',
 		            textField: 'roleName',
 		            url: '<%=basePath%>/user/getAllRole',
 		            method: 'get',
 		            columns: [[
-		                {field:'id',hidden:true},
+		                {field:'roleId',hidden:true},
 		                {field:'roleName',title:'角色名称',width:120}
-		            
 		            ]],
 		            fitColumns: true
 		        ">
@@ -394,7 +379,7 @@ function search() {
             </div>
             <div class="fitem">
                 <label><font color="red">*</font>系统状态:</label>
-                <input type="radio" name="status" value="1"/><span>启用</span>
+                <input type="radio" name="status" value="1" ><span>启用</span>
                 <input type="radio" name="status" value="2"/><span>禁用</span>
             </div>
         </form>
