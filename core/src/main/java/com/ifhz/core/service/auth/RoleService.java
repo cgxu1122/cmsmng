@@ -8,6 +8,7 @@ import com.ifhz.core.po.Role;
 import com.ifhz.core.vo.RoleVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色管理
@@ -23,16 +24,16 @@ public interface RoleService {
      * @return
      * @author luyujian
      */
-    public List<RoleVo> queryRoleInfoByRoleName(String roleName);
+    public List<Role> queryRoleInfoByRoleName(String roleName);
 
-//    /**
-//     * 获取资源列表
-//     *
-//     * @author luyujian
-//     * @return
-//     */
-//    public List<Map> getResourceList();
-//
+    /**
+     * 获取资源列表
+     *
+     * @author luyujian
+     * @return
+     */
+    //public List<Map> getResourceList();
+
 
     /**
      * 获取所有角色
@@ -56,7 +57,7 @@ public interface RoleService {
      * @author radishlee
      * @return
      */
-//    public String findAllRoleResourceXmlString(long id);
+    public String findAllRoleResourceXmlString(long id);
 
     /**
      * 授权
@@ -66,7 +67,7 @@ public interface RoleService {
      * @param resIdList
      * @return
      */
-//    public void authorization(String string, List<String> resIdList);
+    public void authorization(String string, List<String> resIdList);
 
     /**
      * 根据id查询
@@ -109,32 +110,32 @@ public interface RoleService {
      * @param roleName
      * @return
      */
-//    public Role findByRoleNameBesideSelf(String roleName, long id);
+    public Role findByRoleNameBesideSelf(String roleName, long id);
 
-//    /**
-//     * @author radishlee
-//     * @param role
-//     */
-//    public void update(Role role);
-//
-//    /**
-//     * @author radishlee
-//     * @param id
-//     */
-//    public void delete(long id);
+    /**
+     * @author radishlee
+     * @param role
+     */
+    public void update(Role role);
+
+    /**
+     * @author radishlee
+     * @param id
+     */
+    public void delete(long id);
 
     /**
      * @author radishlee
      * @param roleId
      */
-//    public void deleteAllRefByRoleId(long roleId);
+    public void deleteAllRefByRoleId(long roleId);
 
     /**
      * @author radishlee
      * @param roleId
      * @return
      */
-//    public boolean check2Delete(long roleId);
+    public boolean check2Delete(long roleId);
 
     /**
      * 根据id查找父角色
@@ -150,5 +151,5 @@ public interface RoleService {
      * @author radish
      * @return
      */
-//    public RoleVo getAdminRole();
+    public RoleVo getAdminRole();
 }

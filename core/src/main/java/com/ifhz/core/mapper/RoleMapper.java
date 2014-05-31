@@ -4,10 +4,13 @@
  */
 package com.ifhz.core.mapper;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.Role;
+import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
 
@@ -25,63 +28,11 @@ public interface RoleMapper {
      * @return
      * @author luyujian
      */
-    public int insertRole(Role role);
-
-//    /**
-//     * 添加角色与资源关联关系
-//     * 
-//     * @author luyujian
-//     * @param resourceRef
-//     * @return
-//     */
-//    public int insertRoleResRef(RoleResourceRef resourceRef);
-//
-//    /**
-//     * 批量添加角色与资源关联关系
-//     * 
-//     * @author luyujian
-//     * @param resourceRef
-//     * @return
-//     */
-//    public void batchInsertRoleResRef(@Param("list") List<RoleResourceRef> ltRoleResourceRef);
+    public Integer insertRole(Role role);
 
     /**
-     * 根据角色名称查询角色信息
+     * 批量添加角色与资源关联关系
      *
-     * @param roleName
-     * @return
-     * @author luyujian
-     */
-    public List<RoleVo> queryRoleInfoByRoleName(@Param(value = "roleName") String roleName);
-
-    /**
-     * 根据ID查询角色信息
-     *
-     * @author luyujian
-     * @param roleId
-     * @return
-     */
-    // modify by wangshaofen[20140310]
-    // public RoleMangerVo findRoleInfoById(long roleId);
-
-//    /**
-//     * 更新角色名称
-//     *
-//     * @author luyujian
-//     * @param roleId
-//     * @param roleName
-//     * @return
-//     */
-//    public boolean updateRoleName(long roleId, String roleName);
-//
-//    /**
-//     * 更新角色
-//     *
-//     * @author luyujian
-//     * @return
-//     */
-//    public int updateRole();
-
     /**
      * 查询角色
      *
@@ -91,13 +42,29 @@ public interface RoleMapper {
      */
     public List<Role> queryRoleByRoleName(@Param(value = "roleName") String roleName);
 
-    /**
-     * HEAD 获取资源列表
-     *
-     * @return
-     * @author luyujian
-     */
-    public List<Map> getResourceList();
+//    /**
+//     * HEAD 获取资源列表
+//     *
+//     * @return
+//     * @author luyujian
+//     */
+//    public List<Map> getResourceList();
+
+//     * @author luyujian
+//     * @param ltRoleResourceRef
+//     * @return
+//     */
+
+//    public Integer batchInsertRoleResRef(@Param("list") List<RoleResourceRef> ltRoleResourceRef);
+//    /**
+//     * 根据角色名称查询角色信息
+//     *
+//     * @param roleName
+//     * @return
+//     * @author luyujian
+//     */
+
+//    public List<RoleVo> queryRoleInfoByRoleName(Pagination page,@Param(value = "roleName") String roleName);
 
     /**
      * 获取所有角色
@@ -113,7 +80,7 @@ public interface RoleMapper {
      * @return
      * @author radishlee
      */
-    public Role findRootRole(long rootParentId);
+    public Role findRootRole();
 
     /**
      * 找到当前节点下的所有子节点
@@ -123,6 +90,7 @@ public interface RoleMapper {
      * @author radishlee
      */
     public List<Role> findAllChildrenById(long roleId);
+
 
     /**
      * 根据id查询
@@ -134,6 +102,23 @@ public interface RoleMapper {
     public Map findById(long id);
 
     /**
+     * 获取系统管理员角色
+     *
+     * @return
+     * @author radish
+     */
+    public Role getAdminRole();
+
+    /**
+     * 根据id查找父角色
+     *
+     * @param id
+     * @return
+     * @author wangshaofen
+     */
+    public Role findParentById(Pagination page,@Param(value = "id") long id);
+
+    /**
      * 根据名称查询
      *
      * @param roleName
@@ -143,6 +128,13 @@ public interface RoleMapper {
     public Role findByRoleName(String roleName);
 
     /**
+     * @param roleName
+     * @return
+     * @author radishlee
+     */
+    public Role findByRoleNameBesideSelf(Pagination pape,@Param(value = "roleName") String roleName, @Param(value = "id") long id);
+
+    /**
      * 更新全路径
      *
      * @param id
@@ -150,14 +142,7 @@ public interface RoleMapper {
      * @return
      * @author radishlee
      */
-    public void updateFullPath(@Param(value = "id") long id, @Param(value = "fullPath") String fullPath);
-
-    /**
-     * @param roleName
-     * @return
-     * @author radishlee
-     */
-    public Role findByRoleNameBesideSelf(@Param(value = "roleName") String roleName, @Param(value = "id") long id);
+    public Integer updateFullPath(@Param(value = "id") long id, @Param(value = "fullPath") String fullPath);
 
     /**
      * 更新role
@@ -165,7 +150,8 @@ public interface RoleMapper {
      * @param role
      * @author radishlee
      */
-    public void updateRole(Role role);
+    public int updateRole(Role role);
+
 
     /**
      * 删除
@@ -173,24 +159,6 @@ public interface RoleMapper {
      * @param id
      * @author radishlee
      */
-    public void delete(long id);
-
-    /**
-     * 根据id查找父角色
-     *
-     * @param id
-     * @return
-     * @author wangshaofen
-     */
-
-    public Role findParentById(@Param(value = "id") long id);
-
-    /**
-     * 获取系统管理员角色
-     *
-     * @return
-     * @author radish
-     */
-    public Map getAdminRole();
+    public int delete(long id);
 
 }

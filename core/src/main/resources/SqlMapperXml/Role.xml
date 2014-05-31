@@ -1,248 +1,224 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ifhz.core.mapper.RoleMapper">
-
-    <sql id="TABLE_NAME">TY_ROLE</sql>
-
-
-    <!-- 插入角色记录 -->
-    <insert id="insertRole" parameterType="com.ifhz.core.po.Role" keyProperty="role_id">
-        <selectKey resultType="Long" keyProperty="role_id">
+	<!-- 插入角色记录 -->
+	<insert id="insertRole" parameterType="com.ifhz.core.po.Role">
+		insert into ty_role
+			(role_id,role_name,create_time,parent_id,full_path,levels)
+		values
+			(SEQ_TY_ROLE.nextval,#{roleName},sysdate,#{parentId},#{fullPath},#{levels})
+        <selectKey resultType="long" keyProperty="role_id">
             SELECT SEQ_TY_ROLE.CURRVAL FROM DUAL
         </selectKey>
-        insert into
-        <include refid="TABLE_NAME"/>
-        (role_id,role_name,create_time,parent_id,levels)
-        values
-        ("SEQ_TY_ROLE".nextval,#{roleName},sysdate,#{parentId},#{levels})
+	</insert>
+
+
+
+	<!-- 批量插入角色与资源关系数据
+	<insert id="batchInsertRoleResRef">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_TY_ROLE_RESOURCE_REF.CURRVAL FROM DUAL
+        </selectKey>
+
+		insert into ty_role_resource_ref
+		(id,role_id,resource_id,acces,create_time)
+
+        select  SEQ_TY_ROLE_RESOURCE_REF.NEXTVAL,A.*  from(
+        <foreach collection="list" item="item" index="index" separator="union all">
+            SELECT  '#{item.roleId,jdbcType=BIGINT}', '#{item.resourceId,jdbcType=BIGINT}',  '#{item.acces,jdbcType=INTEGER}', 'sysdate'  FROM DUAL
+		</foreach>
+        ) A
     </insert>
 
 
-    <!-- 批量插入角色与资源关系数据 -->
-    <!--<insert id="batchInsertRoleResRef">-->
-    <!--insert into role_resource_ref-->
-    <!--(role_id,res_id,access,create_time)-->
-    <!--values-->
-    <!--<foreach collection="list" item="item" index="index"-->
-    <!--separator=",">-->
-    <!--(#{item.roleId},#{item.resId},#{item.access},now())-->
-    <!--</foreach>-->
-
-    <!--</insert>-->
-
-
-    <!-- 角色查询 -->
-    <select id="queryRoleInfoByRoleName" resultMap="roleMangerResultMap">
+    <select id="getResourceList" resultType="java.util.HashMap">
+		SELECT
+			rrP.res_name AS parentName,
+			GROUP_CONCAT(rr.resource_id) AS resIds,
+			rr.parent_id AS parentId,
+			GROUP_CONCAT(rr.res_name) AS resNames
+		FROM
+			ty_resource rr,
+			(
+			SELECT
+			resource_id,
+			res_name
+			FROM
+			ty_resource
+			WHERE
+			parent_id = -1
+			) rrP
+		WHERE
+			rr.parent_id = rrP.resource_id
+		GROUP BY
+			rr.parent_id
+	</select>
+    -->
+    <select id="queryRoleInfoByRoleName">
         select
         t.role_name as roleName,
         t.create_time as createTime,
         GROUP_CONCAT(t.res_name) as moudleName,
-        GROUP_CONCAT(T.access) as moudleAcess
+        GROUP_CONCAT(t.acces) as moudleAcess
         from (
         select DISTINCT
         r.role_name,
         r.create_time,
         res.res_name,
-        rr.access
-        from role r
-        join role_resource_ref rr
-        join resource res on res.parent_id >0
+        rr.acces
+        from ty_role r
+        join ty_role_resource_ref rr
+        join ty_resource res on res.parent_id >0
         <if test="roleName!=null">
             where r.role_name=#{roleName}
         </if>
         ) t
     </select>
 
-
-    <!--获取资源列表 -->
-    <select id="getResourceList" resultType="java.util.HashMap">
-		SELECT
-			rrP.res_name AS parentName,
-			GROUP_CONCAT(rr.id) AS resIds,
-			rr.parent_id AS parentId,
-			GROUP_CONCAT(rr.res_name) AS resNames
-		FROM
-			resource rr,
-			(
-			SELECT
-			id,
-			res_name
-			FROM
-			resource
-			WHERE
-			parent_id = 0
-			) rrP
-		WHERE
-			rr.parent_id = rrP.id
-		GROUP BY
-			rr.parent_id
-	</select>
-
-
-    <select id="findAllRole" resultType="com.caikee.core.model.Role">
+	<select id="findAllRole" resultType="com.ifhz.core.po.Role">
 		select 
-		        id,
+		        role_id as roleId,
 		 		role_name as roleName,
-				ext,
 				create_time as createTime,
 				parent_id as parentId,
-				icon,
 				levels,
 				full_path as fullPath
 		from 
-				role 
+				ty_role
 	</select>
 
-
-    <select id="findRootRole" resultType="com.caikee.core.model.Role">
+	<select id="findRootRole" resultType="com.ifhz.core.po.Role">
 		select 
-		        id,
+		        role_id as roleId,
 		 		role_name as roleName,
-				ext,
 				create_time as createTime,
 				parent_id as parentId,
-				icon,
 				levels,
 				full_path as fullPath
 		from 
-				role 
+				ty_role
 		where 
-		        parent_id = #{parentId}	
+		        parent_id = -1
 	</select>
-
-
-    <select id="findAllChildrenById" resultType="com.caikee.core.model.Role">
+	
+	<select id="findAllChildrenById" resultType="com.ifhz.core.po.Role">
 		select 
-		        id,
+		        role_id as roleId,
 		 		role_name as roleName,
-				ext,
 				create_time as createTime,
 				parent_id as parentId,
-				icon,
 				levels,
 				full_path as fullPath
 		from 
-				role 
+				ty_role
 		where 
 		        parent_id = #{id}		
 	</select>
 
-
-    <select id="findById" resultType="java.util.Map">
+	<select id="findById" resultType="java.util.Map">
 		select 
-		        child.id,
+		        child.role_id,
 		 		child.role_name as roleName,
-				child.ext,
 				child.create_time as createTime,
 				child.parent_id as parentId,
 				parent.role_name as parentName,
-				child.icon,
 				child.levels,
 				child.full_path as fullPath
 		from 
-				role child 
+				ty_role  child
 		join    
-		        role parent
+		        ty_role  parent
 		on      
-		        child.parent_id = parent.id        
+		        child.parent_id = parent.role_id
 		where 
-		        child.id = #{id}		
+		        child.role_id = #{id}
 	</select>
 
-    <select id="getAdminRole" resultType="java.util.Map">
+
+	<select id="getAdminRole" resultType="com.ifhz.core.po.Role">
 		select 
-		        id,
+		        role_id as roleId,
 		 		role_name as roleName,
-				ext,
 				create_time as createTime,
 				parent_id as parentId,
-				icon,
 				levels,
 				full_path as fullPath
 		from 
-				role   
+				ty_role
 		where 
-		        id = 1		
+		        parent_id = -1
 	</select>
-
-    <!-- 根据id查找父角色 -->
-    <select id="findParentById" resultType="com.caikee.core.model.Role">
-		select 
-		        id,
-		 		role_name as roleName,
-				ext,
-				create_time as createTime,
-				parent_id as parentId,
-				icon,
-				levels,
-				full_path as fullPath
-		from 
-				role  
-		where 
-		        id = #{id}	
 	
-	</select>
-
-
-    <select id="findByRoleName" resultType="com.caikee.core.model.Role">
+	<!-- 根据id查找父角色 -->
+	<select id="findParentById" resultType="com.ifhz.core.po.Role" >
 		select 
-		        role_id,
+		        role_id as roleId,
 		 		role_name as roleName,
 				create_time as createTime,
 				parent_id as parentId,
 				levels,
 				full_path as fullPath
 		from 
-				role  
+				ty_role
+		where 
+		        role_id = #{id}
+	</select>
+	
+	
+	<select id="findByRoleName" resultType="com.ifhz.core.po.Role">
+		select 
+		        role_id as roleId,
+		 		role_name as roleName,
+				create_time as createTime,
+				parent_id as parentId,
+				levels,
+				full_path as fullPath
+		from 
+				ty_role
 		where 
 		        role_name = #{roleName}		
 	</select>
-
-    <select id="findByRoleNameBesideSelf" resultType="com.caikee.core.model.Role">
+	
+	<select id="findByRoleNameBesideSelf" resultType="com.ifhz.core.po.Role">
 		select 
-		        id,
+		        role_id as roleId,
 		 		role_name as roleName,
-				ext,
 				create_time as createTime,
 				parent_id as parentId,
-				icon,
 				levels,
 				full_path as fullPath
 		from 
-				role  
+				ty_role
 		where 
 		        role_name = #{roleName}	
 		and  
-		        id != #{id}        	
+		        role_id != #{id}
 	</select>
-
-
-    <update id="updateFullPath" statementType="PREPARED" timeout="20000">
-        update role
+	
+	
+	<update id="updateFullPath"  statementType="PREPARED"   timeout="20000">
+		update ty_role
         <set>
-            full_path = #{fullPath},
-        </set>
-        where role_id = #{id}
-    </update>
-
-    <update id="updateRole" parameterType="com.caikee.core.model.Role" statementType="PREPARED" timeout="20000">
-        update role
+			full_path = #{fullPath},
+		</set>
+			where role_id = #{id}
+	</update>
+	
+	<update id="updateRole" parameterType="com.ifhz.core.po.Role"  statementType="PREPARED"   timeout="20000">
+		update ty_role
         <set>
-            <if test="roleName != null">
-                role_name = #{roleName},
-            </if>
-            <if test="icon != null">
-                icon = #{icon},
-            </if>
-        </set>
-        where id = #{id}
-    </update>
-
-
-    <delete id="delete" parameterType="long">
+			<if test="roleName != null">
+				role_name = #{roleName},
+			</if>
+		</set>
+			where role_id = #{roleId}
+	</update>
+	
+	
+	<delete id="delete" parameterType="long">
         delete from 
-        	 role 
+        	 ty_role
         where 
-             id=#{id}
+             role_id=#{id}
     </delete>
 </mapper>

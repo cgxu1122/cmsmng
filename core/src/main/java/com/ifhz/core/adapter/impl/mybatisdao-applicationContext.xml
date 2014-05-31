@@ -73,11 +73,11 @@
                 <value>classpath:SqlMapperXml/DictInfo.xml</value>
                 <value>classpath:SqlMapperXml/LogCount.xml</value>
                 <value>classpath:SqlMapperXml/ProductCount.xml</value>
-                <value>classpath:SqlMapperXml/Role.xml</value>
-                <value>classpath:SqlMapperXml/User.xml</value>
                 <value>classpath:SqlMapperXml/Resource.xml</value>
-                <value>classpath:SqlMapperXml/RoleResourceRef.xml</value>
+                <value>classpath:SqlMapperXml/Role.xml</value>
                 <value>classpath:SqlMapperXml/UserRoleRef.xml</value>
+                <value>classpath:SqlMapperXml/User.xml</value>
+                <value>classpath:SqlMapperXml/RoleResourceRef.xml</value>
             </list>
         </property>
     </bean>
@@ -165,20 +165,20 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.RoleMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.UserMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
     <bean id="resourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.ResourceMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="roleResourceRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.RoleResourceRefMapper"/>
+    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.UserMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="userRoleRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.UserRoleRefMapper"/>
+    <bean id="userRoleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.UserRoleMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="roleResourceRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.RoleResourceRefMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 </beans>

@@ -16,7 +16,7 @@ import java.util.List;
 public class LogCountAdapterImpl implements LogCountAdapter {
 
 
-    @Resource(name = "logCountMapper")
+    //@Resource(name = "logCountMapper")
     private LogCountMapper logCountMapper;
 
     @Override

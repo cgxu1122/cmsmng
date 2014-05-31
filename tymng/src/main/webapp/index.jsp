@@ -208,7 +208,7 @@
 
         <div title="系统用户管理" style="overflow: auto;">
             <div class="nav-item">
-                <a href="javascript:addTab('系统用户管理','<%=basePath%>/staff/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('系统用户管理','<%=basePath%>/user/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>系统用户管理</span>
                 </a>

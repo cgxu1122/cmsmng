@@ -1,0 +1,46 @@
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>Shiro安全配置</description>
+	&lt;!&ndash; 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 &ndash;&gt;
+	<bean id="shiroDbRealm" class="com.ifhz.core.service.auth.impl.ShiroDbRealm">
+        <property name="userService" ref="userService" />
+        <property name="userRoleRefService" ref="userRoleRefService" />
+        <property name="resourceService" ref="resourceService" />
+        <property name="roleService" ref="roleService" />
+	</bean>
+	
+	&lt;!&ndash; 用户授权信息Cache, 采用EhCache &ndash;&gt;
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath*:conf/shiro-ehcache-conf.xml"/>
+	</bean>
+	
+	&lt;!&ndash; Shiro's main business-tier object for web-enabled applications &ndash;&gt;
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroDbRealm" />
+ 		<property name="cacheManager" ref="shiroEhcacheManager" /> 
+	</bean>
+
+	&lt;!&ndash; Shiro Filter &ndash;&gt;
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/" />
+		<property name="filterChainDefinitions">
+			<value>
+				/login = authc  
+				/logout = logout  
+				/image/** = anon
+				/common/** = anon
+				/plug/** = anon
+				/** = authc
+			</value>
+		</property>
+	</bean>
+	
+	&lt;!&ndash; 保证实现了Shiro内部lifecycle函数的bean执行&ndash;&gt;
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/> 
+</beans>-->

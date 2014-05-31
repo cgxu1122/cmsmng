@@ -294,7 +294,7 @@ function search() {
 		            panelWidth: 300,
 		            idField: 'id',
 		            textField: 'roleName',
-		            url: '<%=basePath%>/staff/getAllRole',
+		            url: '<%=basePath%>/user/getAllRole',
 		            method: 'get',
 		            columns: [[
 		                {field:'id',hidden:true},
@@ -381,7 +381,7 @@ function search() {
 		            panelWidth: 300,
 		            idField: 'id',
 		            textField: 'roleName',
-		            url: '<%=basePath%>/staff/getAllRole',
+		            url: '<%=basePath%>/user/getAllRole',
 		            method: 'get',
 		            columns: [[
 		                {field:'id',hidden:true},

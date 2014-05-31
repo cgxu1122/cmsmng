@@ -31,7 +31,10 @@ public final class GlobalConstants {
     public static final String DATE_FORMAT_DPT = "yyyy-MM-dd";
     public static final String DATE_FORMAT_DPT_ZH = "yyyy年MM月dd日";
 
-
+    /**
+     * 系统管理员角色id
+     */
+    public static final int ADMIN_ROLE_ID = 1;
     /**
      * 系统初始化时间Key
      */
