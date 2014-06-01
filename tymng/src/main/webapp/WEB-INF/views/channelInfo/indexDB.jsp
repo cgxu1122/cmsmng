@@ -3,191 +3,242 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ include file="/common/header.jsp" %>
-    <title>Demo</title>
-    <script type="text/javascript" src="<%= basePath %>/common/js/validateExtends.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            initPage();
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@ include file="/common/header.jsp" %>
+<title>Demo</title>
+<script type="text/javascript" src="<%= basePath %>/common/js/validateExtends.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    initPage();
+});
+function addrow() {
+    $('#dlg').dialog('open').dialog('setTitle', '新增');
+    $('#fm').form('clear');
+}
+function saverow() {
+    $("#groupId").val("${groupId}");
+    $("#parentId").val($("#parentIdCondition").val());
+    $('#fm').form('submit', {
+        url: '<%=basePath%>/channelInfo/insert',
+        onSubmit: function () {
+            return $(this).form('validate');
+        },
+        success: function (result) {
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                $('#dlg').dialog('close');
+                $('#dg').datagrid('reload');
+                reloadTree();
+            }
+        }
+    });
+}
+
+function editrow() {
+    var row = $('#dg').datagrid('getSelected');
+    if (row) {
+        $('#updatedlg').dialog('open').dialog('setTitle', '修改');
+        $('#upfm').form('clear');
+        $('#upfm').form('load', row);
+    }
+}
+function saveUpdate() {
+    $('#upfm').form('submit', {
+        url: '<%=basePath%>/channelInfo/update',
+        onSubmit: function () {
+            return $(this).form('validate');
+        },
+        success: function (result) {
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                $('#updatedlg').dialog('close');
+                $('#dg').datagrid('reload');
+                reloadTree();
+            }
+        }
+    });
+}
+
+function delrow() {
+    var row = $('#dg').datagrid('getSelected');
+    if (row) {
+        $.messager.confirm('提示', '确定要删除[' + row.channelName + ']?', function (r) {
+            if (r) {
+                $.post('<%=basePath%>/channelInfo/delete', {channelId: row.channelId}, function (result) {
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        $('#dg').datagrid('reload');
+                        reloadTree();
+                    }
+                }, 'json');
+            }
         });
-        function addrow() {
-            $('#dlg').dialog('open').dialog('setTitle', '新增');
-            $('#fm').form('clear');
-        }
-        function saverow() {
-            $("#groupId").val("${groupId}");
-            $("#parentId").val($("#parentIdCondition").val());
-            $('#fm').form('submit', {
-                url: '<%=basePath%>/channelInfo/insert',
-                onSubmit: function () {
-                    return $(this).form('validate');
-                },
-                success: function (result) {
-                    var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
-                        $.messager.alert('错误', result.errorMsg);
-                    } else {
-                        $('#dlg').dialog('close');
-                        $('#dg').datagrid('reload');
-                        reloadTree();
+    }
+}
+
+function searchEvt() {
+    var value = $('#searchValue').val();
+    var parentIdCondition = $('#parentIdCondition').val();
+    $('#dg').datagrid({
+        url: "<%=basePath%>/channelInfo/list",
+        queryParams: {groupId: '${groupId}', channelNameCondition: value, parentIdCondition: parentIdCondition}
+    });
+}
+
+function initPage() {
+    reloadTree();
+    $('#dg').datagrid({
+        width: '1001px',
+        height: 'auto',
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/channelInfo/list',
+        queryParams: {groupId: '${groupId}'},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'channelId', title: '渠道id', align: 'center', width: 50},
+                {field: 'channelName', title: '渠道名称', align: 'center', width: 100},
+                {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
+                {field: 'mngName', title: '负责人', align: 'center', width: 80},
+                {field: 'username', title: '用户名', align: 'center', width: 80},
+                {field: 'password', title: '密码', align: 'center', width: 80},
+                {field: 'address', title: '地址', align: 'center', width: 100},
+                {field: 'contact', title: '联系人', align: 'center', width: 80},
+                {field: 'phone', title: '联系方式', align: 'center', width: 80},
+                {field: 'laowuName', title: '劳务公司', align: 'center', width: 100},
+                {field: 'createTime', title: '创建日期', align: 'center', width: 80,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd");
                     }
                 }
-            });
-        }
+            ]
+        ]
+    });
+}
 
-        function editrow() {
-            var row = $('#dg').datagrid('getSelected');
-            if (row) {
-                $('#updatedlg').dialog('open').dialog('setTitle', '修改');
-                $('#upfm').form('load', row);
-            }
+function reloadTree() {
+    $('#tt').tree({
+        url: "<%=basePath%>/channelInfo/listTree?groupId=${groupId}",
+        onClick: function (node) {
+            $('#parentIdCondition').val(node.id);
+            searchEvt();
+        },
+        onBeforeExpand: function (node, param) {
+            $('#tt').tree('options').url = "<%=basePath%>/channelInfo/listTree?groupId=${groupId}&parentIdCondition=" + node.id;
         }
-        function saveUpdate() {
-            $('#upfm').form('submit', {
-                url: '<%=basePath%>/channelInfo/update',
-                onSubmit: function () {
-                    return $(this).form('validate');
+    });
+}
+
+function showLaowuDialog(type, upLaowuId) {
+    $('#laowudlg').dialog('open').dialog('setTitle', '选择劳务公司');
+    $('#laowudg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/channelInfo/list',
+        queryParams: {groupId: '4'},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'channelId', title: '劳务id', align: 'center', width: 50},
+                {field: 'channelName', title: '劳务名称', align: 'center', width: 200},
+                {field: 'createTime', title: '创建日期', align: 'center', width: 150,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd");
+                    }
                 },
-                success: function (result) {
-                    var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
-                        $.messager.alert('错误', result.errorMsg);
-                    } else {
-                        $('#updatedlg').dialog('close');
-                        $('#dg').datagrid('reload');
-                        reloadTree();
+                {field: 'action', title: '操作', align: 'center', width: 100,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:selectLaowu('" + row.channelId + "','" + row.channelName + "','" + type + "')>选择</a>";
                     }
                 }
-            });
-        }
+            ]
+        ]
+    });
+}
+function searchLaowuEvt() {
+    var value = $('#searchLaowuValue').val();
+    $('#laowudg').datagrid({
+        url: "<%=basePath%>/channelInfo/list",
+        queryParams: {groupId: '4', channelNameCondition: value}
+    });
+}
+function selectLaowu(laowuId, laowuName, type) {
+    if (type == 2) {//修改
+        $("#upLaowuId").val(laowuId);
+        $("#upLaowuName").val(laowuName);
+    } else if (type == 1) {//新增
+        $("#laowuId").val(laowuId);
+        $("#laowuName").val(laowuName);
+    }
+    $('#laowudlg').dialog('close');
+}
 
-        function delrow() {
-            var row = $('#dg').datagrid('getSelected');
-            if (row) {
-                $.messager.confirm('提示', '确定要删除[' + row.channelName + ']?', function (r) {
-                    if (r) {
-                        $.post('<%=basePath%>/channelInfo/delete', {channelId: row.channelId}, function (result) {
-                            if (result.errorMsg) {
-                                $.messager.alert('错误', result.errorMsg);
-                            } else {
-                                $('#dg').datagrid('reload');
-                                reloadTree();
-                            }
-                        }, 'json');
+
+function showMngDialog(type, upMngId) {
+    $('#mngdlg').dialog('open').dialog('setTitle', '选择负责人');
+    $('#mngdg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/user/getAll',
+        queryParams: {},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'userId', title: '负责人id', align: 'center', width: 50},
+                {field: 'loginName', title: '用户名', align: 'center', width: 200},
+                {field: 'createTime', title: '创建时间', align: 'center', width: 150,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd");
                     }
-                });
-            }
-        }
-
-        function searchEvt() {
-            var value = $('#searchValue').val();
-            var parentIdCondition = $('#parentIdCondition').val();
-            $('#dg').datagrid({
-                url: "<%=basePath%>/channelInfo/list",
-                queryParams: {groupId: '${groupId}', channelNameCondition: value, parentIdCondition: parentIdCondition}
-            });
-        }
-
-        function initPage() {
-            reloadTree();
-            $('#dg').datagrid({
-                width: '1001px',
-                height: 'auto',
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/channelInfo/list',
-                queryParams: {groupId: '${groupId}'},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'channelId', title: '渠道id', align: 'center', width: 50},
-                        {field: 'channelName', title: '渠道名称', align: 'center', width: 100},
-                        {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
-                        {field: 'username', title: '用户名', align: 'center', width: 100},
-                        {field: 'password', title: '密码', align: 'center', width: 100},
-                        {field: 'address', title: '地址', align: 'center', width: 100},
-                        {field: 'contact', title: '联系人', align: 'center', width: 100},
-                        {field: 'phone', title: '联系方式', align: 'center', width: 100},
-                        {field: 'laowuName', title: '劳务公司', align: 'center', width: 100},
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 100,
-                            formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
-                            }
-                        }
-                    ]
-                ]
-            });
-        }
-
-        function reloadTree() {
-            $('#tt').tree({
-                url: "<%=basePath%>/channelInfo/listTree?groupId=${groupId}",
-                onClick: function (node) {
-                    $('#parentIdCondition').val(node.id);
-                    searchEvt();
                 },
-                onBeforeExpand: function (node, param) {
-                    $('#tt').tree('options').url = "<%=basePath%>/channelInfo/listTree?groupId=${groupId}&parentIdCondition=" + node.id;
+                {field: 'action', title: '操作', align: 'center', width: 100,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:selectMng('" + row.userId + "','" + row.loginName + "','" + type + "')>选择</a>";
+                    }
                 }
-            });
-        }
-
-        function showLaowuDialog(type, upLaowuId) {
-            $('#laowudlg').dialog('open').dialog('setTitle', '选择劳务公司');
-            $('#laowudg').datagrid({
-                width: 'auto',
-                height: 'auto',
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/channelInfo/list',
-                queryParams: {groupId: '4'},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'channelId', title: '劳务id', align: 'center', width: 50},
-                        {field: 'channelName', title: '劳务名称', align: 'center', width: 200},
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 150,
-                            formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
-                            }
-                        },
-                        {field: 'action', title: '操作', align: 'center', width: 100,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectLaowu('" + row.channelId + "','" + row.channelName + "','" + type + "')>选择</a>";
-                            }
-                        }
-                    ]
-                ]
-            });
-        }
-        function searchLaowuEvt() {
-            var value = $('#searchLaowuValue').val();
-            $('#laowudg').datagrid({
-                url: "<%=basePath%>/channelInfo/list",
-                queryParams: {groupId: '4', channelNameCondition: value}
-            });
-        }
-        function selectLaowu(laowuId, laowuName, type) {
-            if (type == 2) {//修改
-                $("#upLaowuId").val(laowuId);
-                $("#upLaowuName").val(laowuName);
-            } else if (type == 1) {//新增
-                $("#laowuId").val(laowuId);
-                $("#laowuName").val(laowuName);
-            }
-            $('#laowudlg').dialog('close');
-        }
-    </script>
-    <style type="text/css">
-        .datagrid .datagrid-pager {
-            position: relative;
-        }
-    </style>
+            ]
+        ]
+    });
+}
+function searchMngEvt() {
+    var value = $('#searchMngValue').val();
+    $('#mngdg').datagrid({
+        url: "<%=basePath%>/user/getAll",
+        queryParams: {searchValue: value}
+    });
+}
+function selectMng(mngId, mngName, type) {
+    if (type == 2) {//修改
+        $("#upMngId").val(mngId);
+        $("#upMngName").val(mngName);
+    } else if (type == 1) {//新增
+        $("#mngId").val(mngId);
+        $("#mngName").val(mngName);
+    }
+    $('#mngdlg').dialog('close');
+}
+</script>
+<style type="text/css">
+    .datagrid .datagrid-pager {
+        position: relative;
+    }
+</style>
 </head>
 <body class="easyui-layout">
 <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
@@ -256,7 +307,9 @@
         </div>
         <div class="fitem" style="margin-left:13px">
             <label><font color="red">*</font>负责人:</label>
-            <input id="mngId" name="mngId" class="easyui-validatebox" maxlength="50">
+            <input type="hidden" id="mngId" name="mngId">
+            <input type="text" id="mngName" name="mngName" readonly="readonly">
+            <a href="javascript:void(0)" onclick="showMngDialog(1)">选择负责人</a>
         </div>
         <div class="fitem" style="margin-left:7px">
             <label>劳务公司:</label>
@@ -308,8 +361,10 @@
         </div>
         <div class="fitem" style="margin-left:13px">
             <label><font color="red">*</font>负责人:</label>
-            <input type="text" name="mngId" class="easyui-validatebox"
-                   required="true">
+            <input type="hidden" name="mngId" id="upMngId">
+            <input type="text" name="mngName" id="upMngName" readonly="readonly">
+            <a href="javascript:void(0)"
+               onclick="javascript:showMngDialog(2,$('#upMngId').val())">选择负责人</a>
         </div>
         <div class="fitem" style="margin-left:7px">
             <label>劳务公司:</label>
@@ -348,6 +403,30 @@
 <div id="laowudlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#laowudlg').dialog('close')">取消</a>
+</div>
+
+<div id="mngdlg" class="easyui-dialog" style="width:600px;height:430px;padding:10px 20px" closed="true"
+     buttons="#mngdlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="searchLaowuValue" id="searchLaowuValue" placeholder="劳务名称"/>
+                    </td>
+                    <td align="center">
+                        <a id="searchLaowubtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
+                           onclick="searchLaowuEvt()">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="mngdg"></div>
+</div>
+<div id="mngdlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#mngdlg').dialog('close')">取消</a>
 </div>
 
 </body>

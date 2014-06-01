@@ -13,6 +13,9 @@
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+
+        <result column="USERNAME" property="username" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="PartnerInfoResultMap">
@@ -59,27 +62,30 @@
         where PARTNER_ID = #{partnerId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.PartnerInfo" resultMap="PartnerInfoResultMap">
-        select * from
+        select pi.*,u.LOGIN_NAME as USERNAME,u.PASSWORD from
         <include refid="TABLE_NAME"/>
+        pi
+        LEFT OUTER JOIN TY_USER u on pi.USER_ID = u.USER_ID
         where 1=1
         <if test="record.partnerName != null and record.partnerName != ''">
-            and PARTNER_NAME = #{record.partnerName}
+            and pi.PARTNER_NAME = #{record.partnerName}
         </if>
         <if test="record.partnerNameCondition != null and record.partnerNameCondition != ''">
-            and PARTNER_NAME LIKE concat(concat('%', #{record.partnerNameCondition}),'%' )
+            and pi.PARTNER_NAME LIKE concat(concat('%', #{record.partnerNameCondition}),'%' )
         </if>
         <if test="record.userId != null and record.userId != ''">
-            and USER_ID = #{record.userId}
+            and pi.USER_ID = #{record.userId}
         </if>
         <if test="record.queryImeiSource != null and record.queryImeiSource != ''">
-            and QUERY_IMEI_SOURCE = #{record.queryImeiSource}
+            and pi.QUERY_IMEI_SOURCE = #{record.queryImeiSource}
         </if>
         <if test="record.exportImeiSource != null and record.exportImeiSource != ''">
-            and EXPORT_IMEI_SOURCE = #{record.exportImeiSource}
+            and pi.EXPORT_IMEI_SOURCE = #{record.exportImeiSource}
         </if>
         <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
+            and pi.ACTIVE = #{record.active}
         </if>
+        ORDER BY pi.CREATE_TIME DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.PartnerInfo">
         delete from

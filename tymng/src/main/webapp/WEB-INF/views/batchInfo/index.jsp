@@ -55,6 +55,7 @@ function editrow() {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
         row.startTime = new Date(row.startTime).formate("yyyy-MM-dd");
         row.templateBatchCode = "";
+        $('#upfm').form('clear');
         $('#upfm').form('load', row);
         var productInfoList = row.productInfoList;
         if (productInfoList) {

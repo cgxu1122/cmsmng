@@ -22,6 +22,12 @@
 
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="LAOWU_NAME" property="laowuName" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="username" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="CONTACT" property="contact" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="MNG_NAME" property="mngName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ChannelInfoResultMap">
@@ -86,11 +92,16 @@
         where CHANNEL_ID = #{channelId}
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.ChannelInfo" resultMap="ChannelInfoResultMap">
-        select ci.*,cg.GROUP_NAME,ci2.CHANNEL_NAME as LAOWU_NAME from
+        select ci.*,cg.GROUP_NAME,ci2.CHANNEL_NAME as LAOWU_NAME,
+        u.LOGIN_NAME as USERNAME,u.PASSWORD,u.REAL_NAME as CONTACT,u.CELLPHONE as PHONE,u.ADDRESS as ADDRESS,
+        u2.LOGIN_NAME as MNG_NAME
+        from
         <include refid="TABLE_NAME"/>
         ci
         LEFT OUTER JOIN TY_CHANNEL_GROUP cg on ci.GROUP_ID = cg.GROUP_ID
         LEFT OUTER JOIN TY_CHANNEL_INFO ci2 on ci.LAOWU_ID = ci2.CHANNEL_ID
+        LEFT OUTER JOIN TY_USER u on ci.USER_ID = u.USER_ID
+        LEFT OUTER JOIN TY_USER u2 on ci.MNG_ID = u2.USER_ID
         where 1=1
         <if test="record.parentId != null and record.parentId != ''">
             and ci.PARENT_ID = #{record.parentId}

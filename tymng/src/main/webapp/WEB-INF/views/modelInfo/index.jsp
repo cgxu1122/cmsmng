@@ -41,6 +41,7 @@
             var row = $('#dg').datagrid('getSelected');
             if (row) {
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
+                $('#upfm').form('clear');
                 $('#upfm').form('load', row);
             }
         }

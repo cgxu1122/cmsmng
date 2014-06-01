@@ -51,6 +51,7 @@ function editrow() {
     var row = $('#dg').datagrid('getSelected');
     if (row) {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
+        $('#upfm').form('clear');
         $('#upfm').form('load', row);
         $("#upGroupIdHidden").val(row.groupId);
         $('#upGroupId').combobox({

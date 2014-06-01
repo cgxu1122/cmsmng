@@ -43,6 +43,7 @@
             if (row) {
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
                 row.queryStartTime = new Date(row.queryStartTime).formate("yyyy-MM-dd");
+                $('#upfm').form('clear');
                 $('#upfm').form('load', row);
             }
         }

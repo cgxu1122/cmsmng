@@ -6,6 +6,8 @@ import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
+import com.ifhz.core.po.User;
+import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.channel.ChannelGroupService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +35,8 @@ public class ChannelInfoController extends BaseController {
     private ChannelGroupService channelGroupService;
     @Autowired
     private ChannelInfoService channelInfoService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -145,6 +149,10 @@ public class ChannelInfoController extends BaseController {
             } else if (StringUtils.isEmpty(password) || password.length() > 50) {
                 errorMsg = "请正确输入用户密码！";
             }
+            User user = userService.findUserByLoginName(username);
+            if (user != null) {
+                errorMsg = "用户名重复，请重新输入！";
+            }
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -171,6 +179,10 @@ public class ChannelInfoController extends BaseController {
                 channelInfoService.update(parentChannelInfo);
             }
         }
+        String mngId = request.getParameter("mngId");
+        if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
+            ci.setMngId(Long.parseLong(mngId));
+        }
         String laowuId = request.getParameter("laowuId");
         if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
             ci.setLaowuId(Long.parseLong(laowuId));
@@ -179,8 +191,6 @@ public class ChannelInfoController extends BaseController {
         if (!StringUtils.isEmpty(queryImeiSource)) {
             ci.setQueryImeiSource(queryImeiSource);
         }
-        //TODO 添加负责人id
-        //TODO 添加用户账号密码
         if (JcywConstants.CHANNEL_GROUP_LW_ID_4.equals(groupId)) {
             ci.setType(JcywConstants.CHANNEL_TYPE_L);
         } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(groupId)) {
@@ -192,6 +202,14 @@ public class ChannelInfoController extends BaseController {
         } else {
             ci.setType(JcywConstants.CHANNEL_TYPE_O);
         }
+        ci.setUsername(username);
+        ci.setPassword(password);
+        String address = request.getParameter("address");
+        ci.setAddress(address);
+        String contact = request.getParameter("contact");
+        ci.setContact(contact);
+        String phone = request.getParameter("phone");
+        ci.setPhone(phone);
         channelInfoService.insert(ci);
         result.put("msg", "添加成功!");
         return result;
@@ -202,18 +220,12 @@ public class ChannelInfoController extends BaseController {
     public JSONObject update(HttpServletRequest request) {
         String channelId = request.getParameter("channelId");
         String channelName = request.getParameter("channelName");
-        String password = request.getParameter("password");
         String errorMsg = null;
         if (StringUtils.isEmpty(channelId)) {
             errorMsg = "系统错误，请联系管理员！";
         } else if (StringUtils.isEmpty(channelName) || channelName.length() > 50) {
             errorMsg = "请正确输入渠道名称！";
         }
-        /*if(!JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {//其他渠道不需要验证用户名和密码
-            if (StringUtils.isEmpty(password) || password.length() > 50) {
-                errorMsg = "请正确输入用户密码！";
-            }
-        }*/
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
             result.put("errorMsg", errorMsg);
@@ -251,8 +263,19 @@ public class ChannelInfoController extends BaseController {
         if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
             ci.setMngId(Long.parseLong(mngId));
         }
+        String userId = request.getParameter("userId");
+        if (!StringUtils.isEmpty(userId) && StringUtils.isNumeric(userId)) {
+            ci.setUserId(Long.parseLong(userId));
+        }
+        String password = request.getParameter("password");
+        ci.setPassword(password);
+        String address = request.getParameter("address");
+        ci.setAddress(address);
+        String contact = request.getParameter("contact");
+        ci.setContact(contact);
+        String phone = request.getParameter("phone");
+        ci.setPhone(phone);
         channelInfoService.update(ci);
-        //TODO 修改用户账号密码
         result.put("msg", "修改成功!");
         return result;
     }

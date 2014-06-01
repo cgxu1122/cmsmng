@@ -41,6 +41,7 @@
             if (row) {
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
                 row.effectiveTime = new Date(row.effectiveTime).formate("yyyy-MM-dd");
+                $('#upfm').form('clear');
                 $('#upfm').form('load', row);
                 $("input[name=file]").val("");
             }

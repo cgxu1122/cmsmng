@@ -16,17 +16,17 @@
 		) values(
             SEQ_TY_USER.nextval,
 			#{loginName},
-			#{realName},
+        #{realName,jdbcType=VARCHAR},
 			#{password},
-			#{cellphone},
-			#{address},
+        #{cellphone,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR},
 			#{status},
 			sysdate,
             #{type},
             sysdate
 		)
-        <selectKey resultType="long" order="AFTER"  keyProperty="user_id">
-            SELECT SEQ_TY_USER.CURRVAL FROM DUAL
+        <selectKey resultType="long" keyProperty="userId">
+        SELECT SEQ_TY_USER.CURRVAL FROM DUAL
         </selectKey> 
 	</insert>
 

@@ -30,6 +30,15 @@ public class ChannelInfo {
     private String address;
     private String contact;
     private String phone;
+    private String mngName;
+
+    public String getMngName() {
+        return mngName;
+    }
+
+    public void setMngName(String mngName) {
+        this.mngName = mngName;
+    }
 
     public Long getChannelId() {
         return channelId;

@@ -1,9 +1,13 @@
 package com.ifhz.core.service.partner.impl;
 
 import com.ifhz.core.adapter.PartnerInfoAdapter;
+import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PartnerInfo;
+import com.ifhz.core.po.User;
+import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.partner.PartnerInfoService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,8 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
 
     @Resource(name = "partnerInfoAdapter")
     private PartnerInfoAdapter partnerInfoAdapter;
+    @Resource(name = "userService")
+    private UserService userService;
 
 
     @Override
@@ -34,11 +40,27 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
 
     @Override
     public int insert(PartnerInfo record) {
+        if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
+            User user = new User();
+            user.setLoginName(record.getUsername());
+            user.setPassword(record.getPassword());
+            user.setStatus(UserConstants.USER_STATUS_ENABLE);
+            user.setType(UserConstants.USER_TYPE_NORMAL);
+            userService.insertUser(user, UserConstants.USER_ROLE_NORMAL);
+            record.setUserId(user.getUserId());
+        }
         return partnerInfoAdapter.insert(record);
     }
 
     @Override
     public int update(PartnerInfo record) {
+        if (record.getUserId() != null) {
+            User user = userService.findById(record.getUserId());
+            if (user != null) {
+                user.setPassword(record.getPassword());
+                userService.updateUser(user);
+            }
+        }
         return partnerInfoAdapter.update(record);
     }
 

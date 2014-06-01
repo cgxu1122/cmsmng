@@ -5,6 +5,8 @@ import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PartnerInfo;
+import com.ifhz.core.po.User;
+import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.partner.PartnerInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class PartnerInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerInfoController.class);
     @Autowired
     private PartnerInfoService partnerInfoService;
+    @Resource(name = "userService")
+    private UserService userService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -74,6 +79,11 @@ public class PartnerInfoController extends BaseController {
         } else if (StringUtils.isEmpty(exportImeiSource)) {
             errorMsg = "请选择导出imei权限！";
         }
+        //校验用户名唯一性
+        User user = userService.findUserByLoginName(username);
+        if (user != null) {
+            errorMsg = "用户名重复，请重新输入！";
+        }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
             result.put("errorMsg", errorMsg);
@@ -91,7 +101,8 @@ public class PartnerInfoController extends BaseController {
         }
         pi.setExportImeiSource(exportImeiSource);
         pi.setQueryImeiSource(queryImeiSource);
-        //TODO 添加用户名密码
+        pi.setUsername(username);
+        pi.setPassword(password);
         partnerInfoService.insert(pi);
         result.put("msg", "添加成功!");
         return result;
@@ -143,6 +154,7 @@ public class PartnerInfoController extends BaseController {
         partnerInfo.setPartnerName(partnerName.trim());
         partnerInfo.setQueryImeiSource(queryImeiSource);
         partnerInfo.setExportImeiSource(exportImeiSource);
+        partnerInfo.setPassword(password);
         partnerInfoService.update(partnerInfo);
         result.put("msg", "修改成功!");
         return result;
