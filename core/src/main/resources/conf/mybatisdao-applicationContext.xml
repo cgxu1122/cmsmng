@@ -78,6 +78,7 @@
                 <value>classpath:SqlMapperXml/Resource.xml</value>
                 <value>classpath:SqlMapperXml/RoleResourceRef.xml</value>
                 <value>classpath:SqlMapperXml/UserRoleRef.xml</value>
+                <value>classpath:SqlMapperXml/ApkInfo.xml</value>
             </list>
         </property>
     </bean>
@@ -179,6 +180,10 @@
     </bean>
     <bean id="userRoleRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.UserRoleRefMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="apkInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.ApkInfoMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 </beans>
