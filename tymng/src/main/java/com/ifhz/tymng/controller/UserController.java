@@ -53,7 +53,6 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/index")
     public String indexUser() {
-        System.out.println("/user/index");
         return "user/index";
     }
 
@@ -67,17 +66,6 @@ public class UserController extends BaseController {
     public String updateindex() {
         return "user/updateindex";
     }
-
-    /**
-     * 修改密码页面
-     *
-     * @useror radish
-     * @return
-     */
-    /*@RequestMapping("/updatepassword")
-	public String updatepasswor() {
-		return "user/updatepassword";
-	}*/
 
     /**
      * 保存用户类型
@@ -134,28 +122,19 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/update")
     @ResponseBody()
-    public String update(User user) {
-		Long id = user.getUserId();
-		User _user = userService.findById(id);
+    public String update(User user,HttpServletRequest req) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("添加成功");
 
-		if(user.equals(_user)){
-
-        }else{
-            Long otherId = userService.findUserByLoginNameAndNotId(user.getLoginName(), id);
-            if (null != otherId) {
-                return "该邮箱已经被其他用户占用！";
-            }
-            try {
-                BeanUtils.copyProperties(_user,user);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            userService.updateUserAdmin(_user);
+        String roleId = req.getParameter("roleId");
+        if (StringUtils.isBlank(roleId)) {
+            result.setCode(-1);
+            result.setMessage( "请选择角色");
+            return JSON.toJSONString(result);
         }
-
-		return "更新成功";
+        result = userService.updateUserAdmin(user,Long.valueOf(roleId));
+        return JSON.toJSONString(result);
     }
 
     /**
@@ -168,13 +147,28 @@ public class UserController extends BaseController {
     @RequestMapping("/updatePassowrd")
     @ResponseBody()
     public String updatePassword(HttpServletRequest req) {
-		Long id=Long.parseLong(req.getParameter("id"));
-		String password=req.getParameter("password");
-		boolean flag=userService.updateUserPassword(id,MD5keyUtil.getMD5Str(password));
-		if(flag == false){
-			return "修改密码失败";
-		}
-        return  "修改密码成功";
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("密码修改成功");
+
+        String userId = req.getParameter("userIdUpPw");
+        if (StringUtils.isBlank(userId)) {
+            result.setCode(-1);
+            result.setMessage( "请选择用户");
+            return JSON.toJSONString(result);
+        }
+
+        String password = req.getParameter("password");
+        if (StringUtils.isBlank(password)) {
+            result.setCode(-1);
+            result.setMessage( "请输入密码");
+            return JSON.toJSONString(result);
+        }
+
+        String newPassword = MD5keyUtil.getMD5Str(password);
+        result = userService.updateUserPassword(Long.parseLong(userId),newPassword);
+
+        return JSON.toJSONString(result);
     }
 
 
@@ -221,6 +215,10 @@ public class UserController extends BaseController {
     @ResponseBody
     public JSONObject getAllUser(HttpServletRequest request) {
 		String searchValue = request.getParameter("searchValue");
+        if(StringUtils.isBlank(searchValue)){
+            searchValue = null;
+        }
+
 		// 查询记录
 		List<UserVo> userDtoList = userService.findAllUser(searchValue);
 		// 记录数

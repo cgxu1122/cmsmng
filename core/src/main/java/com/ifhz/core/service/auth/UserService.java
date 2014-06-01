@@ -45,7 +45,7 @@ public interface UserService {
 	 * @param user
 	 * @return
 	 */
-	public boolean updateUserAdmin(User user);
+	public Result updateUserAdmin(User user,Long roleId);
 
 	/**
 	 * 用户删除接口
@@ -70,9 +70,9 @@ public interface UserService {
 	 * 更新用户密码
 	 * 
 	 * @author radishlee
-	 * @param UserId
+	 * @param userId
 	 */
-	public boolean updateUserPassword(long UserId, String newPassword);
+	public Result updateUserPassword(long userId, String newPassword);
 
 	/**
 	 * 根据角色查询用户

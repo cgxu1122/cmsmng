@@ -18,11 +18,12 @@ import java.util.List;
  */
 public interface UserRoleRefMapper {
 
-    UserRoleRef findRoleIdByUserId(Long userId);
+    UserRoleRef findRoleByUserId(Long userId);
 
     Integer deleteAllRefByRoleId(Long roleId);
 
     Integer deleteAllRefByUserId(Long userId);
 
     Integer insert(UserRoleRef userRoleRef);
+
 }

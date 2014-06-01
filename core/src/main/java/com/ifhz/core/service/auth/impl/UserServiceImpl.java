@@ -20,6 +20,7 @@ import com.ifhz.core.service.auth.UserRoleRefService;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,24 +100,64 @@ public class UserServiceImpl implements UserService {
 	 * 管理员修改用户信息
 	 * 
 	 * @author wangshaofen
-	 * @param User
+	 * @param user
 	 * @return
 	 */
 	@Override
-	public boolean updateUserAdmin(User User) {
-		return convertRtn(userMapper.updateUserAdmin(User));
+	public Result updateUserAdmin(User user,Long roleId) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("更新成功");
+
+
+        long userId = user.getUserId();
+        User dbUser = userMapper.findById(userId);
+        UserRoleRef dbUserRoleRef = userRoleRefMapper.findRoleByUserId(userId);
+        try {
+            if(user.equals(dbUser)){
+
+            }else{
+                dbUser.setAddress(user.getAddress());
+                dbUser.setCellphone(user.getCellphone());
+                dbUser.setType(user.getType());
+                dbUser.setStatus(user.getStatus());
+                userMapper.updateUserAdmin(dbUser);
+            }
+
+            if(!(roleId==dbUserRoleRef.getRoleId())){
+                dbUserRoleRef.setRoleId(roleId);
+                userRoleRefMapper.deleteAllRefByUserId(userId);
+                userRoleRefMapper.insert(dbUserRoleRef);
+            }
+        }catch (Exception e){
+            result.setCode(-1);
+            result.setMessage(e.getMessage());
+            return result;
+        }
+        return result;
 	}
 
 	/**
 	 * 更新密码
 	 * 
 	 * @author radish
-	 * @param UserId
+	 * @param userId
 	 * @return
 	 */
 	@Override
-	public boolean updateUserPassword(long UserId, String password) {
-		return convertRtn(userMapper.updateUserPassword(UserId, password));
+	public Result updateUserPassword(long userId, String password) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("更新成功");
+
+        try {
+            userMapper.updateUserPassword(userId, password);
+        }catch (Exception e){
+            result.setCode(-1);
+            result.setMessage(e.getMessage());
+            return result;
+        }
+		return result;
 	}
 
 	/**
@@ -198,6 +239,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long getUserVoCount(String searchValue) {
-        return userMapper.queryUserVoCount(searchValue);
+        return userMapper.queryUserVoCount(new Pagination(),searchValue);
     }
 }

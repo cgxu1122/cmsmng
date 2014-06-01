@@ -31,6 +31,7 @@ function editrow(obj) {
 function updatePassword(obj) {
     var row = $('#dg').datagrid('getSelected');
     if (row) {
+        $('#userIdUpPw').val(row.userId);
         $('#updatePassworddlg').dialog('open').dialog('setTitle', '修改用户密码');
         $('#upfm').form('load', row);
         document.getElementById("passwordUp").value = "";
@@ -83,17 +84,16 @@ function saveUpdatePassword() {
         return;
     }
     $('#upfm').form('submit', {
-        url: '<%=basePath%>/auth/updatePassowrd',
+        url: '<%=basePath%>/user/updatePassowrd',
         onSubmit: function () {
             return $(this).form('validate');
         },
-
-        data: {"userId": $('#userId').val, "password": $('#passwordUp').val},
+        data: {"userId": $('#userIdUpPw').val(), "password": $('#passwordUp').val},
         success: function (result) {
-            r
             var result = eval('(' + result + ')');
-            if (result.code == -1) {
-                $.messager.alert('失败', result.message);
+            result = eval('(' + result + ')');
+            if (result.code==-1) {
+                $.messager.alert('错误', result.message);
             } else {
                 $.messager.alert('成功', result.message);
                 $('#updatePassworddlg').dialog('close');
@@ -125,8 +125,9 @@ function updaterow() {
         },
         success: function (result) {
             var result = eval('(' + result + ')');
-            if (result.code == -1) {
-                $.messager.alert('失败', result.message);
+            result = eval('(' + result + ')');
+            if (result.code==-1) {
+                $.messager.alert('错误', result.message);
             } else {
                 $.messager.alert('成功', result.message);
                 $('#dlg1').dialog('close');
@@ -145,10 +146,6 @@ function deleterow() {
                         $('#dg').datagrid('reload');
                     } else {
                         $.messager.alert('错误', result.errorMsg);
-                        /* $.messager.show({
-                         title: 'Error',
-                         msg: result.errorMsg
-                         }); */
                     }
                 }, 'json');
             }
@@ -335,28 +332,22 @@ function search() {
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 <div>
-    <div id="updatePassworddlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
-         buttons="#updatePasswprd-buttons">
-        <form id="upfm" method="post" novalidate>
-            <input type="hidden" id="id" name="id"/>
-
+    <div id="updatePassworddlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"  buttons="#updatePasswprd-buttons">
+        <form id="upfm" method="get" novalidate>
+            <input type="hidden" id="userIdUpPw" name="userIdUpPw"/>
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>密码:</label>
-                <input id="passwordUp" type="password" name="password" class="easyui-validatebox" required="true"
-                       validType="isPasswd">
+                <input id="passwordUp" type="password" name="password" class="easyui-validatebox" required="true" validType="isPasswd">
             </div>
             <div class="fitem">
                 <label><font color="red">*</font>确认密码:</label>
-                <input type="password" id="comfirmPasswordUp" name="comfirmPassword" class="easyui-validatebox"
-                       required="true">
+                <input type="password" id="comfirmPasswordUp" name="comfirmPassword" class="easyui-validatebox" required="true">
             </div>
         </form>
     </div>
-
     <div id="updatePasswprd-buttons" style="text-align: center;">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdatePassword()">确定</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-           onclick="javascript:$('#updatePassworddlg').dialog('close')">取消</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"  onclick="javascript:$('#updatePassworddlg').dialog('close')">取消</a>
     </div>
 
 

@@ -110,7 +110,7 @@
         on urr.role_id = r.role_id
         where 1=1
         <if test="searchValue != null">
-            and ( u.login_name = #{searchValue} or r.role_name = #{searchValue} )
+            and ( u.login_name like  concat(concat('%',#{searchValue}),'%' ) or r.role_name like  concat(concat('%',#{searchValue}),'%' ) )
         </if>
         order by  u.create_time desc
     </select>

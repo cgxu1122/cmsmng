@@ -125,5 +125,5 @@ public interface UserMapper {
 
     List<UserVo> queryAllUser(Pagination pape ,@Param("searchValue") String searchValue);
 
-    Long queryUserVoCount(String searchValue);
+    Long queryUserVoCount(Pagination pape ,@Param("searchValue") String searchValue);
 }

@@ -103,4 +103,40 @@ public class User implements java.io.Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (status != user.status) return false;
+        if (type != user.type) return false;
+        if (address != null ? !address.equals(user.address) : user.address != null) return false;
+        if (cellphone != null ? !cellphone.equals(user.cellphone) : user.cellphone != null) return false;
+        if (!createTime.equals(user.createTime)) return false;
+        if (!loginName.equals(user.loginName)) return false;
+        if (!password.equals(user.password)) return false;
+        if (!realName.equals(user.realName)) return false;
+        if (!updateTime.equals(user.updateTime)) return false;
+        if (!userId.equals(user.userId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId.hashCode();
+        result = 31 * result + loginName.hashCode();
+        result = 31 * result + realName.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (cellphone != null ? cellphone.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + status;
+        result = 31 * result + type;
+        result = 31 * result + createTime.hashCode();
+        result = 31 * result + updateTime.hashCode();
+        return result;
+    }
 }
