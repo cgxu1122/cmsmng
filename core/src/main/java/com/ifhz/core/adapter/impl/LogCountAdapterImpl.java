@@ -2,12 +2,14 @@ package com.ifhz.core.adapter.impl;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.LogCountAdapter;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.LogCountMapper;
 import com.ifhz.core.po.LogCount;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lm on 14-5-15.
@@ -16,7 +18,7 @@ import java.util.List;
 public class LogCountAdapterImpl implements LogCountAdapter {
 
 
-    //@Resource(name = "logCountMapper")
+    @Resource(name = "logCountMapper")
     private LogCountMapper logCountMapper;
 
     @Override
@@ -53,6 +55,21 @@ public class LogCountAdapterImpl implements LogCountAdapter {
     @Override
     public LogCount getByProcessKey(String processKey) {
         return logCountMapper.getByProcessKey(processKey);
+    }
+
+    @Override
+    public List<Map<String, Object>> partnerQuery(Pagination page, Map pars) {
+        return logCountMapper.partnerQuery(page, pars);
+    }
+
+    @Override
+    public List<Map<String, Object>> partnerCPQuery(Pagination page, Map pars) {
+        return logCountMapper.partnerCPQuery(page, pars);
+    }
+
+    @Override
+    public List<Map<String, Object>> partnerLaowuQueryList(Pagination page, Map pars) {
+        return logCountMapper.partnerLaowuQueryList(page, pars);
     }
 
 

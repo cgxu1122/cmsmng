@@ -22,4 +22,6 @@ public interface DeviceProcessLogAdapter {
     public long getYesterdayLogCount(Map tableName);
 
     public long getLogCountByTime(Map m);
+
+    public List<DeviceProcessLog> queryDeviceProcessLog(DeviceProcessLog dpl);
 }

@@ -87,4 +87,25 @@
         ]]>
     </select>
 
+    <select id="queryDeviceProcessLog" parameterType="com.ifhz.core.po.DeviceProcessLog"
+            resultMap="DeviceProcessLogResultMap">
+        select ci.imei,ci.model_name,ci.process_time from
+        ${tableName} ci where 1=1
+        <if test="groupId != null and groupId != ''">
+            and ci.GROUP_ID = #{groupId}
+        </if>
+        <if test="channelId != null and channelId != ''">
+            and ci.channel_id = #{channelId}
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            and ci.device_code = #{deviceCode}
+        </if>
+        <if test="modelName != null and modelName != ''">
+            and ci.model_name = #{modelName}
+        </if>
+        <if test="processTime != null and processTime != ''">
+            and ci.process_time = #{processTime}
+        </if>
+        ORDER BY ci.process_id DESC
+    </select>
 </mapper>

@@ -1,9 +1,11 @@
 package com.ifhz.core.service.statistics;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.LogCount;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lm on 14-5-22.
@@ -21,4 +23,9 @@ public interface LogCountService {
 
     public void countLogByDate(Date startDate, Date endDate);
 
+    public List<Map<String, Object>> partnerQuery(Pagination page, Map pars);
+
+    public List<Map<String, Object>> partnerCPQuery(Pagination page, Map pars);
+
+    public List<Map<String, Object>> partnerLaowuQueryList(Pagination page, Map pars);
 }

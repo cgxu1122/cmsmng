@@ -1,9 +1,11 @@
 package com.ifhz.core.adapter;
 
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.LogCount;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lm on 14-5-15.
@@ -22,4 +24,10 @@ public interface LogCountAdapter {
     public void batchInsert(List<LogCount> list);
 
     public LogCount getByProcessKey(String processKey);
+
+    public List<Map<String, Object>> partnerQuery(Pagination page, Map pars);
+
+    public List<Map<String, Object>> partnerCPQuery(Pagination page, Map pars);
+
+    public List<Map<String, Object>> partnerLaowuQueryList(Pagination page, Map pars);
 }

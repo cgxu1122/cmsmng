@@ -2,6 +2,8 @@ package com.ifhz.core.service.api;
 
 import com.ifhz.core.po.DeviceProcessLog;
 
+import java.util.List;
+
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -13,4 +15,6 @@ public interface DeviceProcessLogService {
     public void insert(DeviceProcessLog po);
 
     public DeviceProcessLog queryHasImei(String imei);
+
+    public List<DeviceProcessLog> queryDeviceProcessLog(DeviceProcessLog dpl);
 }

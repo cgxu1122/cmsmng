@@ -6,6 +6,7 @@ import com.ifhz.core.adapter.LogCountAdapter;
 import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.constants.CommonConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.CounterUploadLog;
 import com.ifhz.core.po.DeviceProcessLog;
 import com.ifhz.core.po.LogCount;
@@ -55,6 +56,20 @@ public class LogCountServiceImpl implements LogCountService {
         return logCountAdapter.delete(record);
     }
 
+    @Override
+    public List<Map<String, Object>> partnerQuery(Pagination page, Map pars) {
+        return logCountAdapter.partnerQuery(page, pars);
+    }
+
+    @Override
+    public List<Map<String, Object>> partnerCPQuery(Pagination page, Map pars) {
+        return logCountAdapter.partnerCPQuery(page, pars);
+    }
+
+    @Override
+    public List<Map<String, Object>> partnerLaowuQueryList(Pagination page, Map pars) {
+        return logCountAdapter.partnerLaowuQueryList(page, pars);
+    }
 
     // @Resource(name = "logCountAdapter")
     // private LogCountAdapter logCountAdapter;
@@ -144,6 +159,7 @@ public class LogCountServiceImpl implements LogCountService {
                     Long laowuId = null;
                     //当渠道组是地包时，查询该渠道是否关联劳动公司
                     if (dpl.getGroupId() == CommonConstants.CHANNAL_DIBAO) {
+                        System.out.println(dpl.getImei() + "\t" + dpl.getChannelId());
                         laowuId = channelInfoService.getById(Long.parseLong(dpl.getChannelId())).getLaowuId();
                     }
                     //没有新建一条统计信息

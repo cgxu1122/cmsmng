@@ -19,6 +19,7 @@ import java.util.Map;
 @Repository("deviceProcessLogAdapter")
 public class DeviceProcessLogAdapterImpl implements DeviceProcessLogAdapter {
 
+
     @Resource(name = "deviceProcessLogMapper")
     private DeviceProcessLogMapper deviceProcessLogMapper;
 
@@ -26,6 +27,11 @@ public class DeviceProcessLogAdapterImpl implements DeviceProcessLogAdapter {
     public void insert(String tableName, DeviceProcessLog po) {
         po.setTableName(tableName);
         deviceProcessLogMapper.insert(po);
+    }
+
+    @Override
+    public List<DeviceProcessLog> queryDeviceProcessLog(DeviceProcessLog dpl) {
+        return deviceProcessLogMapper.queryDeviceProcessLog(dpl);
     }
 
     @Override

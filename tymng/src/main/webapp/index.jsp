@@ -205,18 +205,35 @@
                 </a>
             </div>
         </div>
-        <div title="APK管理" style="overflow: auto;">
+        <div title="合作方查询后台" style="overflow: auto;">
             <div class="nav-item">
-                <a href="javascript:addTab('APK管理','<%=basePath%>/apkInfo/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('天音渠道','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
-                    <span>APK管理</span>
+                    <span>天音渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('cp合作方','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>cp合作方</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('劳务渠道','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>劳务渠道</span>
                 </a>
             </div>
         </div>
-
         <div title="系统用户管理" style="overflow: auto;">
             <div class="nav-item">
-                <a href="javascript:addTab('系统用户管理','<%=basePath%>/user/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('系统用户管理','<%=basePath%>/staff/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>系统用户管理</span>
                 </a>
