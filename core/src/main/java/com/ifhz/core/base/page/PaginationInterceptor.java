@@ -183,13 +183,15 @@ public class PaginationInterceptor implements Interceptor {
     private Object getPage(Object obj) {
         if (obj instanceof Map) {
             Map map = (Map) obj;
-            if (map.get("0") != null && map.get("0") instanceof Pagination) {
+
+            if (map.containsKey("0") && map.get("0") instanceof Pagination) {
                 return map.get("0");
             }
             /**
-             if(map.get(EapConstant.PAGINATION)!=null && map.get(EapConstant.PAGINATION) instanceof Pagination){
-             return map.get(EapConstant.PAGINATION);
-             }**/
+             if(map.containsKey("page") && map.get("page") instanceof Pagination){
+             return map.get("page");
+             }
+             **/
         } else if (obj instanceof Pagination) {
             return obj;
         }

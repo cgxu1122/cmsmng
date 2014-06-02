@@ -205,6 +205,14 @@
                 </a>
             </div>
         </div>
+        <div title="APK管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('APK管理','<%=basePath%>/apkInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>APK管理</span>
+                </a>
+            </div>
+        </div>
         <div title="合作方查询后台" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
