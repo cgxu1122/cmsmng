@@ -9,6 +9,8 @@ import java.util.Date;
  * Time: 19:10
  */
 public class ChannelVersion {
+
+    public static final Long ApkLib_ChannelId = -1L;
     /*
     create table TY_CHANNEL_VERSION
 (
@@ -16,6 +18,7 @@ public class ChannelVersion {
   channel_id  NUMBER(15) not null,
   md5value    VARCHAR2(50) not null,
   path        VARCHAR2(500) not null,
+  version    VARCHAR2(50) not null,
   create_time DATE not null,
   update_time DATE not null
 )
@@ -27,6 +30,7 @@ public class ChannelVersion {
     private String version;
     private Date createTime;
     private Date updateTime;
+
 
     @Override
     public String toString() {
@@ -41,6 +45,7 @@ public class ChannelVersion {
         sb.append('}');
         return sb.toString();
     }
+
 
     public String getVersion() {
         return version;
