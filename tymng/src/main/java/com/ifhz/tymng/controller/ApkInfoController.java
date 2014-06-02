@@ -7,7 +7,7 @@ import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
-import com.ifhz.core.service.apk.ApkInfoService;
+import com.ifhz.core.service.pkgmng.ApkInfoService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -63,7 +63,7 @@ public class ApkInfoController extends BaseController {
     @ResponseBody
     public JSONObject insert(HttpServletRequest request) {
         Map<String, FileItem> params = paserMultiData(request);
-        String productName = null;
+        String apkName = null;
         FileItem file = params.get("file");
         String errorMsg = null;
         JSONObject result = new JSONObject();
@@ -72,10 +72,10 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
-        String apkName = file.getName();
+        String softName = file.getName();
         String fileName = FtpUtils.generateFileName(file.getName());
         try {
-            productName = readInputStreamData(params.get("productName").getInputStream());
+            apkName = readInputStreamData(params.get("productName").getInputStream());
             FtpUtils.ftpUpload(file.getInputStream(),
                     GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR),
                     fileName
@@ -85,7 +85,7 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
-        if (StringUtils.isEmpty(productName) || productName.length() > 50) {
+        if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
             errorMsg = "请正确输入产品名称！";
         }
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -94,15 +94,15 @@ public class ApkInfoController extends BaseController {
         }
         //产品名称唯一性校验
         ApkInfo ai = new ApkInfo();
-        ai.setProductName(productName.trim());
+        ai.setApkName(apkName.trim());
         List<ApkInfo> list = apkInfoService.queryByVo(null, ai);
         if (list != null && list.size() > 0) {
             errorMsg = "产品名称重复，请重新输入！";
             result.put("errorMsg", errorMsg);
             return result;
         }
-        ai.setProductName(productName.trim());
-        ai.setApkName(apkName);
+        ai.setApkName(apkName.trim());
+        ai.setSoftName(softName);
         ai.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
         apkInfoService.insert(ai);
         result.put("msg", "添加成功!");
@@ -114,12 +114,12 @@ public class ApkInfoController extends BaseController {
     public JSONObject update(HttpServletRequest request) {
         Map<String, FileItem> params = paserMultiData(request);
         String apkId = null;
-        String productName = null;
+        String apkName = null;
         String errorMsg = null;
         JSONObject result = new JSONObject();
         try {
             apkId = readInputStreamData(params.get("apkId").getInputStream());
-            productName = readInputStreamData(params.get("productName").getInputStream());
+            apkName = readInputStreamData(params.get("productName").getInputStream());
         } catch (IOException e) {
             errorMsg = "数据读取错误，请联系管理员！";
             result.put("errorMsg", errorMsg);
@@ -127,7 +127,7 @@ public class ApkInfoController extends BaseController {
         }
         if (StringUtils.isEmpty(apkId)) {
             errorMsg = "系统错误，请联系管理员！";
-        } else if (StringUtils.isEmpty(productName) || productName.length() > 50) {
+        } else if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
             errorMsg = "请正确输入产品名称！";
         }
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -141,7 +141,7 @@ public class ApkInfoController extends BaseController {
         }
         //产品名称唯一性校验
         ApkInfo ai = new ApkInfo();
-        ai.setProductName(productName.trim());
+        ai.setApkName(apkName.trim());
         List<ApkInfo> list = apkInfoService.queryByVo(null, ai);
         if (list != null && list.size() > 0) {
             for (ApkInfo repeatVersionAi : list) {
@@ -154,13 +154,13 @@ public class ApkInfoController extends BaseController {
         FileItem file = params.get("file");
         if (StringUtils.isNotEmpty(file.getName())) {
             try {
-                String apkName = file.getName();
+                String softName = file.getName();
                 String fileName = FtpUtils.generateFileName(file.getName());
                 FtpUtils.ftpUpload(file.getInputStream(),
                         GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR),
                         fileName
                 );
-                apkInfo.setApkName(apkName);
+                apkInfo.setSoftName(softName);
                 apkInfo.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
@@ -168,7 +168,7 @@ public class ApkInfoController extends BaseController {
                 return result;
             }
         }
-        apkInfo.setProductName(productName.trim());
+        apkInfo.setApkName(apkName.trim());
         apkInfoService.update(apkInfo);
         result.put("msg", "修改成功!");
         return result;

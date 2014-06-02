@@ -4,6 +4,7 @@ package com.ifhz.core.adapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ApkInfo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,4 +23,7 @@ public interface ApkInfoAdapter {
 
     public int delete(ApkInfo record);
 
+    public List<ApkInfo> queryAllList();
+
+    public List<ApkInfo> queryUpgradeList(Date date);
 }

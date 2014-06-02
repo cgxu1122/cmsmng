@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.PackageInfoMapper">
+
+    <sql id="TABLE_NAME">TY_PACKAGE_INFO</sql>
+    <sql id="CommonFieldSql">
+        PACKAGE_ID,
+        PACKAGE_NAME,
+        BATCH_ID,
+        BATCH_CODE,
+        TYPE,
+        ACTIVE,
+        REMARK,
+        CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <resultMap id="PackageInfoResultMap" type="com.ifhz.core.po.PackageInfo">
+        <id column="PACKAGE_ID" property="packageId" jdbcType="BIGINT"/>
+        <result column="PACKAGE_NAME" property="packageName" jdbcType="VARCHAR"/>
+        <result column="BATCH_ID" property="batchId" jdbcType="BIGINT"/>
+        <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PackageInfo">
+        <selectKey resultType="long" keyProperty="packageId">
+            SELECT SEQ_PACKAGE_INFO.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_PACKAGE_INFO.NEXTVAL,
+        #{packageName},
+        #{batchId},
+        #{batchCode},
+        #{type},
+        #{active},
+        #{remark},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+    <!--<update id="update" parameterType="com.ifhz.core.po.PackageInfo">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+
+        </set>
+        where PACKAGE_ID = #{packageId}
+    </update>-->
+
+
+    <delete id="deleteForActive" parameterType="com.ifhz.core.po.PackageInfo">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N'
+        where PACKAGE_ID = #{packageId}
+    </delete>
+</mapper>

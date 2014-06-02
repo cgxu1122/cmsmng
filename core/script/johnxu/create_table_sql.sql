@@ -169,3 +169,87 @@ alter table TY_CHANNEL_VERSION add constraint PK_TY_CHANNEL_VERSION primary key 
 alter table TY_CHANNEL_VERSION add constraint UNIQ_TY_CHANNEL_VERSION_CID unique (CHANNEL_ID);
 
 
+
+create table TY_APK_INFO  (
+   APK_ID         			number(15)           not null,
+   APK_NAME            varchar2(50)					not null,
+   SOFT_NAME           varchar2(100)					not null,
+   FTP_PATH        		varchar2(500)         not null,
+   MD5VALUE        		varchar2(500)         not null,
+   DOWNLOAD_URL       varchar2(500)         not null,
+   ACTIVE              varchar2(2)           not null,
+   CREATE_TIME        		date               default SYSDATE not null,
+   UPDATE_TIME        		date               default SYSDATE not null
+);
+alter table TY_APK_INFO add constraint PK_TY_APK_INFO primary key (APK_ID);
+comment on column TY_APK_INFO.ACTIVE is 'Y:有效，N:无效';
+
+
+
+create table TY_PACKAGE_INFO  (
+   PACKAGE_ID         			number(15)           not null,
+   PACKAGE_NAME            varchar2(100)					not null,
+   BATCH_ID                number(15)         not null,
+   BATCH_CODE              varchar2(100)         not null,
+   TYPE                    varchar2(2)           not null,
+   ACTIVE                  varchar2(2)           not null,
+   REMARK                  varchar2(1000),
+   CREATE_TIME        		date               default SYSDATE not null,
+   UPDATE_TIME        		date               default SYSDATE not null
+);
+alter table TY_PACKAGE_INFO add constraint PK_TY_PACKAGE_INFO primary key (PACKAGE_ID);
+comment on column TY_PACKAGE_INFO.ACTIVE is 'Y:有效，N:无效';
+comment on column TY_PACKAGE_INFO.TYPE is 'Y:通用包，N:普通包';
+
+create table TY_PACKAGE_APK_REF  (
+   ID         			        number(15)           not null,
+   PACKAGE_ID         			number(15)           not null,
+   APK_ID         			    number(15)           not null,
+   APK_NAME                varchar2(100)					not null,
+   AUTO_RUN                varchar2(2)         not null,
+   DESKTOP_ICON           varchar2(2)         not null,
+   SORT                    number(10)         not null,
+   ACTIVE                  varchar2(2)         not null,
+   CREATE_TIME        		date               default SYSDATE not null
+);
+alter table TY_PACKAGE_APK_REF add constraint PK_TY_PACKAGE_APK_REF primary key (ID);
+comment on column TY_PACKAGE_APK_REF.ACTIVE is 'Y:有效，N:无效';
+
+
+create table TY_PUBLISH_TASK  (
+   PUBLISH_ID         			number(15)           not null,
+   PACKAGE_NAME            varchar2(100)					not null,
+   PACKAGE_ID              number(15)         not null,
+   EFFECT_TIME             date,
+   ACTIVE              varchar2(2)           not null,
+   CREATE_TIME        		date               default SYSDATE not null,
+   UPDATE_TIME        		date               default SYSDATE not null
+);
+alter table TY_PUBLISH_TASK add constraint PK_TY_PUBLISH_TASK primary key (PUBLISH_ID);
+comment on column TY_PUBLISH_TASK.ACTIVE is 'Y:有效，N:无效';
+
+
+create table TY_PUBLISH_CHANNEL_REF  (
+   ID         			      number(15)           not null,
+   PUBLISH_ID         	  number(15)           not null,
+   PACKAGE_ID         		number(15)           not null,
+   GROUP_ID         			number(15)           not null,
+   CHANNEL_ID         		number(15)           not null,
+   CREATE_TIME        		date                 default SYSDATE not null,
+);
+alter table TY_PUBLISH_CHANNEL_REF add constraint PK_TY_PUBLISH_CHANNEL_REF primary key (ID);
+comment on column TY_PUBLISH_CHANNEL_REF.ACTIVE is 'Y:有效，N:无效';
+
+
+create table TY_PUBLISH_MODEL_REF  (
+   ID         			      number(15)           not null,
+   PUBLISH_ID         	  number(15)           not null,
+   PACKAGE_ID         		number(15)           not null,
+   MODEL_ID         			number(15)           not null,
+   CREATE_TIME        		date                 default SYSDATE not null,
+);
+alter table TY_PUBLISH_MODEL_REF add constraint PK_TY_PUBLISH_MODEL_REF primary key (ID);
+comment on column TY_PUBLISH_MODEL_REF.ACTIVE is 'Y:有效，N:无效';
+
+
+

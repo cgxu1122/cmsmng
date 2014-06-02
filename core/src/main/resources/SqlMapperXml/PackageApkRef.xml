@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.PackageApkRefMapper">
+    <!--
+
+    -->
+
+
+    <sql id="TABLE_NAME">TY_PACKAGE_APK_REF</sql>
+    <sql id="CommonFieldSql">
+        ID,
+        PACKAGE_ID,
+        APK_ID,
+        APK_NAME,
+        AUTO_RUN,
+        DESKTOP_ICON,
+        SORT,
+        ACTIVE,
+        CREATE_TIME
+    </sql>
+
+    <resultMap id="PackageApkRefResultMap" type="com.ifhz.core.po.PackageApkRef">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PACKAGE_ID" property="packageId" jdbcType="BIGINT"/>
+        <result column="APK_ID" property="apkId" jdbcType="BIGINT"/>
+        <result column="APK_NAME" property="apkName" jdbcType="VARCHAR"/>
+        <result column="AUTO_RUN" property="autoRun" jdbcType="VARCHAR"/>
+        <result column="DESKTOP_ICON" property="desktopIcon" jdbcType="VARCHAR"/>
+        <result column="SORT" property="sort" jdbcType="INTEGER"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PackageApkRef">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_PACKAGE_APK_REF.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_PACKAGE_APK_REF.NEXTVAL,
+        #{packageId},
+        #{apkId},
+        #{apkName},
+        #{autoRun},
+        #{desktopIcon},
+        #{sort},
+        #{active},
+        #{createTime}
+        )
+    </insert>
+    <!--<update id="update" parameterType="com.ifhz.core.po.PackageApkRef">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+
+        </set>
+        where ID = #{id}
+    </update>-->
+
+    <delete id="deleteForActive">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N'
+        where ID = #{id}
+    </delete>
+</mapper>

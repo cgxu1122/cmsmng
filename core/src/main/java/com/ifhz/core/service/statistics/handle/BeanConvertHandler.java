@@ -225,7 +225,6 @@ public final class BeanConvertHandler {
         jsonObject.put("packageList", array);
 
         System.out.println(JSON.toJSONString(jsonObject));
-
     }
 
     private BeanConvertHandler() {

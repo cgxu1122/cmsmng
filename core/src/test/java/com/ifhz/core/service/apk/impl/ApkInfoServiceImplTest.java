@@ -2,7 +2,7 @@ package com.ifhz.core.service.apk.impl;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ApkInfo;
-import com.ifhz.core.service.apk.ApkInfoService;
+import com.ifhz.core.service.pkgmng.ApkInfoService;
 import com.test.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ApkInfoServiceImplTest extends BaseTest {
     @Test
     public void testInsert() throws Exception {
         ApkInfo po = new ApkInfo();
-        po.setProductName("JJ斗地主（D）");
+        po.setApkName("JJ斗地主（D）");
         po.setApkName("JJLord.21220.38487.visible.apk");
         po.setFtpPath("/data/apk/aaaa.apk");
         log(apkInfoService.insert(po));
@@ -39,7 +39,7 @@ public class ApkInfoServiceImplTest extends BaseTest {
     public void testUpdate() throws Exception {
         ApkInfo po = new ApkInfo();
         po.setApkId(2L);
-        po.setProductName("JJ斗地主（D）2");
+        po.setApkName("JJ斗地主（D）2");
         log(apkInfoService.update(po));
     }
 

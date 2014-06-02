@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.PublishTaskMapper">
+    <!--
+
+    -->
+
+    <sql id="TABLE_NAME">TY_PUBLISH_TASK</sql>
+    <sql id="CommonFieldSql">
+        PUBLISH_ID,
+        PACKAGE_ID,
+        PACKAGE_NAME,
+        EFFECT_TIME,
+        ACTIVE,
+        PUBLISH_TIME,
+        CREATE_TIME,
+        UPDATE_TIME,
+    </sql>
+
+    <resultMap id="PublishTaskResultMap" type="com.ifhz.core.po.PublishTask">
+        <id column="PUBLISH_ID" property="publishId" jdbcType="BIGINT"/>
+        <result column="PACKAGE_ID" property="packageId" jdbcType="BIGINT"/>
+        <result column="PACKAGE_NAME" property="packageName" jdbcType="VARCHAR"/>
+        <result column="EFFECT_TIME" property="effectTime" jdbcType="TIMESTAMP"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="PUBLISH_TIME" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PublishTask">
+        <selectKey resultType="long" keyProperty="publishId">
+            SELECT SEQ_PUBLISH_TASK.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_PUBLISH_TASK.NEXTVAL,
+        #{publishId},
+        #{packageId},
+        #{packageName},
+        #{effectTime},
+        #{active},
+        #{publishTime},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+
+</mapper>

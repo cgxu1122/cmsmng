@@ -1,5 +1,6 @@
 package com.ifhz.core.service.cache.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -29,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 @Service("dictInfoCacheService")
 public class DictInfoCacheServiceImpl implements DictInfoCacheService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DictInfoCacheServiceImpl.class);
-
 
     private final Cache<String, DictInfo> CACHE = createCache();
 
@@ -92,6 +92,7 @@ public class DictInfoCacheServiceImpl implements DictInfoCacheService {
             DictInfo result = null;
             try {
                 result = dictInfoAdapter.getByKeyCode(this.keyCode);
+                LOGGER.info("result={}", JSON.toJSONString(result));
             } catch (Exception e) {
                 LOGGER.error("query DictInfo Failure", e);
             }

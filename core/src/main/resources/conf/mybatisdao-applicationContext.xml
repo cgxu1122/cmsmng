@@ -142,6 +142,10 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.CounterUploadLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+    <bean id="counterFailLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterFailLogMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
     <bean id="dictInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.DictInfoMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
@@ -156,10 +160,6 @@
     </bean>
     <bean id="channelVersionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.ChannelVersionMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
-    <bean id="counterFailLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterFailLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
     <bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
@@ -184,6 +184,26 @@
     </bean>
     <bean id="apkInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.ApkInfoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="packageApkRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.PackageApkRefMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="packageInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.PackageInfoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="publishChannelRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.PublishChannelRefMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="publishModelRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.PublishModelRefMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="publishTaskMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.PublishTaskMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 </beans>

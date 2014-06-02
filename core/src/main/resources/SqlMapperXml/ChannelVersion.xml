@@ -74,7 +74,7 @@ create table TY_CHANNEL_VERSION
                 path = #{path},
             </if>
             <if test="version != null">
-                path = #{version},
+                version = #{version},
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime},

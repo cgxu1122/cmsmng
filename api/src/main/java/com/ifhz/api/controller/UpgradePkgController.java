@@ -1,12 +1,14 @@
 package com.ifhz.api.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
-import com.ifhz.core.po.ChannelVersion;
+import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.device.DeviceInfoService;
-import com.ifhz.core.service.pkgmng.ChannelVersionService;
+import com.ifhz.core.service.device.DeviceSystemService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,28 +19,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
  * Date: 2014/5/21
- * Time: 18:43
+ * Time: 17:44
  */
 @Controller
 @RequestMapping("/nzyw/api")
-public class DeviceInitApkLibController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceInitApkLibController.class);
+public class UpgradePkgController {
 
-    @Resource(name = "channelVersionService")
-    private ChannelVersionService channelVersionService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpgradePkgController.class);
+
+    @Resource(name = "deviceSystemService")
+    private DeviceSystemService deviceSystemService;
     @Resource(name = "deviceInfoService")
     private DeviceInfoService deviceInfoService;
 
-    @RequestMapping(value = "/initAPKLibVersion.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+
+    @RequestMapping(value = "/getPkgVersion.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject initAPKLibVersion(@RequestParam(value = "code", required = true) String code) {
-        LOGGER.info("receive msg code={}", code);
+    JSONObject getPkgVersion(@RequestParam(value = "code", required = true) String code,
+                             @RequestParam(value = "version", required = true) String version) {
+        LOGGER.info("receive msg code={},version={}", code, version);
         JSONObject result = null;
         try {
             if (StringUtils.isBlank(code)) {
@@ -46,22 +52,28 @@ public class DeviceInitApkLibController {
             }
             DeviceInfo info = deviceInfoService.queryByDeviceCode(code.trim());
             if (info != null) {
-                ChannelVersion channelVersion = channelVersionService.getByChannelId(info.getChannelId());
-                if (channelVersion != null) {
-                    result = ApiJsonHandler.genJsonRet(ResultType.Succ);
-                    result.put("version", channelVersion.getVersion());
-                    result.put("path", channelVersion.getPath());
-                    result.put("md5value", channelVersion.getMd5Value());
+                //TODO 待实现
+                List<ApkInfo> list = null;
+                JSONArray pkgList = new JSONArray();
+                if (CollectionUtils.isNotEmpty(list)) {
+                    for (ApkInfo apkInfo : list) {
+                        if (apkInfo != null) {
+
+                        }
+                    }
                 }
+                result = ApiJsonHandler.genJsonRet(ResultType.Succ);
+                result.put("version", String.valueOf(version));
+                result.put("pkgList", pkgList);
             }
             if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             }
         } catch (Exception e) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-            LOGGER.error("initAPKLibVersion error ", e);
+            LOGGER.error("getPkgVersion error ", e);
         } finally {
-            LOGGER.info("initAPKLibVersion:code={},returnObj={}", code, result);
+            LOGGER.info("getPkgVersion:code={},returnObj={}", code, result);
         }
 
         return result;

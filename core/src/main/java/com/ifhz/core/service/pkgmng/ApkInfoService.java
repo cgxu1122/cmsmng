@@ -1,5 +1,11 @@
 package com.ifhz.core.service.pkgmng;
 
+import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.ApkInfo;
+
+import java.util.Date;
+import java.util.List;
+
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -7,4 +13,18 @@ package com.ifhz.core.service.pkgmng;
  * Time: 18:02
  */
 public interface ApkInfoService {
+
+    public List<ApkInfo> queryAllList();
+
+    public List<ApkInfo> queryUpgradeList(Date date);
+
+    public ApkInfo getById(Long id);
+
+    public List<ApkInfo> queryByVo(Pagination page, ApkInfo record);
+
+    public int insert(ApkInfo record);
+
+    public int update(ApkInfo record);
+
+    public int delete(ApkInfo record);
 }

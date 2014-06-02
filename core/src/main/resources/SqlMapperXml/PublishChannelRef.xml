@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ifhz.core.mapper.ApkInfoMapper">
+<mapper namespace="com.ifhz.core.mapper.PublishChannelRefMapper">
     <!--
-        APK_ID         			number(15)           not null,
-       APK_NAME            varchar2(50)					not null,
-       SOFT_NAME           varchar2(100)					not null,
-       FTP_PATH        		varchar2(500)         not null,
-       MD5VALUE        		varchar2(500)         not null,
-       DOWNLOAD_URL       varchar2(500)         not null,
-       ACTIVE              varchar2(2)           not null,
-       TYPE                varchar2(2)           not null,
-       CREATE_TIME        		date               default SYSDATE not null,
-       UPDATE_TIME        		date               default SYSDATE not null
 
     -->
 
-
-    <sql id="TABLE_NAME">TY_APK_INFO</sql>
+    <sql id="TABLE_NAME">TY_PUBLISH_CHANNEL_REF</sql>
     <sql id="CommonFieldSql">
         APK_ID,
         APK_NAME,
@@ -30,7 +19,7 @@
         UPDATE_TIME
     </sql>
 
-    <resultMap id="ApkInfoResultMap" type="com.ifhz.core.po.ApkInfo">
+    <resultMap id="PublishPackageChannelRefResultMap" type="com.ifhz.core.po.PublishChannelRef">
         <id column="APK_ID" property="apkId" jdbcType="BIGINT"/>
         <result column="APK_NAME" property="apkName" jdbcType="VARCHAR"/>
         <result column="SOFT_NAME" property="softName" jdbcType="VARCHAR"/>
@@ -43,7 +32,7 @@
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getById" parameterType="long" resultMap="ApkInfoResultMap">
+    <select id="getById" parameterType="long" resultMap="PublishPackageChannelRefResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
@@ -51,7 +40,7 @@
         where APK_ID = #{apkId}
     </select>
 
-    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.ApkInfo">
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PublishChannelRef">
         <selectKey resultType="long" keyProperty="apkId">
             SELECT SEQ_APK_INFO.CURRVAL FROM DUAL
         </selectKey>
@@ -70,25 +59,35 @@
         #{downloadUrl},
         #{active},
         #{type},
+        #{active},
         #{createTime},
         #{updateTime}
         )
     </insert>
-    <update id="update" parameterType="com.ifhz.core.po.ApkInfo">
+    <update id="update" parameterType="com.ifhz.core.po.PublishChannelRef">
         update
         <include refid="TABLE_NAME"/>
         <set>
-            <if test="productName != null">
-                PRODUCT_NAME = #{productName},
-            </if>
             <if test="apkName != null">
                 APK_NAME = #{apkName},
+            </if>
+            <if test="softName != null">
+                SOFT_NAME = #{softName},
             </if>
             <if test="ftpPath != null">
                 FTP_PATH = #{ftpPath},
             </if>
+            <if test="md5Value != null">
+                MD5VALUE = #{md5Value},
+            </if>
+            <if test="downloadUrl != null">
+                DOWNLOAD_URL = #{downloadUrl},
+            </if>
             <if test="active != null">
                 ACTIVE = #{active},
+            </if>
+            <if test="type != null">
+                TYPE = #{type},
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime},
@@ -96,27 +95,7 @@
         </set>
         where APK_ID = #{apkId}
     </update>
-    <select id="queryByVo" parameterType="com.ifhz.core.po.ApkInfo" resultMap="ApkInfoResultMap">
-        select * from
-        <include refid="TABLE_NAME"/>
-        where 1=1
-        <if test="record.productName != null and record.productName != ''">
-            and PRODUCT_NAME = #{record.productName}
-        </if>
-        <if test="record.productNameCondition != null and record.productNameCondition != ''">
-            and PRODUCT_NAME LIKE concat(concat('%',#{record.productNameCondition}),'%' )
-        </if>
-        <if test="record.apkName != null and record.apkName != ''">
-            and APK_NAME = #{record.apkName}
-        </if>
-        <if test="record.ftpPath != null and record.ftpPath != ''">
-            and FTP_PATH = #{record.ftpPath}
-        </if>
-        <if test="record.active != null and record.active != ''">
-            and ACTIVE = #{record.active}
-        </if>
-    </select>
-    <select id="queryAllList" resultMap="ApkInfoResultMap">
+    <select id="queryAllList" resultMap="PublishPackageChannelRefResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
@@ -124,17 +103,14 @@
         where ACTIVE = 'Y'
     </select>
 
-    <select id="queryUpgradeList" resultMap="ApkInfoResultMap">
+    <select id="queryUpgradeList" resultMap="PublishPackageChannelRefResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
-        where ACTIVE = 'Y'
-        and UPDATE_TIME &gt;= #{date,jdbcType=TIMESTAMP}
+        where UPDATE_TIME &gt;= #{version,jdbcType=TIMESTAMP}
     </select>
-
-
-    <delete id="delete" parameterType="com.ifhz.core.po.ApkInfo">
+    <delete id="delete" parameterType="com.ifhz.core.po.PublishChannelRef">
         delete from
         <include refid="TABLE_NAME"/>
         where APK_ID = #{apkId}

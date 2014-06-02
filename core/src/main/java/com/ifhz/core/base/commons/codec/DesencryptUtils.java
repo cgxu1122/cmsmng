@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
+import org.apache.commons.io.FileUtils;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -54,13 +55,14 @@ public final class DesencryptUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        String fileName = "D:\\instantclient-basic-win32-10.2.0.5.zip";
-        String fileName2 = "D:\\instantclient-basic-win32-10.2.0.5 - 副本.zip";
+        String fileName = "D:\\b7d2f6b63577c6bf34b84b5cbddeb450.txt";
+        String fileName2 = "D:\\a.txt";
+
+        FileUtils.copyFile(new File(fileName2), new File(fileName));
+
 
         System.out.println(md5File(new File(fileName)));
         System.out.println(md5File(new File(fileName2)));
-
-
     }
 
     private DesencryptUtils() {

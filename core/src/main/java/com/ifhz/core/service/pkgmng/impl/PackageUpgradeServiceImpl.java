@@ -1,6 +1,6 @@
 package com.ifhz.core.service.pkgmng.impl;
 
-import com.ifhz.core.service.pkgmng.IncrementalUpdateService;
+import com.ifhz.core.service.pkgmng.PackageUpgradeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
  * Time: 21:28
  */
 @Service("incrementalUpdateService")
-public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
+public class PackageUpgradeServiceImpl implements PackageUpgradeService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PackageUpgradeServiceImpl.class);
 
 
 }

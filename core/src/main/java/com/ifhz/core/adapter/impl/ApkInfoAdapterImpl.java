@@ -14,7 +14,9 @@ import java.util.List;
 
 /**
  * 类描述
- * User: yangjian
+ * User: chenggangxu@sohu-inc.com
+ * Date: 2014/5/24
+ * Time: 15:50
  */
 @Repository("apkInfoAdapter")
 public class ApkInfoAdapterImpl implements ApkInfoAdapter {
@@ -53,4 +55,12 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
         return apkInfoMapper.update(record);
     }
 
+    public List<ApkInfo> queryAllList() {
+        return apkInfoMapper.queryAllList();
+    }
+
+    @Override
+    public List<ApkInfo> queryUpgradeList(Date date) {
+        return apkInfoMapper.queryUpgradeList(date);
+    }
 }

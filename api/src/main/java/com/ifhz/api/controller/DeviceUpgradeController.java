@@ -48,19 +48,20 @@ public class DeviceUpgradeController {
             if (StringUtils.isBlank(code) || StringUtils.isBlank(version)) {
                 return ApiJsonHandler.genJsonRet(ResultType.Fail);
             }
-            DeviceSystem newestDeviceSytem = deviceSystemService.queryNewestVersion(new Date());
-            if (newestDeviceSytem != null) {
-                if (StringUtils.equalsIgnoreCase(version.trim(), newestDeviceSytem.getVersion())) {
-                    result = ApiJsonHandler.genJsonRet(ResultType.Succ);
-                } else {
-                    result = ApiJsonHandler.genJsonRet(ResultType.Upgrade);
-                    result.put("path", newestDeviceSytem.getFtpPath());
+            DeviceInfo info = deviceInfoService.queryByDeviceCode(code);
+            if (info != null) {
+                DeviceSystem newestDeviceSytem = deviceSystemService.queryNewestVersion(new Date());
+                if (newestDeviceSytem != null) {
+                    if (StringUtils.equalsIgnoreCase(version.trim(), newestDeviceSytem.getVersion())) {
+                        result = ApiJsonHandler.genJsonRet(ResultType.Succ);
+                    } else {
+                        result = ApiJsonHandler.genJsonRet(ResultType.Upgrade);
+                        result.put("path", newestDeviceSytem.getFtpPath());
+                    }
                 }
-                DeviceInfo info = deviceInfoService.queryByDeviceCode(code);
-                if (info != null) {
-                    result.put("cid", info.getChannelId().toString());
-                }
-            } else {
+                result.put("cid", info.getChannelId().toString());
+            }
+            if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             }
         } catch (Exception e) {

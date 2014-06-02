@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
+import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DeviceProcessLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import org.apache.commons.collections.CollectionUtils;
@@ -40,6 +41,7 @@ public class DeviceApiController {
     @ResponseBody
     JSONObject processLog(@RequestParam(value = "processList", required = true) List<String> processList) {
         LOGGER.info("receive encode processList={}", processList);
+        DeviceCommonLog.info("receive encode processList={}", processList);
         JSONObject result = null;
         try {
             if (CollectionUtils.isNotEmpty(processList)) {
@@ -48,22 +50,20 @@ public class DeviceApiController {
                     LOGGER.info("receive encode processLog={}", processLog);
                     if (StringUtils.isNotBlank(processLog)) {
                         String source = CodecUtils.decode(processLog).trim();
-                        if (StringUtils.startsWith(source, CodecUtils.START_CHAR)) {
-                            source = StringUtils.replaceOnce(source, CodecUtils.START_CHAR, "");
-                            LOGGER.info("receive decode processLog={}", source);
-                            String[] array = StringUtils.split(source, "|");
-                            //^手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-                            if (array.length == 6 && valid(array)) {
-                                DeviceProcessLog log = new DeviceProcessLog();
-                                log.setImei(StringUtils.trimToEmpty(array[0]));
-                                log.setUa(StringUtils.trimToEmpty(array[1]));
-                                log.setChannelId(StringUtils.trimToEmpty(array[2]));
-                                log.setDeviceCode(StringUtils.trimToEmpty(array[3]));
-                                log.setBatchCode(StringUtils.trimToEmpty(array[4]));
-                                log.setProcessTime(StringUtils.trimToEmpty(array[5]));
+                        LOGGER.info("receive decode processLog={}", source);
+                        DeviceCommonLog.info("receive decode data={}", source);
+                        String[] array = StringUtils.split(source, "|");
+                        //^手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
+                        if (array.length == 6 && valid(array)) {
+                            DeviceProcessLog log = new DeviceProcessLog();
+                            log.setImei(StringUtils.trimToEmpty(array[0]));
+                            log.setUa(StringUtils.trimToEmpty(array[1]));
+                            log.setChannelId(StringUtils.trimToEmpty(array[2]));
+                            log.setDeviceCode(StringUtils.trimToEmpty(array[3]));
+                            log.setBatchCode(StringUtils.trimToEmpty(array[4]));
+                            log.setProcessTime(StringUtils.trimToEmpty(array[5]));
 
-                                deviceProcessLogList.add(log);
-                            }
+                            deviceProcessLogList.add(log);
                         }
                     }
                 }
