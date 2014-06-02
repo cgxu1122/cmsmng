@@ -34,6 +34,10 @@ public class RoleVo implements Serializable {
     /**
      * 全路径
      */
+    private String parentName;
+    /**
+     * 全路径
+     */
     private String fullPath;
 
     /**
@@ -93,6 +97,14 @@ public class RoleVo implements Serializable {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     @Override

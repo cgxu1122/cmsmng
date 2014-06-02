@@ -8,10 +8,8 @@ import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.RoleMapper;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.ResourceService;
-import com.ifhz.core.service.auth.RoleResourceRefService;
-import com.ifhz.core.service.auth.RoleService;
-import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.po.UserRoleRef;
+import com.ifhz.core.service.auth.*;
 import com.ifhz.core.vo.RoleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +30,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     ResourceService resourceService;
+
+    @Autowired
+    UserRoleRefService userRoleRefService;
 
     @Autowired
     RoleResourceRefService roleResourceRefService;
@@ -137,27 +138,8 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public RoleVo findById(long id) {
-        Map map = roleMapper.findById(id);
-        RoleVo roleMangerVo = new RoleVo();
-
-        Long id_ = (Long) (map.get("id") == null ? 0 : map.get("id"));
-
-        Date createTime = (Date) (map.get("createTime") == null ? "" : map.get("createTime"));
-        String ext = map.get("ext") == null ? "" : (String) map.get("ext");
-        Long parentId = (Long) (map.get("parentId") == null ? 0 : map.get("parentId"));
-        String roleName = map.get("roleName") == null ? "" : (String) map.get("roleName");
-        String parentName = map.get("parentName") == null ? "" : (String) map.get("parentName");
-        String icon = map.get("icon") == null ? "" : (String) map.get("icon");
-        Integer level = (Integer) (map.get("level") == null ? 0 : map.get("level"));
-
-        String fullPath = map.get("fullPath") == null ? "" : (String) map.get("fullPath");
-        roleMangerVo.setCreateTime(createTime);
-        roleMangerVo.setFullPath(fullPath);
-        roleMangerVo.setRoleName(roleName);
-        roleMangerVo.setRoleId(id_);
-        roleMangerVo.setParentId(parentId);
-
-        return roleMangerVo;
+        RoleVo roleVo = roleMapper.findById(id);
+        return roleVo;
     }
 
     /**
@@ -250,9 +232,11 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public boolean check2Delete(long roleId) {
-        List<User> staffList = userService.findUserByRoleId(roleId);
-        return staffList.size() > 0 ? true : false;
+        List<UserRoleRef> userList = userRoleRefService.findUserListRoleId(roleId);
+        return userList.size() > 0 ? true : false;
     }
+
+
     @Override
     public Role findParentById(long parentId) {
         return roleMapper.findParentById(null,parentId);

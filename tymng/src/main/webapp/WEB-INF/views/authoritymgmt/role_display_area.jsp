@@ -19,8 +19,7 @@
                 height: 400,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/role/getById/${id}',
-                //queryParams:{},
+                url: '<%=basePath%>/role/getById/${parentId}',
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -33,7 +32,7 @@
                             width: 100
                         },
                         {
-                            field: 'level',
+                            field: 'levels',
                             title: '层级',
                             align: 'center',
                             width: 100
@@ -45,16 +44,10 @@
                             width: 100
                         },
                         {
-                            field: 'ext',
-                            title: '扩展',
-                            align: 'center',
-                            width: 100
-                        },
-                        {
                             field: 'createTime',
                             title: '添加时间',
                             align: 'center',
-                            width: 100
+                            width: 200
                         },
                         {
                             field: 'parentName',
@@ -63,13 +56,7 @@
                             width: 100
                         },
                         {
-                            field: 'icon',
-                            title: '图片',
-                            align: 'center',
-                            width: 100
-                        },
-                        {
-                            field: 'id',
+                            field: 'roleId',
                             hidden: true
                         }
                     ]
@@ -116,13 +103,11 @@
                 },
                 success: function (result) {
                     var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
-                        $.messager.alert('错误', result.errorMsg);
-                        /*   $.messager.show({
-                         title: 'Error',
-                         msg: result.errorMsg
-                         }); */
+                    result = eval('(' + result + ')');
+                    if (result.code==-1) {
+                        $.messager.alert('错误', result.message);
                     } else {
+                        $.messager.alert('成功', result.message);
                         $('#dlg').dialog('close');
                         parent.frames['leftFrame'].location.reload(true);
                     }
@@ -145,14 +130,12 @@
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
-                data: {"id": $('#id').val(), "roleName": $('#roleName').val(), "icon": $('#icon').val()},
+                data: {"roleId": $('#roleId').val(), "roleName": $('#roleName').val()},
                 success: function (result) {
                     var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
-                        $.messager.show({
-                            title: 'Error',
-                            msg: result.errorMsg
-                        });
+                    result = eval('(' + result + ')');
+                    if (result.code==-1) {
+                        $.messager.alert('错误', result.message);
                     } else {
                         $('#dlg1').dialog('close');
                         $('#dg').datagrid('reload');
@@ -168,15 +151,13 @@
             if (row) {
                 $.messager.confirm('提示', '确定要角色[' + row.roleName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/role/delete', {id: row.id}, function (result) {
-                            if (result.success) {
+                        $.post('<%=basePath%>/role/delete', {id: row.roleId}, function (result) {
+                            result = eval('(' + result + ')');
+                            if (result.code==-1) {
+                                $.messager.alert('错误', result.message);
+                            } else {
                                 $('#dg').datagrid('reload');
                                 parent.frames['leftFrame'].location.reload(true);
-                            } else {
-                                $.messager.show({
-                                    title: 'Error',
-                                    msg: result.errorMsg
-                                });
                             }
                         }, 'json');
                     }
@@ -192,16 +173,10 @@
      style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
     <div class="ftitle">新建角色</div>
     <br/>
-
     <form id="fm" method="post" novalidate>
         <input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
-
         <div class="fitem">
-            <label>角色名称:</label> <input name="roleName" class="easyui-validatebox"
-                                        required="true">
-        </div>
-        <div class="fitem">
-            <label>图片路径:</label> <input name="icon" class="easyui-validatebox">
+            <label>角色名称:</label> <input name="roleName" class="easyui-validatebox"  required="true">
         </div>
     </form>
 </div>
@@ -211,21 +186,14 @@
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
-<div id="dlg1" class="easyui-dialog"
-     style="width: 400px; height: 280px; padding: 10px 20px" closed="true"
-     buttons="#dlg1-buttons">
-    <div class="ftitle">新建角色</div>
+<div id="dlg1" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg1-buttons">
+    <div class="ftitle">修改角色</div>
     <br/>
 
     <form id="fm1" method="post" novalidate>
-        <input type="hidden" id="id" name="id" value="${id}"/>
-
+        <input type="hidden" id="roleId" name="roleId" value="${roleId}"/>
         <div class="fitem">
-            <label>角色名称:</label> <input name="roleName" id="roleName" class="easyui-validatebox"
-                                        required="true">
-        </div>
-        <div class="fitem">
-            <label>图片路径:</label> <input name="icon" id="icon" class="easyui-validatebox">
+            <label>角色名称:</label> <input name="roleName" id="roleName" class="easyui-validatebox"  required="true">
         </div>
     </form>
 </div>

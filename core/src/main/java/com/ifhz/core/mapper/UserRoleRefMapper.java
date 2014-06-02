@@ -26,4 +26,5 @@ public interface UserRoleRefMapper {
 
     Integer insert(UserRoleRef userRoleRef);
 
+    List<UserRoleRef> findUserListRoleId(long roleId);
 }

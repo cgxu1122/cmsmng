@@ -5,6 +5,7 @@
 package com.ifhz.core.service.auth;
 
 
+import com.ifhz.core.po.User;
 import com.ifhz.core.po.UserRoleRef;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface UserRoleRefService {
     UserRoleRef findRoleIdByUserId(Long userId);
 
     Integer insert(UserRoleRef urr);
+
+    List<UserRoleRef> findUserListRoleId(long roleId);
 }

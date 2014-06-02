@@ -99,7 +99,7 @@ public interface RoleMapper {
      * @return
      * @author radish
      */
-    public Map findById(long id);
+    public RoleVo findById(long id);
 
     /**
      * 获取系统管理员角色

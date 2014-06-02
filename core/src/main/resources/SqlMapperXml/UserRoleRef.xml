@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ifhz.core.mapper.UserRoleRefMapper" >
+    <select id="findRoleByUserId" resultType="com.ifhz.core.po.UserRoleRef">
+        select
+        id,
+        role_id  as  roleId,
+        user_id  as  userId,
+        create_time as createTime
+        from
+        ty_user_role_ref
+        where
+        user_id = #{userId}
+    </select>
 
-	<select id="findRoleByUserId" resultType="com.ifhz.core.po.UserRoleRef">
+	<select id="findUserListRoleId" resultType="com.ifhz.core.po.UserRoleRef">
 		select 
 		        id,
 		        role_id  as  roleId,
@@ -11,7 +22,7 @@
 		from 
 				ty_user_role_ref
 		where  
-		        user_id = #{userId}
+		        role_id = #{roleId}
 	</select>
 	
 	<delete id="deleteAllRefByRoleId" parameterType="long">

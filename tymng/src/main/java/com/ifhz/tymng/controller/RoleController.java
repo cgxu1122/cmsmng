@@ -5,9 +5,11 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.service.auth.RoleService;
+import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,8 +36,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/role")
 public class RoleController extends BaseController {
-    private static Logger logger = LoggerFactory
-            .getLogger(RoleController.class);
+    private static Logger logger = LoggerFactory.getLogger(RoleController.class);
     @Autowired
     RoleService roleService;
 
@@ -53,32 +56,23 @@ public class RoleController extends BaseController {
     }
 
     @RequestMapping("/showdetail/{id}")
-    public ModelAndView showdetail(@PathVariable("id") long id,
-                                   HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView showdetail(@PathVariable("id") long id,HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("authoritymgmt/role_display_area");
         mav.addObject("parentId", id);
         return mav;
     }
 
     @RequestMapping("/getById/{id}")
-    public void getById(@PathVariable("id") long id,
-                        HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("text/xml; charset=UTF-8");
+    @ResponseBody()
+    public JSONObject getById(@PathVariable("id") long id,HttpServletRequest request, HttpServletResponse response) {
         RoleVo role = roleService.findById(id);
+        List<RoleVo> userVoList = new ArrayList<RoleVo>();
+        userVoList.add(role);
 
-        String rtnJson = JSON.toJSONString(role);
-        try {
-            response.getWriter().print(rtnJson);
-            response.getWriter().close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                response.getWriter().close();
-            } catch (IOException e) {
-                logger.error(e.getMessage());
-            }
-        }
+        JSONObject result = new JSONObject();
+        result.put("total", 1);
+        result.put("rows", userVoList);
+        return result;
     }
 
     @RequestMapping("/tree")
@@ -121,14 +115,21 @@ public class RoleController extends BaseController {
      */
     @RequestMapping("/insert/{parentId}")
     @ResponseBody()
-    public String insert(@PathVariable("parentId") long parentId,
-                         HttpServletRequest req) {
+    public String insert(@PathVariable("parentId") long parentId, HttpServletRequest req) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("新增角色成功");
+
         String roleName = StringUtils.trim(req.getParameter("roleName"));
         if (StringUtils.isBlank(roleName)) {
-            return JSON.toJSONString("请输入角色名称");
+            result.setCode(-1);
+            result.setMessage("请输入角色名称");
+            return JSON.toJSONString(result);
         }
         if (!checkUnique(roleName)) {
-            return JSON.toJSONString("角色名称重复");
+            result.setCode(-1);
+            result.setMessage("角色名称重复");
+            return JSON.toJSONString(result);
         }
 
         Role parentRole = roleService.findParentById(parentId);
@@ -143,7 +144,7 @@ public class RoleController extends BaseController {
         dbRole.setFullPath(parentRole.getFullPath() + "/" + dbRole.getRoleId());
         roleService.saveRoleFullPath(dbRole);
 
-        return JSON.toJSONString("添加成功");
+        return JSON.toJSONString(result);
     }
 
     /**
@@ -169,10 +170,10 @@ public class RoleController extends BaseController {
      */
     private boolean checkUniqueBesideSelf(String roleName, long id) {
         boolean flag = false;
-//		Role role = roleService.findByRoleNameBesideSelf(roleName, id);
-//		if (role == null) {
-//			flag = true;
-//		}
+		Role role = roleService.findByRoleNameBesideSelf(roleName, id);
+		if (role == null) {
+			flag = true;
+		}
         return flag;
     }
 
@@ -186,30 +187,43 @@ public class RoleController extends BaseController {
     @RequestMapping("/update")
     @ResponseBody()
     public String update(HttpServletRequest req) {
-//		String icon = StringUtils.trim(req.getParameter("icon"));
-//		String roleName = StringUtils.trim(req.getParameter("roleName"));
-//		String id = StringUtils.trim(req.getParameter("id"));
-//		long roleId = Long.parseLong(id);
-//		if (StringUtils.isBlank(roleName)) {
-//			return JsonUtils.singleErrorMsg("请输入角色名称");
-//		}
-//		if (!checkUniqueBesideSelf(roleName, roleId)) {
-//			return JsonUtils.singleErrorMsg("角色名称重复");
-//		}
-//
-//		RoleVo dbrole = roleService.findById(roleId);
-//		if (StringUtils.equals(dbrole.getRoleName(), roleName)
-//				&& StringUtils.equals(dbrole.getIcon(), icon)) {
-//			return JsonUtils.RETURN_NOTHING;
-//		} else {
-//			Role role = new Role();
-//			role.setId(dbrole.getId());
-//			role.setIcon(icon);
-//			role.setRoleName(roleName);
-//			roleService.update(role);
-//		}
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("密码角色成功");
 
-        return "";
+		String roleName = StringUtils.trim(req.getParameter("roleName"));
+        if (StringUtils.isBlank(roleName)) {
+            result.setCode(-1);
+            result.setMessage("请输入角色名称");
+            return JSON.toJSONString(result);
+        }
+
+		String id = StringUtils.trim(req.getParameter("roleId"));
+        if (StringUtils.isBlank(id)) {
+            result.setCode(-1);
+            result.setMessage("请输入角色id");
+            return JSON.toJSONString(result);
+        }
+		long roleId = Long.parseLong(id);
+
+
+		if (!checkUniqueBesideSelf(roleName, roleId)) {
+            result.setCode(-1);
+            result.setMessage("角色名称重复");
+            return JSON.toJSONString(result);
+		}
+
+		RoleVo dbrole = roleService.findById(roleId);
+		if (StringUtils.equals(dbrole.getRoleName(), roleName)) {
+
+		} else {
+			Role role = new Role();
+			role.setRoleId(dbrole.getRoleId());
+			role.setRoleName(roleName);
+			roleService.update(role);
+		}
+
+        return JSON.toJSONString(result);
     }
 
     /**
@@ -222,15 +236,27 @@ public class RoleController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody()
     public String delete(HttpServletRequest request) {
-//		String id = request.getParameter("id");
-//		long roleId = Long.parseLong(id);
-//
-//		if (this.check2Delete(roleId)) {
-//			return JsonUtils.singleErrorMsg("请先删除引用用户");
-//		}
-//		roleService.deleteAllRefByRoleId(roleId);
-//		roleService.delete(roleId);
-        return "";
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("密码角色成功");
+
+		String id = StringUtils.trim(request.getParameter("id"));
+        if (StringUtils.isBlank(id)) {
+            result.setCode(-1);
+            result.setMessage("请输入id");
+            return JSON.toJSONString(result);
+        }
+		long roleId = Long.parseLong(id);
+
+		if (this.check2Delete(roleId)) {
+            result.setCode(-1);
+            result.setMessage("请先删除引用用户");
+            return JSON.toJSONString(result);
+		}
+
+		roleService.deleteAllRefByRoleId(roleId);
+		roleService.delete(roleId);
+        return JSON.toJSONString(result);
     }
 
     /**
@@ -239,7 +265,6 @@ public class RoleController extends BaseController {
      * @author radishlee
      */
     private boolean check2Delete(long roleId) {
-        return false;
-        //return roleService.check2Delete(roleId);
+        return roleService.check2Delete(roleId);
     }
 }

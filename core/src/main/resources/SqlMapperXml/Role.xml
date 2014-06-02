@@ -4,9 +4,9 @@
 	<!-- 插入角色记录 -->
 	<insert id="insertRole" parameterType="com.ifhz.core.po.Role">
 		insert into ty_role
-			(role_id,role_name,create_time,parent_id,full_path,levels)
+			(role_id,role_name,create_time,parent_id,levels)
 		values
-			(SEQ_TY_ROLE.nextval,#{roleName},sysdate,#{parentId},#{fullPath},#{levels})
+			(SEQ_TY_ROLE.nextval,#{roleName},sysdate,#{parentId},#{levels})
         <selectKey resultType="long" keyProperty="role_id">
             SELECT SEQ_TY_ROLE.CURRVAL FROM DUAL
         </selectKey>
@@ -115,9 +115,19 @@
 		        parent_id = #{id}		
 	</select>
 
-	<select id="findById" resultType="java.util.Map">
+
+    <resultMap id="VoMap" type="com.ifhz.core.vo.RoleVo">
+        <id column="roleId" property="roleId" jdbcType="BIGINT"/>
+        <result column="roleName" property="roleName" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="parentId" property="parentId" jdbcType="BIGINT"/>
+        <result column="parentName" property="parentName" jdbcType="TIMESTAMP"/>
+        <result column="levels" property="levels" jdbcType="BIGINT"/>
+        <result column="fullPath" property="fullPath" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="findById" resultMap="VoMap">
 		select 
-		        child.role_id,
+		        child.role_id as roleId,
 		 		child.role_name as roleName,
 				child.create_time as createTime,
 				child.parent_id as parentId,
