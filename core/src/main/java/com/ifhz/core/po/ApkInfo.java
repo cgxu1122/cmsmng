@@ -35,8 +35,7 @@ public class ApkInfo implements Serializable {
     private Date createTime;
     private Date updateTime;
 
-    private String productNameCondition;
-
+    private String apkNameCondition;
 
 
     public Long getApkId() {
@@ -119,12 +118,12 @@ public class ApkInfo implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getProductNameCondition() {
-        return productNameCondition;
+    public String getApkNameCondition() {
+        return apkNameCondition;
     }
 
-    public void setProductNameCondition(String productNameCondition) {
-        this.productNameCondition = productNameCondition;
+    public void setApkNameCondition(String apkNameCondition) {
+        this.apkNameCondition = apkNameCondition;
     }
 
     @Override

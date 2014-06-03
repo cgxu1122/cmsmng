@@ -48,10 +48,10 @@ public class ApkInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
-        String productNameCondition = request.getParameter("productNameCondition");
+        String apkNameCondition = request.getParameter("apkNameCondition");
         ApkInfo bi = new ApkInfo();
         bi.setActive(JcywConstants.ACTIVE_Y);
-        bi.setProductNameCondition(productNameCondition);
+        bi.setApkNameCondition(apkNameCondition);
         List<ApkInfo> list = apkInfoService.queryByVo(page, bi);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -75,7 +75,7 @@ public class ApkInfoController extends BaseController {
         String softName = file.getName();
         String fileName = FtpUtils.generateFileName(file.getName());
         try {
-            apkName = readInputStreamData(params.get("productName").getInputStream());
+            apkName = readInputStreamData(params.get("apkName").getInputStream());
             FtpUtils.ftpUpload(file.getInputStream(),
                     GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR),
                     fileName
@@ -103,6 +103,7 @@ public class ApkInfoController extends BaseController {
         }
         ai.setApkName(apkName.trim());
         ai.setSoftName(softName);
+        ai.setActive(JcywConstants.ACTIVE_Y);
         ai.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
         apkInfoService.insert(ai);
         result.put("msg", "添加成功!");
@@ -119,7 +120,7 @@ public class ApkInfoController extends BaseController {
         JSONObject result = new JSONObject();
         try {
             apkId = readInputStreamData(params.get("apkId").getInputStream());
-            apkName = readInputStreamData(params.get("productName").getInputStream());
+            apkName = readInputStreamData(params.get("apkName").getInputStream());
         } catch (IOException e) {
             errorMsg = "数据读取错误，请联系管理员！";
             result.put("errorMsg", errorMsg);
@@ -187,11 +188,11 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
-        ApkInfo bi = apkInfoService.getById(Long.parseLong(apkId));
-        if (bi == null) {
+        ApkInfo ai = apkInfoService.getById(Long.parseLong(apkId));
+        if (ai == null) {
             result.put("errorMsg", "数据已被其他人操作，请刷新!");
         } else {
-            apkInfoService.delete(bi);
+            apkInfoService.delete(ai);
             result.put("msg", "删除成功!");
         }
         return result;

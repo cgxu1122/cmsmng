@@ -40,7 +40,6 @@
             var row = $('#dg').datagrid('getSelected');
             if (row) {
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
-                row.effectiveTime = new Date(row.effectiveTime).formate("yyyy-MM-dd");
                 $('#upfm').form('clear');
                 $('#upfm').form('load', row);
                 $("input[name=file]").val("");
@@ -67,7 +66,7 @@
         function delrow() {
             var row = $('#dg').datagrid('getSelected');
             if (row) {
-                $.messager.confirm('提示', '确定要删除[' + row.productName + ']?', function (r) {
+                $.messager.confirm('提示', '确定要删除[' + row.apkName + ']?', function (r) {
                     if (r) {
                         $.post('<%=basePath%>/apkInfo/delete', {apkId: row.apkId}, function (result) {
                             if (result.errorMsg) {
@@ -85,7 +84,7 @@
             var value = $('#searchValue').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/apkInfo/list",
-                queryParams: {productNameCondition: value}
+                queryParams: {apkNameCondition: value}
             });
         }
 
@@ -102,8 +101,8 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'productName', title: '产品名称', align: 'center', width: 150},
-                        {field: 'apkName', title: '软件名称', align: 'center', width: 300},
+                        {field: 'apkName', title: '产品名称', align: 'center', width: 150},
+                        {field: 'softName', title: '软件名称', align: 'center', width: 300},
                         {field: 'ftpPath', title: 'ftp路径', align: 'center', width: 400},
                         {field: 'createTime', title: '创建日期', align: 'center', width: 200,
                             formatter: function (value) {
@@ -151,7 +150,7 @@
     <form id="fm" method="post" enctype="multipart/form-data" novalidate>
         <div class="fitem" style="margin-left:15px">
             <label><font color="red">*</font>产品名称:</label>
-            <input id="productName" name="productName" class="easyui-validatebox" required="true" maxlength="50">
+            <input id="apkName" name="apkName" class="easyui-validatebox" required="true" maxlength="50">
         </div>
         <div class="fitem">
             <label><font color="red">*</font>上传文件:</label>
@@ -172,7 +171,7 @@
 
         <div class="fitem" style="margin-left:15px">
             <label><font color="red">*</font>产品名称:</label>
-            <input type="text" name="productName" class="easyui-validatebox" required="true"
+            <input type="text" name="apkName" class="easyui-validatebox" required="true"
                     >
         </div>
         <div class="fitem">

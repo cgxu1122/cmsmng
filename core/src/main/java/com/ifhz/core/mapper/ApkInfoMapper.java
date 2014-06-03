@@ -16,7 +16,7 @@ public interface ApkInfoMapper {
 
     public ApkInfo getById(Long id);
 
-    public List<ApkInfo> queryByVo(@Param("page") Pagination page, @Param(value = "record") ApkInfo record);
+    public List<ApkInfo> queryByVo(Pagination page, @Param(value = "record") ApkInfo record);
 
     public int insert(ApkInfo record);
 

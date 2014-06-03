@@ -66,26 +66,32 @@
         #{apkName},
         #{softName},
         #{ftpPath},
-        #{md5Value},
-        #{downloadUrl},
+        #{md5Value,jdbcType=VARCHAR},
+        #{downloadUrl,jdbcType=VARCHAR},
         #{active},
-        #{type},
+        #{type,jdbcType=VARCHAR},
         #{createTime},
-        #{updateTime}
+        #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.ApkInfo">
         update
         <include refid="TABLE_NAME"/>
         <set>
-            <if test="productName != null">
-                PRODUCT_NAME = #{productName},
-            </if>
             <if test="apkName != null">
                 APK_NAME = #{apkName},
             </if>
+            <if test="softName != null">
+                SOFT_NAME = #{softName},
+            </if>
             <if test="ftpPath != null">
                 FTP_PATH = #{ftpPath},
+            </if>
+            <if test="md5Value != null">
+                MD5VALUE = #{md5Value},
+            </if>
+            <if test="downloadUrl != null">
+                DOWNLOAD_URL = #{downloadUrl},
             </if>
             <if test="active != null">
                 ACTIVE = #{active},
@@ -100,14 +106,14 @@
         select * from
         <include refid="TABLE_NAME"/>
         where 1=1
-        <if test="record.productName != null and record.productName != ''">
-            and PRODUCT_NAME = #{record.productName}
-        </if>
-        <if test="record.productNameCondition != null and record.productNameCondition != ''">
-            and PRODUCT_NAME LIKE concat(concat('%',#{record.productNameCondition}),'%' )
-        </if>
         <if test="record.apkName != null and record.apkName != ''">
             and APK_NAME = #{record.apkName}
+        </if>
+        <if test="record.apkNameCondition != null and record.apkNameCondition != ''">
+            and APK_NAME LIKE concat(concat('%',#{record.apkNameCondition}),'%' )
+        </if>
+        <if test="record.softName != null and record.softName != ''">
+            and SOFT_NAME = #{record.softName}
         </if>
         <if test="record.ftpPath != null and record.ftpPath != ''">
             and FTP_PATH = #{record.ftpPath}

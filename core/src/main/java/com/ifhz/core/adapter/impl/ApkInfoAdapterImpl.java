@@ -39,6 +39,7 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     @Override
     public int insert(ApkInfo record) {
         record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
         return apkInfoMapper.insert(record);
     }
 
