@@ -9,6 +9,7 @@ import java.util.List;
 import com.ifhz.core.mapper.RoleResourceRefMapper;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.RoleResourceRefService;
+import com.ifhz.core.service.auth.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RoleResourceRefServiceImpl implements RoleResourceRefService {
-    /*@Autowired
+    @Autowired
     RoleService roleService;
-
+/*
     @Autowired
     ResourceService resourceService;*/
 
@@ -62,10 +63,11 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      *
      * @return
      * @author radish
+     * @param roleId
      */
     @Override
-    public String findAllRoleTreeXmlString() {
-        return null;
+    public String findRoleTreeXmlStringByRoleId(long roleId) {
+        return roleService.findRoleTreeXmlStringByRoleId(roleId );
     }
 
     /**
@@ -100,8 +102,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      *//*
 
     @Override
-    public String findAllRoleTreeXmlString() {
-        return roleService.findAllRoleTreeXmlString();
+    public String findRoleTreeXmlStringByRoleId() {
+        return roleService.findRoleTreeXmlStringByRoleId();
     }
 
     */

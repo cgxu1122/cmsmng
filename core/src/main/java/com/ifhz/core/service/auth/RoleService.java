@@ -152,4 +152,6 @@ public interface RoleService {
      * @return
      */
     public RoleVo getAdminRole();
+
+    String findRoleTreeXmlStringByRoleId(long roleId);
 }

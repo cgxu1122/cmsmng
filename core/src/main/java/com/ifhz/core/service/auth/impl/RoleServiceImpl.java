@@ -61,6 +61,11 @@ public class RoleServiceImpl implements RoleService {
 //        return ltResource;
 //    }
 
+    @Override
+    public String findRoleTreeXmlStringByRoleId(long roleId) {
+        return this.buildTree(AuthrityTreeConstants.NORMAL_ROLE_TREE, roleId);
+    }
+
     /**
      * 获取所有角色
      *
@@ -78,17 +83,26 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public String findAllRoleTreeXmlString() {
-        return buildTree(AuthrityTreeConstants.NORMAL_ROLE_TREE, 0l);
+        return buildTree(AuthrityTreeConstants.NORMAL_ROLE_TREE, 2l);
     }
 
-    final String buildTree(int type, long id) {
+    final String buildTree(int type, long roleId) {
         sbXml = new StringBuffer();
         sbXml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
         sbXml.append("<tree id=\"0\">\n");
         switch (type) {
             case 1: {
-                Role role = roleMapper.findRootRole();
-                doBuildNormalRoleTree(role);
+                Role root = roleMapper.findRootRole();
+                if(root.getRoleId()==roleId){
+                    doBuildNormalRoleTree(root);
+                }else{
+                    RoleVo roleVo = roleMapper.findById(roleId);
+                    Role role = new Role();
+                    role.setRoleId(roleVo.getRoleId());
+                    role.setRoleName(roleVo.getRoleName());
+                    doBuildNormalRoleTree(role);
+                }
+
             }
             case 2: {
             }
@@ -242,13 +256,6 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.findParentById(null,parentId);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @author radish
-     * 
-     * @see com.caikee.mgmt.service.RoleService#getAdminRole()
-     */
     @Override
     public RoleVo getAdminRole() {
         Role role = roleMapper.getAdminRole();
@@ -269,4 +276,6 @@ public class RoleServiceImpl implements RoleService {
 
         return roleMangerVo;
     }
+
+
 }

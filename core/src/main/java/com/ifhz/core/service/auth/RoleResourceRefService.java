@@ -41,8 +41,9 @@ public interface RoleResourceRefService {
      * 
      * @author radish
      * @return
+     * @param roleId
      */
-    public String findAllRoleTreeXmlString();
+    public String findRoleTreeXmlStringByRoleId(long roleId);
 
     /**
      * 找到角色资源关系
