@@ -4,6 +4,7 @@
  */
 package com.ifhz.core.service.auth.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ifhz.core.mapper.RoleResourceRefMapper;
@@ -92,6 +93,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
         RoleResourceRef rrr = new RoleResourceRef();
         rrr.setResourceId(resId);
         rrr.setRoleId(roleId);
+        rrr.setAcces(1);
+        rrr.setCreateTime(new Date());
         roleResourceRefMapper.insert(rrr);
         return true;
     }

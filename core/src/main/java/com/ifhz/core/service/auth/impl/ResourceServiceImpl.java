@@ -13,11 +13,14 @@ import java.util.Map;
 
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.ResourceMapper;
+import com.ifhz.core.mapper.RoleMapper;
 import com.ifhz.core.po.Resource;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
+import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.vo.ResourceVo;
+import com.ifhz.core.vo.RoleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +36,8 @@ public class ResourceServiceImpl implements ResourceService {
 
 	@Autowired
     ResourceMapper resourceMapper;
-
+    @Autowired
+    RoleService roleService;
 	@Autowired
     RoleResourceRefService roleResourceRefService;
 
@@ -53,33 +57,29 @@ public class ResourceServiceImpl implements ResourceService {
 		sbXml.append("<tree id=\"0\">\n");
 
 		Resource root = resourceMapper.findRootResource();
-
-        List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(id);
-        if(rrrList.size()==0){
-
-        }else{
-            RoleResourceRef rrr = rrrList.get(0);
-            long resourceId = rrr.getResourceId();
-            ResourceVo resourceVo = resourceMapper.findById(resourceId);
-            if(resourceVo.getParentId()==-1){
-
-            }else{
-                List<Resource> resList = resourceMapper.findAllChildrenById(resourceVo.getParentId());
-                for(Resource res :resList){
-                    doBuildCheckboxResourceTree(res, id);
-                }
-            }
-        }
-
-
         if (type == 3) {
             doBuildFullResourceTree(root);
-        } else if (type == 2) {
+        }else if(type==2){
+             RoleVo roleVo = roleService.findById(id);
+             if(roleVo.getParentId()==-1){
+                 doBuildCheckboxResourceTree(root, id);
+             }else{
+                 List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(id);
+                if(rrrList.size()==0){
 
+                }else{
+                    RoleResourceRef rrr = rrrList.get(0);
+                    long resourceId = rrr.getResourceId();
+                    ResourceVo resourceVo = resourceMapper.findById(resourceId);
+                    List<Resource> resList = resourceMapper.findAllChildrenById(resourceVo.getParentId());
+                    for(Resource res :resList){
+                        doBuildCheckboxResourceTree(res, id);
+                    }
+                }
+             }
         }
-
-		sbXml.append("</tree>");
-		return sbXml.toString();
+        sbXml.append("</tree>");
+        return sbXml.toString();
 	}
 
 	/**

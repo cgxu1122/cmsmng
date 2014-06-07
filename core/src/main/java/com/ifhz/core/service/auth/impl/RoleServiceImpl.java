@@ -11,9 +11,11 @@ import com.ifhz.core.po.User;
 import com.ifhz.core.po.UserRoleRef;
 import com.ifhz.core.service.auth.*;
 import com.ifhz.core.vo.RoleVo;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
@@ -152,8 +154,21 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public RoleVo findById(long id) {
-        RoleVo roleVo = roleMapper.findById(id);
-        return roleVo;
+        Role role = findParentById(id);
+        if(role.getParentId()==-1){
+            RoleVo rv = new RoleVo();
+            try {
+                BeanUtils.copyProperties(rv,role);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            return rv;
+        }else {
+            RoleVo roleVo = roleMapper.findById(id);
+            return roleVo;
+        }
     }
 
     /**

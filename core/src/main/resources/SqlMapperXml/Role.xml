@@ -159,7 +159,6 @@
 		        parent_id = -1
 	</select>
 	
-	<!-- 根据id查找父角色 -->
 	<select id="findParentById" resultType="com.ifhz.core.po.Role" >
 		select 
 		        role_id as roleId,
