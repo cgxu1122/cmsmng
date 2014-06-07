@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.ifhz.core.mapper.RoleResourceRefMapper;
 import com.ifhz.core.po.RoleResourceRef;
+import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ import org.springframework.stereotype.Service;
 public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     @Autowired
     RoleService roleService;
-/*
+
     @Autowired
-    ResourceService resourceService;*/
+    ResourceService resourceService;
 
     @Autowired
     RoleResourceRefMapper roleResourceRefMapper;
@@ -79,7 +80,7 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      */
     @Override
     public String findAllRoleResourceXmlString(long id) {
-        return null;
+        return resourceService.findAllRoleResourceXmlString(id);
     }
 
     public Boolean deleteAllRefByRoleId(long roleid) {
@@ -122,5 +123,19 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     @Override
     public void deleteAllRefByResId(long resId) {
         roleResourceRefMapper.deleteAllRefByResId(resId);
+    }
+
+    @Override
+    public List<RoleResourceRef> findAllResourceForRoleByRoleId(long roleId) {
+        return roleResourceRefMapper.findAllResourceForRoleByRoleId(roleId);
+    }
+
+    @Override
+    public RoleResourceRef findByRoleIdAndResourceId(long roleId, Long resourceId) {
+        List<RoleResourceRef> rrr = this.roleIdAndResourceId(roleId,resourceId);
+        if(rrr.size()==0){
+            return null;
+        }
+        return rrr.get(0);
     }
 }

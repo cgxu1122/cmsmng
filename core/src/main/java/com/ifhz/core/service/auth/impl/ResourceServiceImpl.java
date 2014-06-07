@@ -14,6 +14,7 @@ import java.util.Map;
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.ResourceMapper;
 import com.ifhz.core.po.Resource;
+import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.vo.ResourceVo;
@@ -51,12 +52,31 @@ public class ResourceServiceImpl implements ResourceService {
 		sbXml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 		sbXml.append("<tree id=\"0\">\n");
 
-		Resource resource = resourceMapper.findRootResource();
-		if (type == 3) {
-			doBuildFullResourceTree(resource);
-		} else if (type == 2) {
-			doBuildCheckboxResourceTree(resource, id);
-		}
+		Resource root = resourceMapper.findRootResource();
+
+        List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(id);
+        if(rrrList.size()==0){
+
+        }else{
+            RoleResourceRef rrr = rrrList.get(0);
+            long resourceId = rrr.getResourceId();
+            ResourceVo resourceVo = resourceMapper.findById(resourceId);
+            if(resourceVo.getParentId()==-1){
+
+            }else{
+                List<Resource> resList = resourceMapper.findAllChildrenById(resourceVo.getParentId());
+                for(Resource res :resList){
+                    doBuildCheckboxResourceTree(res, id);
+                }
+            }
+        }
+
+
+        if (type == 3) {
+            doBuildFullResourceTree(root);
+        } else if (type == 2) {
+
+        }
 
 		sbXml.append("</tree>");
 		return sbXml.toString();
@@ -80,18 +100,16 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
 	protected void doBuildCheckboxResourceTree(Resource resource, long roleId) {
-		long resourceId = resource.getResourceId();
-		List<Resource> childrenList = resourceMapper
-				.findAllChildrenById(resourceId);
+		List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
 		String checkedStr = "";
 
-//		if (childrenList.size() == 0) {
-//			// 根据主体类型和主体标识查询此资源标识在acl中是否存在
-//			if (roleResourceRefService.findByRoleIdAndResourceId(roleId,
-//					resourceId).size() > 0) {
-//				checkedStr = "   checked=\"1\"";
-//			}
-//		}
+		if (childrenList.size() == 0) {
+			// 根据主体类型和主体标识查询此资源标识在acl中是否存在
+            RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
+			if (rrr!=null) {
+				checkedStr = "   checked=\"1\"";
+			}
+		}
 
 		sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
 				+ resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
@@ -142,34 +160,34 @@ public class ResourceServiceImpl implements ResourceService {
 	 */
 	@Override
 	public ResourceVo findById(long id) throws ParseException {
-		Map map = resourceMapper.findById(id);
-		Long id_ = (Long) (map.get("id") == null ? 0 : map.get("id"));
-		String resName = map.get("resName") == null ? "" : (String) map
-				.get("resName");
-		String ext = map.get("ext") == null ? "" : (String) map.get("ext");
-		String resUrl = map.get("resUrl") == null ? "" : (String) map
-				.get("resUrl");
-		Date createTime = (Date) (map.get("createTime") == null ? "" : map
-				.get("createTime"));
-		Long parentId = (Long) (map.get("parentId") == null ? 0 : map
-				.get("parentId"));
-		String icon = map.get("icon") == null ? "" : (String) map.get("icon");
-		Integer level = (Integer) (map.get("level") == null ? 0 : map
-				.get("level"));
-		String fullPath = map.get("fullPath") == null ? "" : (String) map
-				.get("fullPath");
-		String parentName = map.get("parentName") == null ? "" : (String) map
-				.get("parentName");
-
-		ResourceVo resourceVo = new ResourceVo();
-		resourceVo.setResName(resName);
-		resourceVo.setResUrl(resUrl);
-		resourceVo.setFullPath(fullPath);
-		resourceVo.setParentId(parentId);
-		resourceVo.setResourceId(id_);
-
-		resourceVo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-				.parse(createTime.toString()));
+        ResourceVo resourceVo = resourceMapper.findById(id);
+//		Long id_ = (Long) (map.get("id") == null ? 0 : map.get("id"));
+//		String resName = map.get("resName") == null ? "" : (String) map
+//				.get("resName");
+//		String ext = map.get("ext") == null ? "" : (String) map.get("ext");
+//		String resUrl = map.get("resUrl") == null ? "" : (String) map
+//				.get("resUrl");
+//		Date createTime = (Date) (map.get("createTime") == null ? "" : map
+//				.get("createTime"));
+//		Long parentId = (Long) (map.get("parentId") == null ? 0 : map
+//				.get("parentId"));
+//		String icon = map.get("icon") == null ? "" : (String) map.get("icon");
+//		Integer level = (Integer) (map.get("level") == null ? 0 : map
+//				.get("level"));
+//		String fullPath = map.get("fullPath") == null ? "" : (String) map
+//				.get("fullPath");
+//		String parentName = map.get("parentName") == null ? "" : (String) map
+//				.get("parentName");
+//
+//		ResourceVo resourceVo = new ResourceVo();
+//		resourceVo.setResName(resName);
+//		resourceVo.setResUrl(resUrl);
+//		resourceVo.setFullPath(fullPath);
+//		resourceVo.setParentId(parentId);
+//		resourceVo.setResourceId(id_);
+//
+//		resourceVo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//				.parse(createTime.toString()));
 
 		return resourceVo;
 	}

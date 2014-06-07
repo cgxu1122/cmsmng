@@ -71,4 +71,8 @@ public interface RoleResourceRefService {
      */
     public void deleteAllRefByResId(long resId);
 
+    List<RoleResourceRef> findAllResourceForRoleByRoleId(long roleId);
+
+
+    RoleResourceRef findByRoleIdAndResourceId(long roleId, Long resourceId);
 }

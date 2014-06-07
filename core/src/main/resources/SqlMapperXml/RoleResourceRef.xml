@@ -58,4 +58,13 @@
           <include refid="TABLE_NAME"/>
         where ROLE_ID = #{roleId} and  RESOURCE_ID = #{resourceId}
     </select>
+
+    <select id="findAllResourceForRoleByRoleId"  resultMap="RoleResourceRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+        order by RESOURCE_ID asc
+    </select>
 </mapper>

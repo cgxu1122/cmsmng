@@ -54,9 +54,16 @@ public class ResourceVo  {
     private Integer levels;
 
 
-    /**
-     * url
-     */
+    private String parentName;
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
     public String getResUrl() {
         return resUrl;
     }

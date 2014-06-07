@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.Resource;
+import com.ifhz.core.vo.ResourceVo;
 import org.apache.ibatis.annotations.Param;
 
 
@@ -44,7 +45,7 @@ public interface ResourceMapper {
 	 * @param id
 	 * @return
 	 */
-	public Map findById(long id);
+	public ResourceVo findById(long id);
 
 	/**
 	 * @author radishlee

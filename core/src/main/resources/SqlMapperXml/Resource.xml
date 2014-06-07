@@ -46,7 +46,7 @@
 		        parent_id = #{id}		
 	</select>
 	
-	<select id="findById" resultType="java.util.Map">
+	<select id="findById" resultType="com.ifhz.core.vo.ResourceVo">
 		select 
 		        child.resource_id as resourceId,
 		 		child.res_name as resName,
