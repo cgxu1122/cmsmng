@@ -71,6 +71,11 @@ public class LogCountServiceImpl implements LogCountService {
         return logCountAdapter.partnerLaowuQueryList(page, pars);
     }
 
+    @Override
+    public List<Map<String, Object>> warehouseQueryList(Pagination page, Map pars) {
+        return logCountAdapter.warehouseQueryList(page, pars);
+    }
+
     // @Resource(name = "logCountAdapter")
     // private LogCountAdapter logCountAdapter;
     @Resource(name = "deviceProcessLogAdapter")

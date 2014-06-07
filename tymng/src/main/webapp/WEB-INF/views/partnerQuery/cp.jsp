@@ -38,7 +38,11 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'countTime', title: '日期', align: 'center', width: 100},
+                        {field: 'countTime', title: '日期', align: 'center', width: 100,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd");
+                            }
+                        },
                         {field: 'modleName', title: '机型', align: 'center', width: 150},
                         {field: 'processDayCount', title: '装机数量', align: 'center', width: 150}
                     ]

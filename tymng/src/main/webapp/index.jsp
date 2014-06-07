@@ -215,29 +215,38 @@
         </div>
         <div title="合作方查询后台" style="overflow: auto;">
             <div class="nav-item">
-                <a href="javascript:addTab('天音渠道','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
+                <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>天音渠道</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="javascript:addTab('地包渠道','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
+                <a href="javascript:addTab('地包渠道查询','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>地包渠道</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="javascript:addTab('cp合作方','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
+                <a href="javascript:addTab('cp合作方查询','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>cp合作方</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="javascript:addTab('劳务渠道','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
+                <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>劳务渠道</span>
                 </a>
             </div>
+        </div>
+        <div title="报表统计" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>按仓库查询</span>
+                </a>
+            </div>
+
         </div>
         <div title="系统用户管理" style="overflow: auto;">
             <div class="nav-item">

@@ -72,5 +72,8 @@ public class LogCountAdapterImpl implements LogCountAdapter {
         return logCountMapper.partnerLaowuQueryList(page, pars);
     }
 
-
+    @Override
+    public List<Map<String, Object>> warehouseQueryList(Pagination page, Map pars) {
+        return logCountMapper.warehouseQueryList(page, pars);
+    }
 }

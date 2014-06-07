@@ -30,4 +30,6 @@ public interface LogCountAdapter {
     public List<Map<String, Object>> partnerCPQuery(Pagination page, Map pars);
 
     public List<Map<String, Object>> partnerLaowuQueryList(Pagination page, Map pars);
+
+    public List<Map<String, Object>> warehouseQueryList(Pagination page, Map record);
 }

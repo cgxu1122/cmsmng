@@ -133,7 +133,7 @@ public final class DateFormatUtils {
     }
 
     public synchronized static Date convertYYYYMMDD(String strDate) {
-        if (strDate == null || strDate.indexOf("null") >= 0)
+        if (strDate == null || strDate.indexOf("null") >= 0 || strDate.trim().equals(""))
             return null;
 
         Date date = null;
@@ -143,7 +143,7 @@ public final class DateFormatUtils {
                 date = fmt.parse(strDate);
             }
         } catch (Exception e) {
-            LOGGER.error("convertYYYYMMDD error: date=" + strDate, e);
+            //  LOGGER.error("convertYYYYMMDD error: date=" + strDate, e);
             return null;
         }
 

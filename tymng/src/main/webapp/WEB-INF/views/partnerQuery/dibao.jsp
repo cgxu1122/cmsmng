@@ -13,8 +13,9 @@
             initPage();
         });
 
-        function dispImea() {
-            var row = $("#dg").datagrid("getSelected");
+        function dispImea(index) {
+            $('#dg').datagrid('selectRow', index);
+            var row = $('#dg').datagrid('getSelected');
 
             var countTime = row.countTime;
             var deviceCode = row.deviceCode;
@@ -57,7 +58,7 @@
                         {field: 'modleName', title: '机型', align: 'center', width: 150},
                         {field: 'processDayCount', title: '装机数量', align: 'center', width: 150,
                             formatter: function (value, row, index) {
-                                return "<a onclick=dispImea() href='#'> " + value + "</a>";
+                                return '<a href="#" onclick="dispImea(' + index + ')">' + value + '</a>';
                             }
                         }
                     ]

@@ -1,5 +1,6 @@
 package com.ifhz.core.mapper;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.CounterUploadLog;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,12 @@ public interface CounterUploadLogMapper {
     public long getYesterdayLogCount(Map tableName);
 
     public long getLogCountByTime(Map m);
+
+    public List<Map<String, Object>> queryArriveImeiByPage(Pagination page, @Param(value = "record") Map record);
+
+    public List<Map<String, Object>> queryArriveImei(Map record);
+
+    public List<Map<String, Object>> queryUploadImeiByPage(Pagination page, @Param(value = "record") Map record);
+
+    public List<Map<String, Object>> queryUploadImei(Map record);
 }
