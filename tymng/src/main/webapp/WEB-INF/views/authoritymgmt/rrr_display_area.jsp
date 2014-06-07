@@ -20,7 +20,7 @@
 </table>
 <script type="text/javascript">
     tree = new dhtmlXTreeObject("treeboxbox_tree", "100%", "100%", 0);
-    tree.setImagePath("<%=basePath%>plug/dhtmlxTree/codebase/imgs/csh_bluebooks/");
+    tree.setImagePath("<%=basePath%>/plug/dhtmlxTree/codebase/imgs/csh_bluebooks/");
     tree.enableCheckBoxes(1);
     tree.enableThreeStateCheckboxes(true);
     tree.loadXML("<%=basePath%>/rrr/loadroleresourceref/${id}", function () {
