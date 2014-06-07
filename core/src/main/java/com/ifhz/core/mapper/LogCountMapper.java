@@ -31,4 +31,7 @@ public interface LogCountMapper {
 
     public List<Map<String, Object>> partnerLaowuQueryList(Pagination page, @Param(value = "record") Map record);
 
+    public List<Map<String, Object>> warehouseQueryList(Pagination page, @Param(value = "record") Map record);
+
+
 }

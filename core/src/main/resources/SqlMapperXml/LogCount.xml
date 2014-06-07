@@ -152,9 +152,15 @@
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="count_time" property="countTime" jdbcType="TIMESTAMP"/>
         <result column="processDayCount" property="processDayCount" jdbcType="BIGINT"/>
+        <result column="deviceUploadDayCount" property="deviceUploadDayCount" jdbcType="BIGINT"/>
+        <result column="counterUploadDayCount" property="counterUploadDayCount" jdbcType="BIGINT"/>
+        <result column="allCount" property="allCount" jdbcType="BIGINT"/>
+        <result column="activeCount" property="activeCount" jdbcType="BIGINT"/>
+        <result column="nonActiveCount" property="nonActiveCount" jdbcType="BIGINT"/>
+        <result column="nonActiveUninstallCount" property="nonActiveUninstallCount" jdbcType="BIGINT"/>
+        <result column="nonActiveReplaceCount" property="nonActiveReplaceCount" jdbcType="BIGINT"/>
     </resultMap>
     <select id="partnerQuery" parameterType="map" resultMap="hmap">
-
         select t.COUNT_TIME,t.DEVICE_CODE,t.MODLE_NAME,t.CHANNEL_ID,ci.CHANNEL_NAME,sum(t.PROCESS_DAY_COUNT) as
         processDayCount from
         TY_LOG_COUNT t LEFT OUTER JOIN TY_CHANNEL_INFO ci on t.CHANNEL_ID = ci.CHANNEL_ID
@@ -172,10 +178,8 @@
             <![CDATA[  and t.COUNT_TIME <= #{record.endDate,jdbcType=TIMESTAMP} ]]>
         </if>
         group by t.COUNT_TIME ,t.DEVICE_CODE,t.MODLE_NAME,t.CHANNEL_ID,ci.CHANNEL_NAME
-
     </select>
     <select id="partnerCPQuery" parameterType="map" resultMap="hmap">
-
         select t.COUNT_TIME,t.MODLE_NAME,sum(t.PROCESS_DAY_COUNT) as processDayCount from
         TY_LOG_COUNT t where 1=1
         <if test="record.groupId != null and record.groupId != ''">
@@ -195,7 +199,6 @@
     <select id="partnerLaowuQueryList" parameterType="map" resultMap="hmap">
         select t.COUNT_TIME,t.DEVICE_CODE,t.MODLE_NAME,sum(t.PROCESS_DAY_COUNT) as processDayCount from
         TY_LOG_COUNT t where t.LAOWU_ID is not null and t.GROUP_ID=2
-
         <if test="record.channelId != null and record.channelId != ''">
             and t.CHANNEL_ID = #{record.channelId,jdbcType=BIGINT}
         </if>
@@ -210,4 +213,34 @@
         </if>
         group by t.COUNT_TIME ,t.DEVICE_CODE,t.MODLE_NAME
     </select>
+    <select id="warehouseQueryList" parameterType="map" resultMap="hmap">
+        select t.COUNT_TIME,t.MODLE_NAME,t.CHANNEL_ID,ci.CHANNEL_NAME,
+        sum(t.PROCESS_DAY_COUNT) as processDayCount,
+        sum(t.ALLCOUNT) as allCount,
+        sum(t.ACTIVE_COUNT) as activeCount,
+        sum(t.NONACTIVE_COUNT) as nonActiveCount,
+        sum(t.NONACTIVE_UNINSTALL_COUNT) as nonActiveUninstallCount,
+        sum(t.NONACTIVE_REPLACE_COUNT) as nonActiveReplaceCount,
+        sum(t.DEVICE_UPLOAD_DAY_COUNT) as deviceUploadDayCount,
+        sum(t.COUNTER_UPLOAD_DAY_COUNT) as counterUploadDayCount
+        from TY_LOG_COUNT t LEFT OUTER JOIN TY_CHANNEL_INFO ci on t.CHANNEL_ID = ci.CHANNEL_ID
+        where 1=1
+        <if test="record.groupId != null and record.groupId != ''">
+            and t.GROUP_ID = #{record.groupId,jdbcType=BIGINT}
+        </if>
+        <if test="record.modleName != null and record.modleName != ''">
+            and t.MODLE_NAME = #{record.modleName,jdbcType=VARCHAR}
+        </if>
+        <if test="record.startDate != null and record.startDate != ''">
+            <![CDATA[  and  t.COUNT_TIME >= #{record.startDate,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="record.endDate != null and record.endDate != ''">
+            <![CDATA[  and t.COUNT_TIME <= #{record.endDate,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and t.CHANNEL_ID = #{record.channelId,jdbcType=BIGINT}
+        </if>
+        group by t.COUNT_TIME ,t.MODLE_NAME,t.CHANNEL_ID,ci.CHANNEL_NAME
+    </select>
+
 </mapper>

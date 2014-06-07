@@ -120,7 +120,7 @@ public class DeviceProcessLogServiceImpl implements DeviceProcessLogService {
         CompletionService<List<DeviceProcessLog>> ecs = new ExecutorCompletionService<List<DeviceProcessLog>>(executor);
         try {
             int count = 0;
-            // List<String> tableList = splitTableService.getTableListForCounterByNow(now);
+            //  List<String> tableList = splitTableService.getTableListForCounterByNow(now);
             List<String> tableList = new ArrayList();
             tableList.add("TY_DEVICE_PROCESS_LOG_20142");
             tableList.add("TY_DEVICE_PROCESS_LOG_20143");

@@ -1,6 +1,7 @@
 package com.ifhz.core.adapter.impl;
 
 import com.ifhz.core.adapter.CounterUploadLogAdapter;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.CounterUploadLogMapper;
 import com.ifhz.core.po.CounterUploadLog;
 import org.apache.commons.lang.StringUtils;
@@ -49,5 +50,43 @@ public class CounterUploadLogAdapterImpl implements CounterUploadLogAdapter {
     @Override
     public long getLogCountByTime(Map m) {
         return counterUploadLogMapper.getLogCountByTime(m);
+    }
+
+    /*
+    查询装机到达数量imei明细
+    分页，用于页面展示
+    lm
+     */
+    @Override
+    public List<Map<String, Object>> queryArriveImeiByPage(Pagination page, Map record) {
+        return counterUploadLogMapper.queryArriveImeiByPage(page, record);
+    }
+
+    /*
+    查询装机到达数量imei明细
+    不分页，用于导出到execl
+    lm
+     */
+    @Override
+    public List<Map<String, Object>> queryArriveImei(Map record) {
+        return counterUploadLogMapper.queryArriveImei(record);
+    }
+
+    /*
+        查询累计到达数量imei明细
+        分页，用于页面展示
+        lm
+   */
+    public List<Map<String, Object>> queryUploadImeiByPage(Pagination page, Map record) {
+        return counterUploadLogMapper.queryUploadImeiByPage(page, record);
+    }
+
+    /*
+    查询累计到达数量imei明细
+    不分页，用于导出到execl
+    lm
+     */
+    public List<Map<String, Object>> queryUploadImei(Map record) {
+        return counterUploadLogMapper.queryUploadImei(record);
     }
 }
