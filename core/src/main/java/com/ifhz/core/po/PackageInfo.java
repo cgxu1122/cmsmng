@@ -2,6 +2,7 @@ package com.ifhz.core.po;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类描述
@@ -13,6 +14,8 @@ public class PackageInfo implements Serializable {
     private static final long serialVersionUID = 8826954392921248033L;
 
     private Long packageId;
+    private String packageName;
+    private Long groupId;
     private Long batchId;
     private String batchCode;
     private String type;
@@ -21,6 +24,50 @@ public class PackageInfo implements Serializable {
     private Date createTime;
     private Date updateTime;
 
+    private List<PackageApkRef> packageApkRefList;
+
+    private String packageNameCondition;
+    private String groupName;
+
+    public List<PackageApkRef> getPackageApkRefList() {
+        return packageApkRefList;
+    }
+
+    public void setPackageApkRefList(List<PackageApkRef> packageApkRefList) {
+        this.packageApkRefList = packageApkRefList;
+    }
+
+    public String getPackageNameCondition() {
+        return packageNameCondition;
+    }
+
+    public void setPackageNameCondition(String packageNameCondition) {
+        this.packageNameCondition = packageNameCondition;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
 
     public String getType() {
         return type;
