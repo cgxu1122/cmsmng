@@ -213,6 +213,20 @@
                 </a>
             </div>
         </div>
+        <div title="打包管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('普通包管理','<%=basePath%>/packageInfo/index?type=N','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>普通包管理</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('通用包管理','<%=basePath%>/packageInfo/index?type=Y','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>通用包管理</span>
+                </a>
+            </div>
+        </div>
         <div title="合作方查询后台" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">

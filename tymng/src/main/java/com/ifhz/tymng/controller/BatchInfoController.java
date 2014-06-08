@@ -227,4 +227,28 @@ public class BatchInfoController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/getBatchInfoByCode", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject getBatchInfoByCode(HttpServletRequest request) {
+        String batchCode = request.getParameter("batchCode");
+        String errorMsg = null;
+        if (StringUtils.isEmpty(batchCode)) {
+            errorMsg = "请输入批次号！";
+        }
+        BatchInfo biCondition = new BatchInfo();
+        biCondition.setBatchCode(batchCode);
+        biCondition.setActive(JcywConstants.ACTIVE_Y);
+        List<BatchInfo> batchInfoList = batchInfoService.queryByVo(null, biCondition);
+        if (batchInfoList == null || batchInfoList.size() <= 0) {
+            errorMsg = "您输入的批次号错误，请重新输入！";
+        }
+        JSONObject result = new JSONObject();
+        if (!StringUtils.isEmpty(errorMsg)) {
+            result.put("errorMsg", errorMsg);
+            return result;
+        }
+        result.put("batchInfo", batchInfoList.get(0));
+        return result;
+    }
+
 }

@@ -30,6 +30,12 @@
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <select id="queryByPackageId" parameterType="long" resultMap="PackageApkRefResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where PACKAGE_ID = #{packageId}
+        order by sort
+    </select>
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PackageApkRef">
         <selectKey resultType="long" keyProperty="id">
@@ -53,15 +59,14 @@
         #{createTime}
         )
     </insert>
-    <!--<update id="update" parameterType="com.ifhz.core.po.PackageApkRef">
-        update
+    <delete id="delete" parameterType="com.ifhz.core.po.PackageApkRef">
+        delete from
         <include refid="TABLE_NAME"/>
-        <set>
-
-        </set>
-        where ID = #{id}
-    </update>-->
-
+        where PACKAGE_ID = #{packageId}
+        <if test="apkId != null and apkId != ''">
+            and APK_ID = #{apkId}
+        </if>
+    </delete>
     <delete id="deleteForActive">
         update
         <include refid="TABLE_NAME"/>

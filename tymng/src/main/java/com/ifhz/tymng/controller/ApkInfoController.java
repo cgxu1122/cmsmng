@@ -8,6 +8,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
+import com.ifhz.core.util.MD5keyUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -74,12 +75,14 @@ public class ApkInfoController extends BaseController {
         }
         String softName = file.getName();
         String fileName = FtpUtils.generateFileName(file.getName());
+        String md5Value = null;
         try {
             apkName = readInputStreamData(params.get("apkName").getInputStream());
             FtpUtils.ftpUpload(file.getInputStream(),
                     GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR),
                     fileName
             );
+            md5Value = MD5keyUtil.getMD5(file.getInputStream());
         } catch (Exception e) {
             errorMsg = "上传文件出错，请重新上传或者联系管理员！";
             result.put("errorMsg", errorMsg);
@@ -105,6 +108,7 @@ public class ApkInfoController extends BaseController {
         ai.setSoftName(softName);
         ai.setActive(JcywConstants.ACTIVE_Y);
         ai.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
+        ai.setMd5Value(md5Value);
         apkInfoService.insert(ai);
         result.put("msg", "添加成功!");
         return result;
@@ -163,6 +167,7 @@ public class ApkInfoController extends BaseController {
                 );
                 apkInfo.setSoftName(softName);
                 apkInfo.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
+                apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);

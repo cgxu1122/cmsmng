@@ -79,6 +79,8 @@
                 <value>classpath:SqlMapperXml/RoleResourceRef.xml</value>
                 <value>classpath:SqlMapperXml/UserRoleRef.xml</value>
                 <value>classpath:SqlMapperXml/ApkInfo.xml</value>
+                <value>classpath:SqlMapperXml/PackageInfo.xml</value>
+                <value>classpath:SqlMapperXml/PackageApkRef.xml</value>
             </list>
         </property>
     </bean>

@@ -189,6 +189,7 @@ comment on column TY_APK_INFO.ACTIVE is 'Y:有效，N:无效';
 create table TY_PACKAGE_INFO  (
    PACKAGE_ID         			number(15)           not null,
    PACKAGE_NAME            varchar2(100)					not null,
+   GROUP_ID                number(15),
    BATCH_ID                number(15)         not null,
    BATCH_CODE              varchar2(100)         not null,
    TYPE                    varchar2(2)           not null,

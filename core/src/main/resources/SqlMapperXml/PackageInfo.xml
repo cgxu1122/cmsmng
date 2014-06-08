@@ -6,6 +6,7 @@
     <sql id="CommonFieldSql">
         PACKAGE_ID,
         PACKAGE_NAME,
+        GROUP_ID,
         BATCH_ID,
         BATCH_CODE,
         TYPE,
@@ -18,6 +19,7 @@
     <resultMap id="PackageInfoResultMap" type="com.ifhz.core.po.PackageInfo">
         <id column="PACKAGE_ID" property="packageId" jdbcType="BIGINT"/>
         <result column="PACKAGE_NAME" property="packageName" jdbcType="VARCHAR"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="BATCH_ID" property="batchId" jdbcType="BIGINT"/>
         <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <result column="TYPE" property="type" jdbcType="VARCHAR"/>
@@ -25,8 +27,16 @@
         <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
+        <collection property="packageApkRefList" column="PACKAGE_ID" javaType="ArrayList"
+                    ofType="com.ifhz.core.po.PackageApkRef"
+                    select="com.ifhz.core.mapper.PackageApkRefMapper.queryByPackageId"/>
     </resultMap>
-
+    <select id="getById" parameterType="long" resultMap="PackageInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where PACKAGE_ID = #{packageId}
+    </select>
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PackageInfo">
         <selectKey resultType="long" keyProperty="packageId">
             SELECT SEQ_PACKAGE_INFO.CURRVAL FROM DUAL
@@ -40,24 +50,55 @@
         (
         SEQ_PACKAGE_INFO.NEXTVAL,
         #{packageName},
+        #{groupId,jdbcType=BIGINT},
         #{batchId},
         #{batchCode},
         #{type},
         #{active},
-        #{remark},
+        #{remark,jdbcType=VARCHAR},
         #{createTime},
-        #{updateTime}
+        #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
-    <!--<update id="update" parameterType="com.ifhz.core.po.PackageInfo">
+    <update id="update" parameterType="com.ifhz.core.po.PackageInfo">
         update
         <include refid="TABLE_NAME"/>
         <set>
-
+            <if test="active != null">
+                ACTIVE = #{active},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
         </set>
         where PACKAGE_ID = #{packageId}
-    </update>-->
-
+    </update>
+    <select id="queryByVo" parameterType="com.ifhz.core.po.PackageInfo" resultMap="PackageInfoResultMap">
+        select pi.*,cg.GROUP_NAME from
+        <include refid="TABLE_NAME"/>
+        pi
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg on pi.GROUP_ID = cg.GROUP_ID
+        where 1=1
+        <if test="record.packageName != null and record.packageName != ''">
+            and pi.PACKAGE_NAME = #{record.packageName}
+        </if>
+        <if test="record.packageNameCondition != null and record.packageNameCondition != ''">
+            and pi.PACKAGE_NAME LIKE concat(concat('%', #{record.packageNameCondition}),'%' )
+        </if>
+        <if test="record.groupId != null and record.groupId != ''">
+            and pi.GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.type != null and record.type != ''">
+            and pi.TYPE = #{record.type}
+        </if>
+        <if test="record.active != null and record.active != ''">
+            and pi.ACTIVE = #{record.active}
+        </if>
+        ORDER BY pi.CREATE_TIME DESC
+    </select>
 
     <delete id="deleteForActive" parameterType="com.ifhz.core.po.PackageInfo">
         update

@@ -4,15 +4,19 @@
  */
 package com.ifhz.core.util;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.log4j.Logger;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.log4j.Logger;
-
 /**
  * MD5加密工具类，
- * 
+ *
  * @author luyujian
  */
 public class MD5keyUtil {
@@ -20,9 +24,8 @@ public class MD5keyUtil {
 
     /**
      * 返回加密的密文
-     * 
-     * @param str
-     *            要加密的字符串
+     *
+     * @param str 要加密的字符串
      * @return
      */
     public static String getMD5Str(String str) {
@@ -51,6 +54,41 @@ public class MD5keyUtil {
         }
 
         return md5StrBuff.toString().toUpperCase();
+    }
+
+    /**
+     * 对一个文件获取md5值
+     *
+     * @return md5串
+     */
+    public static String getMD5(InputStream inputStream) {
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            byte[] buffer = new byte[8192];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1) {
+                messageDigest.update(buffer, 0, length);
+            }
+            return new String(Hex.encodeHex(messageDigest.digest())).toLowerCase();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null)
+                    inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public static void main(String[] arg) {
