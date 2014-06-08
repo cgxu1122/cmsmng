@@ -261,12 +261,14 @@
                     <span>角色管理</span>
                 </a>
             </div>
+            <shiro:hasPermission name="A01">
             <div class="nav-item">
                 <a href="javascript:addTab('授权管理','<%=basePath%>/rrr/index','menu_icon_wjldgl')">
                     <span class="menu_icon_wjldgl"></span>
                     <span>授权管理</span>
                 </a>
             </div>
+            </shiro:hasPermission>
         </div>
     </div>
 </div>
