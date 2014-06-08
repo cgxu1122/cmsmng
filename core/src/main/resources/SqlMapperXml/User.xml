@@ -135,6 +135,7 @@
 		 		u.user_id       as userId,
                 u.login_name    as loginName,
                 u.real_name     as realName,
+                u.password,
                 u.cellphone,
                 u.address,
                 u.status,

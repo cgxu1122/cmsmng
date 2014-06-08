@@ -141,4 +141,9 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
         }
         return rrr.get(0);
     }
+
+    @Override
+    public List<RoleResourceRef> findAllAvaiableRes4RoleByRoleId(Long parentId) {
+        return roleResourceRefMapper.findAllAvaiableRes4RoleByRoleId(parentId);
+    }
 }

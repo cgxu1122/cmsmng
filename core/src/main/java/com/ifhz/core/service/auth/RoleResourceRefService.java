@@ -75,4 +75,6 @@ public interface RoleResourceRefService {
 
 
     RoleResourceRef findByRoleIdAndResourceId(long roleId, Long resourceId);
+
+    List<RoleResourceRef> findAllAvaiableRes4RoleByRoleId(Long parentId);
 }

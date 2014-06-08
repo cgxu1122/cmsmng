@@ -4,6 +4,7 @@
  */
 package com.ifhz.core.service.auth.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,16 +12,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.ResourceMapper;
 import com.ifhz.core.mapper.RoleMapper;
 import com.ifhz.core.po.Resource;
+import com.ifhz.core.po.Role;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.vo.ResourceVo;
 import com.ifhz.core.vo.RoleVo;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,24 +68,36 @@ public class ResourceServiceImpl implements ResourceService {
              if(roleVo.getParentId()==-1){
                  doBuildCheckboxResourceTree(root, id);
              }else{
-                 List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(id);
-                if(rrrList.size()==0){
-
-                }else{
-                    RoleResourceRef rrr = rrrList.get(0);
-                    long resourceId = rrr.getResourceId();
-                    ResourceVo resourceVo = resourceMapper.findById(resourceId);
-                    List<Resource> resList = resourceMapper.findAllChildrenById(resourceVo.getParentId());
-                    for(Resource res :resList){
-                        doBuildCheckboxResourceTree(res, id);
-                    }
-                }
+//                 List<RoleResourceRef> rrrList = roleResourceRefService.findAllAvaiableRes4RoleByRoleId(roleVo.getParentId());
+//                 if(){}
+//                 Resource res = resourceMapper.findParentById(rrrList.get(0).getResourceId());
+//                 doBuildCheckboxResourceTree4Role(root, id);
+                 doBuildCheckboxResourceTree(root, id);
              }
         }
         sbXml.append("</tree>");
         return sbXml.toString();
 	}
+    protected void doBuildCheckboxResourceTree4Role(Resource resource, long roleId) {
+        List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
+        String checkedStr = "";
 
+        RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
+        if (childrenList.size() == 0) {
+            if (rrr!=null) {
+                checkedStr = "   checked=\"1\"";
+            }
+        }
+
+        if(rrr!=null&&rrr.getAcces()==1){
+            sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""  + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
+            for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
+                Resource child = (Resource) iter.next();
+                doBuildCheckboxResourceTree(child, roleId);
+            }
+            sbXml.append("</item>\n");
+        }
+    }
 	/**
 	 * @author radishlee
 	 * @param resource
@@ -99,27 +115,26 @@ public class ResourceServiceImpl implements ResourceService {
 		sbXml.append("</item>\n");
 	}
 
-	protected void doBuildCheckboxResourceTree(Resource resource, long roleId) {
-		List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
-		String checkedStr = "";
+    protected void doBuildCheckboxResourceTree(Resource resource, long roleId) {
+        List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
+        String checkedStr = "";
 
-		if (childrenList.size() == 0) {
-			// 根据主体类型和主体标识查询此资源标识在acl中是否存在
+        if (childrenList.size() == 0) {
+            // 根据主体类型和主体标识查询此资源标识在acl中是否存在
             RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
-			if (rrr!=null) {
-				checkedStr = "   checked=\"1\"";
-			}
-		}
+            if (rrr!=null) {
+                checkedStr = "   checked=\"1\"";
+            }
+        }
 
-		sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
-				+ resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
-		for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
-			Resource child = (Resource) iter.next();
-			doBuildCheckboxResourceTree(child, roleId);
-		}
-		sbXml.append("</item>\n");
-	}
-
+        sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
+                + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
+        for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
+            Resource child = (Resource) iter.next();
+            doBuildCheckboxResourceTree(child, roleId);
+        }
+        sbXml.append("</item>\n");
+    }
 	/**
 	 * 得到根节点
 	 * 

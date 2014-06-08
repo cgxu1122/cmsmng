@@ -67,4 +67,15 @@
         where ROLE_ID = #{roleId}
         order by RESOURCE_ID asc
     </select>
+
+    <select id="findAllAvaiableRes4RoleByRoleId"  resultMap="RoleResourceRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+        and ACCES=1
+        order by RESOURCE_ID asc
+    </select>
+
 </mapper>

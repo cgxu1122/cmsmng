@@ -65,7 +65,21 @@
 		where 
 		        child.resource_id = #{id}
 	</select>
-	
+
+    <select id="findParentById" resultType="com.ifhz.core.po.Resource" >
+        select
+                child.resource_id as resourceId,
+		 		child.res_name as resName,
+				child.res_url as resUrl,
+				child.create_time as createTime,
+				child.parent_id as parentId,
+				child.levels,
+				child.full_path as fullPath
+        from
+                ty_resource child
+        where
+                resource_id = #{id}
+    </select>
 	
 	<select id="findByResName" resultType="com.ifhz.core.po.Resource">
 		select 

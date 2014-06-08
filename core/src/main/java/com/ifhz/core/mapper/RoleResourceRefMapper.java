@@ -44,4 +44,6 @@ public interface RoleResourceRefMapper  {
     public void deleteAllRefByResId(long resourceId);
 
     List<RoleResourceRef> findAllResourceForRoleByRoleId(long roleId);
+
+    List<RoleResourceRef> findAllAvaiableRes4RoleByRoleId(long parentId);
 }

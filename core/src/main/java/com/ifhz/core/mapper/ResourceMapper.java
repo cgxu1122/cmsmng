@@ -47,6 +47,7 @@ public interface ResourceMapper {
 	 */
 	public ResourceVo findById(long id);
 
+    public Resource findParentById(long id);
 	/**
 	 * @author radishlee
 	 * @param resource
