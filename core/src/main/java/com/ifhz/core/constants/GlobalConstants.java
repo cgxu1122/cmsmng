@@ -34,7 +34,7 @@ public final class GlobalConstants {
     /**
      * 系统管理员角色id
      */
-    public static final int ADMIN_ROLE_ID = 1;
+    public static final int ADMIN_ROLE_ID = 3;
     /**
      * 系统初始化时间Key
      */
