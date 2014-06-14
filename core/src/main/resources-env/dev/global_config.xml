@@ -6,7 +6,7 @@
     <entry key="ftp.server.port">21</entry>
     <entry key="ftp.server.username">ftp</entry>
     <entry key="ftp.server.password">ftp</entry>
-    <entry key="ftp.server.deviceDir">/data/device/</entry>
-    <entry key="ftp.server.apkDir">/data/apk/</entry>
+    <entry key="ftp.server.deviceDir">/data/device/{0}/</entry>
+    <entry key="ftp.server.apkDir">/data/apk/{0}/</entry>
     <entry key="ftp.server.downloadUrl">http://127.0.0.1:8082/</entry>
 </properties>

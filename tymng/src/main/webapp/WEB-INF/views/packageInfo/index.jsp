@@ -324,8 +324,8 @@ function selectApk(apkId, apkName, type) {
                 <option value="3">其他渠道</option>
             </select>
         </div>
-        <div class="fitem" style="margin-left:25px">
-            <label>选择APK:</label>
+        <div class="fitem" style="margin-left:21px">
+        <label>选择APK:</label>
             <a href="javascript:void(0)"
                onclick="showApkDialog(1)">选择</a>
 
@@ -361,8 +361,8 @@ function selectApk(apkId, apkName, type) {
                 <label>通用包渠道组:</label>
                 <input name="groupName" class="easyui-validatebox" maxlength="100" readonly="readonly">
             </div>
-            <div class="fitem" style="margin-left:30px">
-                <label>选择APK:</label>
+            <div class="fitem" style="margin-left:21px">
+            <label>选择APK:</label>
                 <a href="javascript:void(0)"
                    onclick="showApkDialog(2)">选择</a>
 

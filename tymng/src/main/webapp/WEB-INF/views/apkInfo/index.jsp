@@ -17,6 +17,8 @@
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
             $("input[name=file]").val("");
+            var data = $('#type').combobox('getData');
+            $("#type").combobox('select', data[0].value);
         }
         function saverow() {
             $('#fm').form('submit', {
@@ -104,6 +106,16 @@
                         {field: 'apkName', title: '产品名称', align: 'center', width: 150},
                         {field: 'softName', title: '软件名称', align: 'center', width: 300},
                         {field: 'ftpPath', title: 'ftp路径', align: 'center', width: 400},
+                        {field: 'type', title: '是否计数器', align: 'center', width: 100,
+                            formatter: function (value) {
+                                if ("2" == value) {
+                                    return "是";
+                                } else if ("1" == value) {
+                                    return "否";
+                                }
+                                return "";
+                            }
+                        },
                         {field: 'createTime', title: '创建日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
@@ -148,13 +160,20 @@
     <br/>
 
     <form id="fm" method="post" enctype="multipart/form-data" novalidate>
-        <div class="fitem" style="margin-left:15px">
-            <label><font color="red">*</font>产品名称:</label>
+        <div class="fitem" style="margin-left:3px">
+        <label><font color="red">*</font>产品名称:</label>
             <input id="apkName" name="apkName" class="easyui-validatebox" required="true" maxlength="50">
         </div>
-        <div class="fitem">
-            <label><font color="red">*</font>上传文件:</label>
+        <div class="fitem" style="margin-left:3px">
+        <label><font color="red">*</font>上传文件:</label>
             <input type="file" name="file"/>
+        </div>
+        <div class="fitem">
+            <label>是否计数器:</label>
+            <select class="easyui-combobox" name="type" id="type" style="width:150px;">
+                <option value="1">否</option>
+                <option value="2">是</option>
+            </select>
         </div>
     </form>
 </div>
@@ -164,19 +183,26 @@
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
-<div id="updatedlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
+<div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      buttons="#update-buttons">
     <form id="upfm" method="post" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="apkId" name="apkId"/>
 
-        <div class="fitem" style="margin-left:15px">
-            <label><font color="red">*</font>产品名称:</label>
+        <div class="fitem" style="margin-left:3px">
+        <label><font color="red">*</font>产品名称:</label>
             <input type="text" name="apkName" class="easyui-validatebox" required="true"
                     >
         </div>
-        <div class="fitem">
-            <label><font color="red">*</font>上传文件:</label>
+        <div class="fitem" style="margin-left:3px">
+        <label><font color="red">*</font>上传文件:</label>
             <input type="file" name="file"/>
+        </div>
+        <div class="fitem">
+            <label>是否计数器:</label>
+            <select class="easyui-combobox" name="type" id="upType" style="width:150px;">
+                <option value="1">否</option>
+                <option value="2">是</option>
+            </select>
         </div>
 </div>
 </form>
