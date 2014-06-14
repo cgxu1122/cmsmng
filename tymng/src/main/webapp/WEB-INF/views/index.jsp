@@ -117,6 +117,7 @@
             <div class="nav-item">
                 <a href="javascript:addTab('地包渠道','<%=basePath%>/channelInfo/index?groupId=2','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
+                    <!---->
                     <span>地包渠道</span>
                 </a>
             </div>
