@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/common/header.jsp" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ include file="/common/header.jsp" %>
+
 
     <style>
         .iheader {
@@ -170,6 +172,7 @@
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
     <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
+        <shiro:hasPermission name="channel">
         <div title="渠道管理" selected="true" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道','<%=basePath%>/channelInfo/index?groupId=1','menu_icon_datadeal')">
@@ -197,6 +200,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="model">
         <div title="机型管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道机型','<%=basePath%>/modelInfo/index?groupId=1','menu_icon_datadeal')">
@@ -217,6 +222,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="device">
         <div title="工装管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('工装管理','<%=basePath%>/deviceInfo/index','menu_icon_datadeal')">
@@ -225,6 +232,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="partner">
         <div title="合作方管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('合作方管理','<%=basePath%>/partnerInfo/index','menu_icon_datadeal')">
@@ -233,6 +242,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="product">
         <div title="产品管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('产品管理','<%=basePath%>/productInfo/index','menu_icon_datadeal')">
@@ -241,6 +252,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="batch">
         <div title="批次管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道批次','<%=basePath%>/batchInfo/index?groupId=1','menu_icon_datadeal')">
@@ -261,6 +274,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="devSys">
         <div title="设备系统管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('设备系统管理','<%=basePath%>/deviceSystem/index','menu_icon_datadeal')">
@@ -269,6 +284,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="apk">
         <div title="APK管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('APK管理','<%=basePath%>/apkInfo/index','menu_icon_datadeal')">
@@ -277,6 +294,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="package">
         <div title="打包管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('普通包管理','<%=basePath%>/packageInfo/index?type=N','menu_icon_datadeal')">
@@ -291,6 +310,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="publishTask">
         <div title="发布任务管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('发布任务管理','<%=basePath%>/publishTask/index','menu_icon_datadeal')">
@@ -299,6 +320,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="logCount">
         <div title="合作方查询后台" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
@@ -325,6 +348,8 @@
                 </a>
             </div>
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report">
         <div title="报表统计" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
@@ -332,8 +357,9 @@
                     <span>按仓库查询</span>
                 </a>
             </div>
-
         </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="system">
         <div title="系统用户管理" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('系统用户管理','<%=basePath%>/user/index','menu_icon_datadeal')">
@@ -356,6 +382,7 @@
             </div>
             <%--</shiro:hasPermission>--%>
         </div>
+        </shiro:hasPermission>
     </div>
 </div>
 <div region="center">

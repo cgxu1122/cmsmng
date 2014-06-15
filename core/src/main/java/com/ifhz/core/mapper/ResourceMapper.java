@@ -96,4 +96,6 @@ public interface ResourceMapper {
 	 */
 
 	public List<String> findFullpathByRoleId(Long id);
+
+    List<String> findResUrlByRoleId(Long id);
 }

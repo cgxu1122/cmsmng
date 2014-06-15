@@ -22,6 +22,8 @@ import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.vo.ResourceVo;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("resourceService")
 public class ResourceServiceImpl implements ResourceService {
+    private static Logger logger = LoggerFactory.getLogger(ResourceServiceImpl.class);
 	protected StringBuffer sbXml;
 
 	@Autowired
@@ -48,11 +51,11 @@ public class ResourceServiceImpl implements ResourceService {
 	 * @author radish
 	 */
 	@Override
-	public String findAllRoleResourceXmlString(long roleId,boolean adminflag) {
-		return buildTree(AuthrityTreeConstants.CHECKBOX_RESOURCE_TREE, roleId,adminflag);
+	public String findAllRoleResourceXmlString(long roleId,boolean adminflag,boolean showUncheckFlag) {
+		return buildTree(AuthrityTreeConstants.CHECKBOX_RESOURCE_TREE, roleId,adminflag,showUncheckFlag);
 	}
 
-	final String buildTree(int type, long roleId,boolean adminflag) {
+	final String buildTree(int type, long roleId,boolean adminflag,boolean showUncheckFlag) {
 		sbXml = new StringBuffer();
 		sbXml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 		sbXml.append("<tree id=\"0\">\n");
@@ -68,7 +71,8 @@ public class ResourceServiceImpl implements ResourceService {
                  List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(roleId);
                  if(rrrList.size()>0){
                      Resource res = resourceMapper.findParentById(rrrList.get(0).getResourceId());
-                     doBuildCheckboxNotFullResourceTree(res, roleId);
+                     logger.info(res.getResName());
+                     doBuildCheckboxNotFullResourceTree(res, roleId,showUncheckFlag);
                  }
              }
         }
@@ -76,22 +80,50 @@ public class ResourceServiceImpl implements ResourceService {
         return sbXml.toString();
 	}
 
-	/**
-	 * @author radishlee
-	 * @param resource
-	 */
-	private void doBuildFullResourceTree(Resource resource) {
-		long resourceId = resource.getResourceId();
-		List<Resource> childrenList = resourceMapper
-				.findAllChildrenById(resourceId);
-		sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
-				+ resourceId + "\" " + "open=\"1\" >\n");
-		for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
-			Resource child = (Resource) iter.next();
-			doBuildFullResourceTree(child);
-		}
-		sbXml.append("</item>\n");
-	}
+    protected void doBuildCheckboxNotFullResourceTree(Resource resource, long roleId,boolean showUncheckFlag) {
+        List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
+        String checkedStr = "";
+
+        // 根据主体类型和主体标识查询此资源标识在acl中是否存在
+        RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
+        if (childrenList.size() == 0) {
+            if (rrr!=null&&showUncheckFlag) {
+                checkedStr = "   checked=\"1\"";
+            }
+        }
+
+        if(rrr!=null && rrr.getAcces()==1){
+            sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
+                    + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
+        }
+
+        for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
+            Resource child = (Resource) iter.next();
+            doBuildCheckboxNotFullResourceTree(child, roleId,showUncheckFlag);
+        }
+        if(rrr!=null && rrr.getAcces()==1){
+            sbXml.append("</item>\n");
+        }
+    }
+
+
+
+    /**
+     * @author radishlee
+     * @param resource
+     */
+    private void doBuildFullResourceTree(Resource resource) {
+        long resourceId = resource.getResourceId();
+        List<Resource> childrenList = resourceMapper
+                .findAllChildrenById(resourceId);
+        sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
+                + resourceId + "\" " + "open=\"1\" >\n");
+        for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
+            Resource child = (Resource) iter.next();
+            doBuildFullResourceTree(child);
+        }
+        sbXml.append("</item>\n");
+    }
 
     protected void doBuildCheckboxResourceTree(Resource resource, long roleId) {
         List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
@@ -114,43 +146,7 @@ public class ResourceServiceImpl implements ResourceService {
         sbXml.append("</item>\n");
     }
 
-
-
-    protected void doBuildCheckboxNotFullResourceTree(Resource resource, long roleId) {
-        List<Resource> childrenList = new ArrayList<Resource>();
-       // if(resource.getParentId()!=-1){
-            childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
-       // }else{
-      //      childrenList = resourceMapper.findAllChildrenById(resource.getParentId());
-      //  }
-
-        String checkedStr = "";
-
-        // 根据主体类型和主体标识查询此资源标识在acl中是否存在
-        RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
-        if (childrenList.size() == 0) {
-            if (rrr!=null) {
-                checkedStr = "   checked=\"1\"";
-            }
-        }
-
-//        if(rrr!=null && rrr.getAcces()==1){
-            sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
-                    + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
-//        }
-
-        for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
-            Resource child = (Resource) iter.next();
-            doBuildCheckboxNotFullResourceTree(child, roleId);
-        }
-//        if(rrr!=null && rrr.getAcces()==1){
-            sbXml.append("</item>\n");
-//        }
-    }
-
-
-
-	/**
+    /**
 	 * 得到根节点
 	 * 
 	 * @author radish
@@ -177,7 +173,7 @@ public class ResourceServiceImpl implements ResourceService {
 	 */
 	@Override
 	public String findAllResourceTreeXmlString() {
-		return buildTree(AuthrityTreeConstants.FULL_RESOURCE_TREE, 0l,false);
+		return buildTree(AuthrityTreeConstants.FULL_RESOURCE_TREE, 0l,false,false);
 	}
 
 	/**
@@ -284,5 +280,10 @@ public class ResourceServiceImpl implements ResourceService {
 
 		return resourceMapper.findFullpathByRoleId(id);
 	}
+
+    @Override
+    public List<String> findResUrlByRoleId(Long id) {
+        return resourceMapper.findResUrlByRoleId(id);
+    }
 
 }

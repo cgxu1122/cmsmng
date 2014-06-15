@@ -100,8 +100,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo shiro = new SimpleAuthorizationInfo();
         Long id = shiroUser.roleId;
         //
-        List<String> pathList = resourceService.findFullpathByRoleId(id);
-        shiro.addStringPermissions(pathList);
+        List<String> resUtlList = resourceService.findResUrlByRoleId(id);
+        shiro.addStringPermissions(resUtlList);
         shiro.addRole(shiroUser.roleName);
         return shiro;
     }
