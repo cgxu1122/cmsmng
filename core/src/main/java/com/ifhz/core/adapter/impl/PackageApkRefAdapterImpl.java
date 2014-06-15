@@ -48,4 +48,10 @@ public class PackageApkRefAdapterImpl implements PackageApkRefAdapter {
     public int delete(PackageApkRef record) {
         return packageApkRefMapper.delete(record);
     }
+
+    @Override
+    public List<PackageApkRef> queryListByPackageId(Long packageId) {
+        List<PackageApkRef> result = packageApkRefMapper.queryListByPackageId(packageId);
+        return result == null ? Lists.<PackageApkRef>newArrayList() : result;
+    }
 }

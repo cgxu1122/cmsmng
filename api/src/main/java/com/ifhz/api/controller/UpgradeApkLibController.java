@@ -1,13 +1,13 @@
 package com.ifhz.api.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
-import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.po.DeviceInfo;
+import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.device.DeviceInfoService;
-import com.ifhz.core.service.pkgmng.ApkInfoService;
+import com.ifhz.core.service.pkgmng.PackageUpgradeService;
+import com.ifhz.core.vo.ApkVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -34,48 +34,43 @@ public class UpgradeApkLibController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UpgradeApkLibController.class);
 
-    @Resource(name = "apkInfoService")
-    private ApkInfoService apkInfoService;
+    @Resource(name = "packageUpgradeService")
+    private PackageUpgradeService packageUpgradeService;
     @Resource(name = "deviceInfoService")
     private DeviceInfoService deviceInfoService;
+    @Resource(name = "dictInfoCacheService")
+    private DictInfoCacheService dictInfoCacheService;
 
 
     @RequestMapping(value = "/getApkLibVersion.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
     JSONObject getAPKLibVersion(@RequestParam(value = "code", required = true) String code,
-                                @RequestParam(value = "version", required = true) String version) {
-        LOGGER.info("receive msg code={},version={}", code, version);
+                                @RequestParam(value = "apkVersion", required = true) String apkVersion) {
+        LOGGER.info("receive msg code={},version={}", code, apkVersion);
         JSONObject result = null;
         try {
-            if (StringUtils.isBlank(code) || StringUtils.isBlank(version)) {
+            if (StringUtils.isBlank(code) || StringUtils.isBlank(apkVersion)) {
                 return ApiJsonHandler.genJsonRet(ResultType.Fail);
             }
             DeviceInfo info = deviceInfoService.queryByDeviceCode(code.trim());
             if (info != null) {
-                long newVersion = new Date().getTime();
-                List<ApkInfo> list;
-                if (StringUtils.equalsIgnoreCase(version.trim(), "0")) {
-                    list = apkInfoService.queryAllList();
+                Date endTime = new Date();
+                Date startTime;
+                if (StringUtils.equalsIgnoreCase(apkVersion.trim(), "0")) {
+                    startTime = dictInfoCacheService.getSystemInitDate();
                 } else {
-                    Date date = new Date(Long.parseLong(version.trim()));
-                    list = apkInfoService.queryUpgradeList(date);
+                    startTime = new Date(Long.parseLong(apkVersion.trim()));
                 }
-                JSONArray apkList = new JSONArray();
-                if (CollectionUtils.isNotEmpty(list)) {
-                    for (ApkInfo apkInfo : list) {
-                        if (apkInfo != null) {
-                            JSONObject apk = new JSONObject();
-                            apk.put("apkId", apkInfo.getApkId());
-                            apk.put("md5", apkInfo.getMd5Value());
-                            apk.put("path", apkInfo.getDownloadUrl());
-                            apkList.add(apk);
-                        }
-                    }
+                List<ApkVo> apkVoList = packageUpgradeService.queryApkList(startTime, endTime);
+                if (CollectionUtils.isEmpty(apkVoList)) {
+                    result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+                    result.put("version", String.valueOf(startTime.getTime()));
+                } else {
+                    result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
+                    result.put("apkList", apkVoList);
+                    result.put("version", String.valueOf(startTime.getTime()));
                 }
-                result = ApiJsonHandler.genJsonRet(ResultType.Succ);
-                result.put("version", String.valueOf(newVersion));
-                result.put("apkList", apkList);
             }
             if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
@@ -84,7 +79,7 @@ public class UpgradeApkLibController {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             LOGGER.error("getApkLibVersion error ", e);
         } finally {
-            LOGGER.info("getApkLibVersion:code={},version={},returnObj={}", code, version, result);
+            LOGGER.info("getApkLibVersion:code={},version={},returnObj={}", code, apkVersion, result);
         }
 
         return result;

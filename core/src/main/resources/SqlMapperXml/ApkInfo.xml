@@ -126,27 +126,28 @@
         </if>
         order by CREATE_TIME desc
     </select>
-    <select id="queryAllList" resultMap="ApkInfoResultMap">
-        select
-        <include refid="CommonFieldSql"/>
-        from
-        <include refid="TABLE_NAME"/>
-        where ACTIVE = 'Y'
-    </select>
-
+    <!-- 查询需要更新apkLib集合 -->
     <select id="queryUpgradeList" resultMap="ApkInfoResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
         where ACTIVE = 'Y'
-        and UPDATE_TIME &gt;= #{date,jdbcType=TIMESTAMP}
+        and UPDATE_TIME between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
     </select>
-
 
     <delete id="delete" parameterType="com.ifhz.core.po.ApkInfo">
         delete from
         <include refid="TABLE_NAME"/>
         where APK_ID = #{apkId}
     </delete>
+    <select id="queryListByPackageId" resultMap="ApkInfoResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where PACKAGE_ID = #{packageId}
+        and ACTIVE = 'Y'
+        and UPDATE_TIME &gt;= #{date,jdbcType=TIMESTAMP}
+    </select>
 </mapper>

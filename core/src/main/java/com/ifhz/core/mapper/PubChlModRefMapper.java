@@ -22,6 +22,7 @@ public interface PubChlModRefMapper {
 
     public List<PubChlModRef> queryNormalPkgList(@Param("groupId") Long groupId,
                                                  @Param("channelId") Long channelId,
+                                                 @Param("active") String active,
                                                  @Param("startTime") Date startTime,
                                                  @Param("endTime") Date endTime);
 

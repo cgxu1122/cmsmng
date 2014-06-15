@@ -6,7 +6,9 @@ import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.device.DeviceInfoService;
-import com.ifhz.core.service.pkgmng.PublishTaskService;
+import com.ifhz.core.service.pkgmng.PackageUpgradeService;
+import com.ifhz.core.vo.PackageVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类描述
@@ -33,10 +36,10 @@ public class UpgradePkgController {
 
     @Resource(name = "deviceInfoService")
     private DeviceInfoService deviceInfoService;
-    @Resource(name = "publishTaskService")
-    private PublishTaskService publishTaskService;
     @Resource(name = "dictInfoCacheService")
     private DictInfoCacheService dictInfoCacheService;
+    @Resource(name = "packageUpgradeService")
+    private PackageUpgradeService packageUpgradeService;
 
 
     @RequestMapping(value = "/getPkgLibVersion.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
@@ -54,22 +57,44 @@ public class UpgradePkgController {
             }
             DeviceInfo info = deviceInfoService.queryByDeviceCode(code.trim());
             LOGGER.info("DeviceInfo={}", info);
+            Date date = new Date();
             if (info != null) {
                 //初始化版本库查询
                 if (StringUtils.equalsIgnoreCase("0", pkgVersion.trim())) {
                     Date startTime = dictInfoCacheService.getSystemInitDate();
                     long apkTimestamp = Long.parseLong(apkVersion.trim());
                     Date endTime = new Date(apkTimestamp);
-
+                    PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), startTime, endTime);
+                    List<PackageVo> normalPkgList = packageUpgradeService.queryNormalPkgList(info.getGroupId(), info.getChannelId(), true, startTime, endTime);
+                    //成功，无更新
+                    if (commonPkg == null && CollectionUtils.isEmpty(normalPkgList)) {
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+                        result.put("pkgVersion", String.valueOf(date.getTime()));
+                    } else {//成功，有更新
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
+                        result.put("pkgVersion", String.valueOf(date.getTime()));
+                        result.put("pkgList", normalPkgList);
+                        result.put("commonPkg", commonPkg);
+                    }
                 } else {
-                    Date startTime = dictInfoCacheService.getSystemInitDate();
+                    long pkgTimestamp = Long.parseLong(pkgVersion.trim());
+                    Date startTime = new Date(pkgTimestamp);
                     long apkTimestamp = Long.parseLong(apkVersion.trim());
                     Date endTime = new Date(apkTimestamp);
-
-
+                    PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), startTime, endTime);
+                    List<PackageVo> normalPkgList = packageUpgradeService.queryNormalPkgList(info.getGroupId(), info.getChannelId(), true, startTime, endTime);
+                    //成功，无更新
+                    if (commonPkg == null && CollectionUtils.isEmpty(normalPkgList)) {
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+                        result.put("pkgVersion", String.valueOf(date.getTime()));
+                    } else {//成功，有更新
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
+                        result.put("pkgVersion", String.valueOf(date.getTime()));
+                        result.put("pkgList", normalPkgList);
+                        result.put("commonPkg", commonPkg);
+                    }
                 }
             }
-
 
             if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
@@ -78,7 +103,7 @@ public class UpgradePkgController {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             LOGGER.error("getPkgVersion error ", e);
         } finally {
-            LOGGER.info("getPkgVersion:code={},returnObj={}", code, result);
+            LOGGER.info("return msg code={},apkVersion={},pkgVersion={},returnObj={}", code, apkVersion, pkgVersion, result);
         }
 
         return result;

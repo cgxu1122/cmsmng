@@ -53,9 +53,9 @@ public class DeviceUpgradeController {
                 DeviceSystem newestDeviceSytem = deviceSystemService.queryNewestVersion(new Date());
                 if (newestDeviceSytem != null) {
                     if (StringUtils.equalsIgnoreCase(version.trim(), newestDeviceSytem.getVersion())) {
-                        result = ApiJsonHandler.genJsonRet(ResultType.Succ);
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
                     } else {
-                        result = ApiJsonHandler.genJsonRet(ResultType.Upgrade);
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
                         result.put("path", newestDeviceSytem.getFtpPath());
                     }
                 }

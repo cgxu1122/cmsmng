@@ -7,9 +7,10 @@ import com.ifhz.core.service.pkgmng.ApkInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,16 +26,6 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     @Resource(name = "apkInfoAdapter")
     private ApkInfoAdapter apkInfoAdapter;
 
-    @Override
-    public List<ApkInfo> queryAllList() {
-        return apkInfoAdapter.queryAllList();
-    }
-
-    @Override
-    public List<ApkInfo> queryUpgradeList(Date date) {
-        return apkInfoAdapter.queryUpgradeList(date);
-    }
-
 
     @Override
     public ApkInfo getById(Long id) {
@@ -47,16 +38,19 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(ApkInfo record) {
         return apkInfoAdapter.insert(record);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(ApkInfo record) {
         return apkInfoAdapter.update(record);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(ApkInfo record) {
         return apkInfoAdapter.delete(record);
     }

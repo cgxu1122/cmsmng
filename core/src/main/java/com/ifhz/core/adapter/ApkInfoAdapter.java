@@ -23,7 +23,7 @@ public interface ApkInfoAdapter {
 
     public int delete(ApkInfo record);
 
-    public List<ApkInfo> queryAllList();
+    public List<ApkInfo> queryUpgradeList(Date startTime, Date endTime);
 
-    public List<ApkInfo> queryUpgradeList(Date date);
+    public List<ApkInfo> queryListByPackageId(Long packageId, String active);
 }

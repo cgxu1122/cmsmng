@@ -21,4 +21,6 @@ public interface PackageApkRefAdapter {
     public int update(PackageApkRef record);
 
     public int delete(PackageApkRef record);
+
+    public List<PackageApkRef> queryListByPackageId(Long packageId);
 }

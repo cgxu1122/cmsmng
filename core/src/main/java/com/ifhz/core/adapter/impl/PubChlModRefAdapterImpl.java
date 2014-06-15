@@ -42,8 +42,8 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     }
 
     @Override
-    public List<PubChlModRef> queryNormalPkgList(Long groupId, Long channelId, Date startTime, Date endTime) {
-        List<PubChlModRef> result = pubChlModRefMapper.queryNormalPkgList(groupId, channelId, startTime, endTime);
+    public List<PubChlModRef> queryNormalPkgList(Long groupId, Long channelId, String active, Date startTime, Date endTime) {
+        List<PubChlModRef> result = pubChlModRefMapper.queryNormalPkgList(groupId, channelId, active, startTime, endTime);
         return result == null ? Lists.<PubChlModRef>newArrayList() : result;
     }
 

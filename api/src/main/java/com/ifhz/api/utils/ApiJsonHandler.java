@@ -14,7 +14,7 @@ public class ApiJsonHandler {
 
     public static JSONObject genJsonRet(ResultType type) {
         JSONObject ret = new JSONObject();
-        if (type == ResultType.Succ) {
+        if (type == ResultType.SuccNonUpgrade) {
             ret.put("status", type.VALUE);
         } else {
             ret.put("status", type.VALUE);

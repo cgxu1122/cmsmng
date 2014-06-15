@@ -2,7 +2,7 @@ package com.ifhz.core.vo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.ifhz.core.service.pkgmng.constants.ApiEnums;
+import com.ifhz.core.constants.ApiEnums;
 
 import java.io.Serializable;
 import java.util.Date;

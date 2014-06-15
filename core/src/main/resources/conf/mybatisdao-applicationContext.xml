@@ -61,7 +61,6 @@
                 <value>classpath:SqlMapperXml/ChannelGroup.xml</value>
                 <value>classpath:SqlMapperXml/ChannelInfo.xml</value>
                 <value>classpath:SqlMapperXml/ModelInfo.xml</value>
-                <value>classpath:SqlMapperXml/ModelChannelRef.xml</value>
                 <value>classpath:SqlMapperXml/DeviceInfo.xml</value>
                 <value>classpath:SqlMapperXml/PartnerInfo.xml</value>
                 <value>classpath:SqlMapperXml/ProductInfo.xml</value>

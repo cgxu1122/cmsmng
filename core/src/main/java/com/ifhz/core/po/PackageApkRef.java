@@ -17,6 +17,7 @@ public class PackageApkRef {
     private String desktopIcon;
     private String active;
     private Integer sort;
+    private Integer apkType;
     private Date createTime;
 
     public String getActive() {
@@ -91,6 +92,14 @@ public class PackageApkRef {
         this.createTime = createTime;
     }
 
+    public Integer getApkType() {
+        return apkType;
+    }
+
+    public void setApkType(Integer apkType) {
+        this.apkType = apkType;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("PackageApkRef{");
@@ -102,6 +111,7 @@ public class PackageApkRef {
         sb.append(", desktopIcon='").append(desktopIcon).append('\'');
         sb.append(", active='").append(active).append('\'');
         sb.append(", sort=").append(sort);
+        sb.append(", apkType=").append(apkType);
         sb.append(", createTime=").append(createTime);
         sb.append('}');
         return sb.toString();

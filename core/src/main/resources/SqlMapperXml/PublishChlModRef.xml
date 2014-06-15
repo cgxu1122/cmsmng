@@ -20,16 +20,16 @@ create table TY_PUB_CHL_MOD_REF  (
 
     <sql id="TABLE_NAME">TY_PUB_CHL_MOD_REF</sql>
     <sql id="CommonFieldSql">
-       ID,
-       PUBLISH_ID ,
-       GROUP_ID   ,
-       CHANNEL_ID ,
-       PACKAGE_ID ,
-       MODEL_ID   ,
-       PKG_TYPE   ,
-       CREATE_TIME,
-       UPDATE_TIME,
-       ACTIVE
+        ID,
+        PUBLISH_ID ,
+        GROUP_ID ,
+        CHANNEL_ID ,
+        PACKAGE_ID ,
+        MODEL_ID ,
+        PKG_TYPE ,
+        CREATE_TIME,
+        UPDATE_TIME,
+        ACTIVE
     </sql>
 
     <resultMap id="PubChlModRefResultMap" type="com.ifhz.core.po.PubChlModRef">
@@ -125,8 +125,11 @@ create table TY_PUB_CHL_MOD_REF  (
         from
         <include refid="TABLE_NAME"/>
         where GROUP_ID = #{groupId}
-        and CHANNEL_ID = #{channelIId}
+        and CHANNEL_ID = #{channelId}
         and PKG_TYPE = 'N'
+        <if test="active != null">
+            and ACTIVE = #{active}
+        </if>
         and UPDATE_TIME between #{startTime} and #{endTime}
         order by id
     </select>
@@ -138,6 +141,7 @@ create table TY_PUB_CHL_MOD_REF  (
         <include refid="TABLE_NAME"/>
         where GROUP_ID = #{groupId}
         and PKG_TYPE = 'Y'
+        and ACTIVE = 'Y'
         and UPDATE_TIME between #{startTime} and #{endTime}
         order by UPDATE_TIME desc
     </select>

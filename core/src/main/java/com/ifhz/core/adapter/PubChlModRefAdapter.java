@@ -19,7 +19,7 @@ public interface PubChlModRefAdapter {
 
     public int deleteByPublishId(PubChlModRef record);
 
-    public List<PubChlModRef> queryNormalPkgList(Long groupId, Long channelId, Date startTime, Date endTime);
+    public List<PubChlModRef> queryNormalPkgList(Long groupId, Long channelId, String active, Date startTime, Date endTime);
 
     public List<PubChlModRef> queryCommonPkgList(Long groupId, Date startTime, Date endTime);
 }

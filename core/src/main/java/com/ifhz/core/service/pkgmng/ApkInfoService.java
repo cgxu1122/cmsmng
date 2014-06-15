@@ -3,7 +3,6 @@ package com.ifhz.core.service.pkgmng;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ApkInfo;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,10 +12,6 @@ import java.util.List;
  * Time: 18:02
  */
 public interface ApkInfoService {
-
-    public List<ApkInfo> queryAllList();
-
-    public List<ApkInfo> queryUpgradeList(Date date);
 
     public ApkInfo getById(Long id);
 

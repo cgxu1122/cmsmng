@@ -65,7 +65,7 @@ public class CounterApiController {
                     log.setCreateTime(new Date());
 
                     apiUploadService.save(log);
-                    result = ApiJsonHandler.genJsonRet(ResultType.Succ);
+                    result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
                 } else {
                     LOGGER.warn("data is non-valid,data={}", data);
                 }

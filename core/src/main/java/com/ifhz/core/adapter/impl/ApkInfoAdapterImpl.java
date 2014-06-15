@@ -24,7 +24,6 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     @Resource(name = "apkInfoMapper")
     private ApkInfoMapper apkInfoMapper;
 
-
     @Override
     public ApkInfo getById(Long id) {
         return apkInfoMapper.getById(id);
@@ -55,12 +54,14 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
         return apkInfoMapper.update(record);
     }
 
-    public List<ApkInfo> queryAllList() {
-        return apkInfoMapper.queryAllList();
+    @Override
+    public List<ApkInfo> queryUpgradeList(Date startTime, Date endTime) {
+        List<ApkInfo> result = apkInfoMapper.queryUpgradeList(startTime, endTime);
+        return result == null ? Lists.<ApkInfo>newArrayList() : result;
     }
 
     @Override
-    public List<ApkInfo> queryUpgradeList(Date date) {
-        return apkInfoMapper.queryUpgradeList(date);
+    public List<ApkInfo> queryListByPackageId(Long packageId, String active) {
+        return null;
     }
 }

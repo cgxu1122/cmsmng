@@ -15,7 +15,7 @@
         AUTO_RUN,
         DESKTOP_ICON,
         SORT,
-        ACTIVE,
+        APK_TYPE,
         CREATE_TIME
     </sql>
 
@@ -27,9 +27,10 @@
         <result column="AUTO_RUN" property="autoRun" jdbcType="VARCHAR"/>
         <result column="DESKTOP_ICON" property="desktopIcon" jdbcType="VARCHAR"/>
         <result column="SORT" property="sort" jdbcType="INTEGER"/>
-        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="APK_TYPE" property="apkType" jdbcType="INTEGER"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+
     <select id="queryByPackageId" parameterType="long" resultMap="PackageApkRefResultMap">
         select * from
         <include refid="TABLE_NAME"/>
@@ -55,7 +56,7 @@
         #{autoRun},
         #{desktopIcon},
         #{sort},
-        #{active},
+        #{apkType},
         #{createTime}
         )
     </insert>
@@ -67,10 +68,13 @@
             and APK_ID = #{apkId}
         </if>
     </delete>
-    <delete id="deleteForActive">
-        update
+
+    <select id="queryListByPackageId" parameterType="long" resultMap="PackageApkRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
         <include refid="TABLE_NAME"/>
-        set ACTIVE = 'N'
-        where ID = #{id}
-    </delete>
+        where PACKAGE_ID = #{packageId}
+        order by sort
+    </select>
 </mapper>
