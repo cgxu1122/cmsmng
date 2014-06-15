@@ -7,4 +7,10 @@ package com.ifhz.core.service.schedule;
  * Time: 11:19
  */
 public interface ScheduleService {
+
+    public void scanCounterFailLog();
+
+    public void statisticsData();
+
+    public void fetchWdjData();
 }

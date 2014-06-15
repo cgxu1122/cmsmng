@@ -16,7 +16,7 @@ public interface CounterFailLogMapper {
 
     public void insert(CounterFailLog po);
 
-    public void delete(Long failId);
+    public int delete(@Param("failId") Long failId);
 
     public CounterFailLog queryByImei(@Param("imei") String imei);
 

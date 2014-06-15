@@ -36,7 +36,7 @@ public class CounterFailLogServiceImpl implements CounterFailLogService {
 
     @Override
     public long queryTotalCount(Date startTime, Date endTime) {
-        return 0;
+        return counterFailLogAdapter.queryTotalCount(startTime, endTime);
     }
 
     @Override
