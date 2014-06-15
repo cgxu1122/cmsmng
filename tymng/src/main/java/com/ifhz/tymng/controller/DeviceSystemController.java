@@ -8,6 +8,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.device.DeviceSystemService;
+import com.ifhz.core.util.MD5keyUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -72,14 +75,17 @@ public class DeviceSystemController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
-        String fileName = FtpUtils.generateFileName(file.getName());
+        String softName = file.getName();
+        String md5Value = null;
+        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
             version = readInputStreamData(params.get("version").getInputStream());
             effectiveTime = readInputStreamData(params.get("effectiveTime").getInputStream());
             FtpUtils.ftpUpload(file.getInputStream(),
-                    GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR),
-                    fileName
+                    dir,
+                    softName
             );
+            md5Value = MD5keyUtil.getMD5(file.getInputStream());
         } catch (Exception e) {
             errorMsg = "上传文件出错，请重新上传或者联系管理员！";
             result.put("errorMsg", errorMsg);
@@ -105,7 +111,8 @@ public class DeviceSystemController extends BaseController {
         }
         ds.setVersion(version.trim());
         ds.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
-        ds.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR) + fileName);
+        ds.setFtpPath(dir + softName);
+        ds.setMd5Value(md5Value);
         deviceSystemService.insert(ds);
         result.put("msg", "添加成功!");
         return result;
@@ -160,12 +167,17 @@ public class DeviceSystemController extends BaseController {
         FileItem file = params.get("file");
         if (StringUtils.isNotEmpty(file.getName())) {
             try {
-                String fileName = FtpUtils.generateFileName(file.getName());
+                String fileName = file.getName();
+                String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
                 FtpUtils.ftpUpload(file.getInputStream(),
-                        GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR),
+                        dir,
                         fileName
                 );
-                deviceSystem.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR) + fileName);
+                deviceSystem.setFtpPath(dir + fileName);
+                if (!MD5keyUtil.getMD5(file.getInputStream()).equals(deviceSystem.getMd5Value())) {
+                    deviceSystem.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
+                    deviceSystem.setUpdateTime(new Date());
+                }
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);

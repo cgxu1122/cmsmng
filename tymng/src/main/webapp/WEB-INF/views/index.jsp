@@ -97,7 +97,7 @@
     <div class="iheadercont">
         <div class="iheadertit">内置业务管理系统</div>
         <div class="iheadermsg">
-            <span class="iheadername">欢迎：</span>
+            <span class="iheadername">欢迎：<shiro:principal></shiro:principal></span>
             <a class="iheaderout" style="" href="<%=basePath%>/logout">退出</a>
         </div>
     </div>
@@ -117,6 +117,7 @@
             <div class="nav-item">
                 <a href="javascript:addTab('地包渠道','<%=basePath%>/channelInfo/index?groupId=2','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
+                    <!---->
                     <span>地包渠道</span>
                 </a>
             </div>
@@ -275,14 +276,14 @@
                     <span>角色管理</span>
                 </a>
             </div>
-            <shiro:hasPermission name="A01">
+            <%--<shiro:hasPermission name="A01">--%>
             <div class="nav-item">
                 <a href="javascript:addTab('授权管理','<%=basePath%>/rrr/index','menu_icon_wjldgl')">
                     <span class="menu_icon_wjldgl"></span>
                     <span>授权管理</span>
                 </a>
             </div>
-            </shiro:hasPermission>
+            <%--</shiro:hasPermission>--%>
         </div>
     </div>
 </div>

@@ -283,6 +283,7 @@ public class RoleServiceImpl implements RoleService {
         Integer level = role.getLevels();
         String fullPath = role.getFullPath();
 
+        roleMangerVo.setRoleId(id_);
         roleMangerVo.setCreateTime(createTime);
         roleMangerVo.setFullPath(fullPath);
         roleMangerVo.setRoleName(roleName);

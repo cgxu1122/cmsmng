@@ -35,10 +35,13 @@ public class LoginController extends BaseController {
         return "login";
     }
 
-//    @RequestMapping(value = "/")
-//    public String loginSuccess() {
-//        return "index";
-//    }
+    @RequestMapping(value = "/")
+    public String loginSuccess() {
+        return "index";
+    }
+
+
+
     @RequestMapping(value = "/favicon.ico", method = RequestMethod.GET)
     public String favicon() {
         return "redirect:/";

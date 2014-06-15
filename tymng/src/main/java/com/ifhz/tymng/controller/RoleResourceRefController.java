@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ifhz.core.service.auth.RoleResourceRefService;
+import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +66,9 @@ public class RoleResourceRefController {
 
     @RequestMapping("/loadrole")
     public void loadrole(HttpServletRequest request, HttpServletResponse response) {
-        //TODO 根据用户角色加载用户树
-        long roleId = 2l;//21l;
+        ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
         response.setContentType("text/xml; charset=UTF-8");
-        String dhtmlXTreeXmlString = roleResourceRefService.findRoleTreeXmlStringByRoleId(roleId);
+        String dhtmlXTreeXmlString = roleResourceRefService.findRoleTreeXmlStringByRoleId(user.roleId);
         try {
             response.getWriter().print(dhtmlXTreeXmlString);
             response.getWriter().close();

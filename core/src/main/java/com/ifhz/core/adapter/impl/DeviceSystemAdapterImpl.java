@@ -36,6 +36,7 @@ public class DeviceSystemAdapterImpl implements DeviceSystemAdapter {
     @Override
     public int insert(DeviceSystem record) {
         record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
         return deviceSystemMapper.insert(record);
     }
 
