@@ -98,4 +98,21 @@ public class DeviceInfo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("DeviceInfo{");
+        sb.append("deviceId=").append(deviceId);
+        sb.append(", deviceCode='").append(deviceCode).append('\'');
+        sb.append(", groupId=").append(groupId);
+        sb.append(", channelId=").append(channelId);
+        sb.append(", active='").append(active).append('\'');
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", deviceCodeCondition='").append(deviceCodeCondition).append('\'');
+        sb.append(", groupName='").append(groupName).append('\'');
+        sb.append(", channelName='").append(channelName).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

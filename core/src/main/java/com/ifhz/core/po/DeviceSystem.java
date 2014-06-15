@@ -10,10 +10,28 @@ public class DeviceSystem {
     private Long systemId;
     private String version;
     private String ftpPath;
+    private String md5Value;
     private Date createTime;
+    private Date updateTime;
     private Date effectiveTime;
 
     private String versionCondition;
+
+    public String getMd5Value() {
+        return md5Value;
+    }
+
+    public void setMd5Value(String md5Value) {
+        this.md5Value = md5Value;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getVersionCondition() {
         return versionCondition;

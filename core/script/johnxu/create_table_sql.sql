@@ -1,256 +1,256 @@
-create table TY_DEVICE_PROCESS_LOG_20142
+CREATE TABLE TY_DEVICE_PROCESS_LOG_20142
 (
-  process_id   NUMBER(15) not null,
-  imei         varchar2(50),
-  ua           varchar2(100),
-  model_name  varchar2(100),
-  channel_id   varchar2(100),
-  device_code  varchar2(100),
-  group_id     number(15),
-  batch_code   varchar2(100),
-  process_time varchar2(100),
-  create_time  date default SYSDATE not null
+  PROCESS_ID   NUMBER(15) NOT NULL,
+  IMEI         VARCHAR2(50),
+  UA           VARCHAR2(100),
+  MODEL_NAME  VARCHAR2(100),
+  CHANNEL_ID   VARCHAR2(100),
+  DEVICE_CODE  VARCHAR2(100),
+  GROUP_ID     NUMBER(15),
+  BATCH_CODE   VARCHAR2(100),
+  PROCESS_TIME VARCHAR2(100),
+  CREATE_TIME  DATE DEFAULT SYSDATE NOT NULL
 );
-comment on column TY_DEVICE_PROCESS_LOG_20142.process_id
-  is '唯一主键';
-comment on column TY_DEVICE_PROCESS_LOG_20142.imei
-  is '手机imei码';
-comment on column TY_DEVICE_PROCESS_LOG_20142.ua
-  is '手机ua';
-comment on column TY_DEVICE_PROCESS_LOG_20142.model_name
-  is '机型名称';
-comment on column TY_DEVICE_PROCESS_LOG_20142.channel_id
-  is '渠道id';
-comment on column TY_DEVICE_PROCESS_LOG_20142.device_code
-  is '设备编码';
-comment on column TY_DEVICE_PROCESS_LOG_20142.group_id
-  is '渠道组id';
-comment on column TY_DEVICE_PROCESS_LOG_20142.batch_code
-  is '批次号';
-comment on column TY_DEVICE_PROCESS_LOG_20142.process_time
-  is '加工时间';
-comment on column TY_DEVICE_PROCESS_LOG_20142.create_time
-  is '上传时间';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.PROCESS_ID
+  IS '唯一主键';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.IMEI
+  IS '手机IMEI码';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.UA
+  IS '手机UA';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.MODEL_NAME
+  IS '机型名称';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.CHANNEL_ID
+  IS '渠道ID';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.DEVICE_CODE
+  IS '设备编码';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.GROUP_ID
+  IS '渠道组ID';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.BATCH_CODE
+  IS '批次号';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.PROCESS_TIME
+  IS '加工时间';
+COMMENT ON COLUMN TY_DEVICE_PROCESS_LOG_20142.CREATE_TIME
+  IS '上传时间';
 
 
-alter table TY_DEVICE_PROCESS_LOG_20142
-  add constraint PK_TY_DEVICE_PROCESS_LOG_20142 primary key (process_id)
-  using index ;
-create index  IDX_DEVICE_LOG_20142_IMEI on TY_DEVICE_PROCESS_LOG_20142(imei);
-create index  IDX_DEVICE_LOG_20142_CTIME on TY_DEVICE_PROCESS_LOG_20142(create_time);
+ALTER TABLE TY_DEVICE_PROCESS_LOG_20142
+  ADD CONSTRAINT PK_TY_DEVICE_PROCESS_LOG_20142 PRIMARY KEY (PROCESS_ID)
+  USING INDEX ;
+CREATE INDEX  IDX_DEVICE_LOG_20142_IMEI ON TY_DEVICE_PROCESS_LOG_20142(IMEI);
+CREATE INDEX  IDX_DEVICE_LOG_20142_CTIME ON TY_DEVICE_PROCESS_LOG_20142(CREATE_TIME);
 
 
 
-  -- Create table
-create table TY_COUNTER_UPLOAD_LOG_20142
+  -- CREATE TABLE
+CREATE TABLE TY_COUNTER_UPLOAD_LOG_20142
 (
-  counter_id   number(15) not null,
-  imei          varchar2(50),
-  ua            varchar2(100),
-  model_name   varchar2(100),
-  channel_id   varchar2(100),
-  device_code  varchar2(100),
-  group_id     number(15),
-  batch_code   varchar2(100),
-  process_time varchar2(100),
-  create_time  date default SYSDATE not null,
-  active        varchar2(100) not null
+  COUNTER_ID   NUMBER(15) NOT NULL,
+  IMEI          VARCHAR2(50),
+  UA            VARCHAR2(100),
+  MODEL_NAME   VARCHAR2(100),
+  CHANNEL_ID   VARCHAR2(100),
+  DEVICE_CODE  VARCHAR2(100),
+  GROUP_ID     NUMBER(15),
+  BATCH_CODE   VARCHAR2(100),
+  PROCESS_TIME VARCHAR2(100),
+  CREATE_TIME  DATE DEFAULT SYSDATE NOT NULL,
+  ACTIVE        VARCHAR2(100) NOT NULL
 )
 ;
--- Add comments to the columns
-comment on column TY_COUNTER_UPLOAD_LOG_20142.counter_id
-  is '唯一主键';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.imei
-  is '手机imei码';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.ua
-  is '手机ua';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.model_name
-  is '机型名称';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.channel_id
-  is '渠道id';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.device_code
-  is '设备编码';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.group_id
-  is '渠道组id';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.batch_code
-  is '批次号';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.process_time
-  is '加工日期';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.create_time
-  is '上传时间';
-comment on column TY_COUNTER_UPLOAD_LOG_20142.active
-  is '1：有效到达，2：无效-替换，3：无效-卸载';
+-- ADD COMMENTS TO THE COLUMNS
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.COUNTER_ID
+  IS '唯一主键';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.IMEI
+  IS '手机IMEI码';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.UA
+  IS '手机UA';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.MODEL_NAME
+  IS '机型名称';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.CHANNEL_ID
+  IS '渠道ID';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.DEVICE_CODE
+  IS '设备编码';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.GROUP_ID
+  IS '渠道组ID';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.BATCH_CODE
+  IS '批次号';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.PROCESS_TIME
+  IS '加工日期';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.CREATE_TIME
+  IS '上传时间';
+COMMENT ON COLUMN TY_COUNTER_UPLOAD_LOG_20142.ACTIVE
+  IS '1：有效到达，2：无效-替换，3：无效-卸载';
 
 
-alter table TY_COUNTER_UPLOAD_LOG_20142 add constraint PK_TY_COUNTER_UPLOAD_LOG_20142 primary key (counter_id);
-create index  IDX_COUNTER_LOG_20142_IMEI on TY_COUNTER_UPLOAD_LOG_20142(imei);
-create index  IDX_COUNTER_LOG_20142_CTIME on TY_COUNTER_UPLOAD_LOG_20142(create_time);
+ALTER TABLE TY_COUNTER_UPLOAD_LOG_20142 ADD CONSTRAINT PK_TY_COUNTER_UPLOAD_LOG_20142 PRIMARY KEY (COUNTER_ID);
+CREATE INDEX  IDX_COUNTER_LOG_20142_IMEI ON TY_COUNTER_UPLOAD_LOG_20142(IMEI);
+CREATE INDEX  IDX_COUNTER_LOG_20142_CTIME ON TY_COUNTER_UPLOAD_LOG_20142(CREATE_TIME);
 
 
 
--- Create table
-create table TY_DICT_INFO
+-- CREATE TABLE
+CREATE TABLE TY_DICT_INFO
 (
-  dict_id     number(15) not null,
-  key_code    varchar2(50) not null,
-  key_value   varchar2(50) not null,
-  remark      varchar2(1000),
-  create_time date default SYSDATE not null,
-  update_time date default SYSDATE not null
+  DICT_ID     NUMBER(15) NOT NULL,
+  KEY_CODE    VARCHAR2(50) NOT NULL,
+  KEY_VALUE   VARCHAR2(50) NOT NULL,
+  REMARK      VARCHAR2(1000),
+  CREATE_TIME DATE DEFAULT SYSDATE NOT NULL,
+  UPDATE_TIME DATE DEFAULT SYSDATE NOT NULL
 );
--- Create/Recreate primary, unique and foreign key constraints
-alter table TY_DICT_INFO
-  add constraint PK_TY_DICT_INFO primary key (dict_id);
-alter table TY_DICT_INFO
-  add constraint UNIQ_TY_DICT_INFO_KEYCODE unique (key_code);
+-- CREATE/RECREATE PRIMARY, UNIQUE AND FOREIGN KEY CONSTRAINTS
+ALTER TABLE TY_DICT_INFO
+  ADD CONSTRAINT PK_TY_DICT_INFO PRIMARY KEY (DICT_ID);
+ALTER TABLE TY_DICT_INFO
+  ADD CONSTRAINT UNIQ_TY_DICT_INFO_KEYCODE UNIQUE (KEY_CODE);
 
 
 
-create table TY_COUNTER_FAIL_LOG
+CREATE TABLE TY_COUNTER_FAIL_LOG
 (
-  fail_id      number(15) not null,
-  imei          varchar2(50),
-  ua            varchar2(100),
-  model_name   varchar2(100),
-  channel_id   varchar2(100),
-  device_code  varchar2(100),
-  group_id     number(15),
-  batch_code   varchar2(100),
-  process_time varchar2(100),
-  create_time  date default SYSDATE not null,
-  active        varchar2(100) not null
+  FAIL_ID      NUMBER(15) NOT NULL,
+  IMEI          VARCHAR2(50),
+  UA            VARCHAR2(100),
+  MODEL_NAME   VARCHAR2(100),
+  CHANNEL_ID   VARCHAR2(100),
+  DEVICE_CODE  VARCHAR2(100),
+  GROUP_ID     NUMBER(15),
+  BATCH_CODE   VARCHAR2(100),
+  PROCESS_TIME VARCHAR2(100),
+  CREATE_TIME  DATE DEFAULT SYSDATE NOT NULL,
+  ACTIVE        VARCHAR2(100) NOT NULL
 );
--- Add comments to the columns
-comment on column TY_COUNTER_FAIL_LOG.fail_id
-  is '唯一主键';
-comment on column TY_COUNTER_FAIL_LOG.imei
-  is '手机imei码';
-comment on column TY_COUNTER_FAIL_LOG.ua
-  is '手机ua';
-comment on column TY_COUNTER_FAIL_LOG.model_name
-  is '机型名称';
-comment on column TY_COUNTER_FAIL_LOG.channel_id
-  is '渠道id';
-comment on column TY_COUNTER_FAIL_LOG.device_code
-  is '设备编码';
-comment on column TY_COUNTER_FAIL_LOG.group_id
-  is '渠道组id';
-comment on column TY_COUNTER_FAIL_LOG.batch_code
-  is '批次号';
-comment on column TY_COUNTER_FAIL_LOG.process_time
-  is '加工日期';
-comment on column TY_COUNTER_FAIL_LOG.create_time
-  is '上传时间';
-comment on column TY_COUNTER_FAIL_LOG.active
-  is '1：有效到达，2：无效-替换，3：无效-卸载';
+-- ADD COMMENTS TO THE COLUMNS
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.FAIL_ID
+  IS '唯一主键';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.IMEI
+  IS '手机IMEI码';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.UA
+  IS '手机UA';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.MODEL_NAME
+  IS '机型名称';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.CHANNEL_ID
+  IS '渠道ID';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.DEVICE_CODE
+  IS '设备编码';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.GROUP_ID
+  IS '渠道组ID';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.BATCH_CODE
+  IS '批次号';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.PROCESS_TIME
+  IS '加工日期';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.CREATE_TIME
+  IS '上传时间';
+COMMENT ON COLUMN TY_COUNTER_FAIL_LOG.ACTIVE
+  IS '1：有效到达，2：无效-替换，3：无效-卸载';
 
 
-alter table TY_COUNTER_FAIL_LOG
-  add constraint TY_COUNTER_FAIL_LOG primary key (fail_id);
-alter table TY_COUNTER_FAIL_LOG
-  add constraint UNIQ_COUNTER_FAIL_LOG_IMEI unique (IMEI);
-create index  IDX_TY_FAIL_LOG_CTIME on TY_COUNTER_FAIL_LOG(create_time);
+ALTER TABLE TY_COUNTER_FAIL_LOG
+  ADD CONSTRAINT TY_COUNTER_FAIL_LOG PRIMARY KEY (FAIL_ID);
+ALTER TABLE TY_COUNTER_FAIL_LOG
+  ADD CONSTRAINT UNIQ_COUNTER_FAIL_LOG_IMEI UNIQUE (IMEI);
+CREATE INDEX  IDX_TY_FAIL_LOG_CTIME ON TY_COUNTER_FAIL_LOG(CREATE_TIME);
 
 
--- Create table
-create table TY_CHANNEL_VERSION
+-- CREATE TABLE
+CREATE TABLE TY_CHANNEL_VERSION
 (
-  version_id  NUMBER(15) not null,
-  channel_id  NUMBER(15) not null,
-  md5value    VARCHAR2(50) not null,
-  path        VARCHAR2(500) not null,
-  version     VARCHAR2(50) not null,
-  create_time DATE not null,
-  update_time DATE not null
+  VERSION_ID  NUMBER(15) NOT NULL,
+  CHANNEL_ID  NUMBER(15) NOT NULL,
+  MD5VALUE    VARCHAR2(50) NOT NULL,
+  PATH        VARCHAR2(500) NOT NULL,
+  VERSION     VARCHAR2(50) NOT NULL,
+  CREATE_TIME DATE NOT NULL,
+  UPDATE_TIME DATE NOT NULL
 )
-comment on table TY_CHANNEL_VERSION  is '渠道对应apk版本库信息';
+COMMENT ON TABLE TY_CHANNEL_VERSION  IS '渠道对应APK版本库信息';
 
-alter table TY_CHANNEL_VERSION add constraint PK_TY_CHANNEL_VERSION primary key (VERSION_ID);
-alter table TY_CHANNEL_VERSION add constraint UNIQ_TY_CHANNEL_VERSION_CID unique (CHANNEL_ID);
+ALTER TABLE TY_CHANNEL_VERSION ADD CONSTRAINT PK_TY_CHANNEL_VERSION PRIMARY KEY (VERSION_ID);
+ALTER TABLE TY_CHANNEL_VERSION ADD CONSTRAINT UNIQ_TY_CHANNEL_VERSION_CID UNIQUE (CHANNEL_ID);
 
 
 
-create table TY_APK_INFO  (
-   APK_ID         			number(15)           not null,
-   APK_NAME            varchar2(50)					not null,
-   SOFT_NAME           varchar2(100)					not null,
-   FTP_PATH        		varchar2(500)         not null,
-   MD5VALUE        		varchar2(500)         not null,
-   DOWNLOAD_URL       varchar2(500)         not null,
-   ACTIVE              varchar2(2)           not null,
-   CREATE_TIME        		date               default SYSDATE not null,
-   UPDATE_TIME        		date               default SYSDATE not null
+CREATE TABLE TY_APK_INFO  (
+   APK_ID         			NUMBER(15)           NOT NULL,
+   APK_NAME            VARCHAR2(50)					NOT NULL,
+   SOFT_NAME           VARCHAR2(100)					NOT NULL,
+   FTP_PATH        		VARCHAR2(500)         NOT NULL,
+   MD5VALUE        		VARCHAR2(500)         NOT NULL,
+   DOWNLOAD_URL       VARCHAR2(500)         NOT NULL,
+   ACTIVE              VARCHAR2(2)           NOT NULL,
+   CREATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL,
+   UPDATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL
 );
-alter table TY_APK_INFO add constraint PK_TY_APK_INFO primary key (APK_ID);
-comment on column TY_APK_INFO.ACTIVE is 'Y:有效，N:无效';
+ALTER TABLE TY_APK_INFO ADD CONSTRAINT PK_TY_APK_INFO PRIMARY KEY (APK_ID);
+COMMENT ON COLUMN TY_APK_INFO.ACTIVE IS 'Y:有效，N:无效';
 
 
 
-create table TY_PACKAGE_INFO  (
-   PACKAGE_ID         			number(15)           not null,
-   PACKAGE_NAME            varchar2(100)					not null,
-   GROUP_ID                number(15),
-   BATCH_ID                number(15)         not null,
-   BATCH_CODE              varchar2(100)         not null,
-   TYPE                    varchar2(2)           not null,
-   ACTIVE                  varchar2(2)           not null,
-   REMARK                  varchar2(1000),
-   CREATE_TIME        		date               default SYSDATE not null,
-   UPDATE_TIME        		date               default SYSDATE not null
+CREATE TABLE TY_PACKAGE_INFO  (
+   PACKAGE_ID         			NUMBER(15)           NOT NULL,
+   PACKAGE_NAME            VARCHAR2(100)					NOT NULL,
+   GROUP_ID                NUMBER(15),
+   BATCH_ID                NUMBER(15)         NOT NULL,
+   BATCH_CODE              VARCHAR2(100)         NOT NULL,
+   TYPE                    VARCHAR2(2)           NOT NULL,
+   ACTIVE                  VARCHAR2(2)           NOT NULL,
+   REMARK                  VARCHAR2(1000),
+   CREATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL,
+   UPDATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL
 );
-alter table TY_PACKAGE_INFO add constraint PK_TY_PACKAGE_INFO primary key (PACKAGE_ID);
-comment on column TY_PACKAGE_INFO.ACTIVE is 'Y:有效，N:无效';
-comment on column TY_PACKAGE_INFO.TYPE is 'Y:通用包，N:普通包';
+ALTER TABLE TY_PACKAGE_INFO ADD CONSTRAINT PK_TY_PACKAGE_INFO PRIMARY KEY (PACKAGE_ID);
+COMMENT ON COLUMN TY_PACKAGE_INFO.ACTIVE IS 'Y:有效，N:无效';
+COMMENT ON COLUMN TY_PACKAGE_INFO.TYPE IS 'Y:通用包，N:普通包';
 
-create table TY_PACKAGE_APK_REF  (
-   ID         			        number(15)           not null,
-   PACKAGE_ID         			number(15)           not null,
-   APK_ID         			    number(15)           not null,
-   APK_NAME                varchar2(100)					not null,
-   AUTO_RUN                varchar2(2)         not null,
-   DESKTOP_ICON           varchar2(2)         not null,
-   SORT                    number(10)         not null,
-   ACTIVE                  varchar2(2)         not null,
-   CREATE_TIME        		date               default SYSDATE not null
+CREATE TABLE TY_PACKAGE_APK_REF  (
+   ID         			        NUMBER(15)           NOT NULL,
+   PACKAGE_ID         			NUMBER(15)           NOT NULL,
+   APK_ID         			    NUMBER(15)           NOT NULL,
+   APK_NAME                VARCHAR2(100)					NOT NULL,
+   AUTO_RUN                VARCHAR2(2)         NOT NULL,
+   DESKTOP_ICON           VARCHAR2(2)         NOT NULL,
+   SORT                    NUMBER(10)         NOT NULL,
+   ACTIVE                  VARCHAR2(2)         NOT NULL,
+   CREATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL
 );
-alter table TY_PACKAGE_APK_REF add constraint PK_TY_PACKAGE_APK_REF primary key (ID);
-comment on column TY_PACKAGE_APK_REF.ACTIVE is 'Y:有效，N:无效';
+ALTER TABLE TY_PACKAGE_APK_REF ADD CONSTRAINT PK_TY_PACKAGE_APK_REF PRIMARY KEY (ID);
+COMMENT ON COLUMN TY_PACKAGE_APK_REF.ACTIVE IS 'Y:有效，N:无效';
 
 
-create table TY_PUBLISH_TASK  (
-   PUBLISH_ID         			number(15)           not null,
-   PACKAGE_NAME            varchar2(100)					not null,
-   PACKAGE_ID              number(15)         not null,
-   EFFECT_TIME             date,
-   ACTIVE              varchar2(2)           not null,
-   CREATE_TIME        		date               default SYSDATE not null,
-   UPDATE_TIME        		date               default SYSDATE not null
+CREATE TABLE TY_PUBLISH_TASK  (
+   PUBLISH_ID         			NUMBER(15)           NOT NULL,
+   PACKAGE_NAME            VARCHAR2(100)					NOT NULL,
+   PACKAGE_ID              NUMBER(15)         NOT NULL,
+   EFFECT_TIME             DATE,
+   ACTIVE              VARCHAR2(2)           NOT NULL,
+   CREATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL,
+   UPDATE_TIME        		DATE               DEFAULT SYSDATE NOT NULL
 );
-alter table TY_PUBLISH_TASK add constraint PK_TY_PUBLISH_TASK primary key (PUBLISH_ID);
-comment on column TY_PUBLISH_TASK.ACTIVE is 'Y:有效，N:无效';
+ALTER TABLE TY_PUBLISH_TASK ADD CONSTRAINT PK_TY_PUBLISH_TASK PRIMARY KEY (PUBLISH_ID);
+COMMENT ON COLUMN TY_PUBLISH_TASK.ACTIVE IS 'Y:有效，N:无效';
 
 
-create table TY_PUBLISH_CHANNEL_REF  (
-   ID         			      number(15)           not null,
-   PUBLISH_ID         	  number(15)           not null,
-   PACKAGE_ID         		number(15)           not null,
-   GROUP_ID         			number(15)           not null,
-   CHANNEL_ID         		number(15)           not null,
-   CREATE_TIME        		date                 default SYSDATE not null,
+CREATE TABLE TY_PUBLISH_CHANNEL_REF  (
+   ID         			      NUMBER(15)           NOT NULL,
+   PUBLISH_ID         	  NUMBER(15)           NOT NULL,
+   PACKAGE_ID         		NUMBER(15)           NOT NULL,
+   GROUP_ID         			NUMBER(15)           NOT NULL,
+   CHANNEL_ID         		NUMBER(15)           NOT NULL,
+   CREATE_TIME        		DATE                 DEFAULT SYSDATE NOT NULL,
 );
-alter table TY_PUBLISH_CHANNEL_REF add constraint PK_TY_PUBLISH_CHANNEL_REF primary key (ID);
-comment on column TY_PUBLISH_CHANNEL_REF.ACTIVE is 'Y:有效，N:无效';
+ALTER TABLE TY_PUBLISH_CHANNEL_REF ADD CONSTRAINT PK_TY_PUBLISH_CHANNEL_REF PRIMARY KEY (ID);
+COMMENT ON COLUMN TY_PUBLISH_CHANNEL_REF.ACTIVE IS 'Y:有效，N:无效';
 
 
-create table TY_PUBLISH_MODEL_REF  (
-   ID         			      number(15)           not null,
-   PUBLISH_ID         	  number(15)           not null,
-   PACKAGE_ID         		number(15)           not null,
-   MODEL_ID         			number(15)           not null,
-   CREATE_TIME        		date                 default SYSDATE not null,
+CREATE TABLE TY_PUBLISH_MODEL_REF  (
+   ID         			      NUMBER(15)           NOT NULL,
+   PUBLISH_ID         	  NUMBER(15)           NOT NULL,
+   PACKAGE_ID         		NUMBER(15)           NOT NULL,
+   MODEL_ID         			NUMBER(15)           NOT NULL,
+   CREATE_TIME        		DATE                 DEFAULT SYSDATE NOT NULL,
 );
-alter table TY_PUBLISH_MODEL_REF add constraint PK_TY_PUBLISH_MODEL_REF primary key (ID);
-comment on column TY_PUBLISH_MODEL_REF.ACTIVE is 'Y:有效，N:无效';
+ALTER TABLE TY_PUBLISH_MODEL_REF ADD CONSTRAINT PK_TY_PUBLISH_MODEL_REF PRIMARY KEY (ID);
+COMMENT ON COLUMN TY_PUBLISH_MODEL_REF.ACTIVE IS 'Y:有效，N:无效';
 
 
 

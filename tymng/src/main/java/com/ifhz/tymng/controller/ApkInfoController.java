@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +67,7 @@ public class ApkInfoController extends BaseController {
     public JSONObject insert(HttpServletRequest request) {
         Map<String, FileItem> params = paserMultiData(request);
         String apkName = null;
+        String type = null;
         FileItem file = params.get("file");
         String errorMsg = null;
         JSONObject result = new JSONObject();
@@ -74,13 +77,14 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         String softName = file.getName();
-        String fileName = FtpUtils.generateFileName(file.getName());
         String md5Value = null;
+        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
             apkName = readInputStreamData(params.get("apkName").getInputStream());
+            type = readInputStreamData(params.get("type").getInputStream());
             FtpUtils.ftpUpload(file.getInputStream(),
-                    GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR),
-                    fileName
+                    dir,
+                    softName
             );
             md5Value = MD5keyUtil.getMD5(file.getInputStream());
         } catch (Exception e) {
@@ -107,8 +111,9 @@ public class ApkInfoController extends BaseController {
         ai.setApkName(apkName.trim());
         ai.setSoftName(softName);
         ai.setActive(JcywConstants.ACTIVE_Y);
-        ai.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
+        ai.setFtpPath(dir + softName);
         ai.setMd5Value(md5Value);
+        ai.setType(type);
         apkInfoService.insert(ai);
         result.put("msg", "添加成功!");
         return result;
@@ -120,11 +125,13 @@ public class ApkInfoController extends BaseController {
         Map<String, FileItem> params = paserMultiData(request);
         String apkId = null;
         String apkName = null;
+        String type = null;
         String errorMsg = null;
         JSONObject result = new JSONObject();
         try {
             apkId = readInputStreamData(params.get("apkId").getInputStream());
             apkName = readInputStreamData(params.get("apkName").getInputStream());
+            type = readInputStreamData(params.get("type").getInputStream());
         } catch (IOException e) {
             errorMsg = "数据读取错误，请联系管理员！";
             result.put("errorMsg", errorMsg);
@@ -160,14 +167,17 @@ public class ApkInfoController extends BaseController {
         if (StringUtils.isNotEmpty(file.getName())) {
             try {
                 String softName = file.getName();
-                String fileName = FtpUtils.generateFileName(file.getName());
+                String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
                 FtpUtils.ftpUpload(file.getInputStream(),
-                        GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR),
-                        fileName
+                        dir,
+                        softName
                 );
                 apkInfo.setSoftName(softName);
-                apkInfo.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR) + fileName);
-                apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
+                apkInfo.setFtpPath(dir + softName);
+                if (!MD5keyUtil.getMD5(file.getInputStream()).equals(apkInfo.getMd5Value())) {
+                    apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
+                    apkInfo.setUpdateTime(new Date());
+                }
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);
@@ -175,6 +185,7 @@ public class ApkInfoController extends BaseController {
             }
         }
         apkInfo.setApkName(apkName.trim());
+        apkInfo.setType(type);
         apkInfoService.update(apkInfo);
         result.put("msg", "修改成功!");
         return result;

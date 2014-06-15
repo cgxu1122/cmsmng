@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,5 +77,10 @@ public class PackageInfoServiceImpl implements PackageInfoService {
         packageApkRefAdapter.delete(paRef);
         //先删除关联表信息
         return packageInfoAdapter.delete(record);
+    }
+
+    @Override
+    public List<PackageInfo> queryList(Long channelId, Date startTime, Date endTime) {
+        return null;
     }
 }

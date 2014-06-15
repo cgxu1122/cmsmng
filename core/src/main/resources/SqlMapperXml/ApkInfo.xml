@@ -93,6 +93,9 @@
             <if test="downloadUrl != null">
                 DOWNLOAD_URL = #{downloadUrl},
             </if>
+            <if test="type != null">
+                TYPE = #{type},
+            </if>
             <if test="active != null">
                 ACTIVE = #{active},
             </if>
@@ -121,6 +124,7 @@
         <if test="record.active != null and record.active != ''">
             and ACTIVE = #{record.active}
         </if>
+        order by CREATE_TIME desc
     </select>
     <select id="queryAllList" resultMap="ApkInfoResultMap">
         select

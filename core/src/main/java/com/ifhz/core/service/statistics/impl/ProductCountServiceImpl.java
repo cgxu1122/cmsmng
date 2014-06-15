@@ -68,6 +68,13 @@ public class ProductCountServiceImpl implements ProductCountService {
     public final Map<String, ProductCount> logCounts = new HashMap();
     public final int pageLogNum = 2;
 
+
+    /**
+     * 加工设备数据统计与计数器数据统计 产品统计方法
+     *
+     * @param startDate
+     * @param endDate
+     */
     @Override
     public void countProductLogByDate(Date startDate, Date endDate) {
         deviceCountLog(startDate, endDate);

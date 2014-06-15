@@ -45,7 +45,6 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
 
     @Override
     public int update(ApkInfo record) {
-        record.setUpdateTime(new Date());
         return apkInfoMapper.update(record);
     }
 

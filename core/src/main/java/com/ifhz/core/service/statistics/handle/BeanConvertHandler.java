@@ -82,12 +82,12 @@ public final class BeanConvertHandler {
         pc.setProductId(productId);
         pc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
         pc.setProcessKey(key);
-        pc.setProcessDayCount(0l);
-        pc.setAllCount(0l);
-        pc.setActiveCount(0l);
-        pc.setNonActiveCount(0l);
-        pc.setNonActiveReplaceCount(0l);
-        pc.setNonActiveUninstallCount(0l);
+        pc.setProcessDayCount(0L);
+        pc.setAllCount(0L);
+        pc.setActiveCount(0L);
+        pc.setNonActiveCount(0L);
+        pc.setNonActiveReplaceCount(0L);
+        pc.setNonActiveUninstallCount(0L);
         return pc;
     }
 
@@ -99,12 +99,12 @@ public final class BeanConvertHandler {
         pc.setProductId(productId);
         pc.setCountTime(DateFormatUtils.convertYYYYMMDD(m.getProcessTime()));
         pc.setProcessKey(key);
-        pc.setProcessDayCount(0l);
-        pc.setAllCount(0l);
-        pc.setActiveCount(0l);
-        pc.setNonActiveCount(0l);
-        pc.setNonActiveReplaceCount(0l);
-        pc.setNonActiveUninstallCount(0l);
+        pc.setProcessDayCount(0L);
+        pc.setAllCount(0L);
+        pc.setActiveCount(0L);
+        pc.setNonActiveCount(0L);
+        pc.setNonActiveReplaceCount(0L);
+        pc.setNonActiveUninstallCount(0L);
         return pc;
     }
 
@@ -130,14 +130,14 @@ public final class BeanConvertHandler {
             dlc.setCountTime(d);
         }
         dlc.setProcessKey(key);
-        dlc.setProcessDayCount(0l);
-        dlc.setDeviceUploadDayCount(0l);
-        dlc.setAllCount(0l);
-        dlc.setActiveCount(0l);
-        dlc.setNonActiveCount(0l);
-        dlc.setNonActiveReplaceCount(0l);
-        dlc.setNonActiveUninstallCount(0l);
-        dlc.setCounterUploadDayCount(0l);
+        dlc.setProcessDayCount(0L);
+        dlc.setDeviceUploadDayCount(0L);
+        dlc.setAllCount(0L);
+        dlc.setActiveCount(0L);
+        dlc.setNonActiveCount(0L);
+        dlc.setNonActiveReplaceCount(0L);
+        dlc.setNonActiveUninstallCount(0L);
+        dlc.setCounterUploadDayCount(0L);
 
         return dlc;
     }

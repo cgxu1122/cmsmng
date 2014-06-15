@@ -30,6 +30,19 @@ public class LogCountServiceImpl implements LogCountService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCountServiceImpl.class);
     @Resource(name = "logCountAdapter")
     private LogCountAdapter logCountAdapter;
+    @Resource(name = "deviceProcessLogAdapter")
+    private DeviceProcessLogAdapter deviceProcessLogAdapter;
+    @Resource(name = "counterUploadLogAdapter")
+    private CounterUploadLogAdapter counterUploadLogAdapter;
+    @Resource(name = "splitTableService")
+    private SplitTableService splitTableService;
+    @Resource(name = "channelInfoService")
+    private ChannelInfoService channelInfoService;
+
+    public final int pageSize = 10000;
+
+    //logCounts存放统计信息。md5(model_name+channel_id+device_id+batch_code+count_date)作为健，值为统计对象
+    public final Map<String, LogCount> logCounts = new HashMap();
 
     @Override
     public LogCount getById(Long id) {
@@ -76,22 +89,12 @@ public class LogCountServiceImpl implements LogCountService {
         return logCountAdapter.warehouseQueryList(page, pars);
     }
 
-    // @Resource(name = "logCountAdapter")
-    // private LogCountAdapter logCountAdapter;
-    @Resource(name = "deviceProcessLogAdapter")
-    private DeviceProcessLogAdapter deviceProcessLogAdapter;
-    @Resource(name = "counterUploadLogAdapter")
-    private CounterUploadLogAdapter counterUploadLogAdapter;
-    @Resource(name = "splitTableService")
-    private SplitTableService splitTableService;
-    @Resource(name = "channelInfoService")
-    private ChannelInfoService channelInfoService;
-
-    public final int pageLogNum = 2;
-
-    //logCounts存放统计信息。md5(model_name+channel_id+device_id+batch_code+count_date)作为健，值为统计对象
-    public final Map<String, LogCount> logCounts = new HashMap();
-
+    /**
+     * 加工设备数据统计与计数器数据统计 方法
+     *
+     * @param startDate
+     * @param endDate
+     */
     public void countLogByDate(Date startDate, Date endDate) {
         deviceCountLog(startDate, endDate);
         counterCountLog(startDate, endDate);
@@ -133,11 +136,11 @@ public class LogCountServiceImpl implements LogCountService {
         tab.put("endDate", endDate);
         long countlog = deviceProcessLogAdapter.getLogCountByTime(tab);
         //总页数
-        long countPageNum = countlog / pageLogNum + 1;
+        long countPageNum = countlog / pageSize + 1;
         //分页提取流水表
         for (int i = 0; i < countPageNum; i++) {
-            long startNum = pageLogNum * i;
-            long endNum = pageLogNum * (i + 1);
+            long startNum = pageSize * i;
+            long endNum = pageSize * (i + 1);
             Map pageParms = new HashMap();
             pageParms.put("startNum", startNum);
             pageParms.put("endNum", endNum);
@@ -164,7 +167,6 @@ public class LogCountServiceImpl implements LogCountService {
                     Long laowuId = null;
                     //当渠道组是地包时，查询该渠道是否关联劳动公司
                     if (dpl.getGroupId() == CommonConstants.CHANNAL_DIBAO) {
-                        System.out.println(dpl.getImei() + "\t" + dpl.getChannelId());
                         laowuId = channelInfoService.getById(Long.parseLong(dpl.getChannelId())).getLaowuId();
                     }
                     //没有新建一条统计信息
@@ -214,11 +216,11 @@ public class LogCountServiceImpl implements LogCountService {
         //获取昨天计数器流水总数
         long countlog = counterUploadLogAdapter.getLogCountByTime(tab);
         //总页数
-        long countPageNum = countlog / pageLogNum + 1;
+        long countPageNum = countlog / pageSize + 1;
         //分页提取流水表
         for (int i = 0; i < countPageNum; i++) {
-            int startNum = pageLogNum * i;
-            int endNum = pageLogNum * (i + 1);
+            int startNum = pageSize * i;
+            int endNum = pageSize * (i + 1);
             Map pageParms = new HashMap();
             pageParms.put("startNum", startNum);
             pageParms.put("endNum", endNum);
