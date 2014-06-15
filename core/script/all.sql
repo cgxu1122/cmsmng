@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/15 14:05:48                           */
+/* Created on:     2014/6/16 1:16:49                            */
 /*==============================================================*/
 
 
@@ -14,13 +14,15 @@ drop index "Index_4";
 
 drop index "Index_7";
 
-drop index "Index_8";
+drop index "Index_13";
 
 drop index "Index_9";
 
 drop index "Index_10";
 
 drop index "Index_11";
+
+drop index "Index_12";
 
 drop index "Index_2";
 
@@ -88,9 +90,17 @@ drop sequence SEQ_CHANNEL_GROUP;
 
 drop sequence SEQ_CHANNEL_INFO;
 
+drop sequence SEQ_COUNTER_FAIL_LOG;
+
+drop sequence SEQ_COUNTER_UPLOAD_LOG;
+
 drop sequence SEQ_DEVICE_INFO;
 
+drop sequence SEQ_DEVICE_PROCESS_LOG;
+
 drop sequence SEQ_DEVICE_SYSTEM;
+
+drop sequence SEQ_DICT_INFO;
 
 drop sequence SEQ_MODEL_INFO;
 
@@ -100,23 +110,19 @@ drop sequence SEQ_PARTNER_INFO;
 
 drop sequence SEQ_PRODUCT_INFO;
 
-drop sequence SEQ_TY_COUNTER_FAIL_LOG;
+drop sequence SEQ_PUBLISH_TASK;
 
-drop sequence SEQ_TY_COUNTER_UPLOAD_LOG;
+drop sequence SEQ_PUB_CHL_MOD_REF;
 
-drop sequence SEQ_TY_DEVICE_PROCESS_LOG;
+drop sequence SEQ_RESOURCE;
 
-drop sequence SEQ_TY_DICT_INFO;
+drop sequence SEQ_ROLE;
 
-drop sequence SEQ_TY_RESOURCE;
+drop sequence SEQ_ROLE_RESOURCE_REF;
 
-drop sequence SEQ_TY_ROLE;
+drop sequence SEQ_USER;
 
-drop sequence SEQ_TY_ROLE_RESOURCE_REF;
-
-drop sequence SEQ_TY_USER;
-
-drop sequence SEQ_TY_USER_ROLE_REF;
+drop sequence SEQ_USER_ROLE_REF;
 
 create sequence SEQ_BATCH_INFO;
 
@@ -130,9 +136,17 @@ create sequence SEQ_CHANNEL_GROUP;
 
 create sequence SEQ_CHANNEL_INFO;
 
+create sequence SEQ_COUNTER_FAIL_LOG;
+
+create sequence SEQ_COUNTER_UPLOAD_LOG;
+
 create sequence SEQ_DEVICE_INFO;
 
+create sequence SEQ_DEVICE_PROCESS_LOG;
+
 create sequence SEQ_DEVICE_SYSTEM;
+
+create sequence SEQ_DICT_INFO;
 
 create sequence SEQ_MODEL_INFO;
 
@@ -142,23 +156,19 @@ create sequence SEQ_PARTNER_INFO;
 
 create sequence SEQ_PRODUCT_INFO;
 
-create sequence SEQ_TY_COUNTER_FAIL_LOG;
+create sequence SEQ_PUBLISH_TASK;
 
-create sequence SEQ_TY_COUNTER_UPLOAD_LOG;
+create sequence SEQ_PUB_CHL_MOD_REF;
 
-create sequence SEQ_TY_DEVICE_PROCESS_LOG;
+create sequence SEQ_RESOURCE;
 
-create sequence SEQ_TY_DICT_INFO;
+create sequence SEQ_ROLE;
 
-create sequence SEQ_TY_RESOURCE;
+create sequence SEQ_ROLE_RESOURCE_REF;
 
-create sequence SEQ_TY_ROLE;
+create sequence SEQ_USER;
 
-create sequence SEQ_TY_ROLE_RESOURCE_REF;
-
-create sequence SEQ_TY_USER;
-
-create sequence SEQ_TY_USER_ROLE_REF;
+create sequence SEQ_USER_ROLE_REF;
 
 /*==============================================================*/
 /* Table: TY_APK_INFO                                           */
@@ -279,7 +289,7 @@ comment on column TY_BATCH_PRODUCT_REF.CREATE_TIME is
 /*==============================================================*/
 create table TY_CHANNEL_GROUP  (
    GROUP_ID             NUMBER(15)                      not null,
-   GROUP_NAME           VARCHAR2(200 CAHR),
+   GROUP_NAME           VARCHAR2(200 CHAR),
    CREATE_TIME          DATE,
    constraint PK_CHANNEL_GROUP primary key (GROUP_ID)
 );
@@ -305,7 +315,7 @@ create table TY_CHANNEL_INFO  (
    GROUP_ID             NUMBER(15),
    MNG_ID               NUMBER(15),
    USER_ID              NUMBER(15),
-   CHANNEL_NAME         VARCHAR(200 CHAR)),
+   CHANNEL_NAME         VARCHAR(200 CHAR),
    "DESC"               VARCHAR(500 CHAR),
    LEAF                 VARCHAR2(2 CHAR),
    TYPE                 VARCHAR2(2 CHAR),
@@ -630,7 +640,7 @@ comment on column TY_DEVICE_SYSTEM.CREATE_TIME is
 /* Table: TY_DICT_INFO                                          */
 /*==============================================================*/
 create table TY_DICT_INFO  (
-   DICT_ID              NUMBER(15)                     default NUMBER(15) not null,
+   DICT_ID              NUMBER(15)                      not null,
    KEY_CODE             VARCHAR2(50)                    not null,
    KEY_VALUE            VARCHAR2(50),
    REMARK               VARCHAR2(500),
@@ -749,8 +759,8 @@ create table TY_PACKAGE_APK_REF  (
    AUTO_RUN             VARCHAR2(2),
    DESKTOP_ICON         VARCHAR2(2),
    SORT                 NUMBER(10),
+   APK_TYPE             NUMBER(2)                      default 1,
    CREATE_TIME          DATE,
-   ACTIVE               VARCHAR2(2)                    default 'Y',
    constraint PK_TY_PACKAGE_APK_REF primary key (ID)
 );
 
@@ -775,17 +785,18 @@ comment on column TY_PACKAGE_APK_REF.DESKTOP_ICON is
 comment on column TY_PACKAGE_APK_REF.SORT is
 '排序';
 
+comment on column TY_PACKAGE_APK_REF.APK_TYPE is
+'计数器标识 1:计数器 2：非计数器';
+
 comment on column TY_PACKAGE_APK_REF.CREATE_TIME is
 '创建时间';
 
-comment on column TY_PACKAGE_APK_REF.ACTIVE is
-'数据状态 Y:有效，N:无效';
-
 /*==============================================================*/
-/* Index: "Index_8"                                             */
+/* Index: "Index_13"                                            */
 /*==============================================================*/
-create index "Index_8" on TY_PACKAGE_APK_REF (
-   PACKAGE_ID ASC
+create index "Index_13" on TY_PACKAGE_APK_REF (
+   PACKAGE_ID ASC,
+   APK_ID ASC
 );
 
 /*==============================================================*/
@@ -929,7 +940,6 @@ create table TY_PUBLISH_TASK  (
    PUBLISH_ID           NUMBER(15)                      not null,
    PACKAGE_ID           NUMBER(15),
    PACKAGE_NAME         VARCHAR2(100),
-   PKG_TYPE             VARCHAR(2),
    EFFECT_TIME          DATE,
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
@@ -948,9 +958,6 @@ comment on column TY_PUBLISH_TASK.PACKAGE_ID is
 
 comment on column TY_PUBLISH_TASK.PACKAGE_NAME is
 '安装包名称';
-
-comment on column TY_PUBLISH_TASK.PKG_TYPE is
-'通用包标识';
 
 comment on column TY_PUBLISH_TASK.EFFECT_TIME is
 '生效时间';
@@ -1010,7 +1017,7 @@ comment on column TY_PUB_CHL_MOD_REF.MODEL_ID is
 '机型ID';
 
 comment on column TY_PUB_CHL_MOD_REF.PKG_TYPE is
-'通用包标识';
+'安装包类型';
 
 comment on column TY_PUB_CHL_MOD_REF.CREATE_TIME is
 '创建时间';
@@ -1036,13 +1043,21 @@ create index "Index_11" on TY_PUB_CHL_MOD_REF (
 );
 
 /*==============================================================*/
+/* Index: "Index_12"                                            */
+/*==============================================================*/
+create index "Index_12" on TY_PUB_CHL_MOD_REF (
+   GROUP_ID ASC,
+   CHANNEL_ID ASC
+);
+
+/*==============================================================*/
 /* Table: TY_RESOURCE                                           */
 /*==============================================================*/
 create table TY_RESOURCE  (
    RESOURCE_ID          NUMBER(15)                      not null,
    PARENT_ID            NUMBER(15),
    RES_NAME             VARCHAR2(50 ),
-   RES_URL              VARCHAR2(0 BYTE),
+   RES_URL              VARCHAR2(500),
    FULL_PATH            VARCHAR2(500),
    LEVELS               NUMBER(15),
    CREATE_TIME          DATE,
