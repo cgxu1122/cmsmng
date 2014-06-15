@@ -29,7 +29,6 @@ import java.util.List;
 
 
 /**
- * 角色管理
  *
  * @author luyujian
  */
@@ -136,7 +135,7 @@ public class RoleController extends BaseController {
 
         Role role = new Role();
         role.setParentId(parentRole.getRoleId());
-        role.setLevels(parentRole.getLevels() + 1);
+        role.setLevels(parentRole.getLevels()+1);
         role.setRoleName(roleName);
         roleService.insert(role);
 

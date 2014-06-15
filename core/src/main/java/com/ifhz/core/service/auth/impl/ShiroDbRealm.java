@@ -18,6 +18,7 @@
  */
 package com.ifhz.core.service.auth.impl;
 
+import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.enums.UserStatusEnum;
 import com.ifhz.core.po.User;
@@ -117,7 +118,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
                 UserRoleRef userRoleRef = userRoleRefService.findRoleIdByUserId(user.getUserId());
                 // 获取角色名称
-                if (GlobalConstants.ADMIN_ROLE_ID == userRoleRef.getRoleId().intValue()) {// 如果是超级管理员
+                if (AuthrityTreeConstants.ADMIN_ROLE_ID == userRoleRef.getRoleId().intValue()) {// 如果是超级管理员
                     role = roleService.getAdminRole();
                 } else {// 普通角色
                     role = roleService.findById(userRoleRef.getRoleId());

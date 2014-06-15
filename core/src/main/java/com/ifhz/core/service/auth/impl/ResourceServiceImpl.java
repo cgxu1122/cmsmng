@@ -7,10 +7,7 @@ package com.ifhz.core.service.auth.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
@@ -51,53 +48,34 @@ public class ResourceServiceImpl implements ResourceService {
 	 * @author radish
 	 */
 	@Override
-	public String findAllRoleResourceXmlString(long id) {
-		return buildTree(AuthrityTreeConstants.CHECKBOX_RESOURCE_TREE, id);
+	public String findAllRoleResourceXmlString(long roleId,boolean adminflag) {
+		return buildTree(AuthrityTreeConstants.CHECKBOX_RESOURCE_TREE, roleId,adminflag);
 	}
 
-	final String buildTree(int type, long id) {
+	final String buildTree(int type, long roleId,boolean adminflag) {
 		sbXml = new StringBuffer();
 		sbXml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 		sbXml.append("<tree id=\"0\">\n");
 
 		Resource root = resourceMapper.findRootResource();
+
         if (type == 3) {
             doBuildFullResourceTree(root);
         }else if(type==2){
-             RoleVo roleVo = roleService.findById(id);
-             if(roleVo.getParentId()==-1){
-                 doBuildCheckboxResourceTree(root, id);
+             if(adminflag){
+                 doBuildCheckboxResourceTree(root, roleId);
              }else{
-//                 List<RoleResourceRef> rrrList = roleResourceRefService.findAllAvaiableRes4RoleByRoleId(roleVo.getParentId());
-//                 if(){}
-//                 Resource res = resourceMapper.findParentById(rrrList.get(0).getResourceId());
-//                 doBuildCheckboxResourceTree4Role(root, id);
-                 doBuildCheckboxResourceTree(root, id);
+                 List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(roleId);
+                 if(rrrList.size()>0){
+                     Resource res = resourceMapper.findParentById(rrrList.get(0).getResourceId());
+                     doBuildCheckboxNotFullResourceTree(res, roleId);
+                 }
              }
         }
         sbXml.append("</tree>");
         return sbXml.toString();
 	}
-    protected void doBuildCheckboxResourceTree4Role(Resource resource, long roleId) {
-        List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
-        String checkedStr = "";
 
-        RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
-        if (childrenList.size() == 0) {
-            if (rrr!=null) {
-                checkedStr = "   checked=\"1\"";
-            }
-        }
-
-        if(rrr!=null&&rrr.getAcces()==1){
-            sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""  + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
-            for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
-                Resource child = (Resource) iter.next();
-                doBuildCheckboxResourceTree(child, roleId);
-            }
-            sbXml.append("</item>\n");
-        }
-    }
 	/**
 	 * @author radishlee
 	 * @param resource
@@ -135,6 +113,43 @@ public class ResourceServiceImpl implements ResourceService {
         }
         sbXml.append("</item>\n");
     }
+
+
+
+    protected void doBuildCheckboxNotFullResourceTree(Resource resource, long roleId) {
+        List<Resource> childrenList = new ArrayList<Resource>();
+       // if(resource.getParentId()!=-1){
+            childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
+       // }else{
+      //      childrenList = resourceMapper.findAllChildrenById(resource.getParentId());
+      //  }
+
+        String checkedStr = "";
+
+        // 根据主体类型和主体标识查询此资源标识在acl中是否存在
+        RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
+        if (childrenList.size() == 0) {
+            if (rrr!=null) {
+                checkedStr = "   checked=\"1\"";
+            }
+        }
+
+//        if(rrr!=null && rrr.getAcces()==1){
+            sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
+                    + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
+//        }
+
+        for (Iterator iter = childrenList.iterator(); iter.hasNext();) {
+            Resource child = (Resource) iter.next();
+            doBuildCheckboxNotFullResourceTree(child, roleId);
+        }
+//        if(rrr!=null && rrr.getAcces()==1){
+            sbXml.append("</item>\n");
+//        }
+    }
+
+
+
 	/**
 	 * 得到根节点
 	 * 
@@ -162,7 +177,7 @@ public class ResourceServiceImpl implements ResourceService {
 	 */
 	@Override
 	public String findAllResourceTreeXmlString() {
-		return buildTree(AuthrityTreeConstants.FULL_RESOURCE_TREE, 0l);
+		return buildTree(AuthrityTreeConstants.FULL_RESOURCE_TREE, 0l,false);
 	}
 
 	/**

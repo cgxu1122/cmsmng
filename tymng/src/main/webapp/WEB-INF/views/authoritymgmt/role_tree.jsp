@@ -22,7 +22,7 @@
 <script type="text/javascript">
     tree = new dhtmlXTreeObject("treeboxbox_tree", "100%", "100%", 0);
     tree.setImagePath("<%=basePath%>/plug/dhtmlxTree/codebase/imgs/csh_bluebooks/");
-    tree.loadXML("<%=basePath%>/role/loadrole", function () {
+    tree.loadXML("<%=basePath%>/rrr/loadrole", function () {
         $(".standartTreeRow").css({"text-align": "left"});
     });
     tree.setOnClickHandler(function () {

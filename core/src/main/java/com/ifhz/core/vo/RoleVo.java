@@ -43,7 +43,7 @@ public class RoleVo implements Serializable {
     /**
      * 层级
      */
-    private Integer levels;
+    private Long levels;
 
     /**
      * 创建时间
@@ -83,11 +83,11 @@ public class RoleVo implements Serializable {
         this.fullPath = fullPath;
     }
 
-    public Integer getLevels() {
+    public Long getLevels() {
         return levels;
     }
 
-    public void setLevels(Integer levels) {
+    public void setLevels(Long levels) {
         this.levels = levels;
     }
 

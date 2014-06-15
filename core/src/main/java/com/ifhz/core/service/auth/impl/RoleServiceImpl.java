@@ -7,7 +7,6 @@ package com.ifhz.core.service.auth.impl;
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.RoleMapper;
 import com.ifhz.core.po.Role;
-import com.ifhz.core.po.User;
 import com.ifhz.core.po.UserRoleRef;
 import com.ifhz.core.service.auth.*;
 import com.ifhz.core.vo.RoleVo;
@@ -134,7 +133,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public String findAllRoleResourceXmlString(long id) {
-        return resourceService.findAllRoleResourceXmlString(id);
+        return resourceService.findAllRoleResourceXmlString(id,false);
     }
 
     /**
@@ -280,7 +279,7 @@ public class RoleServiceImpl implements RoleService {
         Date createTime = role.getCreateTime();
         Long parentId = role.getParentId();
         String roleName = role.getRoleName();
-        Integer level = role.getLevels();
+        Long level = role.getLevels();
         String fullPath = role.getFullPath();
 
         roleMangerVo.setRoleId(id_);

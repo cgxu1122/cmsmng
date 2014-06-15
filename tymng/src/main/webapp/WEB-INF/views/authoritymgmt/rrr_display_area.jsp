@@ -31,10 +31,10 @@
     function authorization() {
         var checkedNodes = tree.getAllCheckedBranches();
         var roleId = $('#roleId').val();
-        if (roleId == 1) {
-            $.messager.alert('错误', "系统管理员不可以修改授权");
-            return;
-        }
+//        if (roleId == 1) {
+//            $.messager.alert('错误', "系统管理员不可以修改授权");
+//            return;
+//        }
         $.post('<%=basePath%>/rrr/authorization/' + roleId + '_' + checkedNodes, function (result) {
             if (result.success) {
                 alert(result.success);

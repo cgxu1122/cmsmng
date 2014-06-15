@@ -12,8 +12,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ifhz.core.po.Role;
+import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.RoleResourceRefService;
+import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import com.ifhz.core.vo.RoleVo;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +38,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/rrr")
 public class RoleResourceRefController {
     private static Logger logger = LoggerFactory.getLogger(RoleResourceRefController.class);
+    @Autowired
+    RoleService roleService;
+
     @Autowired
     RoleResourceRefService roleResourceRefService;
 
@@ -56,6 +63,8 @@ public class RoleResourceRefController {
     public ModelAndView showdetail(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("authoritymgmt/rrr_display_area");
         mav.addObject("id", id);
+        ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        RoleVo roleVo = roleService.findById(user.roleId.intValue());
         return mav;
     }
 
@@ -86,9 +95,21 @@ public class RoleResourceRefController {
 
     @RequestMapping("/loadroleresourceref/{id}")
     public void loadroleresourceref(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable("id") long id) {
+            @PathVariable("id") long roleId) {
         response.setContentType("text/xml; charset=UTF-8");
-        String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(id);
+        boolean adminflag = false;
+        ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        RoleVo roleVo = roleService.findById(user.roleId.intValue());
+        if(roleVo.getParentId()==-1){
+            adminflag = true;
+        }
+
+        List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(roleId);
+        if(rrrList.size()<1){
+            roleId = roleVo.getRoleId();
+        }
+        //传当前用户的角色
+        String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(roleId,adminflag);
         try {
             response.getWriter().print(dhtmlXTreeXmlString);
             response.getWriter().close();

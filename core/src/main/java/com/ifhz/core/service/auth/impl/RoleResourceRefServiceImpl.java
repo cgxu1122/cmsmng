@@ -50,9 +50,9 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     @Override
     public void authorization(String roleid, List<String> resIdList) {
         long roleId = Long.parseLong(roleid);
-        if(roleId == 1l){
-            throw new RuntimeException("系统管理员权限不可修改");
-        }
+//        if(roleId == 1l){
+//            throw new RuntimeException("系统管理员权限不可修改");
+//        }
         this.deleteAllRefByRoleId(roleId);
 
         for (String resId : resIdList) {
@@ -75,13 +75,13 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     /**
      * 找到角色资源关系
      *
-     * @param id
+     * @param roleId
      * @return
      * @author radish
      */
     @Override
-    public String findAllRoleResourceXmlString(long id) {
-        return resourceService.findAllRoleResourceXmlString(id);
+    public String findAllRoleResourceXmlString(long roleId,boolean adminFlag) {
+        return resourceService.findAllRoleResourceXmlString(roleId,adminFlag);
     }
 
     public Boolean deleteAllRefByRoleId(long roleid) {

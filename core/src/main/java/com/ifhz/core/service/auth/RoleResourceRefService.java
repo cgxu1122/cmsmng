@@ -52,7 +52,7 @@ public interface RoleResourceRefService {
      * @param id
      * @return
      */
-    public String findAllRoleResourceXmlString(long id);
+    public String findAllRoleResourceXmlString(long id,boolean adminflag);
 
     /**
      * 根据roleId删除资源
