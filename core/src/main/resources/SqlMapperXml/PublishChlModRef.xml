@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.PubChlModRefMapper">
+    <!--
+
+create table TY_PUB_CHL_MOD_REF  (
+   ID                   NUMBER(15)                      not null,
+   PUBLISH_ID           NUMBER(15),
+   GROUP_ID             NUMBER(15),
+   CHANNEL_ID           NUMBER(15),
+   PACKAGE_ID           NUMBER(15),
+   MODEL_ID             NUMBER(15),
+   PKG_TYPE             VARCHAR(2),
+   CREATE_TIME          DATE,
+   UPDATE_TIME          DATE,
+   ACTIVE               VARCHAR(2),
+   constraint PK_TY_PUB_CHL_MOD_REF primary key (ID)
+);
+    -->
+
+    <sql id="TABLE_NAME">TY_PUB_CHL_MOD_REF</sql>
+    <sql id="CommonFieldSql">
+       ID,
+       PUBLISH_ID ,
+       GROUP_ID   ,
+       CHANNEL_ID ,
+       PACKAGE_ID ,
+       MODEL_ID   ,
+       PKG_TYPE   ,
+       CREATE_TIME,
+       UPDATE_TIME,
+       ACTIVE
+    </sql>
+
+    <resultMap id="PubChlModRefResultMap" type="com.ifhz.core.po.PubChlModRef">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PUBLISH_ID" property="publishId" jdbcType="BIGINT"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
+        <result column="PACKAGE_ID" property="packageId" jdbcType="BIGINT"/>
+        <result column="MODEL_ID" property="modelId" jdbcType="BIGINT"/>
+        <result column="PKG_TYPE" property="pkgType" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="PubChlModRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where APK_ID = #{apkId}
+    </select>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PubChlModRef">
+        <selectKey resultType="long" keyProperty="apkId">
+            SELECT SEQ_TY_PUB_CHL_MOD_REF.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_TY_PUB_CHL_MOD_REF.nextval,
+        #{publishId},
+        #{groupId},
+        #{channelId},
+        #{packageId},
+        #{modelId},
+        #{pkgType},
+        #{createTime},
+        #{updateTime}
+        #{active}
+        )
+    </insert>
+    <update id="update" parameterType="com.ifhz.core.po.PubChlModRef">
+
+    </update>
+    <select id="queryNormalPkgList" resultMap="PubChlModRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID = #{groupId}
+        and CHANNEL_ID = #{channelIId}
+        and PKG_TYPE = 'N'
+        and UPDATE_TIME between #{startTime} and #{endTime}
+        order by id
+    </select>
+
+    <select id="queryCommonPkgList" resultMap="PubChlModRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID = #{groupId}
+        and PKG_TYPE = 'Y'
+        and UPDATE_TIME between #{startTime} and #{endTime}
+        order by UPDATE_TIME desc
+    </select>
+
+</mapper>

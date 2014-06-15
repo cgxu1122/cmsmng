@@ -1,10 +1,5 @@
 package com.ifhz.core.service.pkgmng;
 
-import com.ifhz.core.vo.PackageVo;
-
-import java.util.Date;
-import java.util.List;
-
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -14,7 +9,4 @@ import java.util.List;
 public interface PublishTaskService {
 
 
-    public List<PackageVo> queryPackageVoList(long channelId, Date startTime, Date endTime);
-
-    public List<PackageVo> queryCommonPkgList(long groupId, Date startTime, Date endTime);
 }

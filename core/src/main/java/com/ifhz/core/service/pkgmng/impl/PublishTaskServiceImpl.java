@@ -1,17 +1,12 @@
 package com.ifhz.core.service.pkgmng.impl;
 
 import com.ifhz.core.adapter.PackageApkRefAdapter;
-import com.ifhz.core.adapter.PublishChannelRefAdapter;
-import com.ifhz.core.adapter.PublishModelRefAdapter;
 import com.ifhz.core.adapter.PublishTaskAdapter;
 import com.ifhz.core.service.pkgmng.PackageInfoService;
 import com.ifhz.core.service.pkgmng.PublishTaskService;
-import com.ifhz.core.vo.PackageVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 类描述
@@ -28,17 +23,5 @@ public class PublishTaskServiceImpl implements PublishTaskService {
     private PackageInfoService packageInfoService;
     @Resource(name = "packageApkRefAdapter")
     private PackageApkRefAdapter packageApkRefAdapter;
-    @Resource(name = "publishModelRefAdapter")
-    private PublishModelRefAdapter publishModelRefAdapter;
-    @Resource(name = "publishChannelRefAdapter")
-    private PublishChannelRefAdapter publishChannelRefAdapter;
 
-
-    @Override
-    public List<PackageVo> queryPackageVoList(long channelId, Date startTime, Date endTime) {
-        //
-
-
-        return null;
-    }
 }
