@@ -15,6 +15,8 @@ public interface CounterFailLogAdapter {
 
     public void insert(CounterFailLog po);
 
+    public int delete(Long failId);
+
     public long queryTotalCount(Date startTime, Date endTime);
 
     public CounterFailLog queryByImei(String imei);

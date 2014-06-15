@@ -40,13 +40,13 @@
 			user_id,
 			create_time
 		) values(
-            SEQ_TY_USER_ROLE_REF.nextval,
+        SEQ_USER_ROLE_REF.nextval,
 			#{roleId},
 			#{userId},
 			sysdate
 		)
         <selectKey resultType="long" keyProperty="id">
-            SELECT SEQ_TY_USER_ROLE_REF.CURRVAL FROM DUAL
+            SELECT SEQ_USER_ROLE_REF.CURRVAL FROM DUAL
         </selectKey>
 	</insert>
 </mapper>

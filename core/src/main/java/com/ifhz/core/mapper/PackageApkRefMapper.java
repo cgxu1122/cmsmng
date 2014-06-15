@@ -24,4 +24,6 @@ public interface PackageApkRefMapper {
     public int delete(PackageApkRef record);
 
     public List<PackageApkRef> queryListByPackageId(@Param("packageId") Long packageId);
+
+    public List<PackageApkRef> queryListByApkId(@Param("apkId") Long apkId);
 }

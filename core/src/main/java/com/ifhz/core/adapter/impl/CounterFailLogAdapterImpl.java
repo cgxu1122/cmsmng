@@ -27,8 +27,13 @@ public class CounterFailLogAdapterImpl implements CounterFailLogAdapter {
     }
 
     @Override
+    public int delete(Long failId) {
+        return counterFailLogMapper.delete(failId);
+    }
+
+    @Override
     public long queryTotalCount(Date startTime, Date endTime) {
-        return 0;
+        return counterFailLogMapper.queryTotalCount(startTime, endTime);
     }
 
     @Override

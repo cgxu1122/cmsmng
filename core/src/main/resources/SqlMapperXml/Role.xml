@@ -6,9 +6,9 @@
 		insert into ty_role
 			(role_id,role_name,create_time,parent_id,levels)
 		values
-			(SEQ_TY_ROLE.nextval,#{roleName},sysdate,#{parentId},#{levels})
+        (SEQ_ROLE.nextval,#{roleName},sysdate,#{parentId},#{levels})
         <selectKey resultType="long" keyProperty="role_id">
-            SELECT SEQ_TY_ROLE.CURRVAL FROM DUAL
+            SELECT SEQ_ROLE.CURRVAL FROM DUAL
         </selectKey>
 	</insert>
 

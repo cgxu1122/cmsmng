@@ -1,162 +1,161 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ifhz.core.mapper.ResourceMapper" >
-	<insert id="insert" parameterType="com.ifhz.core.po.Resource" >
-		insert into ty_resource
-			(resource_id,res_name,create_time,parent_id,levels,res_url,full_path)
-		values
-			(SEQ_TY_RESOURCE.nextval,#{resName},sysdate,#{parentId},#{levels},#{resUrl},#{fullPath})
+<mapper namespace="com.ifhz.core.mapper.ResourceMapper">
+    <insert id="insert" parameterType="com.ifhz.core.po.Resource">
+        insert into ty_resource
+        (resource_id,res_name,create_time,parent_id,levels,res_url,full_path)
+        values
+        (SEQ_RESOURCE.nextval,#{resName},sysdate,#{parentId},#{levels},#{resUrl},#{fullPath})
         <selectKey resultType="long" keyProperty="resource_id">
-            SELECT SEQ_TY_RESOURCE.CURRVAL FROM DUAL
+            SELECT SEQ_RESOURCE.CURRVAL FROM DUAL
         </selectKey>
-	</insert>
-	
-	<select id="getAllResource" resultType="com.ifhz.core.po.Resource">
-		select resource_id,parent_id,res_name from ty_resource
-	</select>
-	
-	<select id="findRootResource" resultType="com.ifhz.core.po.Resource">
-		select 
-		        resource_id as resourceId,
-		 		res_name as resName,
-				res_url  as resUrl,
-				create_time as createTime,
-				parent_id as parentId,
-				levels,
-				full_path as fullPath
-		from 
-				ty_resource
-		where 
-		        parent_id = -1
-	</select>
-	
-	
-	<select id="findAllChildrenById" resultType="com.ifhz.core.po.Resource">
-		select 
-		        resource_id as resourceId,
-		 		res_name as resName,
-				res_url as resUrl,
-				create_time as createTime,
-				parent_id as parentId,
-				levels,
-				full_path as fullPath
-		from 
-				ty_resource
-		where 
-		        parent_id = #{id}		
-	</select>
-	
-	<select id="findById" resultType="com.ifhz.core.vo.ResourceVo">
-		select 
-		        child.resource_id as resourceId,
-		 		child.res_name as resName,
-				child.res_url as resUrl,
-				child.create_time as createTime,
-				child.parent_id as parentId,
-				child.levels,
-				child.full_path as fullPath,
-				parent.res_name as parentName
-		from 
-				ty_resource child
-		join 		
-		        ty_resource parent
-		on 
-		        child.parent_id = parent.resource_id
-		where 
-		        child.resource_id = #{id}
-	</select>
+    </insert>
 
-    <select id="findParentById" resultType="com.ifhz.core.po.Resource" >
-        select
-                child.resource_id as resourceId,
-		 		child.res_name as resName,
-				child.res_url as resUrl,
-				child.create_time as createTime,
-				child.parent_id as parentId,
-				child.levels,
-				child.full_path as fullPath
-        from
-                ty_resource child
-        where
-                resource_id = #{id}
+    <select id="getAllResource" resultType="com.ifhz.core.po.Resource">
+        select resource_id,parent_id,res_name from ty_resource
     </select>
-	
-	<select id="findByResName" resultType="com.ifhz.core.po.Resource">
-		select 
-		        resource_id as resourceId,
-		 		res_name as resName,
-				create_time as createTime,
-				parent_id as parentId,
-				levels,
-				full_path as fullPath,
-				res_url as resUtl
-		from 
-				ty_resource
-		where 
-		        res_name = #{resName}		
-		        and 
-		        parent_id = #{parentId}
-	</select>
-	
-	<update id="updateResFullPath"  statementType="PREPARED"   timeout="20000">
-		update ty_resource
-		<set>
-			full_path = #{fullPath},
-		</set>
-			where resource_id = #{resourceId}
-	</update>
-	
-	<update id="update" parameterType="com.ifhz.core.po.Resource"  statementType="PREPARED"   timeout="20000">
-		update ty_resource
-		<set>
-			<if test="resName != null">
-				res_name = #{resName},
-			</if>
-			<if test="resUrl != null">
-				res_url = #{resUrl},
-			</if>
-		</set>
-			where resource_id = #{resourceId}
-	</update>
-	
-	
-	<select id="findByResNameBesideSelf" resultType="com.ifhz.core.po.Resource">
-		select 
-		        resource_id as resourceId,
-		 		res_name as resName,
-				create_time as createTime,
-				parent_id as parentId,
-				levels,
-				full_path as fullPath,
-				res_url as resUrl
-		from 
-				ty_resource
-		where 
-		        res_name = #{resName}	
-		and  
-		        resource_id != #{resourceId}
-	</select>
-	
-	<delete id="delete" parameterType="long">
-        delete from 
-        	 ty_resource
-        where 
-             resource_id=#{resourceId}
+
+    <select id="findRootResource" resultType="com.ifhz.core.po.Resource">
+        select
+        resource_id as resourceId,
+        res_name as resName,
+        res_url as resUrl,
+        create_time as createTime,
+        parent_id as parentId,
+        levels,
+        full_path as fullPath
+        from
+        ty_resource
+        where
+        parent_id = -1
+    </select>
+
+
+    <select id="findAllChildrenById" resultType="com.ifhz.core.po.Resource">
+        select
+        resource_id as resourceId,
+        res_name as resName,
+        res_url as resUrl,
+        create_time as createTime,
+        parent_id as parentId,
+        levels,
+        full_path as fullPath
+        from
+        ty_resource
+        where
+        parent_id = #{id}
+    </select>
+
+    <select id="findById" resultType="com.ifhz.core.vo.ResourceVo">
+        select
+        child.resource_id as resourceId,
+        child.res_name as resName,
+        child.res_url as resUrl,
+        child.create_time as createTime,
+        child.parent_id as parentId,
+        child.levels,
+        child.full_path as fullPath,
+        parent.res_name as parentName
+        from
+        ty_resource child
+        join
+        ty_resource parent
+        on
+        child.parent_id = parent.resource_id
+        where
+        child.resource_id = #{id}
+    </select>
+
+    <select id="findParentById" resultType="com.ifhz.core.po.Resource">
+        select
+        child.resource_id as resourceId,
+        child.res_name as resName,
+        child.res_url as resUrl,
+        child.create_time as createTime,
+        child.parent_id as parentId,
+        child.levels,
+        child.full_path as fullPath
+        from
+        ty_resource child
+        where
+        resource_id = #{id}
+    </select>
+
+    <select id="findByResName" resultType="com.ifhz.core.po.Resource">
+        select
+        resource_id as resourceId,
+        res_name as resName,
+        create_time as createTime,
+        parent_id as parentId,
+        levels,
+        full_path as fullPath,
+        res_url as resUtl
+        from
+        ty_resource
+        where
+        res_name = #{resName}
+        and
+        parent_id = #{parentId}
+    </select>
+
+    <update id="updateResFullPath" statementType="PREPARED" timeout="20000">
+        update ty_resource
+        <set>
+            full_path = #{fullPath},
+        </set>
+        where resource_id = #{resourceId}
+    </update>
+
+    <update id="update" parameterType="com.ifhz.core.po.Resource" statementType="PREPARED" timeout="20000">
+        update ty_resource
+        <set>
+            <if test="resName != null">
+                res_name = #{resName},
+            </if>
+            <if test="resUrl != null">
+                res_url = #{resUrl},
+            </if>
+        </set>
+        where resource_id = #{resourceId}
+    </update>
+
+
+    <select id="findByResNameBesideSelf" resultType="com.ifhz.core.po.Resource">
+        select
+        resource_id as resourceId,
+        res_name as resName,
+        create_time as createTime,
+        parent_id as parentId,
+        levels,
+        full_path as fullPath,
+        res_url as resUrl
+        from
+        ty_resource
+        where
+        res_name = #{resName}
+        and
+        resource_id != #{resourceId}
+    </select>
+
+    <delete id="delete" parameterType="long">
+        delete from
+        ty_resource
+        where
+        resource_id=#{resourceId}
     </delete>
-    
-    
-    
+
+
     <select id="findFullpathByRoleId" parameterType="Long" resultType="String">
-         select
-            r.full_path
-         from
-            ty_resource r
-         LEFT JOIN
-            ty_role_resource_ref rrr
-         ON
-            r.resource_id = rrr.resource_id
-         WHERE
-            rrr.role_id=#{id}
+        select
+        r.full_path
+        from
+        ty_resource r
+        LEFT JOIN
+        ty_role_resource_ref rrr
+        ON
+        r.resource_id = rrr.resource_id
+        WHERE
+        rrr.role_id=#{id}
     </select>
 
 

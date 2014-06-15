@@ -76,7 +76,7 @@ create table TY_PUB_CHL_MOD_REF  (
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PubChlModRef">
         <selectKey resultType="long" keyProperty="apkId">
-            SELECT SEQ_TY_PUB_CHL_MOD_REF.CURRVAL FROM DUAL
+            SELECT SEQ_PUB_CHL_MOD_REF.CURRVAL FROM DUAL
         </selectKey>
         insert into
         <include refid="TABLE_NAME"/>
@@ -85,7 +85,7 @@ create table TY_PUB_CHL_MOD_REF  (
         )
         values
         (
-        SEQ_TY_PUB_CHL_MOD_REF.nextval,
+        SEQ_PUB_CHL_MOD_REF.nextval,
         #{publishId},
         #{groupId},
         #{channelId,jdbcType=NUMBER},
@@ -116,9 +116,30 @@ create table TY_PUB_CHL_MOD_REF  (
         set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
         where PUBLISH_ID = #{publishId}
     </update>
-    <update id="update" parameterType="com.ifhz.core.po.PubChlModRef">
 
+    <update id="deleteByPackageId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
+        where PACKAGE_ID = #{packageId}
     </update>
+
+    <update id="updateByPackageId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = #{updateTime}
+        where PACKAGE_ID = #{packageId}
+    </update>
+
+    <update id="updateByGroupIdAndGroupId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = #{updateTime}
+        where GROUP_ID = #{groupId}
+        and MODEL_ID = #{modelId}
+    </update>
+
+
     <select id="queryNormalPkgList" resultMap="PubChlModRefResultMap">
         select
         <include refid="CommonFieldSql"/>

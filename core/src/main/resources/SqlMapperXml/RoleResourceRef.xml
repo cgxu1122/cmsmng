@@ -20,7 +20,7 @@
 
     <insert id="insert" parameterType="com.ifhz.core.po.RoleResourceRef">
         <selectKey resultType="long" keyProperty="id">
-            SELECT SEQ_TY_ROLE_RESOURCE_REF.CURRVAL FROM DUAL
+            SELECT SEQ_ROLE_RESOURCE_REF.CURRVAL FROM DUAL
         </selectKey>
         insert into
         <include refid="TABLE_NAME"/>
@@ -29,7 +29,7 @@
         )
         values
         (
-        SEQ_TY_ROLE_RESOURCE_REF.nextval,
+        SEQ_ROLE_RESOURCE_REF.nextval,
         #{roleId},
         #{resourceId},
         #{acces},

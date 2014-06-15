@@ -2,14 +2,18 @@ package com.ifhz.core.service.pkgmng.impl;
 
 import com.ifhz.core.adapter.PackageApkRefAdapter;
 import com.ifhz.core.adapter.PackageInfoAdapter;
+import com.ifhz.core.adapter.PubChlModRefAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PackageApkRef;
 import com.ifhz.core.po.PackageInfo;
+import com.ifhz.core.po.PubChlModRef;
 import com.ifhz.core.service.pkgmng.PackageInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -29,6 +33,8 @@ public class PackageInfoServiceImpl implements PackageInfoService {
     private PackageInfoAdapter packageInfoAdapter;
     @Resource(name = "packageApkRefAdapter")
     private PackageApkRefAdapter packageApkRefAdapter;
+    @Resource(name = "pubChlModRefAdapter")
+    private PubChlModRefAdapter pubChlModRefAdapter;
 
     @Override
     public PackageInfo getById(Long id) {
@@ -41,6 +47,7 @@ public class PackageInfoServiceImpl implements PackageInfoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(PackageInfo record) {
         int flag = packageInfoAdapter.insert(record);
         List<PackageApkRef> packageApkRefList = record.getPackageApkRefList();
@@ -54,6 +61,7 @@ public class PackageInfoServiceImpl implements PackageInfoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(PackageInfo record) {
         //先删除
         PackageApkRef paRef = new PackageApkRef();
@@ -67,16 +75,35 @@ public class PackageInfoServiceImpl implements PackageInfoService {
                 packageApkRefAdapter.insert(packageApkRef);
             }
         }
-        return packageInfoAdapter.update(record);
+        int ret = packageInfoAdapter.update(record);
+        if (ret != 0) {
+            //删除发布任务与渠道、机型关联表对应数据
+            PubChlModRef pubChlModRef = new PubChlModRef();
+            pubChlModRef.setPackageId(record.getPackageId());
+            pubChlModRef.setUpdateTime(new Date());
+            pubChlModRefAdapter.updateByPackageId(pubChlModRef);
+        }
+
+        return ret;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(PackageInfo record) {
+        //先删除关联表信息
         PackageApkRef paRef = new PackageApkRef();
         paRef.setPackageId(record.getPackageId());
         packageApkRefAdapter.delete(paRef);
-        //先删除关联表信息
-        return packageInfoAdapter.delete(record);
+
+        int ret = packageInfoAdapter.delete(record);
+        if (ret != 0) {
+            //删除发布任务与渠道、机型关联表对应数据
+            PubChlModRef pubChlModRef = new PubChlModRef();
+            pubChlModRef.setPackageId(record.getPackageId());
+            pubChlModRef.setUpdateTime(new Date());
+            pubChlModRefAdapter.deleteByPackageId(pubChlModRef);
+        }
+        return ret;
     }
 
     @Override

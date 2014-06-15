@@ -36,12 +36,12 @@
     </select>
     <insert id="insert" parameterType="com.ifhz.core.po.LogCount">
         <selectKey resultType="long" keyProperty="id" order="AFTER">
-            SELECT SEQ_TY_LOG_COUNT.CURRVAL FROM DUAL
+            SELECT SEQ_LOG_COUNT.CURRVAL FROM DUAL
         </selectKey>
         insert into TY_LOG_COUNT (LOG_COUNT_ID,
         MODLE_NAME,CHANNEL_ID,DEVICE_CODE,GROUP_ID,BATCH_CODE,PROCESS_KEY,LAOWU_ID,COUNT_TIME,
         PROCESS_DAY_COUNT,DEVICE_UPLOAD_DAY_COUNT,COUNTER_UPLOAD_DAY_COUNT,ALLCOUNT,ACTIVE_COUNT,NONACTIVE_COUNT,NONACTIVE_UNINSTALL_COUNT,NONACTIVE_REPLACE_COUNT)
-        values (SEQ_TY_LOG_COUNT.NEXTVAL, #{modleName},#{channelId},#{deviceCode},#{groupId},
+        values (SEQ_LOG_COUNT.NEXTVAL, #{modleName},#{channelId},#{deviceCode},#{groupId},
         #{batchCode},#{processKey},#{laowuId,jdbcType=BIGINT},#{countTime,jdbcType=TIMESTAMP},
         #{processDayCount},#{deviceUploadDayCount},#{counterUploadDayCount},#{allCount},#{activeCount},#{nonActiveCount},#{nonActiveUninstallCount},#{nonActiveReplaceCount}
         )
@@ -103,7 +103,7 @@
     </update>
     <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
         <selectKey resultType="long" keyProperty="id" order="BEFORE">
-            SELECT SEQ_TY_LOG_COUNT.NEXTVAL FROM DUAL
+            SELECT SEQ_LOG_COUNT.NEXTVAL FROM DUAL
         </selectKey>
         insert into TY_LOG_COUNT
         ( LOG_COUNT_ID,
@@ -123,7 +123,7 @@
         NONACTIVE_COUNT,
         NONACTIVE_UNINSTALL_COUNT,
         NONACTIVE_REPLACE_COUNT
-        ) select SEQ_TY_LOG_COUNT.NEXTVAL,A.* from(
+        ) select SEQ_LOG_COUNT.NEXTVAL,A.* from(
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
             SELECT
             #{item.modleName},

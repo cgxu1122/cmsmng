@@ -1,9 +1,14 @@
 package com.ifhz.core.service.pkgmng.impl;
 
 import com.ifhz.core.adapter.ApkInfoAdapter;
+import com.ifhz.core.adapter.PackageApkRefAdapter;
+import com.ifhz.core.adapter.PubChlModRefAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ApkInfo;
+import com.ifhz.core.po.PackageApkRef;
+import com.ifhz.core.po.PubChlModRef;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +31,10 @@ public class ApkInfoServiceImpl implements ApkInfoService {
 
     @Resource(name = "apkInfoAdapter")
     private ApkInfoAdapter apkInfoAdapter;
+    @Resource(name = "pubChlModRefAdapter")
+    private PubChlModRefAdapter pubChlModRefAdapter;
+    @Resource(name = "packageApkRefAdapter")
+    private PackageApkRefAdapter packageApkRefAdapter;
 
 
     @Override
@@ -52,6 +62,24 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(ApkInfo record) {
-        return apkInfoAdapter.delete(record);
+        int ret = apkInfoAdapter.delete(record);
+        if (ret != 0) {
+            List<PackageApkRef> packageApkRefList = packageApkRefAdapter.queryListByApkId(record.getApkId());
+            if (CollectionUtils.isNotEmpty(packageApkRefList)) {
+                for (PackageApkRef packageApkRef : packageApkRefList) {
+                    int result = packageApkRefAdapter.delete(packageApkRef);
+                    if (result != 0) {
+                        PubChlModRef ref = new PubChlModRef();
+                        ref.setGroupId(packageApkRef.getPackageId());
+                        ref.setUpdateTime(new Date());
+                        pubChlModRefAdapter.deleteByPackageId(ref);
+                    }
+                }
+            }
+        }
+
+        return ret;
     }
+
+
 }

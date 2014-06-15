@@ -40,7 +40,7 @@ alter table TY_DICT_INFO
 
     <insert id="insert" parameterType="com.ifhz.core.po.DictInfo">
         <selectKey resultType="long" keyProperty="dictId">
-        SELECT SEQ_TY_DICT_INFO.CURRVAL FROM DUAL
+            SELECT SEQ_DICT_INFO.CURRVAL FROM DUAL
         </selectKey>
         insert into
         <include refid="TABLE_NAME"/>
@@ -49,7 +49,7 @@ alter table TY_DICT_INFO
         )
         values
         (
-        SEQ_TY_DICT_INFO.NEXTVAL,
+        SEQ_DICT_INFO.NEXTVAL,
         #{po.keyCode,jdbcType=VARCHAR},
         #{po.keyValue,jdbcType=VARCHAR},
         #{po.createTime,jdbcType=TIMESTAMP},

@@ -11,4 +11,20 @@ import org.springframework.stereotype.Service;
  */
 @Service("scheduleService")
 public class ScheduleServiceImpl implements ScheduleService {
+
+
+    @Override
+    public void scanCounterFailLog() {
+
+    }
+
+    @Override
+    public void statisticsData() {
+
+    }
+
+    @Override
+    public void fetchWdjData() {
+
+    }
 }

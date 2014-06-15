@@ -20,6 +20,12 @@ public interface PubChlModRefMapper {
 
     public int deleteByPublishId(PubChlModRef record);
 
+    public int deleteByPackageId(PubChlModRef record);
+
+    public int updateByPackageId(PubChlModRef record);
+
+    public int updateByGroupIdAndGroupId(PubChlModRef record);
+
     public List<PubChlModRef> queryNormalPkgList(@Param("groupId") Long groupId,
                                                  @Param("channelId") Long channelId,
                                                  @Param("active") String active,
