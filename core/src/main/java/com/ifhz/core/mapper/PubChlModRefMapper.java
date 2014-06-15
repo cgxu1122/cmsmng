@@ -14,6 +14,11 @@ import java.util.List;
  */
 public interface PubChlModRefMapper {
 
+    public int insert(PubChlModRef record);
+
+    public int deleteRepeatRef(PubChlModRef record);
+
+    public int deleteByPublishId(PubChlModRef record);
 
     public List<PubChlModRef> queryNormalPkgList(@Param("groupId") Long groupId,
                                                  @Param("channelId") Long channelId,

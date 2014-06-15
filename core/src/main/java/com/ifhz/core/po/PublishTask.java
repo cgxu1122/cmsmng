@@ -1,6 +1,7 @@
 package com.ifhz.core.po;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类描述
@@ -12,12 +13,47 @@ public class PublishTask {
     private Long publishId;
     private Long packageId;
     private String packageName;
+    private String pkgType;
     private Date effectTime;
-    //    private String status;
     private String active;
     private Date createTime;
     private Date updateTime;
-    private Date publishTime;
+
+    private List<PubChlModRef> pubChlList;
+    private List<PubChlModRef> pubModList;
+    private String packageNameCondition;
+
+    public String getPackageNameCondition() {
+        return packageNameCondition;
+    }
+
+    public void setPackageNameCondition(String packageNameCondition) {
+        this.packageNameCondition = packageNameCondition;
+    }
+
+    public String getPkgType() {
+        return pkgType;
+    }
+
+    public void setPkgType(String pkgType) {
+        this.pkgType = pkgType;
+    }
+
+    public List<PubChlModRef> getPubChlList() {
+        return pubChlList;
+    }
+
+    public void setPubChlList(List<PubChlModRef> pubChlList) {
+        this.pubChlList = pubChlList;
+    }
+
+    public List<PubChlModRef> getPubModList() {
+        return pubModList;
+    }
+
+    public void setPubModList(List<PubChlModRef> pubModList) {
+        this.pubModList = pubModList;
+    }
 
     public Long getPublishId() {
         return publishId;
@@ -75,13 +111,6 @@ public class PublishTask {
         this.updateTime = updateTime;
     }
 
-    public Date getPublishTime() {
-        return publishTime;
-    }
-
-    public void setPublishTime(Date publishTime) {
-        this.publishTime = publishTime;
-    }
 
     @Override
     public String toString() {
@@ -93,7 +122,6 @@ public class PublishTask {
         sb.append(", active='").append(active).append('\'');
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
-        sb.append(", publishTime=").append(publishTime);
         sb.append('}');
         return sb.toString();
     }

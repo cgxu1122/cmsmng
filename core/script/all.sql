@@ -929,6 +929,7 @@ create table TY_PUBLISH_TASK  (
    PUBLISH_ID           NUMBER(15)                      not null,
    PACKAGE_ID           NUMBER(15),
    PACKAGE_NAME         VARCHAR2(100),
+   PKG_TYPE             VARCHAR(2),
    EFFECT_TIME          DATE,
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
@@ -947,6 +948,9 @@ comment on column TY_PUBLISH_TASK.PACKAGE_ID is
 
 comment on column TY_PUBLISH_TASK.PACKAGE_NAME is
 '安装包名称';
+
+comment on column TY_PUBLISH_TASK.PKG_TYPE is
+'通用包标识';
 
 comment on column TY_PUBLISH_TASK.EFFECT_TIME is
 '生效时间';

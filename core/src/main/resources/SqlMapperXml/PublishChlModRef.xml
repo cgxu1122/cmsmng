@@ -43,14 +43,35 @@ create table TY_PUB_CHL_MOD_REF  (
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR"/>
+        <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getById" parameterType="long" resultMap="PubChlModRefResultMap">
+    <select id="queryChlByPublishId" parameterType="long" resultMap="PubChlModRefResultMap">
         select
-        <include refid="CommonFieldSql"/>
+        ref.*,
+        cg.GROUP_NAME,
+        ci.CHANNEL_NAME
         from
         <include refid="TABLE_NAME"/>
-        where APK_ID = #{apkId}
+        ref
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg on ref.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_CHANNEL_INFO ci on ref.CHANNEL_ID = ci.CHANNEL_ID
+        where ACTIVE = 'Y' and PUBLISH_ID = #{publishId}
+        order by CREATE_TIME DESC
+    </select>
+    <select id="queryModByPublishId" parameterType="long" resultMap="PubChlModRefResultMap">
+        select
+        ref.*,
+        mi.MODEL_NAME,
+        from
+        <include refid="TABLE_NAME"/>
+        ref
+        LEFT OUTER JOIN TY_MODEL_INFO mi on ref.MODEL_ID = mi.MODEL_ID
+        where ACTIVE = 'Y' and PUBLISH_ID = #{publishId}
+        order by CREATE_TIME DESC
     </select>
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PubChlModRef">
@@ -67,7 +88,7 @@ create table TY_PUB_CHL_MOD_REF  (
         SEQ_TY_PUB_CHL_MOD_REF.nextval,
         #{publishId},
         #{groupId},
-        #{channelId},
+        #{channelId,jdbcType=NUMBER},
         #{packageId},
         #{modelId},
         #{pkgType},
@@ -76,6 +97,25 @@ create table TY_PUB_CHL_MOD_REF  (
         #{active}
         )
     </insert>
+    <update id="deleteRepeatRef" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
+        where GROUP_ID = #{groupId}
+        and MODEL_ID = #{modelId}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="channelId == null">
+            and CHANNEL_ID IS NULL
+        </if>
+    </update>
+    <update id="deleteByPublishId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
+        where PUBLISH_ID = #{publishId}
+    </update>
     <update id="update" parameterType="com.ifhz.core.po.PubChlModRef">
 
     </update>
