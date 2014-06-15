@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/15 13:44:38                           */
+/* Created on:     2014/6/15 14:03:32                           */
 /*==============================================================*/
 
 
@@ -977,6 +977,7 @@ create table TY_PUB_CHL_MOD_REF  (
    CHANNEL_ID           NUMBER(15),
    PACKAGE_ID           NUMBER(15),
    MODEL_ID             NUMBER(15),
+   PKG_TYPE             VARCHAR(2),
    CREATE_TIME          DATE,
    UPDATE_TIME          DATE,
    ACTIVE               VARCHAR(2),
@@ -1003,6 +1004,9 @@ comment on column TY_PUB_CHL_MOD_REF.PACKAGE_ID is
 
 comment on column TY_PUB_CHL_MOD_REF.MODEL_ID is
 '机型ID';
+
+comment on column TY_PUB_CHL_MOD_REF.PKG_TYPE is
+'通用包标识';
 
 comment on column TY_PUB_CHL_MOD_REF.CREATE_TIME is
 '创建时间';
