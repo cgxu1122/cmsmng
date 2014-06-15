@@ -3,10 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<%
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath(); 
-%>
-    <script language = "javascript" src ="/common/js/code.js"></script>
+    <%@ include file="/common/header.jsp" %>
     <title>IQIANJIN后台管理系统</title>
 <style>
 	*{margin: 0px; padding: 0px;}
@@ -20,16 +17,6 @@
 	.main .btn:hover{box-shadow: 0px 0px 6px rgba(0,0,255,0.6); }
 	.main .error{position: absolute; left: 0px; top: 80px;  z-index: 1;  height: 30px; line-height: 30px; vertical-align: middle;border-radius: 3px; color: #f00; text-align: center; width: 100%;  }
 	.loaded .error{top: 20px;-webkit-transition:all 0.3s linear;transition:all 0.3s linear;}
-    .code{
-        background-image:url(w1.jpg);
-        font-family:Arial;
-        font-style:italic;
-        color:Red;
-        border:0;
-        padding:2px 3px;
-        letter-spacing:3px;
-        font-weight:bolder;
-    }
 </style>
 </head>
 <body>
@@ -38,7 +25,7 @@
 			欢迎使用后台管理系统
 		</div>
 		<div class="main">
-			<form id="" action="<%=basePath%>/login" method="post">
+			<form id="form" onsubmit="valiSub()">
 				<div class="item">
 					<label>邮箱：</label>
 					<input class="txt" id="username" name="username" type="text"/>
@@ -47,22 +34,53 @@
 					<label>密码：</label>
 					<input class="txt" id="password" name="password" type="password"/>
 				</div>
-                <div class="error">${error}</div>
                 <div class="item">
-                    <center>验证码：<input type="text" id="input1" />    
-                    <input type="text" id="checkCode" class="code" style="width: 55px" /> <a href="#" onclick="createCode()">看不清楚</a>    
+                    <label>验证码：</label>
+                    <input id="captcha" name="captcha" type="text"/>
+                    <img id="imgObj"  alt="" src="/vc/vc"/>
+                    <a href="#" onclick="changeImg()">换一张</a>
                 </div>
                 <div class="item itembtn">
-					<input id="btn" class="btn" type="submit" onsubmit="validate()" value="登录"/>
+					<input id="btn" class="btn" type="submit" value="登录"/>
 				</div>
+                <div class="error">${error}</div>
             </form>
 		</div>
 	</div>
 	<script>
 		window.onload = function(){
-            createCode();
             document.getElementsByTagName("body")[0].setAttribute("class","loaded");
         }
-	</script>
+
+        function changeImg(){
+            var imgSrc = $("#imgObj");
+            var src = imgSrc.attr("src");
+            imgSrc.attr("src",chgUrl(src));
+        }
+        //时间戳
+        //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+        function chgUrl(url){
+            var timestamp = (new Date()).valueOf();
+            urlurl = url.substring(0,17);
+            if((url.indexOf("&")>=0)){
+                urlurl = url + "×tamp=" + timestamp;
+            }else{
+                urlurl = url + "?timestamp=" + timestamp;
+            }
+            return url;
+        }
+
+        function valiSub(){
+            var code = $('#captcha').val();;
+            if(!code){
+                alert("请输入验证码");
+                return false;
+            }
+            var form = $('#form')[0];
+            form.action="<%=basePath%>/login";
+            form.method = "post";
+            form.submit();
+        }
+    </script>
 </body>
 </html>

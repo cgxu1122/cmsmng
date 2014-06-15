@@ -11,12 +11,12 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import com.ifhz.core.shiro.exception.CaptchaException;
 import com.ifhz.core.util.MD5keyUtil;
-import com.ifhz.core.util.RandomNumUtil;
 import com.ifhz.core.util.Result;
-import com.ifhz.core.vo.RoleVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +42,10 @@ public class LoginController extends BaseController {
         return "login";
     }
 
+
     @RequestMapping(value = "/")
     public String loginSuccess() {
-        return "index";
+            return "index";
     }
 
 
@@ -55,9 +56,13 @@ public class LoginController extends BaseController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model) {
+    public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model,HttpServletRequest req) {
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
         model.addAttribute("error", "邮箱或密码错误");
+        String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
+        if(exceptionClassName.equals(CaptchaException.class.getName())){
+            model.addAttribute("error", "验证码错误");
+        }
         return "login";
     }
 
