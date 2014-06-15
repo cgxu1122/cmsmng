@@ -77,4 +77,12 @@
         where PACKAGE_ID = #{packageId}
         order by sort
     </select>
+
+    <select id="queryListByApkId" parameterType="long" resultMap="PackageApkRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where APK_ID = #{apkId}
+    </select>
 </mapper>

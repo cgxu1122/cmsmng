@@ -54,4 +54,10 @@ public class PackageApkRefAdapterImpl implements PackageApkRefAdapter {
         List<PackageApkRef> result = packageApkRefMapper.queryListByPackageId(packageId);
         return result == null ? Lists.<PackageApkRef>newArrayList() : result;
     }
+
+    @Override
+    public List<PackageApkRef> queryListByApkId(Long apkId) {
+        List<PackageApkRef> list = packageApkRefMapper.queryListByApkId(apkId);
+        return list == null ? Lists.<PackageApkRef>newArrayList() : list;
+    }
 }

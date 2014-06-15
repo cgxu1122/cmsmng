@@ -1,9 +1,12 @@
 package com.ifhz.core.adapter.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.PubChlModRefAdapter;
 import com.ifhz.core.mapper.PubChlModRefMapper;
 import com.ifhz.core.po.PubChlModRef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -18,6 +21,7 @@ import java.util.List;
  */
 @Repository("pubChlModRefAdapter")
 public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PubChlModRefAdapterImpl.class);
 
     @Resource(name = "pubChlModRefMapper")
     private PubChlModRefMapper pubChlModRefMapper;
@@ -32,13 +36,22 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     @Override
     public int deleteRepeatRef(PubChlModRef record) {
         record.setUpdateTime(new Date());
+        LOGGER.info("deleteRepeatRef record={}", JSON.toJSONString(record));
         return pubChlModRefMapper.deleteRepeatRef(record);
     }
 
     @Override
     public int deleteByPublishId(PubChlModRef record) {
         record.setUpdateTime(new Date());
+        LOGGER.info("deleteByPublishId record={}", JSON.toJSONString(record));
         return pubChlModRefMapper.deleteByPublishId(record);
+    }
+
+    @Override
+    public int deleteByPackageId(PubChlModRef record) {
+        record.setUpdateTime(new Date());
+        LOGGER.info("deleteByPackageId record={}", JSON.toJSONString(record));
+        return pubChlModRefMapper.deleteByPackageId(record);
     }
 
     @Override

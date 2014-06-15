@@ -116,9 +116,15 @@ create table TY_PUB_CHL_MOD_REF  (
         set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
         where PUBLISH_ID = #{publishId}
     </update>
-    <update id="update" parameterType="com.ifhz.core.po.PubChlModRef">
 
+    <update id="deleteByPackageId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
+        where PACKAGE_ID = #{packageId}
     </update>
+
+
     <select id="queryNormalPkgList" resultMap="PubChlModRefResultMap">
         select
         <include refid="CommonFieldSql"/>
