@@ -6,7 +6,8 @@
 <%
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath(); 
 %>
-<title>IQIANJIN后台管理系统</title>
+    <script language = "javascript" src ="/common/js/code.js"></script>
+    <title>IQIANJIN后台管理系统</title>
 <style>
 	*{margin: 0px; padding: 0px;}
 	.container{width: 960px; margin: 0px auto; color: #0697da;}
@@ -19,15 +20,25 @@
 	.main .btn:hover{box-shadow: 0px 0px 6px rgba(0,0,255,0.6); }
 	.main .error{position: absolute; left: 0px; top: 80px;  z-index: 1;  height: 30px; line-height: 30px; vertical-align: middle;border-radius: 3px; color: #f00; text-align: center; width: 100%;  }
 	.loaded .error{top: 20px;-webkit-transition:all 0.3s linear;transition:all 0.3s linear;}
+    .code{
+        background-image:url(w1.jpg);
+        font-family:Arial;
+        font-style:italic;
+        color:Red;
+        border:0;
+        padding:2px 3px;
+        letter-spacing:3px;
+        font-weight:bolder;
+    }
 </style>
 </head>
 <body>
-	<div class="container">
+<div class="container">
 		<div class="title">
 			欢迎使用后台管理系统
 		</div>
 		<div class="main">
-			<form action="<%=basePath%>/login" method="post">
+			<form id="" action="<%=basePath%>/login" method="post">
 				<div class="item">
 					<label>邮箱：</label>
 					<input class="txt" id="username" name="username" type="text"/>
@@ -36,15 +47,22 @@
 					<label>密码：</label>
 					<input class="txt" id="password" name="password" type="password"/>
 				</div>
-				<div class="error">${error}</div>
-				<div class="item itembtn">
-					<input id="btn" class="btn" type="submit" value="登录"/>
+                <div class="error">${error}</div>
+                <div class="item">
+                    <center>验证码：<input type="text" id="input1" />    
+                    <input type="text" id="checkCode" class="code" style="width: 55px" /> <a href="#" onclick="createCode()">看不清楚</a>    
+                </div>
+                <div class="item itembtn">
+					<input id="btn" class="btn" type="submit" onsubmit="validate()" value="登录"/>
 				</div>
-			</form>
+            </form>
 		</div>
 	</div>
 	<script>
-		window.onload = function(){document.getElementsByTagName("body")[0].setAttribute("class","loaded");}
+		window.onload = function(){
+            createCode();
+            document.getElementsByTagName("body")[0].setAttribute("class","loaded");
+        }
 	</script>
 </body>
 </html>

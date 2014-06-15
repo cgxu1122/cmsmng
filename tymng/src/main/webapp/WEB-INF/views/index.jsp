@@ -107,10 +107,6 @@
             $('#fm').form('clear');
         }
 
-
-
-
-
         function update() {
             var oldPassword = $('#oldPassword').val();
             var newPassword = $('#newPassword').val();
@@ -136,8 +132,9 @@
             }
 
 
-            jQuery.ajax({
-                url : '<%=basePath %>/mpd',
+            $.ajax({
+                method : 'post',
+                url : '<%=basePath%>/mpd',
                 data : {
                     "oldPassword" :oldPassword,
                     "newPassword" :newPassword,
@@ -149,6 +146,7 @@
                         $.messager.alert('错误',result.errorMsg);
                     } else {
                         $.messager.alert('成功',"更新成功");
+                        $('#dlg').dialog('close');
                     }
                 }
             });

@@ -12,6 +12,7 @@ import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
 import com.ifhz.core.util.MD5keyUtil;
+import com.ifhz.core.util.RandomNumUtil;
 import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.commons.lang3.StringUtils;
@@ -108,7 +109,7 @@ public class LoginController extends BaseController {
 
         oldPassword = MD5keyUtil.getMD5Str(oldPassword.trim());
         if(u.getPassword().equals(oldPassword)){
-            result = iStaffService.updateUserPassword(u.getUserId(),newPassword.trim());
+            result = iStaffService.updateUserPassword(u.getUserId(),MD5keyUtil.getMD5Str(newPassword.trim()));
         }
 
         return JSON.toJSONString(result);
