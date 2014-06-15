@@ -89,6 +89,68 @@
                 });
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function restp(){
+            $('#dlg').dialog('open').dialog('setTitle','修改密码');
+            $('#fm').form('clear');
+        }
+
+        function update() {
+            var oldPassword = $('#oldPassword').val();
+            var newPassword = $('#newPassword').val();
+            var confirmPassword = $('#confirmPassword').val();
+            if (oldPassword == null || oldPassword == "") {
+                alert("请输入原密码！");
+                return;
+            }
+
+            if (newPassword == null || newPassword == "") {
+                alert("请输入新密码！");
+                return;
+            }
+
+            if (confirmPassword == null || confirmPassword == "") {
+                alert("请输入确认密码！");
+                return;
+            }
+
+            if (confirmPassword !=newPassword) {
+                alert("新密码与确认密码不一致！");
+                return;
+            }
+
+
+            $.ajax({
+                method : 'post',
+                url : '<%=basePath%>/mpd',
+                data : {
+                    "oldPassword" :oldPassword,
+                    "newPassword" :newPassword,
+                    "confirmPassword" :confirmPassword
+                },
+                success : function(result) {
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误',result.errorMsg);
+                    } else {
+                        $.messager.alert('成功',"更新成功");
+                        $('#dlg').dialog('close');
+                    }
+                }
+            });
+        }
     </script>
     <title>内置业务管理系统</title>
 </head>
@@ -99,6 +161,7 @@
         <div class="iheadermsg">
             <span class="iheadername">欢迎：<shiro:principal></shiro:principal></span>
             <a class="iheaderout" style="" href="<%=basePath%>/logout">退出</a>
+            <a class="iheaderout" style="" onclick="restp()">修改密码</a>
         </div>
     </div>
 </div>
@@ -303,6 +366,29 @@
             </div>
         </div>
     </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width:400px;height:220px;padding:10px 20px" closed="true" buttons="#dlg-buttons">
+
+    <form id="fm" method="post" novalidate>
+        <table>
+        <tr>
+            <td>旧密码:</td>
+            <td><input class="easyui-validatebox" name="oldPassword" id="oldPassword" type="password" required="true"/><span style="color:red">*</span></td>
+        </tr>
+        <tr>
+            <td>新密码:</td>
+            <td><input class="easyui-validatebox" name="newPassword" id="newPassword" type="password" required="true" validType="isPasswd"/><span style="color:red">*</span></td>
+        </tr>
+        <tr>
+            <td>确认密码:</td>
+            <td><input class="easyui-validatebox" name="confirmPassword" id="confirmPassword" type="password"  required="true"/><span style="color:red">*</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><a class="easyui-linkbutton" type="button" onclick="update()" data-options="iconCls:'icon-save'" >确定</a></td>
+        </tr>
+        </table>
+    </form>
 </div>
 </body>
 </html>

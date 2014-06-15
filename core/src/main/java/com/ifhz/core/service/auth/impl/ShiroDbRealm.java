@@ -27,20 +27,26 @@ import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.service.auth.UserRoleRefService;
 import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.shiro.exception.CaptchaException;
+import com.ifhz.core.shiro.token.UsernamePasswordCaptchaToken;
 import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.vo.RoleVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
 
@@ -105,11 +111,17 @@ public class ShiroDbRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+        UsernamePasswordCaptchaToken upToken = (UsernamePasswordCaptchaToken) token;
         upToken.setRememberMe(true);
         String loginName = upToken.getUsername();
         String password = String.valueOf(upToken.getPassword());
+        String captcha = ((UsernamePasswordCaptchaToken) token).getCaptcha();
+        String exitCode = (String) SecurityUtils.getSubject().getSession().getAttribute("validateCode");
+
         try {
+            if (null == captcha || !captcha.equalsIgnoreCase(exitCode)) {
+                throw new CaptchaException("验证码错误");
+            }
             // 查询登陆用户
             User user = userService.findUserByLoginName(loginName);
             // 进行密码校验
@@ -128,7 +140,10 @@ public class ShiroDbRealm extends AuthorizingRealm {
                 return new SimpleAuthenticationInfo(shiroUser, user.getPassword(), getName());
             }
             
-        } catch (Exception e) {
+        } catch (CaptchaException e){
+            e.printStackTrace();
+            throw e;
+        }catch (Exception e) {
             e.printStackTrace();
             throw new AuthenticationException();
         }

@@ -3,10 +3,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<%
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath(); 
-%>
-<title>IQIANJIN后台管理系统</title>
+    <%@ include file="/common/header.jsp" %>
+    <title>IQIANJIN后台管理系统</title>
 <style>
 	*{margin: 0px; padding: 0px;}
 	.container{width: 960px; margin: 0px auto; color: #0697da;}
@@ -22,12 +20,12 @@
 </style>
 </head>
 <body>
-	<div class="container">
+<div class="container">
 		<div class="title">
 			欢迎使用后台管理系统
 		</div>
 		<div class="main">
-			<form action="<%=basePath%>/login" method="post">
+			<form id="form" onsubmit="valiSub()">
 				<div class="item">
 					<label>邮箱：</label>
 					<input class="txt" id="username" name="username" type="text"/>
@@ -36,15 +34,53 @@
 					<label>密码：</label>
 					<input class="txt" id="password" name="password" type="password"/>
 				</div>
-				<div class="error">${error}</div>
-				<div class="item itembtn">
+                <div class="item">
+                    <label>验证码：</label>
+                    <input id="captcha" name="captcha" type="text"/>
+                    <img id="imgObj"  alt="" src="/vc/vc"/>
+                    <a href="#" onclick="changeImg()">换一张</a>
+                </div>
+                <div class="item itembtn">
 					<input id="btn" class="btn" type="submit" value="登录"/>
 				</div>
-			</form>
+                <div class="error">${error}</div>
+            </form>
 		</div>
 	</div>
 	<script>
-		window.onload = function(){document.getElementsByTagName("body")[0].setAttribute("class","loaded");}
-	</script>
+		window.onload = function(){
+            document.getElementsByTagName("body")[0].setAttribute("class","loaded");
+        }
+
+        function changeImg(){
+            var imgSrc = $("#imgObj");
+            var src = imgSrc.attr("src");
+            imgSrc.attr("src",chgUrl(src));
+        }
+        //时间戳
+        //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+        function chgUrl(url){
+            var timestamp = (new Date()).valueOf();
+            urlurl = url.substring(0,17);
+            if((url.indexOf("&")>=0)){
+                urlurl = url + "×tamp=" + timestamp;
+            }else{
+                urlurl = url + "?timestamp=" + timestamp;
+            }
+            return url;
+        }
+
+        function valiSub(){
+            var code = $('#captcha').val();;
+            if(!code){
+                alert("请输入验证码");
+                return false;
+            }
+            var form = $('#form')[0];
+            form.action="<%=basePath%>/login";
+            form.method = "post";
+            form.submit();
+        }
+    </script>
 </body>
 </html>

@@ -4,12 +4,19 @@
  */
 package com.ifhz.tymng.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.fastjson.JSON;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import com.ifhz.core.shiro.exception.CaptchaException;
 import com.ifhz.core.util.MD5keyUtil;
+import com.ifhz.core.util.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +42,10 @@ public class LoginController extends BaseController {
         return "login";
     }
 
+
     @RequestMapping(value = "/")
     public String loginSuccess() {
-        return "index";
+            return "index";
     }
 
 
@@ -48,9 +56,13 @@ public class LoginController extends BaseController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model) {
+    public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model,HttpServletRequest req) {
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
         model.addAttribute("error", "邮箱或密码错误");
+        String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
+        if(exceptionClassName.equals(CaptchaException.class.getName())){
+            model.addAttribute("error", "验证码错误");
+        }
         return "login";
     }
 
@@ -62,6 +74,52 @@ public class LoginController extends BaseController {
         currentUser.logout();
         return result;
     }
+
+
+    @RequestMapping(value = "/mpd", method = RequestMethod.POST)
+    @ResponseBody
+    public String mpd(HttpServletRequest req) {
+        ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        User u = iStaffService.findById(user.userId.longValue());
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("密码修改成功");
+
+        String oldPassword = req.getParameter("oldPassword");
+        if (StringUtils.isBlank(oldPassword)) {
+            result.setCode(-1);
+            result.setMessage( "请输入密码");
+            return JSON.toJSONString(result);
+        }
+
+        String newPassword = req.getParameter("newPassword");
+        if (StringUtils.isBlank(newPassword)) {
+            result.setCode(-1);
+            result.setMessage( "请输入密码");
+            return JSON.toJSONString(result);
+        }
+
+        String confirmPassword = req.getParameter("confirmPassword");
+        if (StringUtils.isBlank(confirmPassword)) {
+            result.setCode(-1);
+            result.setMessage( "请输入密码");
+            return JSON.toJSONString(result);
+        }
+        if(!newPassword.trim().equals(confirmPassword.trim())){
+            result.setCode(-1);
+            result.setMessage( "两次输入密码不一致");
+            return JSON.toJSONString(result);
+        }
+
+
+        oldPassword = MD5keyUtil.getMD5Str(oldPassword.trim());
+        if(u.getPassword().equals(oldPassword)){
+            result = iStaffService.updateUserPassword(u.getUserId(),MD5keyUtil.getMD5Str(newPassword.trim()));
+        }
+
+        return JSON.toJSONString(result);
+    }
+
 
     /**
      * 用户登陆（测试用）

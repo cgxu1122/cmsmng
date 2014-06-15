@@ -85,6 +85,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
+        <url-pattern>*.jpeg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
         <url-pattern>*.gif</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -102,10 +106,10 @@
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
-        <location>/index.jsp</location>
+        <location>/</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/index.jsp</location>
+        <location>/</location>
     </error-page>
 </web-app>
