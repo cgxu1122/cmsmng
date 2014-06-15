@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/15 14:03:32                           */
+/* Created on:     2014/6/15 14:05:48                           */
 /*==============================================================*/
 
 
@@ -927,7 +927,7 @@ comment on column TY_PRODUCT_INFO.ACTIVE is
 /*==============================================================*/
 create table TY_PUBLISH_TASK  (
    PUBLISH_ID           NUMBER(15)                      not null,
-   安装包ID                NUMBER(15),
+   PACKAGE_ID           NUMBER(15),
    PACKAGE_NAME         VARCHAR2(100),
    EFFECT_TIME          DATE,
    CREATE_TIME          DATE                           default SYSDATE,
@@ -942,7 +942,7 @@ comment on table TY_PUBLISH_TASK is
 comment on column TY_PUBLISH_TASK.PUBLISH_ID is
 '主键ID';
 
-comment on column TY_PUBLISH_TASK.安装包ID is
+comment on column TY_PUBLISH_TASK.PACKAGE_ID is
 '安装包ID';
 
 comment on column TY_PUBLISH_TASK.PACKAGE_NAME is
@@ -1205,7 +1205,7 @@ create table TY_USER_ROLE_REF  (
 );
 
 comment on table TY_USER_ROLE_REF is
-'用户与角色关系???';
+'用户与角色映射表';
 
 /*==============================================================*/
 /* Index: "Index_1"                                             */
