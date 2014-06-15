@@ -81,6 +81,8 @@
                 <value>classpath:SqlMapperXml/ApkInfo.xml</value>
                 <value>classpath:SqlMapperXml/PackageInfo.xml</value>
                 <value>classpath:SqlMapperXml/PackageApkRef.xml</value>
+                <value>classpath:SqlMapperXml/PublishChlModRef.xml</value>
+                <value>classpath:SqlMapperXml/PublishTask.xml</value>
             </list>
         </property>
     </bean>
@@ -196,12 +198,8 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.PackageInfoMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="publishChannelRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.PublishChannelRefMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
-    <bean id="publishModelRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.PublishModelRefMapper"/>
+    <bean id="pubChlModRefMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.PubChlModRefMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
     <bean id="publishTaskMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
