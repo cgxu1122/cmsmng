@@ -291,6 +291,14 @@
                 </a>
             </div>
         </div>
+        <div title="发布任务管理" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('发布任务管理','<%=basePath%>/publishTask/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>发布任务管理</span>
+                </a>
+            </div>
+        </div>
         <div title="合作方查询后台" style="overflow: auto;">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">

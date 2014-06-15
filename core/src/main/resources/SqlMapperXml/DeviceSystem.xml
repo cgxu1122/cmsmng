@@ -9,9 +9,9 @@
         <result column="VERSION" property="version" jdbcType="VARCHAR"/>
         <result column="FTP_PATH" property="ftpPath" jdbcType="VARCHAR"/>
         <result column="MD5VALUE" property="md5Value" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
-        <result column="EFFECTIVE_TIME" property="effectiveTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="EFFECTIVE_TIME" property="effectiveTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="DeviceSystemResultMap">

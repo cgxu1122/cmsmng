@@ -20,6 +20,34 @@ public class PubChlModRef {
     private Date updateTime;
     private String active;
 
+    private String groupName;
+    private String channelName;
+    private String modelName;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
     public Long getId() {
         return id;
     }

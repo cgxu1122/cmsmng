@@ -22,6 +22,24 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     @Resource(name = "pubChlModRefMapper")
     private PubChlModRefMapper pubChlModRefMapper;
 
+    @Override
+    public int insert(PubChlModRef record) {
+        record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
+        return pubChlModRefMapper.insert(record);
+    }
+
+    @Override
+    public int deleteRepeatRef(PubChlModRef record) {
+        record.setUpdateTime(new Date());
+        return pubChlModRefMapper.deleteRepeatRef(record);
+    }
+
+    @Override
+    public int deleteByPublishId(PubChlModRef record) {
+        record.setUpdateTime(new Date());
+        return pubChlModRefMapper.deleteByPublishId(record);
+    }
 
     @Override
     public List<PubChlModRef> queryNormalPkgList(Long groupId, Long channelId, Date startTime, Date endTime) {
