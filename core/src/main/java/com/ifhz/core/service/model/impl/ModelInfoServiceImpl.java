@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,10 +55,11 @@ public class ModelInfoServiceImpl implements ModelInfoService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(ModelInfo record) {
         int ret = modelInfoAdapter.delete(record);
-        if (ret == 0) {
+        if (ret != 0) {
             PubChlModRef ref = new PubChlModRef();
             ref.setGroupId(record.getGroupId());
             ref.setModelId(record.getModelId());
+            ref.setUpdateTime(new Date());
             pubChlModRefAdapter.deleteRepeatRef(ref);
         }
 
