@@ -28,6 +28,7 @@ import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.service.auth.UserRoleRefService;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.shiro.exception.CaptchaException;
+import com.ifhz.core.shiro.exception.UserNamePasswordErrorException;
 import com.ifhz.core.shiro.token.UsernamePasswordCaptchaToken;
 import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.vo.RoleVo;
@@ -138,17 +139,19 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
                 ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName());
                 return new SimpleAuthenticationInfo(shiroUser, user.getPassword(), getName());
+            }else{
+                throw new UserNamePasswordErrorException("用户名密码错误");
             }
-            
         } catch (CaptchaException e){
             e.printStackTrace();
             throw e;
+        }catch (UserNamePasswordErrorException e1){
+            e1.printStackTrace();
+            throw e1;
         }catch (Exception e) {
             e.printStackTrace();
             throw new AuthenticationException();
         }
-
-        return null;
     }
 
     @PostConstruct

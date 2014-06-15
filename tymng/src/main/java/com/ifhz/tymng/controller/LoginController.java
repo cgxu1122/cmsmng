@@ -12,6 +12,7 @@ import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
 import com.ifhz.core.shiro.exception.CaptchaException;
+import com.ifhz.core.shiro.exception.UserNamePasswordErrorException;
 import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.util.Result;
 import org.apache.commons.lang3.StringUtils;
@@ -58,10 +59,11 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model,HttpServletRequest req) {
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
-        model.addAttribute("error", "邮箱或密码错误");
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
         if(exceptionClassName.equals(CaptchaException.class.getName())){
             model.addAttribute("error", "验证码错误");
+        }else if(exceptionClassName.equals(UserNamePasswordErrorException.class.getName())){
+            model.addAttribute("error", "邮箱或密码错误");
         }
         return "login";
     }
