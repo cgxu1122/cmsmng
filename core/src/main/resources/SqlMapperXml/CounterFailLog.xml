@@ -33,7 +33,7 @@
 
     <insert id="insert" parameterType="com.ifhz.core.po.CounterFailLog">
         <selectKey resultType="java.lang.Long" keyProperty="failId" order="AFTER">
-            SELECT SEQ_TY_COUNTER_FAIL_LOG.CURRVAL FROM DUAL
+            SELECT SEQ_COUNTER_FAIL_LOG.CURRVAL FROM DUAL
         </selectKey>
         insert into
         <include refid="TABLE_NAME"/>

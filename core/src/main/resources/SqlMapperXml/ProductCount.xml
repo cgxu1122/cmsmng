@@ -27,11 +27,11 @@
 
     <insert id="insert" parameterType="com.ifhz.core.po.ProductCount">
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-            SELECT SEQ_TY_PRODUCT_COUNT.CURRVAL AS id from dual
+            SELECT SEQ_PRODUCT_COUNT.CURRVAL AS id from dual
         </selectKey>
         insert into TY_PRODUCT_COUNT (PRODUCT_COUNT_ID, MODLE_NAME,UA,GROUP_ID,COUNT_TIME,PRODUCT_ID,PROCESS_KEY,
         PROCESS_DAY_COUNT,ALLCOUNT,ACTIVE_COUNT,NONACTIVE_COUNT,NONACTIVE_UNINSTALL_COUNT,NONACTIVE_REPLACE_COUNT)
-        values (SEQ_TY_PRODUCT_COUNT.NEXTVAL, #{modleName},#{ua},#{groupId}, #{countTime},#{productId},#{processKey},
+        values (SEQ_PRODUCT_COUNT.NEXTVAL, #{modleName},#{ua},#{groupId}, #{countTime},#{productId},#{processKey},
         #{processDayCount},
         #{allCount},#{activeCount},#{nonActiveCount},#{nonActiveUninstallCount},#{nonActiveReplaceCount}
         )

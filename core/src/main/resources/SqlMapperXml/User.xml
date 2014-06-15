@@ -14,7 +14,7 @@
             type,
             update_time
 		) values(
-            SEQ_TY_USER.nextval,
+        SEQ_USER.nextval,
 			#{loginName},
         #{realName,jdbcType=VARCHAR},
 			#{password},
@@ -26,7 +26,7 @@
             sysdate
 		)
         <selectKey resultType="long" keyProperty="userId">
-        SELECT SEQ_TY_USER.CURRVAL FROM DUAL
+            SELECT SEQ_USER.CURRVAL FROM DUAL
         </selectKey> 
 	</insert>
 

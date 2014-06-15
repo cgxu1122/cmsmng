@@ -76,7 +76,7 @@ create table TY_PUB_CHL_MOD_REF  (
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PubChlModRef">
         <selectKey resultType="long" keyProperty="apkId">
-            SELECT SEQ_TY_PUB_CHL_MOD_REF.CURRVAL FROM DUAL
+            SELECT SEQ_PUB_CHL_MOD_REF.CURRVAL FROM DUAL
         </selectKey>
         insert into
         <include refid="TABLE_NAME"/>
@@ -85,7 +85,7 @@ create table TY_PUB_CHL_MOD_REF  (
         )
         values
         (
-        SEQ_TY_PUB_CHL_MOD_REF.nextval,
+        SEQ_PUB_CHL_MOD_REF.nextval,
         #{publishId},
         #{groupId},
         #{channelId,jdbcType=NUMBER},
