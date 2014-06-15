@@ -124,6 +124,21 @@ create table TY_PUB_CHL_MOD_REF  (
         where PACKAGE_ID = #{packageId}
     </update>
 
+    <update id="updateByPackageId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = #{updateTime}
+        where PACKAGE_ID = #{packageId}
+    </update>
+
+    <update id="updateByGroupIdAndGroupId" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = #{updateTime}
+        where GROUP_ID = #{groupId}
+        and MODEL_ID = #{modelId}
+    </update>
+
 
     <select id="queryNormalPkgList" resultMap="PubChlModRefResultMap">
         select

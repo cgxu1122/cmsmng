@@ -11,6 +11,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -42,6 +44,7 @@ public class PublishTaskServiceImpl implements PublishTaskService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(PublishTask record) {
         int flag = publishTaskAdapter.insert(record);
         List<PubChlModRef> pubChlList = record.getPubChlList();
@@ -68,6 +71,7 @@ public class PublishTaskServiceImpl implements PublishTaskService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(PublishTask record) {
         //先删除关联表信息
         PubChlModRef pubChlModRef = new PubChlModRef();

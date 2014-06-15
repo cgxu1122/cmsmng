@@ -55,6 +55,20 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     }
 
     @Override
+    public int updateByPackageId(PubChlModRef record) {
+        record.setUpdateTime(new Date());
+        LOGGER.info("updateByPackageId record={}", JSON.toJSONString(record));
+        return pubChlModRefMapper.deleteByPackageId(record);
+    }
+
+    @Override
+    public int updateByGroupIdAndGroupId(PubChlModRef record) {
+        record.setUpdateTime(new Date());
+        LOGGER.info("updateByGroupIdAndGroupId record={}", JSON.toJSONString(record));
+        return pubChlModRefMapper.updateByGroupIdAndGroupId(record);
+    }
+
+    @Override
     public List<PubChlModRef> queryNormalPkgList(Long groupId, Long channelId, String active, Date startTime, Date endTime) {
         List<PubChlModRef> result = pubChlModRefMapper.queryNormalPkgList(groupId, channelId, active, startTime, endTime);
         return result == null ? Lists.<PubChlModRef>newArrayList() : result;
