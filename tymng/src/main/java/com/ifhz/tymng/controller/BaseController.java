@@ -16,14 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class BaseController {
 	@Autowired
-    private UserService iStaffService;
-	
+    private UserService userService;
+
     private User staffInfo;
     
     public User getCuffStaff(){
 		ShiroDbRealm.ShiroUser staff = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		staffInfo = iStaffService.findById(staff.userId.longValue());
-    	return staffInfo;
+        staffInfo = userService.findById(staff.userId.longValue());
+        return staffInfo;
     }
 
     public long getStaffId() {

@@ -83,6 +83,7 @@
                 <value>classpath:SqlMapperXml/PublishChlModRef.xml</value>
                 <value>classpath:SqlMapperXml/PublishTask.xml</value>
                 <value>classpath:SqlMapperXml/SettleInfo.xml</value>
+                <value>classpath:SqlMapperXml/ImeiTemp.xml</value>
             </list>
         </property>
     </bean>
@@ -200,6 +201,10 @@
     </bean>
     <bean id="settleInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.SettleInfoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="imeiTempMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.ImeiTempMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 </beans>

@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 2014/6/16
  * Time: 21:20
  */
-@Repository("settleInfoAdapter")
+@Repository("settleInfoService")
 public class SettleInfoServiceImpl implements SettleInfoService {
 
     @Resource(name = "settleInfoAdapter")
