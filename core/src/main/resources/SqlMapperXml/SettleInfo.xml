@@ -25,6 +25,7 @@ create table TY_SETTLE_INFO  (
         END_TIME,
         PRICE,
         REMARK,
+        CREATE_BY,
         CREATE_TIME,
         UPDATE_TIME
     </sql>
@@ -36,6 +37,7 @@ create table TY_SETTLE_INFO  (
         <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
         <result column="PRICE" property="price" jdbcType="DOUBLE"/>
         <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_BY" property="createBy" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -65,6 +67,7 @@ create table TY_SETTLE_INFO  (
         #{endTime,jdbcType=TIMESTAMP},
         #{price,jdbcType=DOUBLE},
         #{remark,jdbcType=VARCHAR},
+        #{createBy,jdbcType=BIGINT},
         #{createTime,jdbcType=TIMESTAMP},
         #{updateTime,jdbcType=TIMESTAMP}
         )

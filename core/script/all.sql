@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/16 21:37:49                           */
+/* Created on:     2014/6/16 21:49:46                           */
 /*==============================================================*/
 
 
@@ -1127,6 +1127,7 @@ create table TY_SETTLE_INFO  (
    END_TIME             DATE,
    PRICE                NUMBER(12,3),
    REMARK               VARCHAR2(500 CHAR),
+   CREATE_BY            NUMBER(15)                      not null,
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_SETTLE_INFO primary key (SETTLE_ID)
@@ -1152,6 +1153,9 @@ comment on column TY_SETTLE_INFO.PRICE is
 
 comment on column TY_SETTLE_INFO.REMARK is
 '备注';
+
+comment on column TY_SETTLE_INFO.CREATE_BY is
+'创建人';
 
 comment on column TY_SETTLE_INFO.CREATE_TIME is
 '创建时间';
