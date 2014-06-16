@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/16 1:16:49                            */
+/* Created on:     2014/6/16 21:37:49                           */
 /*==============================================================*/
 
 
@@ -120,6 +120,8 @@ drop sequence SEQ_ROLE;
 
 drop sequence SEQ_ROLE_RESOURCE_REF;
 
+drop sequence SEQ_SETTLE_INFO;
+
 drop sequence SEQ_USER;
 
 drop sequence SEQ_USER_ROLE_REF;
@@ -165,6 +167,8 @@ create sequence SEQ_RESOURCE;
 create sequence SEQ_ROLE;
 
 create sequence SEQ_ROLE_RESOURCE_REF;
+
+create sequence SEQ_SETTLE_INFO;
 
 create sequence SEQ_USER;
 
