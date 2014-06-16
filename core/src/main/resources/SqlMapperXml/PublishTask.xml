@@ -14,7 +14,7 @@
         EFFECT_TIME,
         ACTIVE,
         CREATE_TIME,
-        UPDATE_TIME,
+        UPDATE_TIME
     </sql>
 
     <resultMap id="PublishTaskResultMap" type="com.ifhz.core.po.PublishTask">
@@ -27,11 +27,11 @@
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
         <collection property="pubChlList" column="PUBLISH_ID" javaType="ArrayList"
-                    ofType="com.ifhz.core.po.PublishChannelRef"
-                    select="com.ifhz.core.mapper.PublishChannelRefMapper.queryChlByPublishId"/>
+                    ofType="com.ifhz.core.po.PubChlModRef"
+                    select="com.ifhz.core.mapper.PubChlModRefMapper.queryChlByPublishId"/>
         <collection property="pubModList" column="PUBLISH_ID" javaType="ArrayList"
-                    ofType="com.ifhz.core.po.PublishChannelRef"
-                    select="com.ifhz.core.mapper.PublishChannelRefMapper.queryModByPublishId"/>
+                    ofType="com.ifhz.core.po.PubChlModRef"
+                    select="com.ifhz.core.mapper.PubChlModRefMapper.queryModByPublishId"/>
     </resultMap>
     <select id="getById" parameterType="long" resultMap="PublishTaskResultMap">
         select * from
@@ -50,7 +50,6 @@
         values
         (
         SEQ_PUBLISH_TASK.NEXTVAL,
-        #{publishId},
         #{packageId},
         #{packageName},
         #{pkgType},

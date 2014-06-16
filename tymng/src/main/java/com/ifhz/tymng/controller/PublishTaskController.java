@@ -75,8 +75,6 @@ public class PublishTaskController extends BaseController {
             errorMsg = "请选择生效时间！";
         } else if (StringUtils.isEmpty(groupId) && !StringUtils.isNumeric(groupId)) {
             errorMsg = "请选择渠道组！";
-        } else if (modelIds == null || modelIds.length <= 0) {
-            errorMsg = "请选择机型！";
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -106,11 +104,13 @@ public class PublishTaskController extends BaseController {
         }
         pt.setPubChlList(pubChlList);
         List<PubChlModRef> pubModList = new ArrayList<PubChlModRef>();
-        for (int i = 0; i < modelIds.length; i++) {
-            if (StringUtils.isNotEmpty(modelIds[i]) && StringUtils.isNumeric(modelIds[i])) {
-                PubChlModRef pubMod = new PubChlModRef();
-                pubMod.setModelId(Long.parseLong(modelIds[i]));
-                pubModList.add(pubMod);
+        if (modelIds != null && modelIds.length > 0) {
+            for (int i = 0; i < modelIds.length; i++) {
+                if (StringUtils.isNotEmpty(modelIds[i]) && StringUtils.isNumeric(modelIds[i])) {
+                    PubChlModRef pubMod = new PubChlModRef();
+                    pubMod.setModelId(Long.parseLong(modelIds[i]));
+                    pubModList.add(pubMod);
+                }
             }
         }
         pt.setPubModList(pubModList);

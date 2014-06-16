@@ -51,7 +51,7 @@ create table TY_PUB_CHL_MOD_REF  (
 
     <select id="queryChlByPublishId" parameterType="long" resultMap="PubChlModRefResultMap">
         select
-        ref.*,
+        distinct ref.CHANNEL_ID,
         cg.GROUP_NAME,
         ci.CHANNEL_NAME
         from
@@ -59,19 +59,19 @@ create table TY_PUB_CHL_MOD_REF  (
         ref
         LEFT OUTER JOIN TY_CHANNEL_GROUP cg on ref.GROUP_ID = cg.GROUP_ID
         LEFT OUTER JOIN TY_CHANNEL_INFO ci on ref.CHANNEL_ID = ci.CHANNEL_ID
-        where ACTIVE = 'Y' and PUBLISH_ID = #{publishId}
-        order by CREATE_TIME DESC
+        where ref.ACTIVE = 'Y' and ref.PUBLISH_ID = #{publishId}
+        order by ref.CHANNEL_ID
     </select>
     <select id="queryModByPublishId" parameterType="long" resultMap="PubChlModRefResultMap">
         select
-        ref.*,
-        mi.MODEL_NAME,
+        distinct ref.MODEL_ID,
+        mi.MODEL_NAME
         from
         <include refid="TABLE_NAME"/>
         ref
         LEFT OUTER JOIN TY_MODEL_INFO mi on ref.MODEL_ID = mi.MODEL_ID
-        where ACTIVE = 'Y' and PUBLISH_ID = #{publishId}
-        order by CREATE_TIME DESC
+        where ref.ACTIVE = 'Y' and ref.PUBLISH_ID = #{publishId}
+        order by ref.MODEL_ID
     </select>
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PubChlModRef">
@@ -88,12 +88,12 @@ create table TY_PUB_CHL_MOD_REF  (
         SEQ_PUB_CHL_MOD_REF.nextval,
         #{publishId},
         #{groupId},
-        #{channelId,jdbcType=NUMBER},
+        #{channelId,jdbcType=BIGINT},
         #{packageId},
-        #{modelId},
+        #{modelId,jdbcType=BIGINT},
         #{pkgType},
         #{createTime},
-        #{updateTime}
+        #{updateTime},
         #{active}
         )
     </insert>

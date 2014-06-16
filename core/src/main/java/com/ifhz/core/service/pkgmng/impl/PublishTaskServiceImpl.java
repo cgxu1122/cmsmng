@@ -49,21 +49,33 @@ public class PublishTaskServiceImpl implements PublishTaskService {
         int flag = publishTaskAdapter.insert(record);
         List<PubChlModRef> pubChlList = record.getPubChlList();
         List<PubChlModRef> pubModList = record.getPubModList();
-        if (CollectionUtils.isNotEmpty(pubChlList) && CollectionUtils.isNotEmpty(pubModList)) {
+        if (CollectionUtils.isNotEmpty(pubChlList)) {
             for (PubChlModRef pubChl : pubChlList) {
-                for (PubChlModRef pubMod : pubModList) {
-                    PubChlModRef pubChlModRef = new PubChlModRef();
-                    pubChlModRef.setActive(JcywConstants.ACTIVE_Y);
-                    pubChlModRef.setPublishId(record.getPublishId());
-                    pubChlModRef.setPackageId(record.getPackageId());
-                    pubChlModRef.setPkgType(record.getPkgType());
-                    pubChlModRef.setGroupId(pubChl.getGroupId());
-                    pubChlModRef.setChannelId(pubChl.getChannelId());
-                    pubChlModRef.setModelId(pubMod.getModelId());
-                    //先根据groupId，channelId和modelId删除重复的数据
-                    pubChlModRefAdapter.deleteRepeatRef(pubChlModRef);
-                    //再添加新数据
-                    pubChlModRefAdapter.insert(pubChlModRef);
+                if (CollectionUtils.isNotEmpty(pubModList)) {//表示为非通用包
+                    for (PubChlModRef pubMod : pubModList) {
+                        PubChlModRef pubChlModRef = new PubChlModRef();
+                        pubChlModRef.setActive(JcywConstants.ACTIVE_Y);
+                        pubChlModRef.setPublishId(record.getPublishId());
+                        pubChlModRef.setPackageId(record.getPackageId());
+                        pubChlModRef.setPkgType(record.getPkgType());
+                        pubChlModRef.setGroupId(pubChl.getGroupId());
+                        pubChlModRef.setChannelId(pubChl.getChannelId());
+                        pubChlModRef.setModelId(pubMod.getModelId());
+                        //先根据groupId，channelId和modelId删除重复的数据
+                        pubChlModRefAdapter.deleteRepeatRef(pubChlModRef);
+                        //再添加新数据
+                        pubChlModRefAdapter.insert(pubChlModRef);
+                    }
+                } else {
+                    if (pubChl.getChannelId() == null) {//表示为通用包
+                        PubChlModRef pubChlModRef = new PubChlModRef();
+                        pubChlModRef.setActive(JcywConstants.ACTIVE_Y);
+                        pubChlModRef.setPublishId(record.getPublishId());
+                        pubChlModRef.setPackageId(record.getPackageId());
+                        pubChlModRef.setPkgType(record.getPkgType());
+                        pubChlModRef.setGroupId(pubChl.getGroupId());
+                        pubChlModRefAdapter.insert(pubChlModRef);
+                    }
                 }
             }
         }
