@@ -5,9 +5,12 @@ import com.ifhz.core.adapter.SettleInfoAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.SettleInfoMapper;
 import com.ifhz.core.po.SettleInfo;
+import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,11 +38,15 @@ public class SettleInfoAdapterImpl implements SettleInfoAdapter {
 
     @Override
     public int insert(SettleInfo record) {
+        record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
+        record.setCreateBy(((ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal()).userId.longValue());
         return settleInfoMapper.insert(record);
     }
 
     @Override
     public int update(SettleInfo record) {
+        record.setUpdateTime(new Date());
         return settleInfoMapper.update(record);
     }
 

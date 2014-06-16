@@ -93,19 +93,8 @@
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-        function restp(){
-            $('#dlg').dialog('open').dialog('setTitle','修改密码');
+        function restp() {
+            $('#dlg').dialog('open').dialog('setTitle', '修改密码');
             $('#fm').form('clear');
         }
 
@@ -128,26 +117,26 @@
                 return;
             }
 
-            if (confirmPassword !=newPassword) {
+            if (confirmPassword != newPassword) {
                 alert("新密码与确认密码不一致！");
                 return;
             }
 
 
             $.ajax({
-                method : 'post',
-                url : '<%=basePath%>/mpd',
-                data : {
-                    "oldPassword" :oldPassword,
-                    "newPassword" :newPassword,
-                    "confirmPassword" :confirmPassword
+                method: 'post',
+                url: '<%=basePath%>/mpd',
+                data: {
+                    "oldPassword": oldPassword,
+                    "newPassword": newPassword,
+                    "confirmPassword": confirmPassword
                 },
-                success : function(result) {
+                success: function (result) {
                     var result = eval('(' + result + ')');
                     if (result.errorMsg) {
-                        $.messager.alert('错误',result.errorMsg);
+                        $.messager.alert('错误', result.errorMsg);
                     } else {
-                        $.messager.alert('成功',"更新成功");
+                        $.messager.alert('成功', "更新成功");
                         $('#dlg').dialog('close');
                     }
                 }
@@ -171,219 +160,227 @@
     <div style="text-align:center;padding:5px 0px; color: #999;">Copyright &copy; 2013 power by iqianjin</div>
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
-    <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
-        <shiro:hasPermission name="channel">
-        <div title="渠道管理" selected="true" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('天音渠道','<%=basePath%>/channelInfo/index?groupId=1','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>天音渠道</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('地包渠道','<%=basePath%>/channelInfo/index?groupId=2','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <!---->
-                    <span>地包渠道</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('其他渠道','<%=basePath%>/channelInfo/index?groupId=3','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>其他渠道</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('劳务渠道','<%=basePath%>/channelInfo/index?groupId=4','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>劳务渠道</span>
-                </a>
-            </div>
+<div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
+<shiro:hasPermission name="channel">
+    <div title="渠道管理" selected="true" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('天音渠道','<%=basePath%>/channelInfo/index?groupId=1','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>天音渠道</span>
+            </a>
         </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="model">
-        <div title="机型管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('天音渠道机型','<%=basePath%>/modelInfo/index?groupId=1','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>天音渠道机型</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('地包渠道机型','<%=basePath%>/modelInfo/index?groupId=2','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>地包渠道机型</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('其他渠道机型','<%=basePath%>/modelInfo/index?groupId=3','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>其他渠道机型</span>
-                </a>
-            </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('地包渠道','<%=basePath%>/channelInfo/index?groupId=2','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <!---->
+                <span>地包渠道</span>
+            </a>
         </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="device">
-        <div title="工装管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('工装管理','<%=basePath%>/deviceInfo/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>工装管理</span>
-                </a>
-            </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('其他渠道','<%=basePath%>/channelInfo/index?groupId=3','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>其他渠道</span>
+            </a>
         </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="partner">
-        <div title="合作方管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('合作方管理','<%=basePath%>/partnerInfo/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>合作方管理</span>
-                </a>
-            </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('劳务渠道','<%=basePath%>/channelInfo/index?groupId=4','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>劳务渠道</span>
+            </a>
         </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="product">
-        <div title="产品管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('产品管理','<%=basePath%>/productInfo/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>产品管理</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="batch">
-        <div title="批次管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('天音渠道批次','<%=basePath%>/batchInfo/index?groupId=1','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>天音渠道批次</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('地包渠道批次','<%=basePath%>/batchInfo/index?groupId=2','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>地包渠道批次</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('其他渠道批次','<%=basePath%>/batchInfo/index?groupId=3','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>其他渠道批次</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="devSys">
-        <div title="设备系统管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('设备系统管理','<%=basePath%>/deviceSystem/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>设备系统管理</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="apk">
-        <div title="APK管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('APK管理','<%=basePath%>/apkInfo/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>APK管理</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="package">
-        <div title="打包管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('普通包管理','<%=basePath%>/packageInfo/index?type=N','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>普通包管理</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('通用包管理','<%=basePath%>/packageInfo/index?type=Y','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>通用包管理</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="publishTask">
-        <div title="发布任务管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('发布任务管理','<%=basePath%>/publishTask/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>发布任务管理</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="logCount">
-        <div title="合作方查询后台" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>天音渠道</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('地包渠道查询','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>地包渠道</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('cp合作方查询','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>cp合作方</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>劳务渠道</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="report">
-        <div title="报表统计" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>按仓库查询</span>
-                </a>
-            </div>
-        </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="system">
-        <div title="系统用户管理" style="overflow: auto;">
-            <div class="nav-item">
-                <a href="javascript:addTab('系统用户管理','<%=basePath%>/user/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>系统用户管理</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="javascript:addTab('角色管理','<%=basePath%>/role/index','menu_icon_wjldgl')">
-                    <span class="menu_icon_wjldgl"></span>
-                    <span>角色管理</span>
-                </a>
-            </div>
-            <%--<shiro:hasPermission name="A01">--%>
-            <div class="nav-item">
-                <a href="javascript:addTab('授权管理','<%=basePath%>/rrr/index','menu_icon_wjldgl')">
-                    <span class="menu_icon_wjldgl"></span>
-                    <span>授权管理</span>
-                </a>
-            </div>
-            <%--</shiro:hasPermission>--%>
-        </div>
-        </shiro:hasPermission>
     </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="model">
+    <div title="机型管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('天音渠道机型','<%=basePath%>/modelInfo/index?groupId=1','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>天音渠道机型</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('地包渠道机型','<%=basePath%>/modelInfo/index?groupId=2','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>地包渠道机型</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('其他渠道机型','<%=basePath%>/modelInfo/index?groupId=3','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>其他渠道机型</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="device">
+    <div title="工装管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('工装管理','<%=basePath%>/deviceInfo/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>工装管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="partner">
+    <div title="合作方管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('合作方管理','<%=basePath%>/partnerInfo/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>合作方管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="product">
+    <div title="产品管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('产品管理','<%=basePath%>/productInfo/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>产品管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="batch">
+    <div title="批次管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('天音渠道批次','<%=basePath%>/batchInfo/index?groupId=1','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>天音渠道批次</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('地包渠道批次','<%=basePath%>/batchInfo/index?groupId=2','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>地包渠道批次</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('其他渠道批次','<%=basePath%>/batchInfo/index?groupId=3','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>其他渠道批次</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="devSys">
+    <div title="设备系统管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('设备系统管理','<%=basePath%>/deviceSystem/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>设备系统管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="apk">
+    <div title="APK管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('APK管理','<%=basePath%>/apkInfo/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>APK管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="package">
+    <div title="打包管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('普通包管理','<%=basePath%>/packageInfo/index?type=N','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>普通包管理</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('通用包管理','<%=basePath%>/packageInfo/index?type=Y','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>通用包管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="publishTask">
+    <div title="发布任务管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('发布任务管理','<%=basePath%>/publishTask/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>发布任务管理</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<div title="地包渠道结算条款" style="overflow: auto;">
+    <div class="nav-item">
+        <a href="javascript:addTab('地包渠道结算条款','<%=basePath%>/settleInfo/index','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>地包渠道结算条款</span>
+        </a>
+    </div>
+</div>
+<shiro:hasPermission name="logCount">
+    <div title="合作方查询后台" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>天音渠道</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('地包渠道查询','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>地包渠道</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('cp合作方查询','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>cp合作方</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>劳务渠道</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="report">
+    <div title="报表统计" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>按仓库查询</span>
+            </a>
+        </div>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="system">
+    <div title="系统用户管理" style="overflow: auto;">
+        <div class="nav-item">
+            <a href="javascript:addTab('系统用户管理','<%=basePath%>/user/index','menu_icon_datadeal')">
+                <span class="menu_icon_datadeal"></span>
+                <span>系统用户管理</span>
+            </a>
+        </div>
+        <div class="nav-item">
+            <a href="javascript:addTab('角色管理','<%=basePath%>/role/index','menu_icon_wjldgl')">
+                <span class="menu_icon_wjldgl"></span>
+                <span>角色管理</span>
+            </a>
+        </div>
+            <%--<shiro:hasPermission name="A01">--%>
+        <div class="nav-item">
+            <a href="javascript:addTab('授权管理','<%=basePath%>/rrr/index','menu_icon_wjldgl')">
+                <span class="menu_icon_wjldgl"></span>
+                <span>授权管理</span>
+            </a>
+        </div>
+            <%--</shiro:hasPermission>--%>
+    </div>
+</shiro:hasPermission>
+</div>
 </div>
 <div region="center">
     <div id="main-center" class="easyui-tabs" fit="true" border="false">
@@ -394,26 +391,31 @@
         </div>
     </div>
 </div>
-<div id="dlg" class="easyui-dialog" style="width:400px;height:220px;padding:10px 20px" closed="true" buttons="#dlg-buttons">
+<div id="dlg" class="easyui-dialog" style="width:400px;height:220px;padding:10px 20px" closed="true"
+     buttons="#dlg-buttons">
 
     <form id="fm" method="post" novalidate>
         <table>
-        <tr>
-            <td>旧密码:</td>
-            <td><input class="easyui-validatebox" name="oldPassword" id="oldPassword" type="password" required="true"/><span style="color:red">*</span></td>
-        </tr>
-        <tr>
-            <td>新密码:</td>
-            <td><input class="easyui-validatebox" name="newPassword" id="newPassword" type="password" required="true" validType="isPasswd"/><span style="color:red">*</span></td>
-        </tr>
-        <tr>
-            <td>确认密码:</td>
-            <td><input class="easyui-validatebox" name="confirmPassword" id="confirmPassword" type="password"  required="true"/><span style="color:red">*</span></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><a class="easyui-linkbutton" type="button" onclick="update()" data-options="iconCls:'icon-save'" >确定</a></td>
-        </tr>
+            <tr>
+                <td>旧密码:</td>
+                <td><input class="easyui-validatebox" name="oldPassword" id="oldPassword" type="password"
+                           required="true"/><span style="color:red">*</span></td>
+            </tr>
+            <tr>
+                <td>新密码:</td>
+                <td><input class="easyui-validatebox" name="newPassword" id="newPassword" type="password"
+                           required="true" validType="isPasswd"/><span style="color:red">*</span></td>
+            </tr>
+            <tr>
+                <td>确认密码:</td>
+                <td><input class="easyui-validatebox" name="confirmPassword" id="confirmPassword" type="password"
+                           required="true"/><span style="color:red">*</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><a class="easyui-linkbutton" type="button" onclick="update()"
+                       data-options="iconCls:'icon-save'">确定</a></td>
+            </tr>
         </table>
     </form>
 </div>

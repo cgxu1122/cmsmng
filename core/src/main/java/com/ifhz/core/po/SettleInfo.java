@@ -17,6 +17,25 @@ public class SettleInfo {
     private String remark;
     private Date createTime;
     private Date updateTime;
+    private Long createBy;
+
+    private String modelNameCondition;
+
+    public String getModelNameCondition() {
+        return modelNameCondition;
+    }
+
+    public void setModelNameCondition(String modelNameCondition) {
+        this.modelNameCondition = modelNameCondition;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
 
     public Long getSettleId() {
         return settleId;
