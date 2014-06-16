@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/16 21:49:46                           */
+/* Created on:     2014/6/16 22:01:36                           */
 /*==============================================================*/
 
 
@@ -23,6 +23,8 @@ drop index "Index_10";
 drop index "Index_11";
 
 drop index "Index_12";
+
+drop index "Index_8";
 
 drop index "Index_2";
 
@@ -1162,6 +1164,13 @@ comment on column TY_SETTLE_INFO.CREATE_TIME is
 
 comment on column TY_SETTLE_INFO.UPDATE_TIME is
 '修改时间';
+
+/*==============================================================*/
+/* Index: "Index_8"                                             */
+/*==============================================================*/
+create index "Index_8" on TY_SETTLE_INFO (
+   CREATE_BY ASC
+);
 
 /*==============================================================*/
 /* Table: TY_USER                                               */
