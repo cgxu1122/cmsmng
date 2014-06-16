@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.SettleInfoMapper">
+    <!--
+create table TY_SETTLE_INFO  (
+   SETTLE_ID            NUMBER(15)                      not null,
+   MODEL_NAME           VARCHAR2(100 CHAR),
+   START_TIME           DATE,
+   END_TIME             DATE,
+   PRICE                NUMBER(12,3),
+   REMARK               VARCHAR2(500 CHAR),
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
+   constraint PK_TY_SETTLE_INFO primary key (SETTLE_ID)
+);
+
+    -->
+
+
+    <sql id="TABLE_NAME">TY_SETTLE_INFO</sql>
+    <sql id="CommonFieldSql">
+        SETTLE_ID,
+        MODEL_NAME,
+        START_TIME,
+        END_TIME,
+        PRICE,
+        REMARK,
+        CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <resultMap id="SettleInfoResultMap" type="com.ifhz.core.po.SettleInfo">
+        <id column="SETTLE_ID" property="settleId" jdbcType="BIGINT"/>
+        <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
+        <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="PRICE" property="price" jdbcType="DOUBLE"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="SettleInfoResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where SETTLE_ID = #{settleId}
+    </select>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.SettleInfo">
+        <selectKey resultType="long" keyProperty="apkId">
+            SELECT SEQ_SETTLE_INFO.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_SETTLE_INFO.nextval,
+        #{modelName,jdbcType=VARCHAR},
+        #{startTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=TIMESTAMP},
+        #{price,jdbcType=DOUBLE},
+        #{remark,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="update" parameterType="com.ifhz.core.po.SettleInfo">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="modelName != null">
+                MODEL_NAME = #{modelName},
+            </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime},
+            </if>
+            <if test="endTime != null">
+                END_TIME = #{endTime},
+            </if>
+            <if test="price != null">
+                PRICE = #{price},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        where SETTLE_ID = #{settleId}
+    </update>
+    <select id="queryByVo" parameterType="com.ifhz.core.po.SettleInfo" resultMap="SettleInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.apkName != null and record.apkName != ''">
+            and MODEL_NAME = #{record.modelName}
+        </if>
+        order by UPDATE_TIME desc
+    </select>
+
+
+    <delete id="delete" parameterType="com.ifhz.core.po.SettleInfo">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where SETTLE_ID = #{settleId}
+    </delete>
+</mapper>
