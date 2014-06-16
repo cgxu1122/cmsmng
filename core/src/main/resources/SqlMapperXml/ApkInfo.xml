@@ -105,6 +105,7 @@
         </set>
         where APK_ID = #{apkId}
     </update>
+
     <select id="queryByVo" parameterType="com.ifhz.core.po.ApkInfo" resultMap="ApkInfoResultMap">
         select * from
         <include refid="TABLE_NAME"/>
@@ -126,6 +127,8 @@
         </if>
         order by CREATE_TIME desc
     </select>
+
+
     <!-- 查询需要更新apkLib集合 -->
     <select id="queryUpgradeList" resultMap="ApkInfoResultMap">
         select
@@ -137,17 +140,9 @@
     </select>
 
     <delete id="delete" parameterType="com.ifhz.core.po.ApkInfo">
-        delete from
+        update
         <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N', UPDATE_TIME = #{updateTime}
         where APK_ID = #{apkId}
     </delete>
-    <select id="queryListByPackageId" resultMap="ApkInfoResultMap">
-        select
-        <include refid="CommonFieldSql"/>
-        from
-        <include refid="TABLE_NAME"/>
-        where PACKAGE_ID = #{packageId}
-        and ACTIVE = 'Y'
-        and UPDATE_TIME &gt;= #{date,jdbcType=TIMESTAMP}
-    </select>
 </mapper>

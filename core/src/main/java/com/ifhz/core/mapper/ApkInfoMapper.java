@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface ApkInfoMapper {
 
-    public ApkInfo getById(Long id);
+    public ApkInfo getById(Long apkId);
 
     public List<ApkInfo> queryByVo(Pagination page, @Param(value = "record") ApkInfo record);
 
@@ -25,7 +25,4 @@ public interface ApkInfoMapper {
     public int delete(ApkInfo record);
 
     public List<ApkInfo> queryUpgradeList(@Param("startTime") Date date, @Param("endTime") Date endTime);
-
-    public List<ApkInfo> queryListByPackageId(@Param("active") Long packageId, @Param("active") String active);
-
 }
