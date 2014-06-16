@@ -133,7 +133,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public String findAllRoleResourceXmlString(long id) {
-        return resourceService.findAllRoleResourceXmlString(id,false);
+        return resourceService.findAllRoleResourceXmlString(id,false,false);
     }
 
     /**

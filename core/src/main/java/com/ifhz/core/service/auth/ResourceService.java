@@ -43,7 +43,7 @@ public interface ResourceService {
 	 * @param id
 	 * @return
 	 */
-	public String findAllRoleResourceXmlString(long id,boolean adminflag);
+	public String findAllRoleResourceXmlString(long id,boolean adminflag,boolean uncheckflag);
 
 	/**
 	 * @author radishlee
@@ -112,4 +112,6 @@ public interface ResourceService {
 	 */
 
 	public List<String> findFullpathByRoleId(Long id);
+
+    List<String> findResUrlByRoleId(Long id);
 }

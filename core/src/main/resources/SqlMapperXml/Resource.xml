@@ -157,4 +157,18 @@
         WHERE
         rrr.role_id=#{id}
     </select>
+
+
+    <select id="findResUrlByRoleId" parameterType="Long" resultType="String">
+        select
+        r.res_url
+        from
+        ty_resource r
+        LEFT JOIN
+        ty_role_resource_ref rrr
+        ON
+        r.resource_id = rrr.resource_id
+        WHERE
+        rrr.role_id=#{id}
+    </select>
 </mapper>

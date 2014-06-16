@@ -80,8 +80,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      * @author radish
      */
     @Override
-    public String findAllRoleResourceXmlString(long roleId,boolean adminFlag) {
-        return resourceService.findAllRoleResourceXmlString(roleId,adminFlag);
+    public String findAllRoleResourceXmlString(long roleId,boolean adminFlag,boolean showUncheckFlag) {
+        return resourceService.findAllRoleResourceXmlString(roleId,adminFlag,showUncheckFlag);
     }
 
     public Boolean deleteAllRefByRoleId(long roleid) {
