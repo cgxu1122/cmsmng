@@ -2,10 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ifhz.core.mapper.ImeiTempMapper">
 
+
+    <resultMap id="DeviceResultMap" type="com.ifhz.core.service.imei.bean.DeviceResult">
+        <result column="imei" property="imei" jdbcType="VARCHAR"/>
+        <result column="model_name" property="modelName" jdbcType="VARCHAR"/>
+        <result column="channel_id" property="channelId" jdbcType="VARCHAR"/>
+        <result column="process_time" property="processTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="CounterResultMap" type="com.ifhz.core.service.imei.bean.CounterResult">
+        <result column="imei" property="imei" jdbcType="VARCHAR"/>
+        <result column="model_name" property="modelName" jdbcType="VARCHAR"/>
+        <result column="channel_id" property="channelId" jdbcType="VARCHAR"/>
+        <result column="active" property="active" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
     <insert id="insertBatch">
         insert into TY_IMEI_TEMP
         <foreach collection="list" item="item" index="index" separator="union all">
             (select #{item,jdbcType=VARCHAR} from dual )
         </foreach>
     </insert>
+
+
+    <select id="queryListForDeviceResult" resultMap="DeviceResultMap">
+        select a.imei,a.model_name,a.channel_id,a.process_time
+        from ${tableName} as a
+        inner join TY_IMEI_TEMP as b
+        on a.imei = b.imei
+    </select>
+
+    <select id="queryListForCounterResult" resultMap="CounterResultMap">
+        select a.imei,a.model_name,a.channel_id,a.active
+        from ${tableName} as a
+        inner join TY_IMEI_TEMP as b
+        on a.imei = b.imei
+    </select>
 </mapper>

@@ -19,7 +19,6 @@
 package com.ifhz.core.service.auth.impl;
 
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
-import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.enums.UserStatusEnum;
 import com.ifhz.core.po.User;
 import com.ifhz.core.po.UserRoleRef;
@@ -33,21 +32,19 @@ import com.ifhz.core.shiro.token.UsernamePasswordCaptchaToken;
 import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
 
@@ -125,6 +122,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
             }
             // 查询登陆用户
             User user = userService.findUserByLoginName(loginName);
+            logger.info("login_user:{}", user);
             // 进行密码校验
             if (user != null && user.getPassword().equals(MD5keyUtil.getMD5Str(password)) && user.getStatus()==(UserStatusEnum.ENABLE.getStatusValue())) {
                 RoleVo role = null;

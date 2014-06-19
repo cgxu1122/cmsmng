@@ -1,5 +1,7 @@
 package com.ifhz.core.mapper;
 
+import com.ifhz.core.service.imei.bean.CounterResult;
+import com.ifhz.core.service.imei.bean.DeviceResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,5 +13,10 @@ import java.util.List;
  * Time: 22:20
  */
 public interface ImeiTempMapper {
+
     public int insertBatch(@Param("list") List<String> list);
+
+    public List<DeviceResult> queryListForDeviceResult(@Param("tableName") String tableName);
+
+    public List<CounterResult> queryListForCounterResult(@Param("tableName") String tableName);
 }

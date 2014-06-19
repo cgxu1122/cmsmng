@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/16 22:01:36                           */
+/* Created on:     2014/6/20 2:26:21                            */
 /*==============================================================*/
 
 
@@ -232,8 +232,8 @@ create table TY_BATCH_INFO  (
    BATCH_PRODUCT_NAME   VARCHAR2(2000),
    BATCH_PRODUCT_NUM    NUMBER(15),
    START_TIME           DATE,
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2)                    default 'Y',
    constraint PK_TY_BATCH_INFO primary key (BATCH_ID)
 );
@@ -274,7 +274,7 @@ comment on column TY_BATCH_INFO.ACTIVE is
 create table TY_BATCH_PRODUCT_REF  (
    BATCH_ID             NUMBER(15)                      not null,
    PRODUCT_ID           NUMBER(15)                      not null,
-   CREATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_BATCH_PRODUCT_REF primary key (BATCH_ID, PRODUCT_ID)
 );
 
@@ -296,7 +296,7 @@ comment on column TY_BATCH_PRODUCT_REF.CREATE_TIME is
 create table TY_CHANNEL_GROUP  (
    GROUP_ID             NUMBER(15)                      not null,
    GROUP_NAME           VARCHAR2(200 CHAR),
-   CREATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_CHANNEL_GROUP primary key (GROUP_ID)
 );
 
@@ -328,8 +328,8 @@ create table TY_CHANNEL_INFO  (
    LAOWU_ID             NUMBER(15),
    QUERY_IMEI_SOURCE    VARCHAR2(2 CHAR),
    ACTIVE               VARCHAR2(2 CHAR)               default 'Y',
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_CHANNEL_INFO primary key (CHANNEL_ID)
 );
 
@@ -445,7 +445,7 @@ create table TY_COUNTER_UPLOAD_LOG  (
    BATCH_CODE           VARCHAR2(50),
    PROCESS_TIME         VARCHAR2(50),
    CREATE_TIME          DATE                           default SYSDATE,
-   ACTIVE               VARCHAR2(10)                   default 'Y',
+   ACTIVE               VARCHAR2(10),
    constraint PK_TY_COUNTER_UPLOAD_LOG primary key (COUNTER_ID)
 );
 
@@ -510,8 +510,8 @@ create table TY_DEVICE_INFO  (
    DEVICE_CODE          VARCHAR2(50 CHAR),
    GROUP_ID             NUMBER(15),
    CHANNEL_ID           NUMBER(15),
-   CCREATE_TIME         DATE,
-   UPDATE_TIME          DATE,
+   CCREATE_TIME         DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2)                    default 'Y',
    constraint PK_TY_DEVICE_INFO primary key (DEVICE_ID)
 );
@@ -608,13 +608,13 @@ create index "Index_4" on TY_DEVICE_PROCESS_LOG (
 /* Table: TY_DEVICE_SYSTEM                                      */
 /*==============================================================*/
 create table TY_DEVICE_SYSTEM  (
-   SYSTEM_ID            CHAR(10)                        not null,
-   VERSION              CHAR(10),
-   FTP_PATH             CHAR(10),
-   DOWNLOAD_URL         CHAR(10),
-   MD5VALUE             CHAR(10),
-   EFFECTIVE_TIME       CHAR(10),
-   CREATE_TIME          CHAR(10),
+   SYSTEM_ID            NUMBER(15)                      not null,
+   VERSION              VARCHAR2(50 CHAR),
+   FTP_PATH             VARCHAR2(500 CHAR),
+   DOWNLOAD_URL         VARCHAR2(500 CHAR),
+   MD5VALUE             VARCHAR2(50 CHAR),
+   EFFECTIVE_TIME       DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_DEVICE_SYSTEM primary key (SYSTEM_ID)
 );
 
@@ -650,8 +650,8 @@ create table TY_DICT_INFO  (
    KEY_CODE             VARCHAR2(50)                    not null,
    KEY_VALUE            VARCHAR2(50),
    REMARK               VARCHAR2(500),
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_DICT_INFO primary key (DICT_ID)
 );
 
@@ -718,8 +718,8 @@ create table TY_MODEL_INFO  (
    GROUP_ID             NUMBER(15),
    TAGNUM               NUMBER(15),
    TAGPRICE             NUMBER(15,3),
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(1 CHAR)               default 'Y',
    constraint PK_TY_MODEL_INFO primary key (MODEL_ID)
 );
@@ -766,7 +766,7 @@ create table TY_PACKAGE_APK_REF  (
    DESKTOP_ICON         VARCHAR2(2),
    SORT                 NUMBER(10),
    APK_TYPE             NUMBER(2)                      default 1,
-   CREATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_PACKAGE_APK_REF primary key (ID)
 );
 
@@ -864,8 +864,8 @@ create table TY_PARTNER_INFO  (
    PARTNER_NAME         VARCHAR2(100 CHAR),
    QUERY_IMEI_SOURCE    VARCHAR2(2),
    EXPORT_IMEI_SOURCE   VARCHAR2(2),
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(1)                    default 'Y',
    constraint PK_TY_PARTNER_INFO primary key (PARTNER_ID)
 );
@@ -906,8 +906,8 @@ create table TY_PRODUCT_INFO  (
    PARTNER_ID           NUMBER(15),
    QUERY_DATA_SOURCE    VARCHAR2(2),
    QUERY_START_TIME     DATE,
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2)                    default 'Y',
    constraint PK_TY_PRODUCT_INFO primary key (PRODUCT_ID)
 );
@@ -995,8 +995,8 @@ create table TY_PUB_CHL_MOD_REF  (
    PACKAGE_ID           NUMBER(15),
    MODEL_ID             NUMBER(15),
    PKG_TYPE             VARCHAR(2),
-   CREATE_TIME          DATE,
-   UPDATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR(2),
    constraint PK_TY_PUB_CHL_MOD_REF primary key (ID)
 );
@@ -1066,7 +1066,7 @@ create table TY_RESOURCE  (
    RES_URL              VARCHAR2(500),
    FULL_PATH            VARCHAR2(500),
    LEVELS               NUMBER(15),
-   CREATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_RESOURCE primary key (RESOURCE_ID)
 );
 
@@ -1082,7 +1082,7 @@ create table TY_ROLE  (
    PARENT_ID            NUMBER(15),
    FULL_PATH            VARCHAR2(500),
    LEVELS               NUMBER(15),
-   CREATE_TIME          DATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_ROLE primary key (ROLE_ID)
 );
 
@@ -1093,11 +1093,11 @@ comment on table TY_ROLE is
 /* Table: TY_ROLE_RESOURCE_REF                                  */
 /*==============================================================*/
 create table TY_ROLE_RESOURCE_REF  (
-   ID                   CHAR(10)                        not null,
-   ROLE_ID              CHAR(10),
-   RESOURCE_ID          CHAR(10),
-   ACCES                CHAR(10),
-   CREATE_TIME          CHAR(10),
+   ID                   NUMBER(15)                      not null,
+   ROLE_ID              NUMBER(15),
+   RESOURCE_ID          NUMBER(15),
+   ACCES                NUMBER(2),
+   CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_ROLE_RESOURCE_REF primary key (ID)
 );
 
