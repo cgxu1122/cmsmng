@@ -116,6 +116,19 @@
                 ]
             });
         }
+        function exportData() {
+            var value = $('#searchValue').val();
+            window.location.href = "<%=basePath%>/modelInfo/export?groupId=${groupId}&modelNameCondition=" + value;
+            /*$.ajax({
+             url: '
+            <%=basePath%>/modelInfo/export',
+             data: {groupId: '
+            ${groupId}',modelNameCondition: value},
+             success:function(){
+             alert("aaaa");
+             }
+             });*/
+        }
     </script>
 </head>
 <body>
@@ -138,6 +151,9 @@
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
+                </td>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>
                 </td>
             </tr>
         </table>

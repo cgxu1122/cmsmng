@@ -3,9 +3,12 @@ package com.ifhz.tymng.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
+import com.ifhz.core.base.commons.util.ExportDataUtil;
 import com.ifhz.core.base.commons.util.JcywUtils;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ModelInfo;
+import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.model.ModelInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +65,59 @@ public class ModelInfoController extends BaseController {
         result.put("total", page.getTotalCount());
         result.put("rows", list);
         return result;
+    }
+
+    @RequestMapping(value = "/export", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response) {
+        String pageNum = "1";
+        String pageSize = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX);
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String groupId = request.getParameter("groupId");
+        String modelNameCondition = request.getParameter("modelNameCondition");
+        ModelInfo mi = new ModelInfo();
+        mi.setActive(JcywConstants.ACTIVE_Y);
+        mi.setGroupId(Long.parseLong(groupId));
+        mi.setModelNameCondition(modelNameCondition);
+        List<ModelInfo> list = modelInfoService.queryByVo(page, mi);
+        BaseExportModel exportModel = new BaseExportModel();
+        Map<String, String> titleMap = new HashMap<String, String>();
+        titleMap.put("modelId", "modelId");
+        titleMap.put("ua", "ua");
+        titleMap.put("modelName", "机型名称");
+        titleMap.put("tagNum", "标签数量");
+        titleMap.put("tagPrice", "标签单价");
+        titleMap.put("groupName", "渠道组名称");
+        exportModel.setTitleMap(titleMap);
+        exportModel.setDataList(list);
+        ExportDataUtil.writeData(exportModel, new File("D:\\\\model.csv"));
+
+        // 下载本地文件
+        String fileName = "model.csv".toString(); // 文件的默认保存名
+        // 读到流中
+        InputStream inStream = null;// 文件的存放路径
+        try {
+            inStream = new FileInputStream("D:\\\\model.csv");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 设置输出的格式
+        response.reset();
+        response.setContentType("bin");
+        response.addHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        // 循环取出流中的数据
+        byte[] b = new byte[100];
+        int len;
+        try {
+            while ((len = inStream.read(b)) > 0)
+                response.getOutputStream().write(b, 0, len);
+            inStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/insert", produces = {"application/json;charset=UTF-8"})

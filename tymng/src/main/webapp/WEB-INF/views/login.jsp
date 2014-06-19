@@ -4,8 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <%@ include file="/common/header.jsp" %>
-    <title>IQIANJIN后台管理系统</title>
-<style>
+    <title>内置业务管理系统</title>
+    <style>
 	*{margin: 0px; padding: 0px;}
 	.container{width: 960px; margin: 0px auto; color: #0697da;}
 	.title{font-size: 60px; color: #0697da; margin: 100px auto 30px; text-align: center; text-shadow: 5px 2px 6px rgba(0,0,255,0.3);}

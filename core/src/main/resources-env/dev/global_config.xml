@@ -11,4 +11,5 @@
     <entry key="ftp.server.downloadUrl">http://127.0.0.1:8082/</entry>
     <entry key="root.path">D:\\rootpath</entry>
     <entry key="temp.path">D:\\rootpath\\temp</entry>
+    <entry key="export.num.max">50000</entry>
 </properties>
