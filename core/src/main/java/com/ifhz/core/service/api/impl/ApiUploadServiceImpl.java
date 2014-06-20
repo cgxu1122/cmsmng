@@ -1,10 +1,15 @@
 package com.ifhz.core.service.api.impl;
 
-import com.ifhz.core.po.*;
+import com.alibaba.fastjson.JSON;
+import com.ifhz.core.adapter.CounterTempLogAdapter;
+import com.ifhz.core.base.commons.log.CounterCommonLog;
+import com.ifhz.core.base.commons.log.DeviceCommonLog;
+import com.ifhz.core.po.ChannelInfo;
+import com.ifhz.core.po.CounterTempLog;
+import com.ifhz.core.po.DataLog;
+import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.api.ApiUploadService;
-import com.ifhz.core.service.api.CounterFailLogService;
-import com.ifhz.core.service.api.CounterUploadLogService;
-import com.ifhz.core.service.api.DeviceProcessLogService;
+import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.model.ModelInfoService;
 import org.apache.commons.collections.CollectionUtils;
@@ -12,6 +17,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,89 +33,70 @@ import java.util.List;
 public class ApiUploadServiceImpl implements ApiUploadService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiUploadServiceImpl.class);
-    @Resource(name = "counterUploadLogService")
-    private CounterUploadLogService counterUploadLogService;
-    @Resource(name = "deviceProcessLogService")
-    private DeviceProcessLogService deviceProcessLogService;
+    @Resource(name = "counterTempLogAdapter")
+    private CounterTempLogAdapter counterTempLogAdapter;
+    @Resource(name = "dataLogApiService")
+    private DataLogApiService dataLogApiService;
     @Resource(name = "channelInfoService")
     private ChannelInfoService channelInfoService;
     @Resource(name = "modelInfoService")
     private ModelInfoService modelInfoService;
-    @Resource(name = "counterFailLogService")
-    private CounterFailLogService counterFailLogService;
 
-
-    //#手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳|手机到达状态
+    //手机imei|手机ua|手机到达状态
     @Override
-    public void save(CounterUploadLog po) {
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void saveCounterDataLog(DataLog po) {
         if (po != null) {
-            if (StringUtils.isNotBlank(po.getImei())) {
-                CounterUploadLog uploadLog = counterUploadLogService.queryHasImei(po.getImei());
-                CounterFailLog counterFailLog = null;
-                if (uploadLog == null) {
-                    counterFailLog = counterFailLogService.queryByImei(po.getImei());
-                }
-                if (uploadLog != null || counterFailLog != null) {
-                    LOGGER.info("imei={} is exists!", po.getImei());
-                    return;
-                }
-                //脏数据进入脏数据表
-                if (StringUtils.isBlank(po.getChannelId()) || StringUtils.isBlank(po.getProcessTime()) || StringUtils.isBlank(po.getBatchCode())) {
-                    if (StringUtils.isNotBlank(po.getImei())) {//必须有imei
-                        CounterFailLog failLog = translate(po);
-                        counterFailLogService.insert(failLog);
-                    } else {
-                        LOGGER.info("{} 不完整无法保存", po);
-                    }
-                }
-                // 通过渠道id 获取渠道组id
-                ChannelInfo channelInfo = channelInfoService.getById(Long.parseLong(po.getChannelId()));
-                if (channelInfo != null) {
-                    String modelName = "未知";
-                    Long groupId = channelInfo.getGroupId();
-                    String usTemp = StringUtils.replace(po.getUa(), " +", " ");
-                    po.setUa(StringUtils.replace(usTemp, " ", "_"));
-                    if (StringUtils.isNotBlank(po.getUa())) {
-                        ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, po.getUa());
-                        modelName = modelInfo.getModelName();
-                    }
-                    po.setGroupId(groupId);
-                    po.setModelName(modelName);
+            //抛弃非法数据
+            if (StringUtils.isBlank(po.getImei()) || po.getActive() == null) {
+                LOGGER.info("非法数据，校验不通过 ： {}", JSON.toJSONString(po));
+                CounterCommonLog.info("{}", JSON.toJSONString(po));
+                return;
+            }
+            // 查询imei是否已经到达过
+            DataLog dataLog = dataLogApiService.getByImei(po.getImei());
+            LOGGER.info("DataLog接口数据：{},DataLog数据库数据：{}", JSON.toJSONString(po), JSON.toJSONString(dataLog));
+            if (dataLog != null) {
+                if (dataLog.getActive() == null && dataLog.getCounterUploadTime() == null) {
+                    dataLog.setCounterUploadTime(po.getCounterUploadTime());
+                    dataLog.setActive(po.getActive());
 
-                    counterUploadLogService.insert(po);
-                } else {
-                    LOGGER.error("渠道id[{}]--不在系统范围内", po.getChannelId());
+                    dataLogApiService.updateCounterData(dataLog);
                 }
             } else {
-
+                CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
+                LOGGER.info("DataLog中没有找到对应数据，CounterTempLog查询数据为：{}", JSON.toJSONString(counterTempLog));
+                if (counterTempLog == null) {
+                    CounterTempLog tempLog = new CounterTempLog();
+                    tempLog.setImei(po.getImei());
+                    tempLog.setCreateTime(po.getCounterUploadTime());
+                    tempLog.setActive(po.getActive());
+                    counterTempLogAdapter.insert(tempLog);
+                } else {
+                    LOGGER.info("DataLog中没有找到对应数据，CounterTempLog中已经存在。");
+                }
             }
-
         }
     }
 
     @Override
-    public void save(DeviceProcessLog po) {
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void saveDeviceDataLog(DataLog po) {
         if (po != null) {
-            //抛弃脏数据
-            if (StringUtils.isBlank(po.getChannelId()) || StringUtils.isBlank(po.getProcessTime()) || StringUtils.isBlank(po.getBatchCode())) {
-                LOGGER.info("DeviceProcessLog validate error , {}", po);
+            //验证非法数据
+            if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null || StringUtils.isBlank(po.getBatchCode())) {
+                LOGGER.info("非法数据，校验不通过 , {}", JSON.toJSONString(po));
+                DeviceCommonLog.info("{}", JSON.toJSONString(po));
                 return;
             }
             // 通过渠道id 获取渠道组id
-            ChannelInfo channelInfo = channelInfoService.getById(Long.parseLong(po.getChannelId()));
+            ChannelInfo channelInfo = channelInfoService.getById(po.getChannelId());
             if (channelInfo != null) {
-                String modelName = "未知";
                 Long groupId = channelInfo.getGroupId();
-                String usTemp = StringUtils.replace(po.getUa(), " +", " ");
-                po.setUa(StringUtils.replace(usTemp, " ", "_"));
-                if (StringUtils.isNotBlank(po.getUa())) {
-                    ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, po.getUa());
-                    modelName = modelInfo.getModelName();
-                }
                 po.setGroupId(groupId);
-                po.setModelName(modelName);
+                po.setModelName(getModelName(groupId, po.getUa()));
 
-                deviceProcessLogService.insert(po);
+                dataLogApiService.insertDeviceData(po);
             } else {
                 LOGGER.error("渠道id[{}]--不在系统范围内", po.getChannelId());
             }
@@ -116,26 +104,27 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     }
 
 
-    @Override
-    public void batchSave(List<DeviceProcessLog> processLogList) {
-        if (CollectionUtils.isNotEmpty(processLogList)) {
-            for (DeviceProcessLog log : processLogList) {
-                save(log);
+    private String getModelName(Long groupId, String ua) {
+        String result = "未知";
+        if (StringUtils.isNotBlank(ua) && groupId != null) {
+            //空格 或者多个连续空格 用下划线代替
+            String uaTemp = StringUtils.replace(ua, " +", " ");
+            uaTemp = StringUtils.replace(uaTemp, " ", "_");
+            ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, uaTemp);
+            if (modelInfo != null) {
+                result = modelInfo.getModelName();
             }
         }
+
+        return result;
     }
 
-
-    private CounterFailLog translate(CounterUploadLog source) {
-        CounterFailLog ret = new CounterFailLog();
-        ret.setCreateTime(ret.getCreateTime());
-        ret.setImei(source.getImei());
-        ret.setBatchCode(source.getBatchCode());
-        ret.setDeviceCode(source.getDeviceCode());
-        ret.setChannelId(source.getChannelId());
-        ret.setProcessTime(source.getProcessTime());
-        ret.setUa(source.getUa());
-
-        return ret;
+    @Override
+    public void batchSave(List<DataLog> processLogList) {
+        if (CollectionUtils.isNotEmpty(processLogList)) {
+            for (DataLog log : processLogList) {
+                saveDeviceDataLog(log);
+            }
+        }
     }
 }

@@ -5,8 +5,7 @@ INSERT INTO TY_CHANNEL_GROUP(GROUP_ID,GROUP_NAME) VALUES(4,'劳务渠道');
 
 
 
-insert into TY_DICT_INFO(DICT_ID,KEY_CODE,KEY_VALUE,REMARK,CREATE_TIME,UPDATE_TIME)values (SEQ_DICT_INFO.NEXTVAL,'system_init_date','2014-05-18 00:00:00','系统初始化时间',SYSDATE,SYSDATE);
-
+insert into TY_DICT_INFO(DICT_ID,KEY_CODE,KEY_VALUE,REMARK,CREATE_TIME,UPDATE_TIME)values (SEQ_DICT_INFO.NEXTVAL,'system_init_date','2014-06-20 00:00:00','系统初始化时间',SYSDATE,SYSDATE);
 
 
 insert into ty_role values (seq_role.nextval,'admin',-1,'',1,sysdate);

@@ -3,9 +3,7 @@ package com.ifhz.core.adapter.impl;
 import com.ifhz.core.adapter.CounterFailLogAdapter;
 import com.ifhz.core.mapper.CounterFailLogMapper;
 import com.ifhz.core.po.CounterFailLog;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -15,10 +13,8 @@ import java.util.List;
  * Date: 2014/5/21
  * Time: 13:07
  */
-@Repository("counterFailLogAdapter")
 public class CounterFailLogAdapterImpl implements CounterFailLogAdapter {
 
-    @Resource(name = "counterFailLogMapper")
     private CounterFailLogMapper counterFailLogMapper;
 
     @Override

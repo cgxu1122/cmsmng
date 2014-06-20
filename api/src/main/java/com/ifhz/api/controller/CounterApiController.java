@@ -1,11 +1,12 @@
 package com.ifhz.api.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.log.CounterCommonLog;
-import com.ifhz.core.po.CounterUploadLog;
+import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -41,30 +42,16 @@ public class CounterApiController {
     JSONObject arrivalData(@RequestParam(value = "data", required = true) String data,
                            HttpServletRequest request) {
         LOGGER.info("receive encode data={}", data);
-        CounterCommonLog.info("receive encode data={}", data);
         JSONObject result = null;
         try {
             if (StringUtils.isNotBlank(data)) {
                 String source = CodecUtils.decode(data).trim();
                 LOGGER.info("receive decode data={}", source);
-                CounterCommonLog.info("receive decode data={}", source);
                 String[] array = StringUtils.split(source, "|");
-                //^手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-                if (array.length == 7 && valid(array)) {
-                    if (StringUtils.isBlank(array[7])) {
-                        LOGGER.error("data={} ,active is null", source);
-                    }
-                    CounterUploadLog log = new CounterUploadLog();
-                    log.setImei(StringUtils.trimToEmpty(array[0]));
-                    log.setUa(StringUtils.trimToEmpty(array[1]));
-                    log.setChannelId(StringUtils.trimToEmpty(array[2]));
-                    log.setDeviceCode(StringUtils.trimToEmpty(array[3]));
-                    log.setBatchCode(StringUtils.trimToEmpty(array[4]));
-                    log.setProcessTime(StringUtils.trimToEmpty(array[5]));
-                    log.setActive(StringUtils.trimToEmpty(array[6]));
-                    log.setCreateTime(new Date());
-
-                    apiUploadService.save(log);
+                //手机imei|手机ua|到达状态
+                DataLog dataLog = translateDataLog(array);
+                if (dataLog != null) {
+                    apiUploadService.saveCounterDataLog(dataLog);
                     result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
                 } else {
                     LOGGER.warn("data is non-valid,data={}", data);
@@ -84,13 +71,29 @@ public class CounterApiController {
         return result;
     }
 
-    private boolean valid(String[] list) {
-        for (int i = 0; i < list.length; i++) {
-            if (StringUtils.trimToNull(list[0]) != null) {
-                return true;
+    private DataLog translateDataLog(String[] data) {
+        //手机imei|手机ua|到达状态
+        DataLog result = null;
+        if (data != null && data.length == 3) {
+            try {
+                result = new DataLog();
+                result.setCounterUploadTime(new Date());
+                result.setImei(StringUtils.trimToEmpty(data[0]));
+                result.setUa(StringUtils.trimToEmpty(data[1]));
+                String activeStr = StringUtils.trimToEmpty(data[2]);
+                if (StringUtils.isNotBlank(activeStr)) {
+                    result.setActive(Integer.parseInt(activeStr));
+                }
+            } catch (Exception e) {
+                CounterCommonLog.info("{}", JSON.toJSONString(data));
+                LOGGER.error("translateDataLog error ", e);
+                return null;
             }
+        } else {
+            LOGGER.info("数据校验不通过：{}", JSON.toJSONString(data));
         }
 
-        return false;
+        return result;
     }
+
 }

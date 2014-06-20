@@ -1,12 +1,22 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/20 2:26:21                            */
+/* Created on:     2014/6/20 22:06:29                           */
 /*==============================================================*/
 
+
+drop index "Index_17";
+
+drop index "Index_19";
 
 drop index "Index_5";
 
 drop index "Index_6";
+
+drop index "Index_15";
+
+drop index "Index_16";
+
+drop index "Index_18";
 
 drop index "Index_3";
 
@@ -26,6 +36,8 @@ drop index "Index_12";
 
 drop index "Index_8";
 
+drop index "Index_14";
+
 drop index "Index_2";
 
 drop index "Index_1";
@@ -41,6 +53,8 @@ drop table TY_CHANNEL_GROUP cascade constraints;
 drop table TY_CHANNEL_INFO cascade constraints;
 
 drop table TY_COUNTER_FAIL_LOG cascade constraints;
+
+drop table TY_COUNTER_TEMP_LOG cascade constraints;
 
 drop table TY_COUNTER_UPLOAD_LOG cascade constraints;
 
@@ -94,7 +108,11 @@ drop sequence SEQ_CHANNEL_INFO;
 
 drop sequence SEQ_COUNTER_FAIL_LOG;
 
+drop sequence SEQ_COUNTER_TEMP_LOG;
+
 drop sequence SEQ_COUNTER_UPLOAD_LOG;
+
+drop sequence SEQ_DATA_LOG;
 
 drop sequence SEQ_DEVICE_INFO;
 
@@ -142,7 +160,11 @@ create sequence SEQ_CHANNEL_INFO;
 
 create sequence SEQ_COUNTER_FAIL_LOG;
 
+create sequence SEQ_COUNTER_TEMP_LOG;
+
 create sequence SEQ_COUNTER_UPLOAD_LOG;
+
+create sequence SEQ_DATA_LOG;
 
 create sequence SEQ_DEVICE_INFO;
 
@@ -430,6 +452,50 @@ comment on column TY_COUNTER_FAIL_LOG.CREATE_TIME is
 
 comment on column TY_COUNTER_FAIL_LOG.ACTIVE is
 '到达状态';
+
+/*==============================================================*/
+/* Table: TY_COUNTER_TEMP_LOG                                   */
+/*==============================================================*/
+create table TY_COUNTER_TEMP_LOG  (
+   ID                   NUMBER(15)                      not null,
+   IMEI                 VARCHAR2(50)                    not null,
+   UA                   VARCHAR2(100),
+   CREATE_TIME          DATE                           default SYSDATE not null,
+   ACTIVE               NUMBER(2),
+   constraint PK_TY_COUNTER_TEMP_LOG primary key (ID)
+);
+
+comment on table TY_COUNTER_TEMP_LOG is
+'计数器数据缓冲表';
+
+comment on column TY_COUNTER_TEMP_LOG.ID is
+'主键ID';
+
+comment on column TY_COUNTER_TEMP_LOG.IMEI is
+'IMEI码';
+
+comment on column TY_COUNTER_TEMP_LOG.UA is
+'手机UA';
+
+comment on column TY_COUNTER_TEMP_LOG.CREATE_TIME is
+'创建时间';
+
+comment on column TY_COUNTER_TEMP_LOG.ACTIVE is
+'到达状态';
+
+/*==============================================================*/
+/* Index: "Index_17"                                            */
+/*==============================================================*/
+create unique index "Index_17" on TY_COUNTER_TEMP_LOG (
+   IMEI ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_19"                                            */
+/*==============================================================*/
+create index "Index_19" on TY_COUNTER_TEMP_LOG (
+   CREATE_TIME ASC
+);
 
 /*==============================================================*/
 /* Table: TY_COUNTER_UPLOAD_LOG                                 */
@@ -1177,9 +1243,9 @@ create index "Index_8" on TY_SETTLE_INFO (
 /*==============================================================*/
 create table TY_USER  (
    USER_ID              NUMBER(15)                      not null,
-   LOGIN_NAME           VARCHAR2(50),
-   REAL_NAME            VARCHAR2(50),
-   PASSWORD             VARCHAR2(50),
+   LOGIN_NAME           VARCHAR2(50)                    not null,
+   REAL_NAME            VARCHAR2(50)                    not null,
+   PASSWORD             VARCHAR2(50)                    not null,
    CELLPHONE            VARCHAR2(50),
    ADDRESS              VARCHAR2(500),
    STATUS               NUMBER(2),
@@ -1226,6 +1292,13 @@ comment on column TY_USER.UPDATE_TIME is
 /* Index: "Index_2"                                             */
 /*==============================================================*/
 create unique index "Index_2" on TY_USER (
+   LOGIN_NAME ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_14"                                            */
+/*==============================================================*/
+create unique index "Index_14" on TY_USER (
    LOGIN_NAME ASC
 );
 

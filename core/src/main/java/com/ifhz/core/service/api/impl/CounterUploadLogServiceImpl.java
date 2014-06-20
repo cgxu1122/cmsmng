@@ -9,11 +9,9 @@ import com.ifhz.core.service.common.SplitTableService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -23,15 +21,12 @@ import java.util.concurrent.*;
  * Date: 2014/5/18
  * Time: 16:47
  */
-@Service("counterUploadLogService")
 public class CounterUploadLogServiceImpl implements CounterUploadLogService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterUploadLogServiceImpl.class);
 
     private static final Executor executor = Executors.newFixedThreadPool(256);
 
-    @Resource(name = "counterUploadLogAdapter")
     private CounterUploadLogAdapter counterUploadLogAdapter;
-    @Resource(name = "splitTableService")
     private SplitTableService splitTableService;
 
 

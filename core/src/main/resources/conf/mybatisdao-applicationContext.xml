@@ -39,8 +39,8 @@
         <property name="user" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
         <property name="maxPoolSize" value="50"/>
-        <property name="minPoolSize" value="1"/>
-        <property name="initialPoolSize" value="1"/>
+        <property name="minPoolSize" value="10"/>
+        <property name="initialPoolSize" value="10"/>
         <property name="maxIdleTime" value="20"/>
     </bean>
     <!-- 分页拦截器 -->
@@ -67,8 +67,6 @@
                 <value>classpath:SqlMapperXml/BatchInfo.xml</value>
                 <value>classpath:SqlMapperXml/BatchProductRef.xml</value>
                 <value>classpath:SqlMapperXml/DeviceSystem.xml</value>
-                <value>classpath:SqlMapperXml/DeviceProcessLog.xml</value>
-                <value>classpath:SqlMapperXml/CounterUploadLog.xml</value>
                 <value>classpath:SqlMapperXml/DictInfo.xml</value>
                 <value>classpath:SqlMapperXml/LogCount.xml</value>
                 <value>classpath:SqlMapperXml/ProductCount.xml</value>
@@ -84,6 +82,8 @@
                 <value>classpath:SqlMapperXml/PublishTask.xml</value>
                 <value>classpath:SqlMapperXml/SettleInfo.xml</value>
                 <value>classpath:SqlMapperXml/ImeiTemp.xml</value>
+                <value>classpath:SqlMapperXml/CounterTempLog.xml</value>
+                <value>classpath:SqlMapperXml/DataLog.xml</value>
             </list>
         </property>
     </bean>
@@ -135,18 +135,15 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
-    <bean id="deviceProcessLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.DeviceProcessLogMapper"/>
+    <bean id="dataLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.DataLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="counterUploadLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterUploadLogMapper"/>
+    <bean id="counterTempLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterTempLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="counterFailLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.CounterFailLogMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
+
     <bean id="dictInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.DictInfoMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>

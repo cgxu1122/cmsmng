@@ -3,11 +3,9 @@ package com.ifhz.core.service.api.impl;
 import com.ifhz.core.adapter.CounterFailLogAdapter;
 import com.ifhz.core.po.CounterFailLog;
 import com.ifhz.core.service.api.CounterFailLogService;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +15,8 @@ import java.util.List;
  * Date: 2014/5/21
  * Time: 16:14
  */
-@Service("counterFailLogService")
 public class CounterFailLogServiceImpl implements CounterFailLogService {
 
-    @Resource(name = "counterFailLogAdapter")
     private CounterFailLogAdapter counterFailLogAdapter;
 
     @Override

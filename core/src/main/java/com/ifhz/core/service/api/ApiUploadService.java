@@ -1,7 +1,6 @@
 package com.ifhz.core.service.api;
 
-import com.ifhz.core.po.CounterUploadLog;
-import com.ifhz.core.po.DeviceProcessLog;
+import com.ifhz.core.po.DataLog;
 
 import java.util.List;
 
@@ -13,9 +12,9 @@ import java.util.List;
  */
 public interface ApiUploadService {
 
-    public void save(CounterUploadLog po);
+    public void saveCounterDataLog(DataLog po);
 
-    public void save(DeviceProcessLog po);
+    public void saveDeviceDataLog(DataLog po);
 
-    public void batchSave(List<DeviceProcessLog> processLogList);
+    public void batchSave(List<DataLog> processLogList);
 }

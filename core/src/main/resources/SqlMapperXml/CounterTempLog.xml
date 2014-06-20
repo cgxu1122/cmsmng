@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.CounterTempLogMapper">
+
+    <resultMap id="CounterTempLogResultMap" type="com.ifhz.core.po.CounterTempLog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="imei" property="imei" jdbcType="VARCHAR"/>
+        <result column="ua" property="ua" jdbcType="VARCHAR"/>
+        <result column="active" property="active" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="CommonFieldSql">
+        ID,
+        IMEI,
+        UA,
+        ACTIVE,
+        CREATE_TIME
+    </sql>
+    <sql id="TABLE_NAME">TY_COUNTER_TEMP_LOG</sql>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.CounterTempLog">
+        <selectKey resultType="java.lang.Long" keyProperty="failId" order="AFTER">
+            SELECT SEQ_COUNTER_TEMP_LOG.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_COUNTER_TEMP_LOG.NEXTVAL,
+        #{imei,jdbcType=VARCHAR},
+        #{ua,jdbcType=VARCHAR},
+        #{active,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="queryTotalCount">
+        select count(0)
+        from
+        <include refid="TABLE_NAME"/>
+        where create_time between #{startTime} and #{endTime}
+    </select>
+
+    <select id="queryPage" resultMap="CounterTempLogResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where create_time between #{startTime} and #{endTime}
+    </select>
+
+    <select id="queryByImei" resultMap="CounterTempLogResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where IMEI = #{imei}
+    </select>
+
+    <delete id="delete">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id}
+    </delete>
+</mapper>

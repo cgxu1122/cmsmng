@@ -8,11 +8,9 @@ import com.ifhz.core.service.common.SplitTableService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,15 +22,12 @@ import java.util.concurrent.*;
  * Date: 2014/5/18
  * Time: 16:48
  */
-@Service("deviceProcessLogService")
 public class DeviceProcessLogServiceImpl implements DeviceProcessLogService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceProcessLogServiceImpl.class);
 
     private static final Executor executor = Executors.newFixedThreadPool(256);
 
-    @Resource(name = "deviceProcessLogAdapter")
     private DeviceProcessLogAdapter deviceProcessLogAdapter;
-    @Resource(name = "splitTableService")
     private SplitTableService splitTableService;
 
 
