@@ -12,4 +12,5 @@
     <entry key="root.path">D:\\rootpath</entry>
     <entry key="temp.path">D:\\rootpath\\temp</entry>
     <entry key="export.num.max">50000</entry>
+    <entry key="stat.pageSize">10000</entry>
 </properties>
