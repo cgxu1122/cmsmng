@@ -3,10 +3,12 @@ package com.ifhz.core.service.pkgmng.impl;
 import com.ifhz.core.adapter.PackageApkRefAdapter;
 import com.ifhz.core.adapter.PackageInfoAdapter;
 import com.ifhz.core.adapter.PubChlModRefAdapter;
+import com.ifhz.core.adapter.PublishTaskAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PackageApkRef;
 import com.ifhz.core.po.PackageInfo;
 import com.ifhz.core.po.PubChlModRef;
+import com.ifhz.core.po.PublishTask;
 import com.ifhz.core.service.pkgmng.PackageInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class PackageInfoServiceImpl implements PackageInfoService {
     private PackageApkRefAdapter packageApkRefAdapter;
     @Resource(name = "pubChlModRefAdapter")
     private PubChlModRefAdapter pubChlModRefAdapter;
+    @Resource(name = "publishTaskAdapter")
+    private PublishTaskAdapter publishTaskAdapter;
 
     @Override
     public PackageInfo getById(Long id) {
@@ -82,6 +86,10 @@ public class PackageInfoServiceImpl implements PackageInfoService {
             pubChlModRef.setPackageId(record.getPackageId());
             pubChlModRef.setUpdateTime(new Date());
             pubChlModRefAdapter.updateByPackageId(pubChlModRef);
+            //删除此打包信息关联的发布任务数据
+            PublishTask publishTask = new PublishTask();
+            publishTask.setPackageId(record.getPackageId());
+            publishTaskAdapter.delete(publishTask);
         }
 
         return ret;

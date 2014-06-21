@@ -3,12 +3,9 @@ package com.ifhz.tymng.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
-import com.ifhz.core.base.commons.util.ExportDataUtil;
 import com.ifhz.core.base.commons.util.JcywUtils;
 import com.ifhz.core.base.page.Pagination;
-import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ModelInfo;
-import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.model.ModelInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -20,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +62,7 @@ public class ModelInfoController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/export", produces = {"application/json;charset=UTF-8"})
+   /* @RequestMapping(value = "/export", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response) {
         String pageNum = "1";
@@ -118,7 +113,7 @@ public class ModelInfoController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @RequestMapping(value = "/insert", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
@@ -150,7 +145,10 @@ public class ModelInfoController extends BaseController {
         mi.setModelName(modelName.trim());
         mi.setGroupId(Long.parseLong(groupId));
         mi.setActive(JcywConstants.ACTIVE_Y);
-        List<ModelInfo> list = modelInfoService.queryByVo(null, mi);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ModelInfo> list = modelInfoService.queryByVo(page, mi);
         if (list != null && list.size() > 0) {
             errorMsg = "机型全名重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -162,7 +160,7 @@ public class ModelInfoController extends BaseController {
         mi.setUa(ua);
         mi.setGroupId(Long.parseLong(groupId));
         mi.setActive(JcywConstants.ACTIVE_Y);
-        list = modelInfoService.queryByVo(null, mi);
+        list = modelInfoService.queryByVo(page, mi);
         if (list != null && list.size() > 0) {
             errorMsg = "UA重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -211,7 +209,10 @@ public class ModelInfoController extends BaseController {
         mi.setModelName(modelName.trim());
         mi.setGroupId(modelInfo.getGroupId());
         mi.setActive(JcywConstants.ACTIVE_Y);
-        List<ModelInfo> list = modelInfoService.queryByVo(null, mi);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ModelInfo> list = modelInfoService.queryByVo(page, mi);
         if (list != null && list.size() > 0) {
             for (ModelInfo repeatNameCi : list) {
                 if (repeatNameCi.getModelId() != modelInfo.getModelId()) {
@@ -226,7 +227,7 @@ public class ModelInfoController extends BaseController {
         mi.setUa(ua);
         mi.setGroupId(modelInfo.getGroupId());
         mi.setActive(JcywConstants.ACTIVE_Y);
-        list = modelInfoService.queryByVo(null, mi);
+        list = modelInfoService.queryByVo(page, mi);
         if (list != null && list.size() > 0) {
             for (ModelInfo repeatUaCi : list) {
                 if (repeatUaCi.getModelId() != modelInfo.getModelId()) {

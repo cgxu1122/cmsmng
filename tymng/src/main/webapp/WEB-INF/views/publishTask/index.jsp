@@ -34,16 +34,20 @@ function addrow() {
     });
 }
 function reloadTree(groupId) {
-    $('#tt').tree({
-        url: "<%=basePath%>/channelInfo/listTree?groupId=" + groupId,
-        onClick: function (node) {
-            $('#parentIdCondition').val(node.id);
-            searchChannelEvt();
-        },
-        onBeforeExpand: function (node, param) {
-            $('#tt').tree('options').url = "<%=basePath%>/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
-        }
-    });
+    /*$('#tt').tree({
+     url: "
+    <%=basePath%>/channelInfo/listTree?groupId=" + groupId,
+     onClick: function (node) {
+     $('#parentIdCondition').val(node.id);
+     searchChannelEvt();
+     },
+     onBeforeExpand: function (node, param) {
+     $('#tt').tree('options').url = "
+    <%=basePath%>/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
+     }
+     });*/
+    $('#searchGroupIdValue').val(groupId);
+    searchChannelEvt();
 }
 function saverow() {
     $('#fm').form('submit', {
@@ -140,6 +144,8 @@ function initPage() {
         queryParams: {type: '${type}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
         rownumbers: true,
         columns: [
             [
@@ -150,9 +156,14 @@ function initPage() {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                     formatter: function (value) {
-                        return new Date(value).formate("yyyy-MM-dd");
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             ]
@@ -274,14 +285,14 @@ function showChannelDialog() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/channelInfo/list',
+        url: '<%=basePath%>/channelInfo/listAll',
         queryParams: {groupId: groupId},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         rownumbers: true,
         columns: [
             [
-                {field: 'channelName', title: '机型名称', align: 'center', width: 150},
+                {field: 'channelName', title: '渠道/仓库名称', align: 'center', width: 300},
                 {field: 'action', title: '操作', align: 'center', width: 100,
                     formatter: function (value, row, index) {
                         return "<a href='javascript:void(0)' onclick=javascript:selectChannel('" + row.channelId + "','" + row.channelName + "')>选择</a>";
@@ -313,11 +324,6 @@ function selectChannel(channelId, channelName) {
 }
 
 </script>
-<style type="text/css">
-    .datagrid .datagrid-pager {
-        position: relative;
-    }
-</style>
 </head>
 <body>
 <div id="toolBar">
@@ -431,7 +437,7 @@ function selectChannel(channelId, channelName) {
 </div>
 
 
-<div id="packagedlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="packagedlg" class="easyui-dialog" style="width:600px;height:500px;padding:10px 20px" closed="true"
      buttons="#packagedlg-buttons">
     <div>
         <div>
@@ -483,12 +489,9 @@ function selectChannel(channelId, channelName) {
 </div>
 
 
-<div id="channeldlg" class="easyui-dialog easyui-layout" style="width:800px;height:400px;padding:10px 20px"
+<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px"
      closed="true"
      buttons="#channeldlg-buttons">
-    <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
-        <ul id="tt"></ul>
-    </div>
     <div>
         <div>
             <table>

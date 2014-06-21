@@ -103,7 +103,10 @@ public class DeviceSystemController extends BaseController {
         //版本号唯一性校验
         DeviceSystem ds = new DeviceSystem();
         ds.setVersion(version.trim());
-        List<DeviceSystem> list = deviceSystemService.queryByVo(null, ds);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
         if (list != null && list.size() > 0) {
             errorMsg = "版本号重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -155,7 +158,10 @@ public class DeviceSystemController extends BaseController {
         //版本号唯一性校验
         DeviceSystem ds = new DeviceSystem();
         ds.setVersion(version.trim());
-        List<DeviceSystem> list = deviceSystemService.queryByVo(null, ds);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
         if (list != null && list.size() > 0) {
             for (DeviceSystem repeatVersionDs : list) {
                 if (repeatVersionDs.getSystemId() != deviceSystem.getSystemId()) {

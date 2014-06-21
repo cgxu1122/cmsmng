@@ -100,6 +100,8 @@
                 queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
@@ -108,15 +110,20 @@
                         {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
                         {field: 'username', title: '用户名', align: 'center', width: 150},
                         {field: 'password', title: '密码', align: 'center', width: 150},
-                        {field: 'queryImeiSource', title: '查看imei权限', align: 'center', width: 150,
+                        {field: 'queryImeiSource', title: '查看imei权限', align: 'center', width: 100,
                             formatter: function (value) {
                                 if (value == "Y")return "有";
                                 if (value == "N")return "无";
                             }
                         },
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                             formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                             }
                         }
                     ]

@@ -100,13 +100,15 @@
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
                         {field: 'apkName', title: '产品名称', align: 'center', width: 150},
-                        {field: 'softName', title: '软件名称', align: 'center', width: 300},
+                        {field: 'softName', title: '软件名称', align: 'center', width: 200},
                         {field: 'ftpPath', title: 'ftp路径', align: 'center', width: 400},
-                        {field: 'type', title: '是否计数器', align: 'center', width: 100,
+                        {field: 'type', title: '是否计数器', align: 'center', width: 80,
                             formatter: function (value) {
                                 if ("2" == value) {
                                     return "是";
@@ -116,9 +118,14 @@
                                 return "";
                             }
                         },
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                             formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                             }
                         }
                     ]
@@ -161,11 +168,11 @@
 
     <form id="fm" method="post" enctype="multipart/form-data" novalidate>
         <div class="fitem" style="margin-left:3px">
-        <label><font color="red">*</font>产品名称:</label>
+            <label><font color="red">*</font>产品名称:</label>
             <input id="apkName" name="apkName" class="easyui-validatebox" required="true" maxlength="50">
         </div>
         <div class="fitem" style="margin-left:3px">
-        <label><font color="red">*</font>上传文件:</label>
+            <label><font color="red">*</font>上传文件:</label>
             <input type="file" name="file"/>
         </div>
         <div class="fitem">
@@ -189,12 +196,12 @@
         <input type="hidden" id="apkId" name="apkId"/>
 
         <div class="fitem" style="margin-left:3px">
-        <label><font color="red">*</font>产品名称:</label>
+            <label><font color="red">*</font>产品名称:</label>
             <input type="text" name="apkName" class="easyui-validatebox" required="true"
                     >
         </div>
         <div class="fitem" style="margin-left:3px">
-        <label><font color="red">*</font>上传文件:</label>
+            <label><font color="red">*</font>上传文件:</label>
             <input type="file" name="file"/>
         </div>
         <div class="fitem">

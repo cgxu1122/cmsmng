@@ -101,6 +101,8 @@
                 queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
@@ -109,7 +111,12 @@
                         {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
                         {field: 'createTime', title: '创建日期', align: 'center', width: 200,
                             formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 200,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                             }
                         }
                     ]
@@ -130,11 +137,6 @@
             });
         }
     </script>
-    <style type="text/css">
-        .datagrid .datagrid-pager {
-            position: relative;
-        }
-    </style>
 </head>
 <body class="easyui-layout">
 <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">

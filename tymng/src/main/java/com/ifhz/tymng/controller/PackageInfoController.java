@@ -90,17 +90,28 @@ public class PackageInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
         PackageInfo pi = new PackageInfo();
+        pi.setActive(JcywConstants.ACTIVE_Y);
+        pi.setPackageName(packageName.trim());
+        List<PackageInfo> piList = packageInfoService.queryByVo(page, pi);
+        if (CollectionUtils.isNotEmpty(piList)) {
+            result.put("errorMsg", "安装包名称重复，请重新填写！");
+            return result;
+        }
+        pi = new PackageInfo();
         pi.setActive(JcywConstants.ACTIVE_Y);
         if (StringUtils.isNotEmpty(groupId)) {
             pi.setGroupId(Long.parseLong(groupId));
-            List<PackageInfo> piList = packageInfoService.queryByVo(null, pi);
+            piList = packageInfoService.queryByVo(page, pi);
             if (CollectionUtils.isNotEmpty(piList)) {
                 result.put("errorMsg", "每个渠道组只能有一个通用包！不能重复添加！");
                 return result;
             }
         }
-        pi.setPackageName(packageName);
+        pi.setPackageName(packageName.trim());
         pi.setBatchCode(batchCode);
         pi.setBatchId(Long.parseLong(batchId));
         pi.setRemark(remark);

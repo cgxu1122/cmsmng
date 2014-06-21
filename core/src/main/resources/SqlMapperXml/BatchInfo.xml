@@ -12,8 +12,8 @@
         <result column="BATCH_PRODUCT_NAME" property="batchProductName" jdbcType="VARCHAR"/>
         <result column="BATCH_PRODUCT_NUM" property="batchProductNum" jdbcType="INTEGER"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <collection property="productInfoList" column="BATCH_ID" javaType="ArrayList"
                     ofType="com.ifhz.core.po.ProductInfo"

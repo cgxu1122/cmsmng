@@ -25,8 +25,8 @@
         <result column="TAGNUM" property="tagNum" jdbcType="INTEGER"/>
         <result column="TAGPRICE" property="tagPrice" jdbcType="NUMERIC"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ModelInfoResultMap">

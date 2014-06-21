@@ -101,6 +101,8 @@ function initPage() {
         queryParams: {groupId: '${groupId}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
         rownumbers: true,
         columns: [
             [
@@ -114,9 +116,14 @@ function initPage() {
                 {field: 'contact', title: '联系人', align: 'center', width: 80},
                 {field: 'phone', title: '联系方式', align: 'center', width: 80},
                 {field: 'laowuName', title: '劳务公司', align: 'center', width: 100},
-                {field: 'createTime', title: '创建日期', align: 'center', width: 80,
+                {field: 'createTime', title: '创建日期', align: 'center', width: 120,
                     formatter: function (value) {
-                        return new Date(value).formate("yyyy-MM-dd");
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'updateTime', title: '修改日期', align: 'center', width: 120,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             ]
@@ -234,11 +241,6 @@ function selectMng(mngId, mngName, type) {
     $('#mngdlg').dialog('close');
 }
 </script>
-<style type="text/css">
-    .datagrid .datagrid-pager {
-        position: relative;
-    }
-</style>
 </head>
 <body class="easyui-layout">
 <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">

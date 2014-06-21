@@ -33,7 +33,7 @@
     <logger name="com.ifhz" level="INFO"/>
 
     <!-- root -->
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="console"/>
         <appender-ref ref="rollingFile"/>
         <appender-ref ref="com.ibatis" />

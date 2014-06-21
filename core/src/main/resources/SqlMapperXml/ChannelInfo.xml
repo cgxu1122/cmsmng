@@ -17,8 +17,8 @@
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
         <result column="QUERY_IMEI_SOURCE" property="queryImeiSource" jdbcType="VARCHAR"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
 
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="LAOWU_NAME" property="laowuName" jdbcType="VARCHAR"/>

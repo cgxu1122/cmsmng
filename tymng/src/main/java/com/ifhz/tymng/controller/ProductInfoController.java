@@ -82,7 +82,10 @@ public class ProductInfoController extends BaseController {
         ProductInfo pi = new ProductInfo();
         pi.setProductName(productName.trim());
         pi.setActive(JcywConstants.ACTIVE_Y);
-        List<ProductInfo> list = productInfoService.queryByVo(null, pi);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ProductInfo> list = productInfoService.queryByVo(page, pi);
         if (list != null && list.size() > 0) {
             errorMsg = "产品名称重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -131,7 +134,10 @@ public class ProductInfoController extends BaseController {
         ProductInfo pi = new ProductInfo();
         pi.setProductName(productName.trim());
         pi.setActive(JcywConstants.ACTIVE_Y);
-        List<ProductInfo> list = productInfoService.queryByVo(null, pi);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ProductInfo> list = productInfoService.queryByVo(page, pi);
         if (list != null && list.size() > 0) {
             for (ProductInfo repeatCodePi : list) {
                 if (repeatCodePi.getProductId() != productInfo.getProductId()) {

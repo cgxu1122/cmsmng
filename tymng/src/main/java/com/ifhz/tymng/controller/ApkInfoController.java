@@ -77,6 +77,12 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         String softName = file.getName();
+        String extName = softName.substring(softName.lastIndexOf("."), softName.length());
+        if ("apk".equals(extName)) {
+            errorMsg = "请上传后缀名为Apk的文件！";
+            result.put("errorMsg", errorMsg);
+            return result;
+        }
         String md5Value = null;
         String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
@@ -102,7 +108,10 @@ public class ApkInfoController extends BaseController {
         //产品名称唯一性校验
         ApkInfo ai = new ApkInfo();
         ai.setApkName(apkName.trim());
-        List<ApkInfo> list = apkInfoService.queryByVo(null, ai);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ApkInfo> list = apkInfoService.queryByVo(page, ai);
         if (list != null && list.size() > 0) {
             errorMsg = "产品名称重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -154,7 +163,10 @@ public class ApkInfoController extends BaseController {
         //产品名称唯一性校验
         ApkInfo ai = new ApkInfo();
         ai.setApkName(apkName.trim());
-        List<ApkInfo> list = apkInfoService.queryByVo(null, ai);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ApkInfo> list = apkInfoService.queryByVo(page, ai);
         if (list != null && list.size() > 0) {
             for (ApkInfo repeatVersionAi : list) {
                 if (repeatVersionAi.getApkId() != apkInfo.getApkId()) {

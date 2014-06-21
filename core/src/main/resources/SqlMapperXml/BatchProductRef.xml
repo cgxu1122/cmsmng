@@ -7,7 +7,7 @@
     <resultMap id="BatchProductRefResultMap" type="com.ifhz.core.po.BatchProductRef">
         <id column="BATCH_ID" property="batchId" jdbcType="BIGINT"/>
         <id column="PRODUCT_ID" property="productId" jdbcType="BIGINT"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
         <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
     </resultMap>
