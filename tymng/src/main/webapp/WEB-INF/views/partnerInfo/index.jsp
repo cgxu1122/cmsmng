@@ -101,26 +101,33 @@
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
                         {field: 'partnerId', title: '合作方id', align: 'center', width: 100},
-                        {field: 'partnerName', title: '合作方名称', align: 'center', width: 300},
+                        {field: 'partnerName', title: '合作方名称', align: 'center', width: 250},
                         {field: 'username', title: '用户名', align: 'center', width: 150},
                         {field: 'password', title: '密码', align: 'center', width: 150},
-                        {field: 'queryImeiSource', title: '查看IMEI', align: 'center', width: 100,
+                        {field: 'queryImeiSource', title: '查看IMEI', align: 'center', width: 80,
                             formatter: function (value) {
                                 if (value == "Y")return "有权限";
                                 if (value == "N")return "无权限";
                             }},
-                        {field: 'exportImeiSource', title: '导出IMEI', align: 'center', width: 100,
+                        {field: 'exportImeiSource', title: '导出IMEI', align: 'center', width: 80,
                             formatter: function (value) {
                                 if (value == "Y")return "有权限";
                                 if (value == "N")return "无权限";
                             }},
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                             formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                             }
                         }
                     ]

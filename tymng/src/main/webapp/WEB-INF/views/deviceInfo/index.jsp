@@ -119,6 +119,8 @@ function initPage() {
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
         rownumbers: true,
         columns: [
             [
@@ -128,7 +130,12 @@ function initPage() {
                 {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
                 {field: 'createTime', title: '开始日期', align: 'center', width: 200,
                     formatter: function (value) {
-                        return new Date(value).formate("yyyy-MM-dd");
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'updateTime', title: '修改日期', align: 'center', width: 200,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             ]
@@ -155,7 +162,7 @@ function showChannelDialog(type, upChannelId) {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/channelInfo/list',
+        url: '<%=basePath%>/channelInfo/listAll',
         queryParams: {groupId: groupId},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -179,23 +186,28 @@ function showChannelDialog(type, upChannelId) {
     });
 }
 function reloadTree(groupId) {
-    $('#tt').tree({
-        url: "<%=basePath%>/channelInfo/listTree?groupId=" + groupId,
-        onClick: function (node) {
-            $('#parentIdCondition').val(node.id);
-            searchChannelEvt();
-        },
-        onBeforeExpand: function (node, param) {
-            $('#tt').tree('options').url = "<%=basePath%>/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
-        }
-    });
+    /* $('#tt').tree({
+     url: "
+    <%=basePath%>/channelInfo/listTree?groupId=" + groupId,
+     onClick: function (node) {
+     $('#parentIdCondition').val(node.id);
+     searchChannelEvt();
+     },
+     onBeforeExpand: function (node, param) {
+     $('#tt').tree('options').url = "
+    <%=basePath%>/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
+     }
+     });*/
+    //需求改为：不加树结构，默认全部展现出来
+    $('#searchGroupIdValue').val(groupId);
+    searchChannelEvt();
 }
 function searchChannelEvt() {
     var value = $('#searchChannelValue').val();
     var groupId = $('#searchGroupIdValue').val();
     var parentIdCondition = $('#parentIdCondition').val();
     $('#channeldg').datagrid({
-        url: "<%=basePath%>/channelInfo/list",
+        url: "<%=basePath%>/channelInfo/listAll",
         queryParams: {groupId: groupId, channelNameCondition: value, parentIdCondition: parentIdCondition}
     });
 }
@@ -309,12 +321,9 @@ function selectChannel(channelId, channelName, type) {
        onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
 </div>
 
-<div id="channeldlg" class="easyui-dialog easyui-layout" style="width:800px;height:400px;padding:10px 20px"
+<div id="channeldlg" class="easyui-dialog" style="width:800px;height:400px;padding:10px 20px"
      closed="true"
      buttons="#channeldlg-buttons">
-    <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
-        <ul id="tt"></ul>
-    </div>
     <div>
         <div>
             <table>

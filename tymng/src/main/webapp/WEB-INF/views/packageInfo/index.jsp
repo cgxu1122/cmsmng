@@ -136,15 +136,22 @@ function initPage() {
         queryParams: {type: '${type}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
         rownumbers: true,
         columns: [
             [
                 {field: 'packageName', title: '安装包名称', align: 'center', width: 150},
                 {field: 'batchCode', title: '批次号', align: 'center', width: 300},
                 {field: 'remark', title: '备注', align: 'center', width: 400},
-                {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                     formatter: function (value) {
-                        return new Date(value).formate("yyyy-MM-dd");
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             ]
@@ -189,19 +196,19 @@ function showApkDialog(type) {
         columns: [
             [
                 {field: 'apkName', title: 'APK名称', align: 'center', width: 150},
-                {field: 'desktopIcon', title: '是否创建快捷方式', align: 'center', width: 100,
+                {field: 'desktopIcon', title: '是否创建快捷方式', align: 'center', width: 120,
                     formatter: function (value, row, index) {
-                        return "<select id='desktopIcon" + row.apkId + "' name='desktopIcon' style='width:80px;'>"
-                                + "<option value='Y' selected=selected>创建快捷</option>"
-                                + "<option value='N'>不创建快捷</option>"
+                        return "<select id='desktopIcon" + row.apkId + "' name='desktopIcon' style='width:100px;'>"
+                                + "<option value='N' selected=selected>不创建快捷</option>"
+                                + "<option value='Y'>创建快捷</option>"
                                 + "</select>";
                     }
                 },
                 {field: 'autoRun', title: '是否自动运行', align: 'center', width: 100,
                     formatter: function (value, row, index) {
                         return "<select id='autoRun" + row.apkId + "' name='autoRun' style='width:80px;'>"
-                                + "<option value='Y' selected=selected>自启动</option>"
-                                + "<option value='N'>非自启动</option>"
+                                + "<option value='N' selected=selected>非自启动</option>"
+                                + "<option value='Y'>自启动</option>"
                                 + "</select>";
                     }
                 },
@@ -259,14 +266,8 @@ function selectApk(apkId, apkName, type) {
             $('#addApkList').append(apkHtml);
         }
     }
-    $('#apkdlg').dialog('close');
 }
 </script>
-<style type="text/css">
-    .datagrid .datagrid-pager {
-        position: relative;
-    }
-</style>
 </head>
 <body>
 <div id="toolBar">
@@ -302,21 +303,21 @@ function selectApk(apkId, apkName, type) {
     <form id="fm" novalidate>
         <input type="hidden" id="type" name="type" value="${type}"/>
 
-        <div class="fitem">
+        <div class="fitem" style="margin-left:7px">
             <label><font color="red">*</font>安装包名称:</label>
             <input id="packageName" name="packageName" class="easyui-validatebox" required="true" maxlength="50"
                    onblur="javascript:getBatchInfoByPackageName($(this).val(),1)">
         </div>
-        <div class="fitem" style="margin-left:23px">
+        <div class="fitem" style="margin-left:31px">
             <label><font color="red">*</font>批次号:</label>
             <input id="batchCode" name="batchCode" readonly="readonly">
             <input id="batchId" name="batchId" readonly="readonly" type="hidden">
         </div>
-        <div class="fitem" style="margin-left:40px">
+        <div class="fitem" style="margin-left:48px">
             <label>备注:</label>
             <input id="remark" name="remark" class="easyui-validatebox" maxlength="100">
         </div>
-        <div class="fitem" id="groupIdDiv">
+        <div class="fitem" id="groupIdDiv" style="margin-left:1px">
             <label>通用包渠道组:</label>
             <select class="easyui-combobox" name="groupId" id="groupId" style="width:150px;">
                 <option value="1">天音渠道</option>
@@ -324,8 +325,8 @@ function selectApk(apkId, apkName, type) {
                 <option value="3">其他渠道</option>
             </select>
         </div>
-        <div class="fitem" style="margin-left:21px">
-        <label>选择APK:</label>
+        <div class="fitem" style="margin-left:31px">
+            <label>选择APK:</label>
             <a href="javascript:void(0)"
                onclick="showApkDialog(1)">选择</a>
 
@@ -345,32 +346,32 @@ function selectApk(apkId, apkName, type) {
     <form id="upfm" novalidate>
         <input type="hidden" id="packageId" name="packageId"/>
 
-        <div class="fitem">
+        <div class="fitem" style="margin-left:8px">
             <label><font color="red">*</font>安装包名称:</label>
             <input type="text" name="packageName" class="easyui-validatebox" readonly="readonly">
-
-            <div class="fitem" style="margin-left:23px">
-                <label><font color="red">*</font>批次号:</label>
-                <input name="batchCode" readonly="readonly">
-            </div>
-            <div class="fitem" style="margin-left:40px">
-                <label>备注:</label>
-                <input name="remark" class="easyui-validatebox" maxlength="100" readonly="readonly">
-            </div>
-            <div class="fitem" id="upGroupIdDiv">
-                <label>通用包渠道组:</label>
-                <input name="groupName" class="easyui-validatebox" maxlength="100" readonly="readonly">
-            </div>
-            <div class="fitem" style="margin-left:21px">
+        </div>
+        <div class="fitem" style="margin-left:31px">
+            <label><font color="red">*</font>批次号:</label>
+            <input name="batchCode" readonly="readonly">
+        </div>
+        <div class="fitem" style="margin-left:48px">
+            <label>备注:</label>
+            <input name="remark" class="easyui-validatebox" maxlength="100" readonly="readonly">
+        </div>
+        <div class="fitem" id="upGroupIdDiv">
+            <label>通用包渠道组:</label>
+            <input name="groupName" class="easyui-validatebox" maxlength="100" readonly="readonly">
+        </div>
+        <div class="fitem" style="margin-left:31px">
             <label>选择APK:</label>
-                <a href="javascript:void(0)"
-                   onclick="showApkDialog(2)">选择</a>
+            <a href="javascript:void(0)"
+               onclick="showApkDialog(2)">选择</a>
 
-                <div id="upApkList">
-                </div>
+            <div id="upApkList">
             </div>
         </div>
-    </form>
+</div>
+</form>
 </div>
 
 </div>

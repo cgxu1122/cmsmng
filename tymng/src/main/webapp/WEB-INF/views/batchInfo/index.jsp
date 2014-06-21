@@ -125,21 +125,28 @@ function initPage() {
         queryParams: {groupId: '${groupId}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
         rownumbers: true,
         columns: [
             [
                 {field: 'batchCode', title: '批次', align: 'center', width: 100},
                 {field: 'groupName', title: '渠道组织', align: 'center', width: 150},
                 {field: 'batchProductName', title: '产品名称', align: 'center', width: 450},
-                {field: 'startTime', title: '开始时间', align: 'center', width: 150,
+                {field: 'startTime', title: '开始时间', align: 'center', width: 100,
                     formatter: function (value) {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'batchProductNum', title: '产品数量', align: 'center', width: 150},
-                {field: 'createTime', title: '创建日期', align: 'center', width: 100,
+                {field: 'batchProductNum', title: '产品数量', align: 'center', width: 80},
+                {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                     formatter: function (value) {
-                        return new Date(value).formate("yyyy-MM-dd");
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                     }
                 }
             ]

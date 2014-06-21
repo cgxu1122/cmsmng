@@ -93,7 +93,10 @@ public class PartnerInfoController extends BaseController {
         PartnerInfo pi = new PartnerInfo();
         pi.setPartnerName(partnerName.trim());
         pi.setActive(JcywConstants.ACTIVE_Y);
-        List<PartnerInfo> list = partnerInfoService.queryByVo(null, pi);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<PartnerInfo> list = partnerInfoService.queryByVo(page, pi);
         if (list != null && list.size() > 0) {
             errorMsg = "设备编码重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -142,7 +145,10 @@ public class PartnerInfoController extends BaseController {
         PartnerInfo pi = new PartnerInfo();
         pi.setPartnerName(partnerName.trim());
         pi.setActive(JcywConstants.ACTIVE_Y);
-        List<PartnerInfo> list = partnerInfoService.queryByVo(null, pi);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<PartnerInfo> list = partnerInfoService.queryByVo(page, pi);
         if (list != null && list.size() > 0) {
             for (PartnerInfo repeatCodePi : list) {
                 if (repeatCodePi.getPartnerId() != partnerInfo.getPartnerId()) {

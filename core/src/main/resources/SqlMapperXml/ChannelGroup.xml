@@ -7,7 +7,7 @@
     <resultMap id="ChannelGroupResultMap" type="com.ifhz.core.po.ChannelGroup">
         <id column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ChannelGroupResultMap">

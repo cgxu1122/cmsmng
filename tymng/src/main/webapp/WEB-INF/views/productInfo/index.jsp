@@ -100,6 +100,8 @@
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
@@ -111,14 +113,19 @@
                                 if (value == "Y")return "有权限";
                                 if (value == "N")return "无权限";
                             }},
-                        {field: 'queryStartTime', title: '查看开始时间', align: 'center', width: 200,
+                        {field: 'queryStartTime', title: '查看开始时间', align: 'center', width: 150,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                             formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                             }
                         }
                     ]

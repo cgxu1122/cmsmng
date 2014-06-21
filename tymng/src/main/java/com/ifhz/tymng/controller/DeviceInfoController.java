@@ -78,7 +78,10 @@ public class DeviceInfoController extends BaseController {
         DeviceInfo di = new DeviceInfo();
         di.setDeviceCode(deviceCode.trim());
         di.setActive(JcywConstants.ACTIVE_Y);
-        List<DeviceInfo> list = deviceInfoService.queryByVo(null, di);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<DeviceInfo> list = deviceInfoService.queryByVo(page, di);
         if (list != null && list.size() > 0) {
             errorMsg = "设备编码重复，请重新输入！";
             result.put("errorMsg", errorMsg);
@@ -123,7 +126,10 @@ public class DeviceInfoController extends BaseController {
         di.setDeviceCode(deviceCode.trim());
         di.setGroupId(deviceInfo.getGroupId());
         di.setActive(JcywConstants.ACTIVE_Y);
-        List<DeviceInfo> list = deviceInfoService.queryByVo(null, di);
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<DeviceInfo> list = deviceInfoService.queryByVo(page, di);
         if (list != null && list.size() > 0) {
             for (DeviceInfo repeatCodeCi : list) {
                 if (repeatCodeCi.getDeviceId() != deviceInfo.getDeviceId()) {

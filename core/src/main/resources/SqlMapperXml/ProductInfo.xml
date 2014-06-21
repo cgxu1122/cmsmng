@@ -9,10 +9,10 @@
         <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
         <result column="PARTNER_ID" property="partnerId" jdbcType="BIGINT"/>
         <result column="QUERY_DATA_SOURCE" property="queryDataSource" jdbcType="VARCHAR"/>
-        <result column="QUERY_START_TIME" property="queryStartTime" jdbcType="DATE"/>
+        <result column="QUERY_START_TIME" property="queryStartTime" jdbcType="TIMESTAMP"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
 
         <result column="PARTNER_NAME" property="partnerName" jdbcType="VARCHAR"/>
     </resultMap>

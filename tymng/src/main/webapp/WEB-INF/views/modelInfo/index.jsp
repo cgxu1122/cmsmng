@@ -98,6 +98,8 @@
                 queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
@@ -105,30 +107,26 @@
                         {field: 'ua', title: 'UA', align: 'center', width: 200},
                         {field: 'modelName', title: '机型全名', align: 'center', width: 200},
                         {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
-                        {field: 'tagNum', title: '标签数量（个）', align: 'center', width: 150},
-                        {field: 'tagPrice', title: '标签单价（元）', align: 'center', width: 150},
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
+                        {field: 'tagNum', title: '标签数量（个）', align: 'center', width: 120},
+                        {field: 'tagPrice', title: '标签单价（元）', align: 'center', width: 120},
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                             formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                             }
                         }
                     ]
                 ]
             });
         }
-        function exportData() {
-            var value = $('#searchValue').val();
-            window.location.href = "<%=basePath%>/modelInfo/export?groupId=${groupId}&modelNameCondition=" + value;
-            /*$.ajax({
-             url: '
-            <%=basePath%>/modelInfo/export',
-             data: {groupId: '
-            ${groupId}',modelNameCondition: value},
-             success:function(){
-             alert("aaaa");
-             }
-             });*/
-        }
+        /* function exportData() {
+         var value = $('#searchValue').val();
+         window.location.href = "<%=basePath%>/modelInfo/export?groupId=${groupId}&modelNameCondition=" + value;
+         }*/
     </script>
 </head>
 <body>
@@ -151,9 +149,6 @@
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>
                 </td>
             </tr>
         </table>

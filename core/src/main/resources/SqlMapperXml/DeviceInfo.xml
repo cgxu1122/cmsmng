@@ -10,8 +10,8 @@
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
-        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
 
         <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR"/>

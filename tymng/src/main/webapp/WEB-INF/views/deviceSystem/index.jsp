@@ -99,20 +99,27 @@
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
+                pageSize: 100,
+                pageList: [50, 100, 200],
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'version', title: '版本号', align: 'center', width: 150},
+                        {field: 'version', title: '版本号', align: 'center', width: 100},
                         {field: 'ftpPath', title: '下载路径', align: 'center', width: 500},
-                        {field: 'effectiveTime', title: '生效日期', align: 'center', width: 200,
+                        {field: 'effectiveTime', title: '生效日期', align: 'center', width: 150,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'createTime', title: '创建日期', align: 'center', width: 200,
-                             formatter: function (value) {
-                             return new Date(value).formate("yyyy-MM-dd");
-                             }
+                        {field: 'createTime', title: '创建日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        {field: 'updateTime', title: '修改日期', align: 'center', width: 140,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
                         }
                     ]
                 ]

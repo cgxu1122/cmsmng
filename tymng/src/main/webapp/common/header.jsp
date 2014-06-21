@@ -12,6 +12,15 @@
 <script type="text/javascript" src="<%=basePath %>/common/js/dateCommon.js"></script>
 <script type="text/javascript" src="<%=basePath %>/common/js/utilExtentds.js"></script>
 <style>
+    .datagrid .datagrid-pager {
+        position: relative;
+    }
+
+    .datagrid-row-selected {
+        background: #3CB371;
+        color: #000000;
+    }
+
     table {
         text-align: center !important;
     }
