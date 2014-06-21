@@ -1,0 +1,103 @@
+/*table*/
+table {
+    font-size: 12px;
+    margin: 0px auto;
+    border-collapse: collapse;
+}
+
+table td {
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+
+tr.t1 td {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+tr.t2 td {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+}
+
+tr.t3 td {
+    background-color: #FFEDD2;
+    border: 1px solid #ccc;
+}
+
+th {
+    border: 1px solid #ccc;
+    padding: 3px;
+    font-weight: bold;
+    text-align: center;
+    background: #E4E4E4;
+}
+
+tfoot tr td {
+    background: #E4E4E4;
+    border: 1px solid #ccc;
+}
+
+/*******======================*******/
+
+.ph_a_style {
+    line-height: 10px;
+}
+
+.book_red {
+    color: red;
+}
+
+.ph_info_td_left {
+    text-align: right;
+    height: 20px;
+}
+
+.ph_info_td_right {
+    padding-left: 5px;
+    text-align: left;
+    height: 20px;
+}
+
+.ph_info_td_center {
+    text-align: center;
+    height: 20px;
+}
+
+.ph_button {
+    /*word-spacing 5px;*/
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ph_input_text {
+    padding-left: 4px;
+    height: 20px;
+    padding-top: 6px;
+}
+
+.ph_th_list {
+    background: #E4E4E4;
+    height: 30px;
+}
+
+.ph_tf_list {
+    background: #E9E9E4;
+    height: 30px;
+
+}
+
+.ph_td_list {
+    height: 28px;
+}
+
+.ph_th_title {
+    font-size: 15px;
+    height: 30px;
+}
+
+.ph_text_right {
+    text-align: right;
+}

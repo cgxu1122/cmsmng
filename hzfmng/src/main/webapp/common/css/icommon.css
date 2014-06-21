@@ -1,0 +1,372 @@
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 255, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.i_accordion_menu {
+    color: #0697da;
+}
+
+.i_accordion_menu .panel-with-icon {
+    padding-left: 0px;
+}
+
+.i_accordion_menu .accordion-header-selected {
+    background: #c1cfff;
+}
+
+.i_accordion_menu .nav-item {
+    padding: 5px 0px 5px 10px;
+    margin: 5px 6px 10px 6px;
+    cursor: pointer;
+}
+
+.i_accordion_menu .nav-item:hover {
+    background: rgba(0, 0, 255, 0.20);
+    border-radius: 6px;
+}
+
+.i_accordion_menu .nav-item:hover a {
+    display: block;
+    color: #00f;
+}
+
+.i_accordion_menu .nav-item a {
+    color: #0697da;
+    text-decoration: none;
+}
+
+.i_accordion_menu .nav-item a img {
+    display: inline-block;
+    margin-bottom: 6px;
+    background: url(../../image/money1.png) center center no-repeat;
+}
+
+.datagrid .datagrid-pager {
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    right: 0px;
+    border: 1px solid #95B8E7;
+    border-bottom: none;
+}
+
+.menu_icon {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -180px -280px;
+}
+
+.menu_icon_main {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -100px -140px;
+}
+
+.menu_icon_client {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -360px -200px;
+}
+
+.menu_icon_input {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat 0px -40px;
+}
+
+.menu_icon_zytp {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -20px -460px;
+}
+
+.menu_icon_datadeal {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -380px -60px;
+}
+
+.menu_icon_wdxx {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -100px -100px;
+}
+
+.menu_icon_wdtu {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -40px 0px;
+}
+
+.menu_icon_thjl {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -360px -40px;
+}
+
+.menu_icon_wjldgl {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -300px -420px;
+}
+
+.menu_icon_smsrecords {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -140px -180px;
+}
+
+.menu_icon_massmessage {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -380px -180px;
+}
+
+.menu_icon_smsmodelmanage {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -120px -160px;
+}
+
+.menu_icon_cpflgl {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -320px -60px;
+}
+
+.menu_icon_cpgllb {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -300px -60px;
+}
+
+.menu_icon_ddgllb {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -180px -280px;
+}
+
+.menu_icon_insert_order {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -200px -280px;
+}
+
+.menu_icon_tjfxzhsjtjfx {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -240px -80px;
+}
+
+.menu_icon_bmtj {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -260px -80px;
+}
+
+.menu_icon_mqueue {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -140px -400px;
+}
+
+.menu_icon_magent {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -60px -400px;
+}
+
+.menu_icon_mcalls {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -120px -400px;
+}
+
+.menu_icon_role {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -260px -480px;
+}
+
+.menu_icon_home {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -200px -220px;
+}
+
+.menu_icon_department {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -140px -380px;
+}
+
+.menu_icon_user {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -80px -420px;
+}
+
+.menu_icon_service {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+
+    background: url(../../image/tabicons.gif) no-repeat -100px -480px;
+}
+
+.menu_icon_sjkbf {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat 0px -178px;
+}
+
+.menu_icon_sysconfig {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -20px -100px;
+}
+
+.menu_icon_setting {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -160px -220px;
+}
+
+.menu_icon_announcement {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -200px -400px;
+}
+
+.menu_icon_userset {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -200px -220px;
+}
+
+.menu_icon_addressbook {
+    border: 0px;
+    padding: 2px 8px;
+    margin-right: 5px;
+    width: 0px;
+    background: url(../../image/tabicons.gif) no-repeat -80px -60px;
+}
+
+#mymenu_div a {
+    padding-left: 30px;
+    margin-top: 2px;
+    width: 80%;
+    height: 23px;
+    line-height: 23px;
+    display: block;
+}
+
+#mymenu_div a:visited, #mymenu_div a:link {
+    color: #335B64;
+    text-decoration: none;
+}
+
+#mymenu_div a:hover {
+    color: #EB8A3D;
+    text-decoration: none;
+    background: url(../../image/f3.gif) no-repeat -2px -9px;
+}
