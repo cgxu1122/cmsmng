@@ -33,7 +33,7 @@
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
-        <result column="STAT_DATE" property="statDate" jdbcType="DATE"/>
+        <result column="STAT_DATE" property="processDate" jdbcType="DATE"/>
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
 
         <result column="DEVICE_PRS_DAY_NUM" property="devicePrsDayNum" jdbcType="BIGINT"/>
@@ -68,7 +68,7 @@
         #{channelId,jdbcType=BIGINT},
         #{batchCode,jdbcType=VARCHAR},
         #{deviceCode,jdbcType=VARCHAR},
-        #{statDate,jdbcType=DATE},
+        #{processDate,jdbcType=DATE},
         #{deviceCode,jdbcType=VARCHAR},
         #{laowuId,jdbcType=BIGINT},
         #{devicePrsDayNum,jdbcType=BIGINT},

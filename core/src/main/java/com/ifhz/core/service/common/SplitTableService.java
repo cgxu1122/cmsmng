@@ -10,36 +10,20 @@ import java.util.List;
  * Time: 12:47
  */
 public interface SplitTableService {
+
     /**
-     * 获取加工设备数据当前插入的表名称
+     * 获取流水数据当前插入的表名称
      *
      * @param now
      * @return
      */
-    public String getTableNameForDeviceByNow(Date now);
+    public String getCurrentTableName(Date now);
 
     /**
-     * 获取计数器数据当前插入的表名称
+     * 流水数据 验证数据需要查询的表名列表
      *
      * @param now
      * @return
      */
-    public String getTableNameForCounterByNow(Date now);
-
-
-    /**
-     * 获取加工设备数据 验证数据需要查询的表名列表
-     *
-     * @param now
-     * @return
-     */
-    public List<String> getTableListForDeviceByNow(Date now);
-
-    /**
-     * 获取计数器数据 验证数据需要查询的表名列表
-     *
-     * @param now
-     * @return
-     */
-    public List<String> getTableListForCounterByNow(Date now);
+    public List<String> getTableNameList(Date now);
 }

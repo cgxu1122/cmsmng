@@ -24,6 +24,7 @@ public class DataLog implements Serializable {
     private Date deviceUploadTime;
     private Integer active;
     private Date counterUploadTime;
+    private String md5Key;
 
     private String tableName;
 
@@ -131,6 +132,14 @@ public class DataLog implements Serializable {
         this.tableName = tableName;
     }
 
+    public String getMd5Key() {
+        return md5Key;
+    }
+
+    public void setMd5Key(String md5Key) {
+        this.md5Key = md5Key;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("DataLog{");
@@ -138,14 +147,15 @@ public class DataLog implements Serializable {
         sb.append(", imei='").append(imei).append('\'');
         sb.append(", ua='").append(ua).append('\'');
         sb.append(", modelName='").append(modelName).append('\'');
-        sb.append(", channelId='").append(channelId).append('\'');
+        sb.append(", channelId=").append(channelId);
         sb.append(", groupId=").append(groupId);
         sb.append(", deviceCode='").append(deviceCode).append('\'');
         sb.append(", batchCode='").append(batchCode).append('\'');
         sb.append(", processTime=").append(processTime);
         sb.append(", deviceUploadTime=").append(deviceUploadTime);
-        sb.append(", counterUploadTime=").append(counterUploadTime);
         sb.append(", active=").append(active);
+        sb.append(", counterUploadTime=").append(counterUploadTime);
+        sb.append(", md5Key='").append(md5Key).append('\'');
         sb.append(", tableName='").append(tableName).append('\'');
         sb.append('}');
         return sb.toString();

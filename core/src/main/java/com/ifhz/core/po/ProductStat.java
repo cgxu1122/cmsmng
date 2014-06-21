@@ -16,7 +16,7 @@ public class ProductStat implements Serializable {
     private Long groupId;
     private String ua;
     private String modelName;
-    private Date statDate;
+    private Date processDate;
 
     private Long productPrsDayNum;
     private Long productUpdDayNum;
@@ -78,12 +78,12 @@ public class ProductStat implements Serializable {
         this.modelName = modelName;
     }
 
-    public Date getStatDate() {
-        return statDate;
+    public Date getProcessDate() {
+        return processDate;
     }
 
-    public void setStatDate(Date statDate) {
-        this.statDate = statDate;
+    public void setProcessDate(Date processDate) {
+        this.processDate = processDate;
     }
 
     public Long getProductPrsDayNum() {

@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.ImeiQueryAdapter;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.imei.ImeiQueryService;
-import com.ifhz.core.service.imei.bean.CounterResult;
-import com.ifhz.core.service.imei.bean.DeviceResult;
+import com.ifhz.core.service.imei.bean.DataLogResult;
 import com.ifhz.core.service.imei.bean.ImeiResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -52,9 +51,9 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
     }
 
 
-    private List<DeviceResult> queryDeviceResultList(Date date) {
-        List<DeviceResult> result = Lists.newArrayList();
-        List<String> deviceTableList = splitTableService.getTableListForDeviceByNow(date);
+    private List<DataLogResult> queryDeviceResultList(Date date) {
+        List<DataLogResult> result = Lists.newArrayList();
+        List<String> deviceTableList = splitTableService.getTableNameList(date);
 
         return result;
     }
@@ -68,19 +67,8 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         return null;
     }
 
-    private List<CounterQueryTask> genCounterTaskList(List<String> counterTableList) {
-        return null;
-    }
 
-    private List<CounterResult> queryCounterResultList(Date date) {
-        List<String> counterTableList = splitTableService.getTableListForCounterByNow(date);
-        List<CounterResult> result = Lists.newArrayList();
-
-        return result;
-    }
-
-
-    private class DeviceQueryTask implements Callable<List<DeviceResult>> {
+    private class DeviceQueryTask implements Callable<List<DataLogResult>> {
 
         private String tableName;
 
@@ -89,22 +77,9 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         }
 
         @Override
-        public List<DeviceResult> call() throws Exception {
+        public List<DataLogResult> call() throws Exception {
             return imeiQueryAdapter.queryListForDeviceResult(tableName);
         }
     }
 
-    private class CounterQueryTask implements Callable<List<CounterResult>> {
-
-        private String tableName;
-
-        private CounterQueryTask(String tableName) {
-            this.tableName = tableName;
-        }
-
-        @Override
-        public List<CounterResult> call() throws Exception {
-            return imeiQueryAdapter.queryListForCounterResult(tableName);
-        }
-    }
 }

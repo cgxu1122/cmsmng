@@ -26,7 +26,7 @@ import java.util.concurrent.*;
 @Service("dataLogApiService")
 public class DataLogApiServiceImpl implements DataLogApiService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceProcessLogServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataLogApiServiceImpl.class);
 
     private static final Executor executor = Executors.newFixedThreadPool(256);
 
@@ -39,7 +39,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insertDeviceData(DataLog record) {
         Date now = new Date();
-        String tableName = splitTableService.getTableNameForCounterByNow(now);
+        String tableName = splitTableService.getCurrentTableName(now);
         if (StringUtils.isNotBlank(tableName)) {
             record.setTableName(tableName);
             return dataLogAdapter.insertDeviceData(record);
@@ -51,7 +51,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updateCounterData(DataLog record) {
         Date now = new Date();
-        String tableName = splitTableService.getTableNameForCounterByNow(now);
+        String tableName = splitTableService.getCurrentTableName(now);
         if (StringUtils.isNotBlank(tableName)) {
             record.setTableName(tableName);
             return dataLogAdapter.updateCounterData(record);
@@ -71,7 +71,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
         CompletionService<DataLog> ecs = new ExecutorCompletionService<DataLog>(executor);
         try {
             int count = 0;
-            List<String> tableList = splitTableService.getTableListForCounterByNow(now);
+            List<String> tableList = splitTableService.getTableNameList(now);
             for (String tableName : tableList) {
                 QueryHasImeiTask task = new QueryHasImeiTask(imei, tableName);
                 Future<DataLog> future = ecs.submit(task);

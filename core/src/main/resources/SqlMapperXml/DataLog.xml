@@ -11,10 +11,11 @@
         <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
-        <result column="PROCESS_TIME" property="processTime" jdbcType="TIMESTAMP"/>
+        <result column="PROCESS_TIME" property="processTime" jdbcType="DATE"/>
         <result column="DEVICE_UPLOAD_TIME" property="deviceUploadTime" jdbcType="TIMESTAMP"/>
         <result column="ACTIVE" property="active" jdbcType="INTEGER"/>
         <result column="COUNTER_UPLOAD_TIME" property="counterUploadTime" jdbcType="TIMESTAMP"/>
+        <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="CommonFieldSql">
@@ -29,7 +30,8 @@
         PROCESS_TIME,
         DEVICE_UPLOAD_TIME,
         ACTIVE,
-        COUNTER_UPLOAD_TIME
+        COUNTER_UPLOAD_TIME,
+        MD5_KEY
     </sql>
 
     <insert id="insertDeviceData" parameterType="com.ifhz.core.po.DataLog">
@@ -50,10 +52,11 @@
         #{deviceCode,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{batchCode,jdbcType=VARCHAR},
-        #{processTime,jdbcType=TIMESTAMP},
+        #{processTime,jdbcType=DATE},
         #{deviceUploadTime,jdbcType=TIMESTAMP},
         #{active,jdbcType=INTEGER}
-        #{counterUploadTime,jdbcType=TIMESTAMP}
+        #{counterUploadTime,jdbcType=TIMESTAMP},
+        #{md5Key,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -68,7 +71,7 @@
     <update id="updateCounterData" parameterType="com.ifhz.core.po.DataLog">
         update ${tableName}
         set ACTIVE = #{active},
-            COUNTER_UPLOAD_TIME = #{counterUploadTime}
+        COUNTER_UPLOAD_TIME = #{counterUploadTime}
         where ID = #{id}
     </update>
 
@@ -76,6 +79,9 @@
         select count(0)
         from ${tableName}
         where DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+        <if test="md5Key != null">
+            and MD5_KEY = #{md5Key}
+        </if>
     </select>
 
     <select id="queryTotalCountForCounter" resultType="long">
@@ -84,6 +90,9 @@
         where COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
         <if test="active != null">
             and ACTIVE = #{active}
+        </if>
+        <if test="md5Key != null">
+            and MD5_KEY = #{md5Key}
         </if>
     </select>
 

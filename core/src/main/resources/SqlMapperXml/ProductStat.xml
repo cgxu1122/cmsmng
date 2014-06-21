@@ -9,7 +9,7 @@
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
         <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
-        <result column="STAT_DATE" property="statDate" jdbcType="DATE"/>
+        <result column="STAT_DATE" property="processDate" jdbcType="DATE"/>
 
         <result column="PRODUCT_PRS_DAY_NUM" property="productPrsDayNum" jdbcType="BIGINT"/>
         <result column="PRODUCT_UPD_DAY_NUM" property="productUpdDayNum" jdbcType="BIGINT"/>
@@ -53,7 +53,7 @@
         #{ua,jdbcType=VARCHAR},
         #{modelName,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
-        #{statDate,jdbcType=DATE},
+        #{processDate,jdbcType=DATE},
         #{productPrsDayNum,jdbcType=BIGINT},
         #{productUpdDayNum,jdbcType=BIGINT},
         #{prsActiveTotalNum,jdbcType=BIGINT},

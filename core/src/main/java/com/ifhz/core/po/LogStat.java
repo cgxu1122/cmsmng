@@ -19,7 +19,7 @@ public class LogStat implements Serializable {
     private Long channelId;
     private String batchCode;
     private String deviceCode;
-    private Date statDate;
+    private Date processDate;
     private Long laowuId;
 
     private Long devicePrsDayNum;
@@ -98,12 +98,12 @@ public class LogStat implements Serializable {
         this.deviceCode = deviceCode;
     }
 
-    public Date getStatDate() {
-        return statDate;
+    public Date getProcessDate() {
+        return processDate;
     }
 
-    public void setStatDate(Date statDate) {
-        this.statDate = statDate;
+    public void setProcessDate(Date processDate) {
+        this.processDate = processDate;
     }
 
     public Long getLaowuId() {

@@ -1,5 +1,6 @@
 package com.ifhz.core.service.common.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.common.SplitTableService;
@@ -24,30 +25,26 @@ import java.util.List;
 public class SplitTableServiceImpl implements SplitTableService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SplitTableServiceImpl.class);
-    private static String deviceTablePrefix = "TY_DEVICE_PROCESS_LOG_";
-    private static String counterTablePrefix = "TY_COUNTER_UPLOAD_LOG_";
+    private static String TablePrefix = "TY_DATA_LOG_";
 
     @Resource(name = "dictInfoCacheService")
     private DictInfoCacheService dictInfoCacheService;
 
 
-    public String getTableNameForDeviceByNow(Date now) {
-        return deviceTablePrefix + getTableSuffix(now);
-    }
-
-    public String getTableNameForCounterByNow(Date now) {
-        return counterTablePrefix + getTableSuffix(now);
+    @Override
+    public String getCurrentTableName(Date now) {
+        String tableName = TablePrefix + getTableSuffix(now);
+        LOGGER.info("{},{}", JSON.toJSONString(now), tableName);
+        return tableName;
     }
 
     @Override
-    public List<String> getTableListForDeviceByNow(Date now) {
-        return getQueryTableList(deviceTablePrefix, now);
+    public List<String> getTableNameList(Date now) {
+        List<String> list = getQueryTableList(TablePrefix, now);
+        LOGGER.info("{},{}", JSON.toJSONString(now), list);
+        return list;
     }
 
-    @Override
-    public List<String> getTableListForCounterByNow(Date now) {
-        return getQueryTableList(counterTablePrefix, now);
-    }
 
     private String getTableSuffix(Date now) {
         StringBuffer buff = new StringBuffer("");

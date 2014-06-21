@@ -6,9 +6,10 @@ package com.ifhz.core.service.imei.bean;
  * Date: 2014/6/16
  * Time: 22:49
  */
-public class DeviceResult {
+public class DataLogResult {
 
     private String imei;
+    private String ua;
     private String modelName;
     private String channelId;
     private String processTime;
@@ -19,6 +20,14 @@ public class DeviceResult {
 
     public void setImei(String imei) {
         this.imei = imei;
+    }
+
+    public String getUa() {
+        return ua;
+    }
+
+    public void setUa(String ua) {
+        this.ua = ua;
     }
 
     public String getModelName() {

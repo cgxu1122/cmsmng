@@ -57,7 +57,6 @@
         </property>
         <property name="mapperLocations">
             <list>
-                <value>classpath:SqlMapperXml/Example.xml</value>
                 <value>classpath:SqlMapperXml/ChannelGroup.xml</value>
                 <value>classpath:SqlMapperXml/ChannelInfo.xml</value>
                 <value>classpath:SqlMapperXml/ModelInfo.xml</value>
@@ -94,10 +93,6 @@
         </property>
     </bean>
 
-    <bean id="exampleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.ExampleMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
     <bean id="channelGroupMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.ChannelGroupMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
@@ -204,4 +199,5 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.ImeiTempMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+
 </beans>
