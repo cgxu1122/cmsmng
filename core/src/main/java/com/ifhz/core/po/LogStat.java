@@ -1,0 +1,188 @@
+package com.ifhz.core.po;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * 类描述
+ * User: chenggangxu@sohu-inc.com
+ * Date: 2014/6/21
+ * Time: 0:57
+ */
+public class LogStat implements Serializable {
+    private static final long serialVersionUID = -6324608077983844094L;
+
+    private Long id;
+    private String ua;
+    private String modelName;
+    private Long groupId;
+    private Long channelId;
+    private String batchCode;
+    private String deviceCode;
+    private Date statDate;
+    private Long laowuId;
+
+    private Long devicePrsDayNum;
+    private Long deviceUpdDayNum;
+    private Long prsActiveTotalNum;
+    private Long prsActiveValidNum;
+    private Long prsActiveInvalidNum;
+    private Long prsInvalidReplaceNum;
+    private Long prsInvalidUninstallNum;
+    private Long counterUpdDayNum;
+
+    private String queryKey;
+    private String md5Key;
+
+    public String getMd5Key() {
+        return md5Key;
+    }
+
+    public void setMd5Key(String md5Key) {
+        this.md5Key = md5Key;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUa() {
+        return ua;
+    }
+
+    public void setUa(String ua) {
+        this.ua = ua;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
+
+    public String getDeviceCode() {
+        return deviceCode;
+    }
+
+    public void setDeviceCode(String deviceCode) {
+        this.deviceCode = deviceCode;
+    }
+
+    public Date getStatDate() {
+        return statDate;
+    }
+
+    public void setStatDate(Date statDate) {
+        this.statDate = statDate;
+    }
+
+    public Long getLaowuId() {
+        return laowuId;
+    }
+
+    public void setLaowuId(Long laowuId) {
+        this.laowuId = laowuId;
+    }
+
+    public Long getDevicePrsDayNum() {
+        return devicePrsDayNum;
+    }
+
+    public void setDevicePrsDayNum(Long devicePrsDayNum) {
+        this.devicePrsDayNum = devicePrsDayNum;
+    }
+
+    public Long getDeviceUpdDayNum() {
+        return deviceUpdDayNum;
+    }
+
+    public void setDeviceUpdDayNum(Long deviceUpdDayNum) {
+        this.deviceUpdDayNum = deviceUpdDayNum;
+    }
+
+    public Long getPrsActiveTotalNum() {
+        return prsActiveTotalNum;
+    }
+
+    public void setPrsActiveTotalNum(Long prsActiveTotalNum) {
+        this.prsActiveTotalNum = prsActiveTotalNum;
+    }
+
+    public Long getPrsActiveValidNum() {
+        return prsActiveValidNum;
+    }
+
+    public void setPrsActiveValidNum(Long prsActiveValidNum) {
+        this.prsActiveValidNum = prsActiveValidNum;
+    }
+
+    public Long getPrsActiveInvalidNum() {
+        return prsActiveInvalidNum;
+    }
+
+    public void setPrsActiveInvalidNum(Long prsActiveInvalidNum) {
+        this.prsActiveInvalidNum = prsActiveInvalidNum;
+    }
+
+    public Long getPrsInvalidReplaceNum() {
+        return prsInvalidReplaceNum;
+    }
+
+    public void setPrsInvalidReplaceNum(Long prsInvalidReplaceNum) {
+        this.prsInvalidReplaceNum = prsInvalidReplaceNum;
+    }
+
+    public Long getPrsInvalidUninstallNum() {
+        return prsInvalidUninstallNum;
+    }
+
+    public void setPrsInvalidUninstallNum(Long prsInvalidUninstallNum) {
+        this.prsInvalidUninstallNum = prsInvalidUninstallNum;
+    }
+
+    public Long getCounterUpdDayNum() {
+        return counterUpdDayNum;
+    }
+
+    public void setCounterUpdDayNum(Long counterUpdDayNum) {
+        this.counterUpdDayNum = counterUpdDayNum;
+    }
+
+    public String getQueryKey() {
+        return queryKey;
+    }
+
+    public void setQueryKey(String queryKey) {
+        this.queryKey = queryKey;
+    }
+}

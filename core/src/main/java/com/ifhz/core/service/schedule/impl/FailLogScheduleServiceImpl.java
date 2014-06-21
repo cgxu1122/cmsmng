@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +27,7 @@ public class FailLogScheduleServiceImpl implements FailLogScheduleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(FailLogScheduleServiceImpl.class);
     private static final long PAGESIZE = 10000;
 
-    @Resource(name = "counterFailLogService")
     private CounterFailLogService counterFailLogService;
-    @Resource(name = "deviceProcessLogService")
     private DeviceProcessLogService deviceProcessLogService;
 
     @Override

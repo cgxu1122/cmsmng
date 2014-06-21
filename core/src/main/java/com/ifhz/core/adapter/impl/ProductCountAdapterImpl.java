@@ -4,17 +4,13 @@ import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.ProductCountAdapter;
 import com.ifhz.core.mapper.ProductCountMapper;
 import com.ifhz.core.po.ProductCount;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Created by lm on 14-5-21.
  */
-@Repository("productCountAdapter")
 public class ProductCountAdapterImpl implements ProductCountAdapter {
-    @Resource(name = "productCountMapper")
     private ProductCountMapper productCountMapper;
 
     @Override

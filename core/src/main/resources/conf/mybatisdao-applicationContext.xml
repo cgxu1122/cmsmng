@@ -68,8 +68,6 @@
                 <value>classpath:SqlMapperXml/BatchProductRef.xml</value>
                 <value>classpath:SqlMapperXml/DeviceSystem.xml</value>
                 <value>classpath:SqlMapperXml/DictInfo.xml</value>
-                <value>classpath:SqlMapperXml/LogCount.xml</value>
-                <value>classpath:SqlMapperXml/ProductCount.xml</value>
                 <value>classpath:SqlMapperXml/Role.xml</value>
                 <value>classpath:SqlMapperXml/User.xml</value>
                 <value>classpath:SqlMapperXml/Resource.xml</value>
@@ -84,6 +82,8 @@
                 <value>classpath:SqlMapperXml/ImeiTemp.xml</value>
                 <value>classpath:SqlMapperXml/CounterTempLog.xml</value>
                 <value>classpath:SqlMapperXml/DataLog.xml</value>
+                <value>classpath:SqlMapperXml/LogStat.xml</value>
+                <value>classpath:SqlMapperXml/ProductStat.xml</value>
             </list>
         </property>
     </bean>
@@ -148,12 +148,12 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.DictInfoMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="logCountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.LogCountMapper"/>
+    <bean id="logStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.LogStatMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="productCountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.ProductCountMapper"/>
+    <bean id="productStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.ProductStatMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
     <bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">

@@ -16,27 +16,19 @@ import com.ifhz.core.service.statistics.LogCountService;
 import com.ifhz.core.service.statistics.handle.BeanConvertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by lm on 14-5-22.
  */
-@Service("logCountService")
 public class LogCountServiceImpl implements LogCountService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCountServiceImpl.class);
-    @Resource(name = "logCountAdapter")
     private LogCountAdapter logCountAdapter;
-    @Resource(name = "deviceProcessLogAdapter")
     private DeviceProcessLogAdapter deviceProcessLogAdapter;
-    @Resource(name = "counterUploadLogAdapter")
     private CounterUploadLogAdapter counterUploadLogAdapter;
-    @Resource(name = "splitTableService")
     private SplitTableService splitTableService;
-    @Resource(name = "channelInfoService")
     private ChannelInfoService channelInfoService;
 
     public final int pageSize = 10000;

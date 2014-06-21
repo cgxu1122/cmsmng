@@ -14,7 +14,6 @@ import com.ifhz.tymng.utils.toexcel.ExportToExcel;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,13 +31,9 @@ import java.util.*;
 public class ReportCountController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportCountController.class);
 
-    @Autowired
     private LogCountService logCountService;
-    @Autowired
     private ProductCountService productCountService;
-    @Autowired
     private DeviceProcessLogService deviceProcessLogService;
-    @Autowired
     private CounterUploadLogService counterUploadLogService;
 
 

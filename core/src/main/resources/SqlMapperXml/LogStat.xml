@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ifhz.core.mapper.LogStatMapper">
+    <sql id="TABLE_NAME">TY_LOG_STAT</sql>
+    <sql id="CommonFieldSql">
+        ID,
+        UA,
+        MODEL_NAME,
+        GROUP_ID,
+        CHANNEL_ID,
+        BATCH_CODE,
+        DEVICE_CODE,
+        STAT_DATE,
+        LAOWU_ID,
+        DEVICE_PRS_DAY_NUM,
+        DEVICE_UPD_DAY_NUM,
+        PRS_ACTIVE_TOTAL_NUM,
+        PRS_ACTIVE_VALID_NUM,
+        PRS_ACTIVE_INVALID_NUM,
+        PRS_INVALID_REPLACE_NUM,
+        PRS_INVALID_UNINSTALL_NUM,
+        COUNTER_UPD_DAY_NUM,
+        QUERY_KEY,
+        MD5_KEY
+    </sql>
+
+    <resultMap id="LogStatResultMap" type="com.ifhz.core.po.LogStat">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="UA" property="ua" jdbcType="VARCHAR"/>
+        <result column="MODLE_NAME" property="modleName" jdbcType="VARCHAR"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
+        <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
+        <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="STAT_DATE" property="statDate" jdbcType="DATE"/>
+        <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
+
+        <result column="DEVICE_PRS_DAY_NUM" property="devicePrsDayNum" jdbcType="BIGINT"/>
+        <result column="DEVICE_UPD_DAY_NUM" property="deviceUpdDayNum" jdbcType="BIGINT"/>
+        <result column="PRS_ACTIVE_TOTAL_NUM" property="prsActiveTotalNum" jdbcType="BIGINT"/>
+        <result column="PRS_ACTIVE_VALID_NUM" property="prsActiveValidNum" jdbcType="BIGINT"/>
+        <result column="PRS_ACTIVE_INVALID_NUM" property="prsActiveInvalidNum" jdbcType="BIGINT"/>
+        <result column="PRS_INVALID_REPLACE_NUM" property="prsInvalidReplaceNum" jdbcType="BIGINT"/>
+        <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
+        <result column="COUNTER_UPD_DAY_NUM" property="counterUpdDayNum" jdbcType="BIGINT"/>
+
+        <result column="QUERY_KEY" property="queryKey" jdbcType="VARCHAR"/>
+        <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="com.ifhz.core.po.LogStat">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_LOG_STAT.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_LOG_STAT.nextval,
+        #{ua,jdbcType=VARCHAR},
+        #{modelName,jdbcType=VARCHAR},
+        #{groupId,jdbcType=BIGINT},
+        #{channelId,jdbcType=BIGINT},
+        #{batchCode,jdbcType=VARCHAR},
+        #{deviceCode,jdbcType=VARCHAR},
+        #{statDate,jdbcType=DATE},
+        #{deviceCode,jdbcType=VARCHAR},
+        #{laowuId,jdbcType=BIGINT},
+        #{devicePrsDayNum,jdbcType=BIGINT},
+        #{deviceUpdDayNum,jdbcType=BIGINT},
+        #{prsActiveTotalNum,jdbcType=BIGINT},
+        #{prsActiveValidNum,jdbcType=BIGINT},
+        #{prsActiveInvalidNum,jdbcType=BIGINT},
+        #{prsInvalidReplaceNum,jdbcType=BIGINT},
+        #{prsInvalidUninstallNum,jdbcType=BIGINT},
+        #{counterUpdDayNum,jdbcType=BIGINT},
+        #{queryKey,jdbcType=VARCHAR},
+        #{md5Key,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ifhz.core.po.LogStat">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="devicePrsDayNum != null">
+                DEVICE_PRS_DAY_NUM = #{devicePrsDayNum},
+            </if>
+            <if test="deviceUpdDayNum != null">
+                DEVICE_UPD_DAY_NUM = #{deviceUpdDayNum},
+            </if>
+            <if test="prsActiveTotalNum != null">
+                PRS_ACTIVE_TOTAL_NUM = #{prsActiveTotalNum},
+            </if>
+            <if test="prsActiveValidNum != null">
+                PRS_ACTIVE_VALID_NUM = #{prsActiveValidNum},
+            </if>
+            <if test="prsActiveInvalidNum != null">
+                PRS_ACTIVE_INVALID_NUM = #{prsActiveInvalidNum},
+            </if>
+            <if test="prsInvalidReplaceNum != null">
+                PRS_INVALID_REPLACE_NUM = #{prsInvalidReplaceNum},
+            </if>
+            <if test="prsInvalidUninstallNum != null">
+                PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
+            </if>
+            <if test="counterUpdDayNum != null">
+                COUNTER_UPD_DAY_NUM = #{counterUpdDayNum},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+
+    <select id="getById" parameterType="long" resultMap="LogStatResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id}
+    </select>
+
+    <select id="queryListByQueryKey" resultMap="LogStatResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where QUERY_KEY like #{queryKey}
+        and STAT_DATE between #{startTime} and #{endTime}
+    </select>
+
+    <select id="getByMd5Key" resultMap="LogStatResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where Md5_KEY = #{md5Key}
+    </select>
+
+
+    <!--<insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="BEFORE">
+            SELECT SEQ_LOG_COUNT.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into TY_LOG_COUNT
+        ( LOG_COUNT_ID,
+        MODLE_NAME,
+        CHANNEL_ID,
+        DEVICE_CODE,
+        GROUP_ID,
+        BATCH_CODE,
+        COUNT_TIME,
+        PROCESS_KEY,
+        LAOWU_ID,
+        PROCESS_DAY_COUNT,
+        DEVICE_UPLOAD_DAY_COUNT,
+        COUNTER_UPLOAD_DAY_COUNT,
+        ALLCOUNT,
+        ACTIVE_COUNT,
+        NONACTIVE_COUNT,
+        NONACTIVE_UNINSTALL_COUNT,
+        NONACTIVE_REPLACE_COUNT
+        ) select SEQ_LOG_COUNT.NEXTVAL,A.* from(
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.modleName},
+            #{item.channelId},
+            #{item.deviceCode},
+            #{item.groupId},
+            #{item.batchCode},
+            #{item.countTime},
+            #{item.processKey},
+            #{item.laowuId},
+            #{item.processDayCount},
+            #{item.deviceUploadDayCount},
+            #{item.counterUploadDayCount},
+            #{item.allCount},
+            #{item.activeCount},
+            #{item.nonActiveCount},
+            #{item.nonActiveUninstallCount},
+            #{item.nonActiveReplaceCount}
+            from dual
+        </foreach>) A
+    </insert>-->
+</mapper>

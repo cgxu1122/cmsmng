@@ -5,20 +5,16 @@ import com.ifhz.core.adapter.LogCountAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.LogCountMapper;
 import com.ifhz.core.po.LogCount;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by lm on 14-5-15.
  */
-@Repository("logCountAdapter")
 public class LogCountAdapterImpl implements LogCountAdapter {
 
 
-    @Resource(name = "logCountMapper")
     private LogCountMapper logCountMapper;
 
     @Override
