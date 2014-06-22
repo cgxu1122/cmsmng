@@ -87,7 +87,14 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
 
     @Override
     public long queryProductUpdDayNum(DataLogRequest dataLogRequest) {
-        return 0;
+        long productUpdDayNum = 0L;
+        dataLogRequest.setProduct(true);
+        String tableName = splitTableService.getCurrentTableName(dataLogRequest.getDate());
+        if (StringUtils.isNotBlank(tableName)) {
+            productUpdDayNum = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
+        }
+
+        return productUpdDayNum;
     }
 
     @Override

@@ -25,8 +25,8 @@
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.ifhz.core.po.ProductCount">
-        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+    <insert id="insert" parameterType="com.ifhz.core.po.ProductStat">
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT SEQ_PRODUCT_STAT.CURRVAL AS id from dual
         </selectKey>
         insert into

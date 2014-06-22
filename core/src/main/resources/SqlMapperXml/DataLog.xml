@@ -81,9 +81,14 @@
         select count(0)
         from ${dataLogRequest.tableName}
         where DEVICE_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
-        <if test="dataLogRequest.md5Key != null">
-            and MD5_KEY = #{dataLogRequest.md5Key}
-        </if>
+        <choose>
+            <when test="dataLogRequest.isProduct">
+                and P_MD5_KEY = #{dataLogRequest.md5Key}
+            </when>
+            <otherwise>
+                and MD5_KEY = #{dataLogRequest.md5Key}
+            </otherwise>
+        </choose>
     </select>
 
     <select id="queryTotalCountForCounter" resultType="long">
@@ -107,8 +112,15 @@
         select
         <include refid="CommonFieldSql"/>
         from ${dataLogRequest.tableName}
-        where P_MD5_KEY = #{dataLogRequest.md5Key}
-        and COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
+        where COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
+        <choose>
+            <when test="dataLogRequest.isProduct">
+                and P_MD5_KEY = #{dataLogRequest.md5Key}
+            </when>
+            <otherwise>
+                and MD5_KEY = #{dataLogRequest.md5Key}
+            </otherwise>
+        </choose>
         <if test="dataLogRequest.active != null">
             and ACTIVE = #{dataLogRequest.active}
         </if>

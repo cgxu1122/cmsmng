@@ -16,6 +16,7 @@ public class DataLogRequest {
     private Date startTime;
     private Date endTime;
     private Integer active;
+    private boolean isProduct = false;
 
 
     public Integer getActive() {
@@ -64,5 +65,13 @@ public class DataLogRequest {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean isProduct() {
+        return isProduct;
+    }
+
+    public void setProduct(boolean isProduct) {
+        this.isProduct = isProduct;
     }
 }

@@ -1,22 +1,31 @@
 package com.ifhz.core.service.stat.impl;
 
+import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.DataLogAdapter;
 import com.ifhz.core.base.commons.MapConfig;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.common.SplitTableService;
-import com.ifhz.core.service.stat.ProductStatQueryService;
+import com.ifhz.core.service.stat.DataLogQueryService;
 import com.ifhz.core.service.stat.ProductStatTaskService;
 import com.ifhz.core.service.stat.ProductStatUpdateService;
+import com.ifhz.core.service.stat.bean.DataLogRequest;
+import com.ifhz.core.service.stat.constants.CounterActive;
+import com.ifhz.core.service.stat.handle.DateHandler;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,25 +47,31 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
     private DataLogAdapter dataLogAdapter;
     @Resource(name = "batchProductRefAdapter")
     private BatchProductRefAdapter batchProductRefAdapter;
-    @Resource(name = "productStatQueryService")
-    private ProductStatQueryService productStatQueryService;
+    @Resource(name = "dataLogQueryService")
+    private DataLogQueryService dataLogQueryService;
     //统计时分页处理条目，默认10000条
     public final int pageSize = MapConfig.getInt("stat.pageSize", GlobalConstants.GLOBAL_CONFIG, 10000);
 
 
     @Override
     public void scanDataLog(Date startTime, Date endTime) {
-       /* LOGGER.info("统计程序开始执行{},{}", startTime, endTime);
+        LOGGER.info("统计程序开始执行{},{}", startTime, endTime);
         Map<String, ProductStat> container = Maps.newHashMap();
         String tableName = splitTableService.getCurrentTableName(startTime);
-        long totalCount = dataLogAdapter.queryTotalCountForDevice(tableName, startTime, endTime);
+        DataLogRequest dataLogRequest = new DataLogRequest();
+        dataLogRequest.setDate(startTime);
+        dataLogRequest.setStartTime(startTime);
+        dataLogRequest.setEndTime(endTime);
+        dataLogRequest.setTableName(tableName);
+
+        long totalCount = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
         if (totalCount > 0) {
             long pageNum = StatConvertHandler.getPageNum(totalCount, pageSize);
             for (int i = 0; i < pageNum; i++) {
                 Pagination page = new Pagination();
                 page.setPageSize(pageSize);
                 page.setCurrentPage(i + 1);
-                List<DataLog> dataLogList = dataLogAdapter.queryPageForDevice(page, tableName, startTime, endTime);
+                List<DataLog> dataLogList = dataLogAdapter.queryPageForDevice(page, dataLogRequest);
                 if (CollectionUtils.isNotEmpty(dataLogList)) {
                     for (DataLog dataLog : dataLogList) {
                         String batchCode = dataLog.getBatchCode();
@@ -64,10 +79,11 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
                             List<Long> productIdList = batchProductRefAdapter.queryProductIdList(batchCode);
                             if (CollectionUtils.isNotEmpty(productIdList)) {
                                 for (Long productId : productIdList) {
-                                    String md5Key = StatConvertHandler.getMd5KeyForProductStat(dataLog,productId);
-                                    String pmd5Key =
-                                    ProductStat productStat = getProductStatFromMap(container, md5Key, dataLog,productId);
+                                    String md5Key = StatConvertHandler.getMd5KeyForProductStat(dataLog, productId);
+                                    String pmd5Key = StatConvertHandler.getMd5KeyByLogDataForProductStat(dataLog);
+                                    ProductStat productStat = getProductStatFromMap(container, md5Key, dataLog, productId);
                                     productStat.setMd5Key(md5Key);
+                                    productStat.setDataLogPmd5Key(pmd5Key);
                                     productStat.setProductPrsDayNum(productStat.getProductPrsDayNum() + 1);
                                     //判断此加工数据 同时计数器数据也已经上传
                                     if (dataLog.getActive() != null && dataLog.getCounterUploadTime() != null) {
@@ -96,7 +112,7 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
                     saveStatMap(container);
                 }
             }
-        }*/
+        }
     }
 
     private ProductStat getProductStatFromMap(Map<String, ProductStat> container, String md5Key, DataLog dataLog, Long productId) {
@@ -108,7 +124,7 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
     }
 
     public void saveStatMap(Map<String, ProductStat> param) {
-        /*if (MapUtils.isNotEmpty(param)) {
+        if (MapUtils.isNotEmpty(param)) {
             for (Map.Entry<String, ProductStat> entry : param.entrySet()) {
                 try {
                     //保存前先查询库里是否有
@@ -125,30 +141,38 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
                         entity.setPrsInvalidReplaceNum(entity.getPrsInvalidReplaceNum() + value.getPrsInvalidReplaceNum());
                         entity.setPrsInvalidUninstallNum(entity.getPrsInvalidUninstallNum() + value.getPrsInvalidUninstallNum());
 
-                        long deviceUpdDayNum = productStatQueryService.queryDeviceUpdDayNum(entity.getProcessDate(), startTime, endTime);
-                        long counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(entity.getProcessDate(), startTime, endTime);
-                        entity.setDeviceUpdDayNum(deviceUpdDayNum);
-                        entity.setCounterUpdDayNum(counterUpdDayNum);
+                        DataLogRequest request = new DataLogRequest();
+                        request.setStartTime(entity.getProcessDate());
+                        request.setStartTime(startTime);
+                        request.setEndTime(endTime);
+                        request.setMd5Key(value.getDataLogPmd5Key());
+                        request.setProduct(true);
 
-                        logStatUpdateService.update(entity);
+                        long productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
+                        long counterProductDayNum = dataLogQueryService.queryCounterProductDayNum(request);
+                        entity.setProductPrsDayNum(productUpdDayNum);
+                        entity.setCounterProductDayNum(counterProductDayNum);
+
+                        productStatUpdateService.update(entity);
                     } else {//数据库无数据则插入
-                        if (value.getGroupId() == GroupType.DB.VALUE || value.getGroupId() == GroupType.LW.VALUE) {
-                            ChannelInfo channelInfo = channelInfoAdapter.getById(value.getChannelId());
-                            if (channelInfo != null && channelInfo.getLaowuId() != null) {
-                                value.setLaowuId(channelInfo.getLaowuId());
-                            }
-                        }
-                        long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(entity.getProcessDate(), startTime, endTime);
-                        long counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(entity.getProcessDate(), startTime, endTime);
-                        value.setDeviceUpdDayNum(deviceUpdDayNum);
-                        value.setCounterUpdDayNum(counterUpdDayNum);
+                        DataLogRequest request = new DataLogRequest();
+                        request.setStartTime(entity.getProcessDate());
+                        request.setStartTime(startTime);
+                        request.setEndTime(endTime);
+                        request.setMd5Key(value.getDataLogPmd5Key());
+                        request.setProduct(true);
 
-                        logStatUpdateService.insert(value);
+                        long productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
+                        long counterProductDayNum = dataLogQueryService.queryCounterProductDayNum(request);
+                        entity.setProductPrsDayNum(productUpdDayNum);
+                        entity.setCounterProductDayNum(counterProductDayNum);
+
+                        productStatUpdateService.insert(value);
                     }
                 } catch (Exception e) {
-                    LOGGER.error("LogStat update error", e);
+                    LOGGER.error("ProductStat update error", e);
                 }
             }
-        }*/
+        }
     }
 }

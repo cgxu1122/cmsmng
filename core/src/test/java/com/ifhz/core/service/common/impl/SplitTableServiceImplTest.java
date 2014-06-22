@@ -15,7 +15,7 @@ public class SplitTableServiceImplTest extends BaseTest {
 
     @Test
     public void testGetTableNameForDeviceByNow() throws Exception {
-        String t = splitTableService.getTableNameForCounterByNow(new Date());
+        String t = splitTableService.getCurrentTableName(new Date());
         log(t);
     }
 
@@ -26,13 +26,13 @@ public class SplitTableServiceImplTest extends BaseTest {
 
     @Test
     public void testGetTableListForDeviceByNow() throws Exception {
-        List<String> t = splitTableService.getTableListForDeviceByNow(new Date());
+        List<String> t = splitTableService.getTableNameList(new Date());
         log(t);
     }
 
     @Test
     public void testGetTableListForCounterByNow() throws Exception {
-        List<String> t = splitTableService.getTableListForDeviceByNow(new Date());
+        List<String> t = splitTableService.getTableNameList(new Date());
         log(t);
     }
 }
