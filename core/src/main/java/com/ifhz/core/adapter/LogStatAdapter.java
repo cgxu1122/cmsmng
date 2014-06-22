@@ -2,6 +2,7 @@ package com.ifhz.core.adapter;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.LogStat;
+import com.ifhz.core.service.api.bean.StatUpdateBean;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface LogStatAdapter {
     public LogStat getById(Long id);
 
     public LogStat getByMd5Key(String md5Key);
+
+    public int updateStat(StatUpdateBean statUpdateBean);
 
     public List<LogStat> queryByVO(Pagination page, LogStat record);
 }

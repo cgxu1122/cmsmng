@@ -26,7 +26,7 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.ifhz.core.po.ProductStat">
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT SEQ_PRODUCT_STAT.CURRVAL AS id from dual
         </selectKey>
         insert into
@@ -46,7 +46,6 @@
         PRS_INVALID_REPLACE_NUM,
         PRS_INVALID_UNINSTALL_NUM,
         COUNTER_PRODUCT_DAY_NUM,
-        QUERY_KEY,
         MD5_KEY,
         ) values (
         SEQ_PRODUCT_STAT.NEXTVAL,
@@ -63,7 +62,6 @@
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
         #{counterProductDayNum,jdbcType=BIGINT},
-        #{queryKey,jdbcType=VARCHAR},
         #{md5Key,jdbcType=VARCHAR}
         )
     </insert>
@@ -98,6 +96,29 @@
             </if>
         </set>
         where ID = #{id}
+    </update>
+
+    <update id="updateStat" parameterType="com.ifhz.core.service.api.bean.StatUpdateBean">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="isUpdateTotalNum">
+                PRS_ACTIVE_TOTAL_NUM = PRS_ACTIVE_TOTAL_NUM + 1,
+            </if>
+            <if test="isUpdateValidNum">
+                PRS_ACTIVE_VALID_NUM = PRS_ACTIVE_VALID_NUM + 1,
+            </if>
+            <if test="isUpdateInvalidNum">
+                PRS_ACTIVE_INVALID_NUM = PRS_ACTIVE_INVALID_NUM + 1,
+            </if>
+            <if test="isUpdateReplaceNum">
+                PRS_INVALID_REPLACE_NUM = PRS_INVALID_REPLACE_NUM + 1,
+            </if>
+            <if test="isUpdateUninstallNum">
+                PRS_INVALID_UNINSTALL_NUM = PRS_INVALID_UNINSTALL_NUM + 1,
+            </if>
+        </set>
+        where MD5_KEY = #{md5Key}
     </update>
 
 

@@ -1,6 +1,5 @@
 package com.ifhz.core.adapter;
 
-import com.ifhz.core.service.imei.bean.CounterResult;
 import com.ifhz.core.service.imei.bean.DataLogResult;
 
 import java.util.List;
@@ -15,7 +14,5 @@ public interface ImeiQueryAdapter {
 
     public int insertBatch(List<String> list);
 
-    public List<DataLogResult> queryListForDeviceResult(String tableName);
-
-    public List<CounterResult> queryListForCounterResult(String tableName);
+    public List<DataLogResult> queryListByImeiList(String tableName);
 }

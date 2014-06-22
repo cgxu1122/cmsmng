@@ -42,4 +42,10 @@ public class LogStatUpdateServiceImpl implements LogStatUpdateService {
     public LogStat getByMd5Key(String md5Key) {
         return logStatAdapter.getByMd5Key(md5Key);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public int updateStat(LogStat record) {
+        return 0;
+    }
 }

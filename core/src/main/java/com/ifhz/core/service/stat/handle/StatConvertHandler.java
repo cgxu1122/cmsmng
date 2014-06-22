@@ -65,6 +65,7 @@ public class StatConvertHandler {
         productStat.setProductId(productId);
         productStat.setGroupId(dataLog.getGroupId());
         productStat.setProcessDate(dataLog.getProcessTime());
+        productStat.setBatchCode(dataLog.getBatchCode());
 
 
         productStat.setProductPrsDayNum(0L);
@@ -85,6 +86,7 @@ public class StatConvertHandler {
     /**
      * MD5加密 UA + GrroupId + productId + ProcessTime
      * 产品数据统计表中 数据加密 表中唯一
+     *
      * @param dataLog
      * @param productId
      * @return

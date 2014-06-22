@@ -1,5 +1,7 @@
 package com.ifhz.core.service.imei.bean;
 
+import java.util.Date;
+
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -10,9 +12,14 @@ public class DataLogResult {
 
     private String imei;
     private String ua;
+    private Long groupId;
+    private Long channelId;
+    private Date processTime;
+    private Integer active;
+
+
     private String modelName;
-    private String channelId;
-    private String processTime;
+    private String channelName;
 
     public String getImei() {
         return imei;
@@ -30,6 +37,38 @@ public class DataLogResult {
         this.ua = ua;
     }
 
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long channelId) {
+        this.channelId = channelId;
+    }
+
+    public Date getProcessTime() {
+        return processTime;
+    }
+
+    public void setProcessTime(Date processTime) {
+        this.processTime = processTime;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
     public String getModelName() {
         return modelName;
     }
@@ -38,19 +77,11 @@ public class DataLogResult {
         this.modelName = modelName;
     }
 
-    public String getChannelId() {
-        return channelId;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
-    }
-
-    public String getProcessTime() {
-        return processTime;
-    }
-
-    public void setProcessTime(String processTime) {
-        this.processTime = processTime;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }

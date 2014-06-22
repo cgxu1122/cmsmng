@@ -1,6 +1,5 @@
 package com.ifhz.core.mapper;
 
-import com.ifhz.core.service.imei.bean.CounterResult;
 import com.ifhz.core.service.imei.bean.DataLogResult;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +15,5 @@ public interface ImeiTempMapper {
 
     public int insertBatch(@Param("list") List<String> list);
 
-    public List<DataLogResult> queryListForDeviceResult(@Param("tableName") String tableName);
-
-    public List<CounterResult> queryListForCounterResult(@Param("tableName") String tableName);
+    public List<DataLogResult> queryListByImeiList(@Param("tableName") String tableName);
 }

@@ -74,6 +74,7 @@
         set ACTIVE = #{active},
         COUNTER_UPLOAD_TIME = #{counterUploadTime},
         P_MD5_KEY = #{pmd5Key}
+
         where ID = #{id}
     </update>
 

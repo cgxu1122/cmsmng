@@ -83,28 +83,28 @@
         update
         <include refid="TABLE_NAME"/>
         <set>
-            <if test="devicePrsDayNum != null">
+            <if test="devicePrsDayNum != null and devicePrsDayNum != 0">
                 DEVICE_PRS_DAY_NUM = #{devicePrsDayNum},
             </if>
-            <if test="deviceUpdDayNum != null">
+            <if test="deviceUpdDayNum != null and deviceUpdDayNum != 0">
                 DEVICE_UPD_DAY_NUM = #{deviceUpdDayNum},
             </if>
-            <if test="prsActiveTotalNum != null">
+            <if test="prsActiveTotalNum != null and prsActiveTotalNum != 0">
                 PRS_ACTIVE_TOTAL_NUM = #{prsActiveTotalNum},
             </if>
-            <if test="prsActiveValidNum != null">
+            <if test="prsActiveValidNum != null and prsActiveValidNum != 0">
                 PRS_ACTIVE_VALID_NUM = #{prsActiveValidNum},
             </if>
-            <if test="prsActiveInvalidNum != null">
+            <if test="prsActiveInvalidNum != null and prsActiveInvalidNum != 0">
                 PRS_ACTIVE_INVALID_NUM = #{prsActiveInvalidNum},
             </if>
-            <if test="prsInvalidReplaceNum != null">
+            <if test="prsInvalidReplaceNum != null and prsInvalidReplaceNum != 0">
                 PRS_INVALID_REPLACE_NUM = #{prsInvalidReplaceNum},
             </if>
-            <if test="prsInvalidUninstallNum != null">
+            <if test="prsInvalidUninstallNum != null and prsInvalidUninstallNum != 0 ">
                 PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
             </if>
-            <if test="counterUpdDayNum != null">
+            <if test="counterUpdDayNum != null and counterUpdDayNum != 0">
                 COUNTER_UPD_DAY_NUM = #{counterUpdDayNum},
             </if>
         </set>
@@ -149,6 +149,31 @@
             ]]>
         </if>
     </select>
+
+
+    <update id="updateStat" parameterType="com.ifhz.core.service.api.bean.StatUpdateBean">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="isUpdateTotalNum">
+                PRS_ACTIVE_TOTAL_NUM = PRS_ACTIVE_TOTAL_NUM + 1,
+            </if>
+            <if test="isUpdateValidNum">
+                PRS_ACTIVE_VALID_NUM = PRS_ACTIVE_VALID_NUM + 1,
+            </if>
+            <if test="isUpdateInvalidNum">
+                PRS_ACTIVE_INVALID_NUM = PRS_ACTIVE_INVALID_NUM + 1,
+            </if>
+            <if test="isUpdateReplaceNum">
+                PRS_INVALID_REPLACE_NUM = PRS_INVALID_REPLACE_NUM + 1,
+            </if>
+            <if test="isUpdateUninstallNum">
+                PRS_INVALID_UNINSTALL_NUM = PRS_INVALID_UNINSTALL_NUM + 1,
+            </if>
+        </set>
+        where MD5_KEY = #{md5Key}
+    </update>
+
     <!--<insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
         <selectKey resultType="long" keyProperty="id" order="BEFORE">
             SELECT SEQ_LOG_COUNT.NEXTVAL FROM DUAL

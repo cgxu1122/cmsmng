@@ -1,6 +1,7 @@
 package com.ifhz.core.adapter;
 
 import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.service.api.bean.StatUpdateBean;
 
 import java.util.Date;
 import java.util.List;
@@ -22,4 +23,6 @@ public interface ProductStatAdapter {
     public ProductStat getByMd5Key(String md5Key);
 
     public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
+
+    public int updateStat(StatUpdateBean statUpdateBean);
 }

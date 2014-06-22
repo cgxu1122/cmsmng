@@ -12,11 +12,13 @@ import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.model.ModelInfoService;
+import com.ifhz.core.service.stat.StatCounterService;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,10 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     private ChannelInfoService channelInfoService;
     @Resource(name = "modelInfoService")
     private ModelInfoService modelInfoService;
+    @Resource(name = "statCounterService")
+    private StatCounterService statCounterService;
+    @Resource(name = "taskExecutor")
+    private TaskExecutor taskExecutor;
 
     //手机imei|手机ua|手机到达状态
     @Override
@@ -66,6 +72,8 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     dataLog.setPmd5Key(pmd5Key);
 
                     dataLogApiService.updateCounterData(dataLog);
+                    //异步统计到达数据
+                    taskExecutor.execute(new StatRunnable(dataLog));
                 }
             } else {
                 CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
@@ -131,6 +139,26 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         if (CollectionUtils.isNotEmpty(processLogList)) {
             for (DataLog log : processLogList) {
                 saveDeviceDataLog(log);
+            }
+        }
+    }
+
+
+    private class StatRunnable implements Runnable {
+
+        private final DataLog dataLog;
+
+        private StatRunnable(DataLog dataLog) {
+            this.dataLog = dataLog;
+        }
+
+        @Override
+        public void run() {
+            try {
+                statCounterService.updateStat(dataLog);
+            } catch (Exception e) {
+                LOGGER.error("updateStat error:{}", JSON.toJSONString(dataLog));
+                LOGGER.error("updateStat error", e);
             }
         }
     }

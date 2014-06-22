@@ -16,4 +16,6 @@ public interface LogStatUpdateService {
     public int update(LogStat record);
 
     public LogStat getByMd5Key(String md5Key);
+
+    public int updateStat(LogStat record);
 }

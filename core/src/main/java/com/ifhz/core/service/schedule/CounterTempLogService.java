@@ -1,4 +1,6 @@
-package com.ifhz.core.service.api;
+package com.ifhz.core.service.schedule;
+
+import java.util.Date;
 
 /**
  * 类描述
@@ -7,5 +9,7 @@ package com.ifhz.core.service.api;
  * Time: 16:14
  */
 public interface CounterTempLogService {
+
+    public void scanCounterTempLog(Date startTime, Date endTime);
 
 }

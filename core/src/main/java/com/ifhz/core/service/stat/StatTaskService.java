@@ -8,7 +8,7 @@ import java.util.Date;
  * Date: 2014/6/21
  * Time: 17:15
  */
-public interface LogStatTaskService {
+public interface StatTaskService {
 
     /**
      * 统计[startTime,endTime]内流水数据表，不允许跨天

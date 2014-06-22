@@ -15,7 +15,6 @@ public enum ImeiRequestEnums {
     InvalidReplace("设备当天累计上传"),
     InvalidUninstall("设备当天累计上传"),
 
-
     ProductProcess("产品当天累计上传"),
     ProductUpload("产品当天累计上传");
 

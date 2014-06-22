@@ -1,6 +1,6 @@
 package com.ifhz.core.service.imei;
 
-import com.ifhz.core.service.imei.bean.ImeiResult;
+import com.ifhz.core.service.imei.bean.DataLogResult;
 
 import java.util.List;
 
@@ -12,6 +12,5 @@ import java.util.List;
  */
 public interface ImeiQueryService {
 
-
-    public List<ImeiResult> queryListByImeiList(List<String> imeiList);
+    public List<DataLogResult> queryListByImeiList(List<String> imeiList);
 }

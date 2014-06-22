@@ -37,6 +37,12 @@ public final class GlobalConstants {
      */
     public static final String KEY_SYS_INIT_DATE = "system_init_date";
 
+    /**
+     * 统计时分页处理条目，默认10000条
+     */
+    public static int PAGE_SIZE = MapConfig.getInt("stat.pageSize", GlobalConstants.GLOBAL_CONFIG, 10000);
+
+
     private GlobalConstants() {
     }
 }

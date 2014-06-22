@@ -3,7 +3,6 @@ package com.ifhz.core.adapter.impl;
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.ImeiQueryAdapter;
 import com.ifhz.core.mapper.ImeiTempMapper;
-import com.ifhz.core.service.imei.bean.CounterResult;
 import com.ifhz.core.service.imei.bean.DataLogResult;
 import org.springframework.stereotype.Repository;
 
@@ -28,14 +27,8 @@ public class ImeiQueryAdapterImpl implements ImeiQueryAdapter {
     }
 
     @Override
-    public List<DataLogResult> queryListForDeviceResult(String tableName) {
-        List<DataLogResult> list = imeiTempMapper.queryListForDeviceResult(tableName);
+    public List<DataLogResult> queryListByImeiList(String tableName) {
+        List<DataLogResult> list = imeiTempMapper.queryListByImeiList(tableName);
         return list == null ? Lists.<DataLogResult>newArrayList() : list;
-    }
-
-    @Override
-    public List<CounterResult> queryListForCounterResult(String tableName) {
-        List<CounterResult> list = imeiTempMapper.queryListForCounterResult(tableName);
-        return list == null ? Lists.<CounterResult>newArrayList() : list;
     }
 }
