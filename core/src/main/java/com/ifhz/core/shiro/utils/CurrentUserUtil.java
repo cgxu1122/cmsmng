@@ -1,46 +1,59 @@
 package com.ifhz.core.shiro.utils;
 
-import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
 import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author radishlee
  */
-public class CurrentUserUtil {
-    private Long userId;
-    private Long roleId;
-    private String loginName;
-    private String roleName;
-    private String realName;
+public final class CurrentUserUtil {
 
-
-    public  CurrentUserUtil(){
-        ShiroDbRealm.ShiroUser staff = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
-        userId = staff.userId.longValue();
-        roleId = staff.roleId.longValue();
-        loginName = staff.loginName.toString();
-        String realName = staff.realName.toString();
-        String roleName = staff.roleName.toString();
+    private static ShiroDbRealm.ShiroUser getShiroUser() {
+        return (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
     }
 
-    public long getUserId() {
-        return this.userId;
+    public static Long getUserId() {
+        ShiroDbRealm.ShiroUser user = getShiroUser();
+        if (user != null) {
+            return user.userId;
+        }
+
+        return null;
     }
 
-    public long getRoleId() {
-        return this.roleId;
+    public static Long getRoleId() {
+        ShiroDbRealm.ShiroUser user = getShiroUser();
+        if (user != null) {
+            return user.roleId;
+        }
+
+        return null;
     }
 
-    public String getLoginName() {
-        return this.loginName;
+    public static String getLoginName() {
+        ShiroDbRealm.ShiroUser user = getShiroUser();
+        if (user != null) {
+            return user.loginName;
+        }
+
+        return null;
     }
-    public String getRoleName() {
-        return this.roleName;
+
+    public static String getRoleName() {
+        ShiroDbRealm.ShiroUser user = getShiroUser();
+        if (user != null) {
+            return user.roleName;
+        }
+
+        return null;
     }
-    public String getRealName() {
-        return this.realName;
+
+    public static String getRealName() {
+        ShiroDbRealm.ShiroUser user = getShiroUser();
+        if (user != null) {
+            return user.realName;
+        }
+
+        return null;
     }
 }
