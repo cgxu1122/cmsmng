@@ -401,6 +401,12 @@
         </div>
             <%--</shiro:hasPermission>--%>
     </div>
+    <div title="系统用户管理" style="overflow: auto;">
+        <a href="javascript:addTab('授权管理','<%=basePath%>/rrr/index','menu_icon_wjldgl')">
+            <span class="menu_icon_wjldgl"></span>
+            <span>授权管理</span>
+        </a>
+    </div>
 <%--</shiro:hasPermission>--%>
 </div>
 </div>

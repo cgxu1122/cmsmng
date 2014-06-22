@@ -1,10 +1,15 @@
 package com.ifhz.core.base;
 
+import com.ifhz.core.po.User;
+import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.service.auth.impl.ShiroDbRealm;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -50,6 +55,25 @@ public class BaseController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Autowired
+    private UserService userService;
+
+    private User staffInfo;
+
+    public User getCuffStaff(){
+        ShiroDbRealm.ShiroUser staff = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        staffInfo = userService.findById(staff.userId.longValue());
+        return staffInfo;
+    }
+
+    public long getStaffId() {
+        return this.getCuffStaff().getUserId();
+    }
+
+    public String getStaffName() {
+        return this.getCuffStaff().getLoginName();
     }
 
 }

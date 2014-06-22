@@ -1,8 +1,5 @@
 package com.ifhz.core.service.statistics.impl;
 
-import com.ifhz.core.service.api.CounterUploadLogService;
-import com.ifhz.core.service.api.DeviceProcessLogService;
-import com.ifhz.core.service.statistics.LogCountService;
 import com.test.BaseTest;
 import org.junit.Test;
 
@@ -15,12 +12,12 @@ import java.util.Map;
  * Created by lm on 14-5-20.
  */
 public class LogCountServiceImplTest extends BaseTest {
-    @Resource(name = "logCountService")
-    private LogCountService logCountService;
-    @Resource(name = "deviceProcessLogService")
-    private DeviceProcessLogService deviceProcessLogService;
-    @Resource(name = "counterUploadLogService")
-    private CounterUploadLogService counterUploadLogService;
+//    @Resource(name = "logCountService")
+//    private LogCountService logCountService;
+//    @Resource(name = "deviceProcessLogService")
+//    private DeviceProcessLogService deviceProcessLogService;
+//    @Resource(name = "counterUploadLogService")
+//    private CounterUploadLogService counterUploadLogService;
     /*
     @Test
     public void testAutoCountLog() throws Exception {
@@ -93,19 +90,19 @@ public class LogCountServiceImplTest extends BaseTest {
     }
 
 
-*/
-    @Test
-    public void tesQueryUploadImei() throws Exception {
-        Map pars = new HashMap();
-        pars.put("modleName", "mn1");
-        pars.put("createTime", "2014-05-19");
-        pars.put("groupId", Long.parseLong("1"));
-        pars.put("tableName", "TY_COUNTER_UPLOAD_LOG_20142");
-
-        List<Map<String, Object>> list = counterUploadLogService.queryUploadImei(pars);
-        for (Map dpl : list) {
-            System.out.println(dpl.get("imei") + "\t" + dpl.get("modleName") + "\t" + dpl.get("createTime"));
-        }
-        System.out.println(list.size());
-    }
+//*/
+//    @Test
+//    public void tesQueryUploadImei() throws Exception {
+//        Map pars = new HashMap();
+//        pars.put("modleName", "mn1");
+//        pars.put("createTime", "2014-05-19");
+//        pars.put("groupId", Long.parseLong("1"));
+//        pars.put("tableName", "TY_COUNTER_UPLOAD_LOG_20142");
+//
+//        List<Map<String, Object>> list = counterUploadLogService.queryUploadImei(pars);
+//        for (Map dpl : list) {
+//            System.out.println(dpl.get("imei") + "\t" + dpl.get("modleName") + "\t" + dpl.get("createTime"));
+//        }
+//        System.out.println(list.size());
+//    }
 }

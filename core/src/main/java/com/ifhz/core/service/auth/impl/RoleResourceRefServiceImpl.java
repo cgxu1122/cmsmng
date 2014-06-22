@@ -12,6 +12,7 @@ import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,14 +51,45 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     @Override
     public void authorization(String roleid, List<String> resIdList) {
         long roleId = Long.parseLong(roleid);
-//        if(roleId == 1l){
-//            throw new RuntimeException("系统管理员权限不可修改");
-//        }
-        this.deleteAllRefByRoleId(roleId);
+        List<Long> existList = null;
+        Object[] noExistList = null;
+        List<Long> fullList = null;
 
-        for (String resId : resIdList) {
-            this.insert(roleId, Long.parseLong(resId));
+        List<RoleResourceRef> rrrList = roleResourceRefMapper.findAllResourceForRoleByRoleId(roleId);
+
+        for(int i=0;i<rrrList.size();i++){
+            for (String resid : resIdList) {
+                long resId = Long.parseLong(resid);
+                if(rrrList.get(i).getResourceId()==resId){
+                    existList.add(resId);
+                    continue;
+                }
+            }
+
+            fullList.add(rrrList.get(i).getResourceId());
         }
+
+        noExistList = CollectionUtils.disjunction(fullList,existList).toArray();
+
+
+
+
+
+        for (long resid : existList) {
+            RoleResourceRef rrr = roleResourceRefMapper.findByResIdAndRoleId(resid,roleId);
+            if(rrr==null){
+                this.insert(roleId, resid);
+            }
+        }
+
+        for(Object obj :noExistList){
+            long resId = (Long)obj;
+            RoleResourceRef rrr = roleResourceRefMapper.findByResIdAndRoleId(resId,roleId);
+            if(rrr!=null){
+
+            }
+        }
+
     }
 
     /**
@@ -80,8 +112,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      * @author radish
      */
     @Override
-    public String findAllRoleResourceXmlString(long roleId,boolean adminFlag,boolean showUncheckFlag) {
-        return resourceService.findAllRoleResourceXmlString(roleId,adminFlag,showUncheckFlag);
+    public String findAllRoleResourceXmlString(long roleId,boolean adminFlag,boolean noResFlag) {
+        return resourceService.findAllRoleResourceXmlString(roleId,adminFlag,noResFlag);
     }
 
     public Boolean deleteAllRefByRoleId(long roleid) {

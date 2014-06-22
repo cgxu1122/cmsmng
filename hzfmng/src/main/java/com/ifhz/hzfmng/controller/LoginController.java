@@ -5,6 +5,7 @@
 package com.ifhz.hzfmng.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.ifhz.core.base.BaseController;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;

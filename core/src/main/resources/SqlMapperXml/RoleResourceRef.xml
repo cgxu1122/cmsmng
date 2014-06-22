@@ -78,4 +78,13 @@
         order by RESOURCE_ID asc
     </select>
 
+    <select id="findByResIdAndRoleId"  resultMap="RoleResourceRef">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+        and RESOURCE_ID=#{resourceId}
+    </select>
+
 </mapper>

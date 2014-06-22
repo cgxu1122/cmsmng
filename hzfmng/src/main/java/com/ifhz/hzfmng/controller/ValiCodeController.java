@@ -4,6 +4,7 @@
  */
 package com.ifhz.hzfmng.controller;
 
+import com.ifhz.core.base.BaseController;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;

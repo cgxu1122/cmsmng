@@ -46,4 +46,7 @@ public interface RoleResourceRefMapper  {
     List<RoleResourceRef> findAllResourceForRoleByRoleId(long roleId);
 
     List<RoleResourceRef> findAllAvaiableRes4RoleByRoleId(long parentId);
+
+    RoleResourceRef findByResIdAndRoleId(@Param("roleId") long roleId, @Param("resourceId") long resourceId);
+
 }

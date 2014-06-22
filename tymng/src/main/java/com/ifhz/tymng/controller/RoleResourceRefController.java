@@ -98,8 +98,9 @@ public class RoleResourceRefController {
             @PathVariable("id") long roleId) {
         response.setContentType("text/xml; charset=UTF-8");
         boolean adminflag = false;
-        boolean showUncheckFlag = true;
+        boolean noResFlag = false;
         ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+
         if(user.roleId.intValue()==roleId){
             StringBuffer sbXml = new StringBuffer();
             sbXml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
@@ -113,18 +114,21 @@ public class RoleResourceRefController {
             }
         }
 
+
         RoleVo roleVo = roleService.findById(user.roleId.intValue());
         if(roleVo.getParentId()==-1){
             adminflag = true;
+        }else{
+            List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(roleId);
+            if(rrrList.size()<1){
+                noResFlag = true;
+            }
         }
 
-        List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(roleId);
-        if(rrrList.size()<1){
-            roleId = roleVo.getRoleId();
-            showUncheckFlag = false;
-        }
+
+
         //传当前用户的角色
-        String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(roleId,adminflag,showUncheckFlag);
+        String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(roleId,adminflag,noResFlag);
         try {
             response.getWriter().print(dhtmlXTreeXmlString);
             response.getWriter().close();
