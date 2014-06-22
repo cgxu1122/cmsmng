@@ -5,6 +5,7 @@ import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.export.model.BaseExportModel;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.util.CollectionUtils;
@@ -105,6 +106,9 @@ public class ExportDataUtil {
                                 Field field = obj.getClass().getDeclaredField(keyString);
                                 field.setAccessible(true);
                                 data[j] = field.get(obj).toString();
+                                if (field.get(obj) instanceof Date) {
+                                    data[j] = DateFormatUtils.format((Date) field.get(obj), GlobalConstants.DATE_FORMAT_DPT);
+                                }
                                 j++;
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
@@ -117,7 +121,7 @@ public class ExportDataUtil {
                     }
                 }
                 String fileName = file.getName();
-                String extName = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+                String extName = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
                 if ("csv".equals(extName)) {
                     writeData(dl, file);
                 } else if ("xls".equals(extName) || "xlsx".equals(extName)) {

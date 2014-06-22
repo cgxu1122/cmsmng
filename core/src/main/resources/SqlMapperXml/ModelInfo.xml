@@ -7,7 +7,6 @@
         MODEL_ID,
         UA,
         GROUP_ID,
-        GROUP_NAME,
         MODEL_NAME,
         TAGNUM,
         TAGPRICE,
@@ -20,13 +19,14 @@
         <id column="MODEL_ID" property="modelId" jdbcType="BIGINT"/>
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
-        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="TAGNUM" property="tagNum" jdbcType="INTEGER"/>
         <result column="TAGPRICE" property="tagPrice" jdbcType="NUMERIC"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ModelInfoResultMap">

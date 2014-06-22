@@ -1,5 +1,7 @@
 package com.ifhz.core.base;
 
+import com.ifhz.core.base.commons.util.ExportDataUtil;
+import com.ifhz.core.service.export.model.BaseExportModel;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -7,8 +9,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,4 +55,38 @@ public class BaseController {
         return result;
     }
 
+    public void exportXLSData(HttpServletRequest request, HttpServletResponse response, BaseExportModel exportModel) {
+        String basePath = request.getSession().getServletContext().getRealPath("/");
+        String fileName = Calendar.getInstance().getTimeInMillis() + ".xls";
+        String filePath = basePath + "/tempExport/" + fileName;
+        File file = new File(filePath);
+        ExportDataUtil.writeData(exportModel, file);
+        // 读到流中
+        InputStream inStream = null;// 文件的存放路径
+        try {
+            inStream = new FileInputStream(filePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 设置输出的格式
+        response.reset();
+        response.setContentType("bin");
+        response.addHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        // 循环取出流中的数据
+        byte[] b = new byte[100];
+        int len;
+        try {
+            while ((len = inStream.read(b)) > 0) {
+                response.getOutputStream().write(b, 0, len);
+            }
+            inStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (file.exists()) {
+                System.gc();
+                file.delete();
+            }
+        }
+    }
 }

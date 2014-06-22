@@ -42,6 +42,36 @@ public class LogStat implements Serializable {
         this.dataLogMd5Key = dataLogMd5Key;
     }
 
+    //查询条件
+    private Date startDate;
+    private Date endDate;
+    //页面返回值
+    private String channelName;
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public String getMd5Key() {
         return md5Key;
     }

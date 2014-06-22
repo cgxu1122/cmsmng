@@ -2,12 +2,12 @@ package com.ifhz.core.adapter.impl;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.LogStatAdapter;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.LogStatMapper;
 import com.ifhz.core.po.LogStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,8 +43,8 @@ public class LogStatAdapterImpl implements LogStatAdapter {
     }
 
     @Override
-    public List<LogStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime) {
-        List<LogStat> list = logStatMapper.queryListByQueryKey(queryKey, startTime, endTime);
+    public List<LogStat> queryByVO(Pagination page, LogStat record) {
+        List<LogStat> list = logStatMapper.queryByVo(page, record);
         return list == null ? Lists.<LogStat>newArrayList() : list;
     }
 }

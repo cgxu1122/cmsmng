@@ -1,8 +1,8 @@
 package com.ifhz.core.adapter;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.LogStat;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,5 +21,5 @@ public interface LogStatAdapter {
 
     public LogStat getByMd5Key(String md5Key);
 
-    public List<LogStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
+    public List<LogStat> queryByVO(Pagination page, LogStat record);
 }
