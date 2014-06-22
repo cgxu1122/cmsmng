@@ -12,6 +12,7 @@ import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.model.ModelInfoService;
+import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -61,6 +62,9 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     dataLog.setCounterUploadTime(po.getCounterUploadTime());
                     dataLog.setActive(po.getActive());
 
+                    String pmd5Key = StatConvertHandler.getMd5KeyByLogDataForProductStat(dataLog);
+                    dataLog.setPmd5Key(pmd5Key);
+
                     dataLogApiService.updateCounterData(dataLog);
                 }
             } else {
@@ -95,6 +99,9 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 Long groupId = channelInfo.getGroupId();
                 po.setGroupId(groupId);
                 po.setModelName(getModelName(groupId, po.getUa()));
+
+                String md5Key = StatConvertHandler.getMd5KeyByLogDataForLogStat(po);
+                po.setMd5Key(md5Key);
 
                 dataLogApiService.insertDeviceData(po);
             } else {

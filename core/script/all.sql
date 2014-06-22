@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/21 22:54:10                           */
+/* Created on:     2014/6/22 12:12:03                           */
 /*==============================================================*/
 
 
@@ -8,35 +8,35 @@ drop index "Index_17";
 
 drop index "Index_19";
 
-drop index "Index_29";
+drop index IDX_DL_201401_CTIME_MD5;
 
-drop index "Index_30";
+drop index IDX_DL_201401_DTIME_MD5;
 
-drop index "Index_31";
+drop index UNIQ_DL_201401_IMEI;
 
-drop index "Index_15";
+drop index IDX_DL_201402_CTIME_MD5;
 
-drop index "Index_16";
+drop index IDX_DL_201402_DTIME_MD5;
 
-drop index "Index_18";
+drop index UNIQ_DL_201402_IMEI;
 
-drop index "Index_20";
+drop index IDX_DL_201403_CTIME_MD5;
 
-drop index "Index_21";
+drop index IDX_DL_201403_DTIME_MD5;
 
-drop index "Index_22";
+drop index UNIQ_DL_201403_IMEI;
 
-drop index "Index_23";
+drop index IDX_DL_201404_CTIME_MD5;
 
-drop index "Index_24";
+drop index IDX_DL_201404_DTIME_MD5;
 
-drop index "Index_25";
+drop index UNIQ_DL_201404_IMEI;
 
-drop index "Index_26";
+drop index IDX_DL_201501_CTIME_MD5;
 
-drop index "Index_27";
+drop index IDX_DL_201501_DTIME_MD5;
 
-drop index "Index_28";
+drop index UNIQ_DL_201501_IMEI;
 
 drop index "Index_7";
 
@@ -51,8 +51,6 @@ drop index "Index_11";
 drop index "Index_12";
 
 drop index "Index_8";
-
-drop index "Index_14";
 
 drop index "Index_2";
 
@@ -487,16 +485,16 @@ create table TY_DATA_LOG_201401  (
    ID                   NUMBER(15)                      not null,
    IMEI                 VARCHAR2(50)                    not null,
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    CHANNEL_ID           NUMBER(15),
    DEVICE_CODE          VARCHAR2(100),
    GROUP_ID             NUMBER(15),
    BATCH_CODE           VARCHAR2(100),
    PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE,
+   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
    COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50),
+   MD5_KEY              VARCHAR2(50)                    not null,
+   P_MD5_KEY            VARCHAR2(50),
    constraint PK_TY_DATA_LOG_201401 primary key (ID)
 );
 
@@ -511,9 +509,6 @@ comment on column TY_DATA_LOG_201401.IMEI is
 
 comment on column TY_DATA_LOG_201401.UA is
 '手机UA';
-
-comment on column TY_DATA_LOG_201401.MODEL_NAME is
-'机型名称';
 
 comment on column TY_DATA_LOG_201401.CHANNEL_ID is
 '渠道ID';
@@ -540,26 +535,31 @@ comment on column TY_DATA_LOG_201401.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_201401.MD5_KEY is
-'MD5_KEY';
+'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+
+comment on column TY_DATA_LOG_201401.P_MD5_KEY is
+'P_MD5_KEY=(UA + GroupId + BatchCode)';
 
 /*==============================================================*/
-/* Index: "Index_29"                                            */
+/* Index: UNIQ_DL_201401_IMEI                                   */
 /*==============================================================*/
-create unique index "Index_29" on TY_DATA_LOG_201401 (
+create unique index UNIQ_DL_201401_IMEI on TY_DATA_LOG_201401 (
    IMEI ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_30"                                            */
+/* Index: IDX_DL_201401_DTIME_MD5                               */
 /*==============================================================*/
-create index "Index_30" on TY_DATA_LOG_201401 (
+create index IDX_DL_201401_DTIME_MD5 on TY_DATA_LOG_201401 (
+   MD5_KEY ASC,
    DEVICE_UPLOAD_TIME ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_31"                                            */
+/* Index: IDX_DL_201401_CTIME_MD5                               */
 /*==============================================================*/
-create index "Index_31" on TY_DATA_LOG_201401 (
+create index IDX_DL_201401_CTIME_MD5 on TY_DATA_LOG_201401 (
+   P_MD5_KEY ASC,
    COUNTER_UPLOAD_TIME ASC
 );
 
@@ -570,16 +570,16 @@ create table TY_DATA_LOG_201402  (
    ID                   NUMBER(15)                      not null,
    IMEI                 VARCHAR2(50)                    not null,
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    CHANNEL_ID           NUMBER(15),
    DEVICE_CODE          VARCHAR2(100),
    GROUP_ID             NUMBER(15),
    BATCH_CODE           VARCHAR2(100),
    PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE,
+   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
    COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50),
+   MD5_KEY              VARCHAR2(50)                    not null,
+   P_MD5_KEY            VARCHAR2(50),
    constraint PK_TY_DATA_LOG_201402 primary key (ID)
 );
 
@@ -594,9 +594,6 @@ comment on column TY_DATA_LOG_201402.IMEI is
 
 comment on column TY_DATA_LOG_201402.UA is
 '手机UA';
-
-comment on column TY_DATA_LOG_201402.MODEL_NAME is
-'机型名称';
 
 comment on column TY_DATA_LOG_201402.CHANNEL_ID is
 '渠道ID';
@@ -623,26 +620,31 @@ comment on column TY_DATA_LOG_201402.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_201402.MD5_KEY is
-'MD5_KEY';
+'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+
+comment on column TY_DATA_LOG_201402.P_MD5_KEY is
+'P_MD5_KEY=(UA + GroupId + BatchCode)';
 
 /*==============================================================*/
-/* Index: "Index_15"                                            */
+/* Index: UNIQ_DL_201402_IMEI                                   */
 /*==============================================================*/
-create unique index "Index_15" on TY_DATA_LOG_201402 (
+create unique index UNIQ_DL_201402_IMEI on TY_DATA_LOG_201402 (
    IMEI ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_16"                                            */
+/* Index: IDX_DL_201402_DTIME_MD5                               */
 /*==============================================================*/
-create index "Index_16" on TY_DATA_LOG_201402 (
+create index IDX_DL_201402_DTIME_MD5 on TY_DATA_LOG_201402 (
+   MD5_KEY ASC,
    DEVICE_UPLOAD_TIME ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_18"                                            */
+/* Index: IDX_DL_201402_CTIME_MD5                               */
 /*==============================================================*/
-create index "Index_18" on TY_DATA_LOG_201402 (
+create index IDX_DL_201402_CTIME_MD5 on TY_DATA_LOG_201402 (
+   P_MD5_KEY ASC,
    COUNTER_UPLOAD_TIME ASC
 );
 
@@ -653,16 +655,16 @@ create table TY_DATA_LOG_201403  (
    ID                   NUMBER(15)                      not null,
    IMEI                 VARCHAR2(50)                    not null,
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    CHANNEL_ID           NUMBER(15),
    DEVICE_CODE          VARCHAR2(100),
    GROUP_ID             NUMBER(15),
    BATCH_CODE           VARCHAR2(100),
    PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE,
+   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
    COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50),
+   MD5_KEY              VARCHAR2(50)                    not null,
+   P_MD5_KEY            VARCHAR2(50),
    constraint PK_TY_DATA_LOG_201403 primary key (ID)
 );
 
@@ -677,9 +679,6 @@ comment on column TY_DATA_LOG_201403.IMEI is
 
 comment on column TY_DATA_LOG_201403.UA is
 '手机UA';
-
-comment on column TY_DATA_LOG_201403.MODEL_NAME is
-'机型名称';
 
 comment on column TY_DATA_LOG_201403.CHANNEL_ID is
 '渠道ID';
@@ -706,26 +705,31 @@ comment on column TY_DATA_LOG_201403.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_201403.MD5_KEY is
-'MD5_KEY';
+'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+
+comment on column TY_DATA_LOG_201403.P_MD5_KEY is
+'P_MD5_KEY=(UA + GroupId + BatchCode)';
 
 /*==============================================================*/
-/* Index: "Index_20"                                            */
+/* Index: UNIQ_DL_201403_IMEI                                   */
 /*==============================================================*/
-create unique index "Index_20" on TY_DATA_LOG_201403 (
+create unique index UNIQ_DL_201403_IMEI on TY_DATA_LOG_201403 (
    IMEI ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_21"                                            */
+/* Index: IDX_DL_201403_DTIME_MD5                               */
 /*==============================================================*/
-create index "Index_21" on TY_DATA_LOG_201403 (
+create index IDX_DL_201403_DTIME_MD5 on TY_DATA_LOG_201403 (
+   MD5_KEY ASC,
    DEVICE_UPLOAD_TIME ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_22"                                            */
+/* Index: IDX_DL_201403_CTIME_MD5                               */
 /*==============================================================*/
-create index "Index_22" on TY_DATA_LOG_201403 (
+create index IDX_DL_201403_CTIME_MD5 on TY_DATA_LOG_201403 (
+   P_MD5_KEY ASC,
    COUNTER_UPLOAD_TIME ASC
 );
 
@@ -736,16 +740,16 @@ create table TY_DATA_LOG_201404  (
    ID                   NUMBER(15)                      not null,
    IMEI                 VARCHAR2(50)                    not null,
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    CHANNEL_ID           NUMBER(15),
    DEVICE_CODE          VARCHAR2(100),
    GROUP_ID             NUMBER(15),
    BATCH_CODE           VARCHAR2(100),
    PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE,
+   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
    COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50),
+   MD5_KEY              VARCHAR2(50)                    not null,
+   P_MD5_KEY            VARCHAR2(50),
    constraint PK_TY_DATA_LOG_201404 primary key (ID)
 );
 
@@ -760,9 +764,6 @@ comment on column TY_DATA_LOG_201404.IMEI is
 
 comment on column TY_DATA_LOG_201404.UA is
 '手机UA';
-
-comment on column TY_DATA_LOG_201404.MODEL_NAME is
-'机型名称';
 
 comment on column TY_DATA_LOG_201404.CHANNEL_ID is
 '渠道ID';
@@ -789,26 +790,31 @@ comment on column TY_DATA_LOG_201404.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_201404.MD5_KEY is
-'MD5_KEY';
+'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+
+comment on column TY_DATA_LOG_201404.P_MD5_KEY is
+'P_MD5_KEY=(UA + GroupId + BatchCode)';
 
 /*==============================================================*/
-/* Index: "Index_23"                                            */
+/* Index: UNIQ_DL_201404_IMEI                                   */
 /*==============================================================*/
-create unique index "Index_23" on TY_DATA_LOG_201404 (
+create unique index UNIQ_DL_201404_IMEI on TY_DATA_LOG_201404 (
    IMEI ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_24"                                            */
+/* Index: IDX_DL_201404_DTIME_MD5                               */
 /*==============================================================*/
-create index "Index_24" on TY_DATA_LOG_201404 (
+create index IDX_DL_201404_DTIME_MD5 on TY_DATA_LOG_201404 (
+   MD5_KEY ASC,
    DEVICE_UPLOAD_TIME ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_25"                                            */
+/* Index: IDX_DL_201404_CTIME_MD5                               */
 /*==============================================================*/
-create index "Index_25" on TY_DATA_LOG_201404 (
+create index IDX_DL_201404_CTIME_MD5 on TY_DATA_LOG_201404 (
+   P_MD5_KEY ASC,
    COUNTER_UPLOAD_TIME ASC
 );
 
@@ -819,16 +825,16 @@ create table TY_DATA_LOG_201501  (
    ID                   NUMBER(15)                      not null,
    IMEI                 VARCHAR2(50)                    not null,
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    CHANNEL_ID           NUMBER(15),
    DEVICE_CODE          VARCHAR2(100),
    GROUP_ID             NUMBER(15),
    BATCH_CODE           VARCHAR2(100),
    PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE,
+   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
    COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50),
+   MD5_KEY              VARCHAR2(50)                    not null,
+   P_MD5_KEY            VARCHAR2(50),
    constraint PK_TY_DATA_LOG_201501 primary key (ID)
 );
 
@@ -843,9 +849,6 @@ comment on column TY_DATA_LOG_201501.IMEI is
 
 comment on column TY_DATA_LOG_201501.UA is
 '手机UA';
-
-comment on column TY_DATA_LOG_201501.MODEL_NAME is
-'机型名称';
 
 comment on column TY_DATA_LOG_201501.CHANNEL_ID is
 '渠道ID';
@@ -872,26 +875,31 @@ comment on column TY_DATA_LOG_201501.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_201501.MD5_KEY is
-'MD5_KEY';
+'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+
+comment on column TY_DATA_LOG_201501.P_MD5_KEY is
+'P_MD5_KEY=(UA + GroupId + BatchCode)';
 
 /*==============================================================*/
-/* Index: "Index_26"                                            */
+/* Index: UNIQ_DL_201501_IMEI                                   */
 /*==============================================================*/
-create unique index "Index_26" on TY_DATA_LOG_201501 (
+create unique index UNIQ_DL_201501_IMEI on TY_DATA_LOG_201501 (
    IMEI ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_27"                                            */
+/* Index: IDX_DL_201501_DTIME_MD5                               */
 /*==============================================================*/
-create index "Index_27" on TY_DATA_LOG_201501 (
+create index IDX_DL_201501_DTIME_MD5 on TY_DATA_LOG_201501 (
+   MD5_KEY ASC,
    DEVICE_UPLOAD_TIME ASC
 );
 
 /*==============================================================*/
-/* Index: "Index_28"                                            */
+/* Index: IDX_DL_201501_CTIME_MD5                               */
 /*==============================================================*/
-create index "Index_28" on TY_DATA_LOG_201501 (
+create index IDX_DL_201501_CTIME_MD5 on TY_DATA_LOG_201501 (
+   P_MD5_KEY ASC,
    COUNTER_UPLOAD_TIME ASC
 );
 
@@ -1018,7 +1026,6 @@ create unique index "Index_7" on TY_DICT_INFO (
 create table TY_LOG_STAT  (
    ID                   NUMBER(15)                      not null,
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    GROUP_ID             NUMBER(15),
    CHANNEL_ID           NUMBER(15),
    BATCH_CODE           VARCHAR2(100),
@@ -1033,7 +1040,6 @@ create table TY_LOG_STAT  (
    PRS_INVALID_REPLACE_NUM NUMBER(15)                     default 0,
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
    COUNTER_UPD_DAY_NUM  NUMBER(15)                     default 0,
-   QUERY_KEY            VARCHAR2(200)                   not null,
    MD5_KEY              VARCHAR2(50)                    not null,
    constraint PK_TY_LOG_STAT primary key (ID)
 );
@@ -1046,9 +1052,6 @@ comment on column TY_LOG_STAT.ID is
 
 comment on column TY_LOG_STAT.UA is
 '手机UA';
-
-comment on column TY_LOG_STAT.MODEL_NAME is
-'机型名称';
 
 comment on column TY_LOG_STAT.GROUP_ID is
 '渠道组ID';
@@ -1091,9 +1094,6 @@ comment on column TY_LOG_STAT.PRS_INVALID_UNINSTALL_NUM is
 
 comment on column TY_LOG_STAT.COUNTER_UPD_DAY_NUM is
 '计数器当天上传的总数';
-
-comment on column TY_LOG_STAT.QUERY_KEY is
-'查询辅助KEY';
 
 comment on column TY_LOG_STAT.MD5_KEY is
 'MD5KEY';
@@ -1362,7 +1362,6 @@ create table TY_PRODUCT_STAT  (
    PRODUCT_ID           NUMBER(15),
    GROUP_ID             NUMBER(15),
    UA                   VARCHAR2(100),
-   MODEL_NAME           VARCHAR2(200),
    PROCESS_DATE         DATE,
    PRODUCT_PRS_DAY_NUM  NUMBER(15)                     default 0,
    PRODUCT_UPD_DAY_NUM  NUMBER(15)                     default 0,
@@ -1390,9 +1389,6 @@ comment on column TY_PRODUCT_STAT.GROUP_ID is
 
 comment on column TY_PRODUCT_STAT.UA is
 '手机UA';
-
-comment on column TY_PRODUCT_STAT.MODEL_NAME is
-'机型名称';
 
 comment on column TY_PRODUCT_STAT.PROCESS_DATE is
 '加工日期';
@@ -1711,13 +1707,6 @@ comment on column TY_USER.UPDATE_TIME is
 /* Index: "Index_2"                                             */
 /*==============================================================*/
 create unique index "Index_2" on TY_USER (
-   LOGIN_NAME ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_14"                                            */
-/*==============================================================*/
-create unique index "Index_14" on TY_USER (
    LOGIN_NAME ASC
 );
 

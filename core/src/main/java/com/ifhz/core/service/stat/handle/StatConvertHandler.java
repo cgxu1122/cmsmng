@@ -33,15 +33,19 @@ public class StatConvertHandler {
         logStat.setPrsInvalidReplaceNum(0L);
         logStat.setPrsInvalidUninstallNum(0L);
         logStat.setCounterUpdDayNum(0L);
-   /*     //地包渠道数据需要设置劳务公司ID
-        if (logStat.getGroupId() == CommonConstants.CHANNAL_DIBAO && laowuId != null) {
-            logStat.setLaowuId(laowuId);
-        }*/
 
         return logStat;
     }
 
     //针对以下列进行MD5加密UA + ChannelId + DeviceCode + BatchCode + ProcessTime
+
+    /**
+     * MD5加密 UA + ChannelId + DeviceCode + BatchCode + ProcessTime
+     * 数据统计表中 数据加密 表中唯一
+     *
+     * @param dataLog
+     * @return
+     */
     public static String getMd5KeyForLogStat(DataLog dataLog) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(dataLog.getUa());
@@ -77,13 +81,57 @@ public class StatConvertHandler {
         return productStat;
     }
 
-    //针对以下列进行MD5加密UA + GrroupId + productId + ProcessTime
+
+    /**
+     * MD5加密 UA + GrroupId + productId + ProcessTime
+     * 产品数据统计表中 数据加密 表中唯一
+     * @param dataLog
+     * @param productId
+     * @return
+     */
     public static String getMd5KeyForProductStat(DataLog dataLog, Long productId) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(dataLog.getUa());
         buffer.append(dataLog.getGroupId());
         buffer.append(productId);
         buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
+
+        return DesencryptUtils.md5Str(buffer.toString());
+
+    }
+
+
+    //针对以下列进行MD5加密UA + ChannelId + DeviceCode + BatchCode
+
+    /**
+     * MD5加密UA + ChannelId + DeviceCode + BatchCode
+     * 数据流水表 加工数据维度加密
+     *
+     * @param dataLog
+     * @return
+     */
+    public static String getMd5KeyByLogDataForLogStat(DataLog dataLog) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(dataLog.getUa());
+        buffer.append(dataLog.getChannelId());
+        buffer.append(dataLog.getDeviceCode());
+        buffer.append(dataLog.getBatchCode());
+
+        return DesencryptUtils.md5Str(buffer.toString());
+    }
+
+    /**
+     * MD5加密 UA + GroupId + BatchCode
+     * 数据流水表 产品维度加密
+     *
+     * @param dataLog
+     * @return
+     */
+    public static String getMd5KeyByLogDataForProductStat(DataLog dataLog) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(dataLog.getUa());
+        buffer.append(dataLog.getGroupId());
+        buffer.append(dataLog.getBatchCode());
 
         return DesencryptUtils.md5Str(buffer.toString());
 

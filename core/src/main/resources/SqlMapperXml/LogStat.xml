@@ -6,12 +6,11 @@
     <sql id="CommonFieldSql">
         ID,
         UA,
-        MODEL_NAME,
         GROUP_ID,
         CHANNEL_ID,
         BATCH_CODE,
         DEVICE_CODE,
-        STAT_DATE,
+        PROCESS_DATE,
         LAOWU_ID,
         DEVICE_PRS_DAY_NUM,
         DEVICE_UPD_DAY_NUM,
@@ -33,7 +32,7 @@
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
-        <result column="STAT_DATE" property="processDate" jdbcType="DATE"/>
+        <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
 
         <result column="DEVICE_PRS_DAY_NUM" property="devicePrsDayNum" jdbcType="BIGINT"/>
@@ -63,7 +62,6 @@
         (
         SEQ_LOG_STAT.nextval,
         #{ua,jdbcType=VARCHAR},
-        #{modelName,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{channelId,jdbcType=BIGINT},
         #{batchCode,jdbcType=VARCHAR},

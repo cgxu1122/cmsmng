@@ -33,6 +33,15 @@ public class LogStat implements Serializable {
 
     private String queryKey;
     private String md5Key;
+    private String dataLogMd5Key;
+
+    public String getDataLogMd5Key() {
+        return dataLogMd5Key;
+    }
+
+    public void setDataLogMd5Key(String dataLogMd5Key) {
+        this.dataLogMd5Key = dataLogMd5Key;
+    }
 
     public String getMd5Key() {
         return md5Key;

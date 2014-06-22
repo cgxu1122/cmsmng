@@ -17,6 +17,7 @@ public class ProductStat implements Serializable {
     private String ua;
     private String modelName;
     private Date processDate;
+    private String batchCode;
 
     private Long productPrsDayNum;
     private Long productUpdDayNum;
@@ -29,6 +30,15 @@ public class ProductStat implements Serializable {
 
     private String queryKey;
     private String md5Key;
+
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
 
     public String getMd5Key() {
         return md5Key;

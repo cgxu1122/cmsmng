@@ -5,10 +5,10 @@ import com.ifhz.core.adapter.DataLogAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.DataLogMapper;
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.service.stat.bean.DataLogRequest;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,24 +39,24 @@ public class DataLogAdapterImpl implements DataLogAdapter {
     }
 
     @Override
-    public List<DataLog> queryPageForDevice(Pagination page, String tableName, Date startTime, Date endTime) {
-        List<DataLog> result = dataLogMapper.queryPageForDevice(page, tableName, startTime, endTime);
+    public List<DataLog> queryPageForDevice(Pagination page, DataLogRequest dataLogRequest) {
+        List<DataLog> result = dataLogMapper.queryPageForDevice(page, dataLogRequest);
         return result == null ? Lists.<DataLog>newArrayList() : result;
     }
 
     @Override
-    public List<DataLog> queryPageForCounter(Pagination page, String tableName, Date startTime, Date endTime) {
-        List<DataLog> result = dataLogMapper.queryPageForCounter(page, tableName, startTime, endTime);
+    public List<DataLog> queryPageForCounter(Pagination page, DataLogRequest dataLogRequest) {
+        List<DataLog> result = dataLogMapper.queryPageForDevice(page, dataLogRequest);
         return result == null ? Lists.<DataLog>newArrayList() : result;
     }
 
     @Override
-    public long queryTotalCountForDevice(String tableName, Date startTime, Date endTime) {
-        return dataLogMapper.queryTotalCountForDevice(tableName, startTime, endTime);
+    public long queryTotalCountForDevice(DataLogRequest dataLogRequest) {
+        return dataLogMapper.queryTotalCountForDevice(dataLogRequest);
     }
 
     @Override
-    public long queryTotalCountForCounter(String tableName, Date startTime, Date endTime, Integer active) {
-        return dataLogMapper.queryTotalCountForCounter(tableName, startTime, endTime, active);
+    public long queryTotalCountForCounter(DataLogRequest dataLogRequest) {
+        return dataLogMapper.queryTotalCountForCounter(dataLogRequest);
     }
 }
