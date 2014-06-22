@@ -28,7 +28,7 @@ alter table TY_DICT_INFO
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="TABLE_NAME">TY_DICT_INFO</sql>
+    <sql id="TABLE_NAME"> TY_DICT_INFO </sql>
     <sql id="CommonFieldSql">
         DICT_ID,
         KEY_CODE,
@@ -57,8 +57,8 @@ alter table TY_DICT_INFO
         #{po.remark,jdbcType=VARCHAR})
     </insert>
 
-    <select id="getByKeyCode">
-        select
+    <select id="getByKeyCode" resultMap="DictInfoResultMap">
+    select
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>

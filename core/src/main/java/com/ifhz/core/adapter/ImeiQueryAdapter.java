@@ -15,4 +15,6 @@ public interface ImeiQueryAdapter {
     public int insertBatch(List<String> list);
 
     public List<DataLogResult> queryListByImeiList(String tableName);
+
+    public List<String> queryImeiList();
 }

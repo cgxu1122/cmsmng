@@ -1,5 +1,6 @@
 package com.ifhz.core.service.imei.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.ifhz.core.adapter.ImeiQueryAdapter;
@@ -47,7 +48,9 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
     public List<DataLogResult> queryListByImeiList(List<String> imeiList) {
         Date now = new Date();
         imeiQueryAdapter.insertBatch(imeiList);
-        List<DataLogResult> dataLogResultList = queryDeviceResultList(now);
+        LOGGER.info("queryImeiList = {}", JSON.toJSONString(imeiQueryAdapter.queryImeiList()));
+//        List<DataLogResult> dataLogResultList = asyncDataLogResultList(now);
+        List<DataLogResult> dataLogResultList = getDataLogResultList(now);
         if (CollectionUtils.isNotEmpty(dataLogResultList)) {
             for (DataLogResult dataLogResult : dataLogResultList) {
                 if (StringUtils.isNotBlank(dataLogResult.getUa()) && dataLogResult.getGroupId() != null) {
@@ -68,8 +71,23 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         return dataLogResultList == null ? Lists.<DataLogResult>newArrayList() : dataLogResultList;
     }
 
+    private List<DataLogResult> getDataLogResultList(Date date) {
+        List<DataLogResult> result = Lists.newArrayList();
+        List<String> tableNameList = splitTableService.getTableNameList(date);
+        if (CollectionUtils.isNotEmpty(result)) {
+            for (String tableName : tableNameList) {
+                List<DataLogResult> dataLogResultList = imeiQueryAdapter.queryListByImeiList(tableName);
+                if (CollectionUtils.isNotEmpty(dataLogResultList)) {
+                    result.addAll(dataLogResultList);
+                }
+            }
+        }
 
-    private List<DataLogResult> queryDeviceResultList(Date date) {
+        return result;
+    }
+
+
+    private List<DataLogResult> asyncDataLogResultList(Date date) {
         List<DataLogResult> result = Lists.newArrayList();
         List<ImeiQueryTask> taskList = genTaskList(date);
         if (CollectionUtils.isNotEmpty(taskList)) {
@@ -80,6 +98,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                     for (Future<List<DataLogResult>> future : futureResult) {
                         try {
                             List<DataLogResult> dataLogResultList = future.get(10, TimeUnit.SECONDS);
+                            LOGGER.info("{}", JSON.toJSONString(dataLogResultList));
                             if (CollectionUtils.isNotEmpty(dataLogResultList)) {
                                 result.addAll(dataLogResultList);
                             }
@@ -107,6 +126,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                 }
             }
         }
+        LOGGER.info("task.size = {}", taskList.size());
         return taskList;
     }
 

@@ -16,4 +16,6 @@ public interface ImeiTempMapper {
     public int insertBatch(@Param("list") List<String> list);
 
     public List<DataLogResult> queryListByImeiList(@Param("tableName") String tableName);
+
+    public List<String> queryImeiList();
 }

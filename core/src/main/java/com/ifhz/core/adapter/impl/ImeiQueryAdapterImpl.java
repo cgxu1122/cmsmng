@@ -31,4 +31,9 @@ public class ImeiQueryAdapterImpl implements ImeiQueryAdapter {
         List<DataLogResult> list = imeiTempMapper.queryListByImeiList(tableName);
         return list == null ? Lists.<DataLogResult>newArrayList() : list;
     }
+
+    @Override
+    public List<String> queryImeiList() {
+        return imeiTempMapper.queryImeiList();
+    }
 }
