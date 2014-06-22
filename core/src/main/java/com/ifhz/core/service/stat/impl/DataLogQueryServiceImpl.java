@@ -6,6 +6,7 @@ import com.ifhz.core.adapter.DataLogAdapter;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.stat.DataLogQueryService;
 import com.ifhz.core.service.stat.bean.DataLogRequest;
+import com.ifhz.core.service.stat.bean.ImeiRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -99,7 +100,51 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
 
     @Override
     public long queryCounterProductDayNum(DataLogRequest dataLogRequest) {
-        return 0;
+        long counterProductDayNum = 0L;
+        List<String> tableNameList = splitTableService.getTableNameList(dataLogRequest.getDate());
+        List<QueryCounterUpdNumTask> taskList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(tableNameList)) {
+            for (String tableName : tableNameList) {
+                DataLogRequest temp = new DataLogRequest();
+                temp.setDate(dataLogRequest.getDate());
+                temp.setStartTime(dataLogRequest.getStartTime());
+                temp.setEndTime(dataLogRequest.getEndTime());
+                temp.setMd5Key(dataLogRequest.getMd5Key());
+                temp.setTableName(tableName);
+                temp.setProduct(true);
+                QueryCounterUpdNumTask task = new QueryCounterUpdNumTask(temp);
+                taskList.add(task);
+            }
+
+            List<Future<Long>> futureResult = Lists.newArrayList();
+            try {
+                futureResult = THREADPOOL.invokeAll(taskList);
+                if (CollectionUtils.isNotEmpty(futureResult)) {
+                    for (Future<Long> future : futureResult) {
+                        Long result = null;
+                        try {
+                            result = future.get(10, TimeUnit.SECONDS);
+                        } catch (Exception e) {
+                            LOGGER.error("task future result error", e);
+                        }
+                        if (result != null) {
+                            counterProductDayNum = counterProductDayNum + result;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.error("Execute QueryCounterUpdNumTask error", e);
+            }
+        }
+
+        return counterProductDayNum;
+    }
+
+    @Override
+    public List<String> queryImeiList(ImeiRequest request) {
+
+
+        return null;
     }
 
 
