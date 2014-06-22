@@ -10,29 +10,29 @@ import java.util.List;
 
 public class SplitTableServiceImplTest extends BaseTest {
 
-//    @Autowired
-//    private SplitTableService splitTableService;
-//
-//    @Test
-//    public void testGetTableNameForDeviceByNow() throws Exception {
-////        String t = splitTableService.getTableNameForCounterByNow(new Date());
-////        log(t);
-//    }
-//
-//    @Test
-//    public void testGetTableNameForCounterByNow() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void testGetTableListForDeviceByNow() throws Exception {
-//        List<String> t = splitTableService.getTableListForDeviceByNow(new Date());
-//        log(t);
-//    }
-//
-//    @Test
-//    public void testGetTableListForCounterByNow() throws Exception {
-//        List<String> t = splitTableService.getTableListForDeviceByNow(new Date());
-//        log(t);
-//    }
+    @Autowired
+    private SplitTableService splitTableService;
+
+    @Test
+    public void testGetTableNameForDeviceByNow() throws Exception {
+        String t = splitTableService.getCurrentTableName(new Date());
+        log(t);
+    }
+
+    @Test
+    public void testGetTableNameForCounterByNow() throws Exception {
+
+    }
+
+    @Test
+    public void testGetTableListForDeviceByNow() throws Exception {
+        List<String> t = splitTableService.getTableNameList(new Date());
+        log(t);
+    }
+
+    @Test
+    public void testGetTableListForCounterByNow() throws Exception {
+        List<String> t = splitTableService.getTableNameList(new Date());
+        log(t);
+    }
 }

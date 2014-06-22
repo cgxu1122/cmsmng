@@ -2,8 +2,8 @@ package com.ifhz.core.adapter;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.service.stat.bean.DataLogRequest;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,11 +20,11 @@ public interface DataLogAdapter {
 
     public DataLog getByImei(String tableName, String imei);
 
-    public List<DataLog> queryPageForDevice(Pagination page, String tableName, Date startTime, Date endTime);
+    public List<DataLog> queryPageForDevice(Pagination page, DataLogRequest dataLogRequest);
 
-    public List<DataLog> queryPageForCounter(Pagination page, String tableName, Date startTime, Date endTime);
+    public List<DataLog> queryPageForCounter(Pagination page, DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForDevice(String tableName, Date startTime, Date endTime);
+    public long queryTotalCountForDevice(DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForCounter(String tableName, Date startTime, Date endTime, Integer active);
+    public long queryTotalCountForCounter(DataLogRequest dataLogRequest);
 }

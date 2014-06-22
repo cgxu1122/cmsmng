@@ -14,6 +14,7 @@ import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.stat.DataLogQueryService;
 import com.ifhz.core.service.stat.LogStatTaskService;
 import com.ifhz.core.service.stat.LogStatUpdateService;
+import com.ifhz.core.service.stat.bean.DataLogRequest;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.service.stat.handle.DateHandler;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
@@ -62,19 +63,27 @@ public class LogStatTaskTaskServiceImpl implements LogStatTaskService {
         LOGGER.info("统计程序开始执行{},{}", startTime, endTime);
         Map<String, LogStat> container = Maps.newHashMap();
         String tableName = splitTableService.getCurrentTableName(startTime);
-        long totalCount = dataLogAdapter.queryTotalCountForDevice(tableName, startTime, endTime);
+        DataLogRequest dataLogRequest = new DataLogRequest();
+        dataLogRequest.setTableName(tableName);
+        dataLogRequest.setDate(startTime);
+        dataLogRequest.setStartTime(startTime);
+        dataLogRequest.setEndTime(endTime);
+
+        long totalCount = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
         if (totalCount > 0) {
             long pageNum = StatConvertHandler.getPageNum(totalCount, pageSize);
             for (int i = 0; i < pageNum; i++) {
                 Pagination page = new Pagination();
                 page.setPageSize(pageSize);
                 page.setCurrentPage(i + 1);
-                List<DataLog> dataLogList = dataLogAdapter.queryPageForDevice(page, tableName, startTime, endTime);
+                List<DataLog> dataLogList = dataLogAdapter.queryPageForDevice(page, dataLogRequest);
                 if (CollectionUtils.isNotEmpty(dataLogList)) {
                     for (DataLog dataLog : dataLogList) {
                         String md5Key = StatConvertHandler.getMd5KeyForLogStat(dataLog);
+                        String logDataMd5Key = StatConvertHandler.getMd5KeyByLogDataForLogStat(dataLog);
                         LogStat logStat = getLogStatFromMap(container, md5Key, dataLog);
                         logStat.setMd5Key(md5Key);
+                        logStat.setDataLogMd5Key(logDataMd5Key);
                         logStat.setDevicePrsDayNum(logStat.getDeviceUpdDayNum() + 1);
                         //判断此加工数据 同时计数器数据也已经上传
                         if (dataLog.getActive() != null && dataLog.getCounterUploadTime() != null) {
@@ -129,9 +138,14 @@ public class LogStatTaskTaskServiceImpl implements LogStatTaskService {
                         entity.setPrsActiveValidNum(entity.getPrsActiveValidNum() + value.getPrsActiveValidNum());
                         entity.setPrsInvalidReplaceNum(entity.getPrsInvalidReplaceNum() + value.getPrsInvalidReplaceNum());
                         entity.setPrsInvalidUninstallNum(entity.getPrsInvalidUninstallNum() + value.getPrsInvalidUninstallNum());
+                        DataLogRequest dataLogRequest = new DataLogRequest();
+                        dataLogRequest.setDate(entity.getProcessDate());
+                        dataLogRequest.setMd5Key(entity.getDataLogMd5Key());
+                        dataLogRequest.setStartTime(startTime);
+                        dataLogRequest.setEndTime(endTime);
 
-                        long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(entity.getProcessDate(), startTime, endTime);
-                        long counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(entity.getProcessDate(), startTime, endTime);
+                        long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
+                        long counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(dataLogRequest);
                         entity.setDeviceUpdDayNum(deviceUpdDayNum);
                         entity.setCounterUpdDayNum(counterUpdDayNum);
 
@@ -143,8 +157,14 @@ public class LogStatTaskTaskServiceImpl implements LogStatTaskService {
                                 value.setLaowuId(channelInfo.getLaowuId());
                             }
                         }
-                        long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(entity.getProcessDate(), startTime, endTime);
-                        long counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(entity.getProcessDate(), startTime, endTime);
+                        DataLogRequest dataLogRequest = new DataLogRequest();
+                        dataLogRequest.setDate(entity.getProcessDate());
+                        dataLogRequest.setMd5Key(value.getDataLogMd5Key());
+                        dataLogRequest.setStartTime(startTime);
+                        dataLogRequest.setEndTime(endTime);
+
+                        long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
+                        long counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(dataLogRequest);
                         value.setDeviceUpdDayNum(deviceUpdDayNum);
                         value.setCounterUpdDayNum(counterUpdDayNum);
 
@@ -156,6 +176,4 @@ public class LogStatTaskTaskServiceImpl implements LogStatTaskService {
             }
         }
     }
-
-
 }

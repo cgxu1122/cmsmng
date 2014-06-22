@@ -9,7 +9,8 @@
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
         <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
-        <result column="STAT_DATE" property="processDate" jdbcType="DATE"/>
+        <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
+        <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
 
         <result column="PRODUCT_PRS_DAY_NUM" property="productPrsDayNum" jdbcType="BIGINT"/>
         <result column="PRODUCT_UPD_DAY_NUM" property="productUpdDayNum" jdbcType="BIGINT"/>
@@ -24,8 +25,8 @@
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.ifhz.core.po.ProductCount">
-        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+    <insert id="insert" parameterType="com.ifhz.core.po.ProductStat">
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT SEQ_PRODUCT_STAT.CURRVAL AS id from dual
         </selectKey>
         insert into
@@ -34,9 +35,9 @@
         ID,
         PRODUCT_ID,
         UA,
-        MODEL_NAME,
         GROUP_ID,
-        STAT_DATE,
+        PROCESS_DATE,
+        BATCH_CODE,
         PRODUCT_PRS_DAY_NUM,
         PRODUCT_UPD_DAY_NUM,
         PRS_ACTIVE_TOTAL_NUM,
@@ -51,9 +52,9 @@
         SEQ_PRODUCT_STAT.NEXTVAL,
         #{productId,jdbcType=BIGINT},
         #{ua,jdbcType=VARCHAR},
-        #{modelName,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{processDate,jdbcType=DATE},
+        #{batchCode,jdbcType=VARCHAR},
         #{productPrsDayNum,jdbcType=BIGINT},
         #{productUpdDayNum,jdbcType=BIGINT},
         #{prsActiveTotalNum,jdbcType=BIGINT},

@@ -31,8 +31,46 @@ public class LogStat implements Serializable {
     private Long prsInvalidUninstallNum;
     private Long counterUpdDayNum;
 
-    private String queryKey;
     private String md5Key;
+    private String dataLogMd5Key;
+
+    public String getDataLogMd5Key() {
+        return dataLogMd5Key;
+    }
+
+    public void setDataLogMd5Key(String dataLogMd5Key) {
+        this.dataLogMd5Key = dataLogMd5Key;
+    }
+
+    //查询条件
+    private Date startDate;
+    private Date endDate;
+    //页面返回值
+    private String channelName;
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     public String getMd5Key() {
         return md5Key;
@@ -176,13 +214,5 @@ public class LogStat implements Serializable {
 
     public void setCounterUpdDayNum(Long counterUpdDayNum) {
         this.counterUpdDayNum = counterUpdDayNum;
-    }
-
-    public String getQueryKey() {
-        return queryKey;
-    }
-
-    public void setQueryKey(String queryKey) {
-        this.queryKey = queryKey;
     }
 }

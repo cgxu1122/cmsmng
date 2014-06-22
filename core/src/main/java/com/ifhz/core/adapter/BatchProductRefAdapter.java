@@ -21,4 +21,6 @@ public interface BatchProductRefAdapter {
     public int update(BatchProductRef record);
 
     public int delete(BatchProductRef record);
+
+    public List<Long> queryProductIdList(String batchCode);
 }

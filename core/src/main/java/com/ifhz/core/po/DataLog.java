@@ -25,6 +25,7 @@ public class DataLog implements Serializable {
     private Integer active;
     private Date counterUploadTime;
     private String md5Key;
+    private String pmd5Key;
 
     private String tableName;
 
@@ -138,6 +139,14 @@ public class DataLog implements Serializable {
 
     public void setMd5Key(String md5Key) {
         this.md5Key = md5Key;
+    }
+
+    public String getPmd5Key() {
+        return pmd5Key;
+    }
+
+    public void setPmd5Key(String pmd5Key) {
+        this.pmd5Key = pmd5Key;
     }
 
     @Override

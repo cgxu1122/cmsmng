@@ -6,12 +6,11 @@
     <sql id="CommonFieldSql">
         ID,
         UA,
-        MODEL_NAME,
         GROUP_ID,
         CHANNEL_ID,
         BATCH_CODE,
         DEVICE_CODE,
-        STAT_DATE,
+        PROCESS_DATE,
         LAOWU_ID,
         DEVICE_PRS_DAY_NUM,
         DEVICE_UPD_DAY_NUM,
@@ -21,7 +20,6 @@
         PRS_INVALID_REPLACE_NUM,
         PRS_INVALID_UNINSTALL_NUM,
         COUNTER_UPD_DAY_NUM,
-        QUERY_KEY,
         MD5_KEY
     </sql>
 
@@ -33,7 +31,7 @@
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
-        <result column="STAT_DATE" property="processDate" jdbcType="DATE"/>
+        <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
 
         <result column="DEVICE_PRS_DAY_NUM" property="devicePrsDayNum" jdbcType="BIGINT"/>
@@ -45,7 +43,6 @@
         <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
         <result column="COUNTER_UPD_DAY_NUM" property="counterUpdDayNum" jdbcType="BIGINT"/>
 
-        <result column="QUERY_KEY" property="queryKey" jdbcType="VARCHAR"/>
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -63,7 +60,6 @@
         (
         SEQ_LOG_STAT.nextval,
         #{ua,jdbcType=VARCHAR},
-        #{modelName,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{channelId,jdbcType=BIGINT},
         #{batchCode,jdbcType=VARCHAR},
@@ -79,7 +75,6 @@
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
         #{counterUpdDayNum,jdbcType=BIGINT},
-        #{queryKey,jdbcType=VARCHAR},
         #{md5Key,jdbcType=VARCHAR}
         )
     </insert>
@@ -125,15 +120,6 @@
         where ID = #{id}
     </select>
 
-    <select id="queryListByQueryKey" resultMap="LogStatResultMap">
-        select
-        <include refid="CommonFieldSql"/>
-        from
-        <include refid="TABLE_NAME"/>
-        where QUERY_KEY like #{queryKey}
-        and STAT_DATE between #{startTime} and #{endTime}
-    </select>
-
     <select id="getByMd5Key" resultMap="LogStatResultMap">
         select
         <include refid="CommonFieldSql"/>
@@ -142,7 +128,27 @@
         where Md5_KEY = #{md5Key}
     </select>
 
-
+    <select id="queryByVo" resultMap="LogStatResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and PROCESS_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and PROCESS_DATE <= #{record.endDate}
+            ]]>
+        </if>
+    </select>
     <!--<insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
         <selectKey resultType="long" keyProperty="id" order="BEFORE">
             SELECT SEQ_LOG_COUNT.NEXTVAL FROM DUAL

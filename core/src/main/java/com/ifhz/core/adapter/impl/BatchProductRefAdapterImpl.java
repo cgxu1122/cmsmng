@@ -46,4 +46,9 @@ public class BatchProductRefAdapterImpl implements BatchProductRefAdapter {
     public int delete(BatchProductRef record) {
         return batchProductRefMapper.delete(record);
     }
+
+    @Override
+    public List<Long> queryProductIdList(String batchCode) {
+        return batchProductRefMapper.queryProductIdList(batchCode);
+    }
 }

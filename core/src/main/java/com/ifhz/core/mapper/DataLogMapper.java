@@ -2,9 +2,9 @@ package com.ifhz.core.mapper;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.service.stat.bean.DataLogRequest;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,25 +21,11 @@ public interface DataLogMapper {
 
     public DataLog getByImei(@Param("tableName") String tableName, @Param("imei") String imei);
 
+    public List<DataLog> queryPageForDevice(Pagination page, @Param("dataLogRequest") DataLogRequest dataLogRequest);
 
-    public List<DataLog> queryPageForDevice(Pagination page,
-                                            @Param("tableName") String tableName,
-                                            @Param("startTime") Date startTime,
-                                            @Param("endTime") Date endTime);
+    public List<DataLog> queryPageForCounter(Pagination page, @Param("dataLogRequest") DataLogRequest dataLogRequest);
 
+    public long queryTotalCountForDevice(@Param("dataLogRequest") DataLogRequest dataLogRequest);
 
-    public List<DataLog> queryPageForCounter(Pagination page,
-                                             @Param("tableName") String tableName,
-                                             @Param("startTime") Date startTime,
-                                             @Param("endTime") Date endTime);
-
-    public long queryTotalCountForDevice(@Param("tableName") String tableName,
-                                         @Param("startTime") Date startTime,
-                                         @Param("endTime") Date endTime);
-
-
-    public long queryTotalCountForCounter(@Param("tableName") String tableName,
-                                          @Param("startTime") Date startTime,
-                                          @Param("endTime") Date endTime,
-                                          @Param("active") Integer active);
+    public long queryTotalCountForCounter(@Param("dataLogRequest") DataLogRequest dataLogRequest);
 }

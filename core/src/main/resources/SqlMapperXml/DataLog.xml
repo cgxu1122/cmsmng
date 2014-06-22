@@ -16,13 +16,13 @@
         <result column="ACTIVE" property="active" jdbcType="INTEGER"/>
         <result column="COUNTER_UPLOAD_TIME" property="counterUploadTime" jdbcType="TIMESTAMP"/>
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
+        <result column="P_MD5_KEY" property="pmd5Key" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="CommonFieldSql">
         ID,
         IMEI,
         UA,
-        MODEL_NAME,
         CHANNEL_ID,
         DEVICE_CODE,
         GROUP_ID,
@@ -31,7 +31,8 @@
         DEVICE_UPLOAD_TIME,
         ACTIVE,
         COUNTER_UPLOAD_TIME,
-        MD5_KEY
+        MD5_KEY,
+        P_MD5_KEY
     </sql>
 
     <insert id="insertDeviceData" parameterType="com.ifhz.core.po.DataLog">
@@ -47,7 +48,6 @@
         SEQ_DATA_LOG.NEXTVAL,
         #{imei,jdbcType=VARCHAR},
         #{ua,jdbcType=VARCHAR},
-        #{modelName,jdbcType=VARCHAR},
         #{channelId,jdbcType=VARCHAR},
         #{deviceCode,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
@@ -56,7 +56,8 @@
         #{deviceUploadTime,jdbcType=TIMESTAMP},
         #{active,jdbcType=INTEGER}
         #{counterUploadTime,jdbcType=TIMESTAMP},
-        #{md5Key,jdbcType=VARCHAR}
+        #{md5Key,jdbcType=VARCHAR},
+        #{pmd5Key,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -71,45 +72,57 @@
     <update id="updateCounterData" parameterType="com.ifhz.core.po.DataLog">
         update ${tableName}
         set ACTIVE = #{active},
-        COUNTER_UPLOAD_TIME = #{counterUploadTime}
+        COUNTER_UPLOAD_TIME = #{counterUploadTime},
+        P_MD5_KEY = #{pmd5Key}
         where ID = #{id}
     </update>
 
     <select id="queryTotalCountForDevice" resultType="long">
         select count(0)
-        from ${tableName}
-        where DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
-        <if test="md5Key != null">
-            and MD5_KEY = #{md5Key}
-        </if>
+        from ${dataLogRequest.tableName}
+        where DEVICE_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
+        <choose>
+            <when test="dataLogRequest.isProduct">
+                and P_MD5_KEY = #{dataLogRequest.md5Key}
+            </when>
+            <otherwise>
+                and MD5_KEY = #{dataLogRequest.md5Key}
+            </otherwise>
+        </choose>
     </select>
 
     <select id="queryTotalCountForCounter" resultType="long">
         select count(0)
-        from ${tableName}
-        where COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
-        <if test="active != null">
-            and ACTIVE = #{active}
-        </if>
-        <if test="md5Key != null">
-            and MD5_KEY = #{md5Key}
+        from ${dataLogRequest.tableName}
+        where P_MD5_KEY = #{dataLogRequest.md5Key}
+        and COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
+        <if test="dataLogRequest.active != null">
+            and ACTIVE = #{dataLogRequest.active}
         </if>
     </select>
 
     <select id="queryPageForDevice" resultMap="DataLogResultMap">
         select
         <include refid="CommonFieldSql"/>
-        from ${tableName}
-        where DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+        from ${dataLogRequest.tableName}
+        where DEVICE_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
     </select>
 
     <select id="queryPageForCounter" resultMap="DataLogResultMap">
         select
         <include refid="CommonFieldSql"/>
-        from ${tableName}
-        where COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
-        <if test="active != null">
-            and ACTIVE = #{active}
+        from ${dataLogRequest.tableName}
+        where COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
+        <choose>
+            <when test="dataLogRequest.isProduct">
+                and P_MD5_KEY = #{dataLogRequest.md5Key}
+            </when>
+            <otherwise>
+                and MD5_KEY = #{dataLogRequest.md5Key}
+            </otherwise>
+        </choose>
+        <if test="dataLogRequest.active != null">
+            and ACTIVE = #{dataLogRequest.active}
         </if>
     </select>
 </mapper>

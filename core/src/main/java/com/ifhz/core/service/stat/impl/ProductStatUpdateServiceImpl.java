@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * Date: 2014/6/21
  * Time: 17:16
  */
-@Service("productStatService")
+@Service("productStatUpdateService")
 public class ProductStatUpdateServiceImpl implements ProductStatUpdateService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductStatUpdateServiceImpl.class);

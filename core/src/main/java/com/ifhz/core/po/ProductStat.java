@@ -17,6 +17,7 @@ public class ProductStat implements Serializable {
     private String ua;
     private String modelName;
     private Date processDate;
+    private String batchCode;
 
     private Long productPrsDayNum;
     private Long productUpdDayNum;
@@ -27,8 +28,17 @@ public class ProductStat implements Serializable {
     private Long prsInvalidUninstallNum;
     private Long counterProductDayNum;
 
-    private String queryKey;
     private String md5Key;
+    private String dataLogPmd5Key;
+
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
 
     public String getMd5Key() {
         return md5Key;
@@ -150,11 +160,11 @@ public class ProductStat implements Serializable {
         this.counterProductDayNum = counterProductDayNum;
     }
 
-    public String getQueryKey() {
-        return queryKey;
+    public String getDataLogPmd5Key() {
+        return dataLogPmd5Key;
     }
 
-    public void setQueryKey(String queryKey) {
-        this.queryKey = queryKey;
+    public void setDataLogPmd5Key(String dataLogPmd5Key) {
+        this.dataLogPmd5Key = dataLogPmd5Key;
     }
 }
