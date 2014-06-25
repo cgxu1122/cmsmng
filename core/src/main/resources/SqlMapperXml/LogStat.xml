@@ -137,6 +137,9 @@
         <if test="record.groupId != null and record.groupId != ''">
             and GROUP_ID = #{record.groupId}
         </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
         <if test="record.ua != null and record.ua != ''">
             and UA = #{record.ua}
         </if>

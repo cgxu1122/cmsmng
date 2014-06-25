@@ -26,10 +26,10 @@
         function searchEvt() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
-            var ua = $('#ua').val();
+            var productId = $('#productId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/partnerQuery/listLogStat",
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua}
+                url: "<%=basePath%>/partnerQuery/listProductStat",
+                queryParams: {productId: productId, startDate: startDate, endDate: endDate}
             });
         }
 
@@ -41,8 +41,8 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/partnerQuery/listLogStat',
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
+                url: '<%=basePath%>/partnerQuery/listProductStat',
+                queryParams: {startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -50,15 +50,13 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'processDate', title: '日期', align: 'center', width: 200,
+                        {field: 'processDate', title: '日期', align: 'center', width: 300,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
-                        {field: 'channelName', title: '仓库名称', align: 'center', width: 300},
-                        {field: 'modelName', title: '机型名称', align: 'center', width: 200},
-                        {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
+                        {field: 'modelName', title: '机型名称', align: 'center', width: 400},
+                        {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 //return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>"+value+"</a>";
                                 return "<a href='javascript:void(0)'>" + value + "</a>";
@@ -68,48 +66,47 @@
                 ]
             });
         }
-        function showModelDialog() {
-            $('#modeldlg').dialog('open').dialog('setTitle', '选择机型');
-            $('#modeldg').datagrid({
+        function showProductDialog() {
+            $('#productdlg').dialog('open').dialog('setTitle', '选择 产品');
+            $('#productdg').datagrid({
                 width: 'auto',
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/modelInfo/list',
+                url: '<%=basePath%>/productInfo/list',
                 queryParams: {groupId: 1},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'modelName', title: '机型名称', align: 'center', width: 150},
-                        {field: 'ua', title: 'UA', align: 'center', width: 150},
+                        {field: 'productName', title: '产品名称', align: 'center', width: 300},
                         {field: 'action', title: '操作', align: 'center', width: 100,
                             formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectModel('" + row.ua + "','" + row.modelName + "')>选择</a>";
+                                return "<a href='javascript:void(0)' onclick=javascript:selectProduct('" + row.productId + "','" + row.productName + "')>选择</a>";
                             }
                         }
                     ]
                 ]
             });
         }
-        function searchModelEvt() {
-            var value = $('#searchModelValue').val();
-            $('#modeldg').datagrid({
-                url: "<%=basePath%>/modelInfo/list",
-                queryParams: {modelNameCondition: value, groupId: 1}
+        function searchProductEvt() {
+            var value = $('#searchProductValue').val();
+            $('#productdg').datagrid({
+                url: "<%=basePath%>/productInfo/list",
+                queryParams: {productNameCondition: value}
             });
         }
-        function selectModel(ua, modelName) {
-            $("#modelName").val(modelName);
-            $("#ua").val(ua);
-            $('#modeldlg').dialog('close');
+        function selectProduct(productId, productName) {
+            $("#productName").val(productName);
+            $("#productId").val(productId);
+            $('#productdlg').dialog('close');
         }
         function exportData() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
-            var ua = $('#ua').val();
-            window.location.href = "<%=basePath%>/partnerQuery/exportData?groupId=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
+            var productId = $('#productId').val();
+            window.location.href = "<%=basePath%>/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId;
         }
     </script>
 </head>
@@ -119,9 +116,9 @@
         <table>
             <tr>
                 <td>
-                    <input type="text" name="modelName" id="modelName" placeholder="选择机型" readonly="readonly"
-                           onclick="showModelDialog()"/>
-                    <input type="hidden" name="ua" id="ua"/>
+                    <input type="text" name="productName" id="productName" placeholder="选择产品" readonly="readonly"
+                           onclick="showProductDialog()"/>
+                    <input type="hidden" name="productId" id="productId"/>
                 </td>
                 <td>
                     <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
@@ -141,29 +138,29 @@
     </div>
 </div>
 <div id="dg"></div>
-<div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
-     buttons="#modeldlg-buttons">
+<div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     buttons="#productdlg-buttons">
     <div>
         <div>
             <table>
                 <tr>
                     <td>
-                        <input type="text" name="searchModelValue" id="searchModelValue" placeholder="机型名称"/>
+                        <input type="text" name="searchProductValue" id="searchProductValue" placeholder="产品名称"/>
                     </td>
                     <td align="center">
-                        <a id="searchModelBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                        <a id="searchProductBtn" href="javascript:void(0)" class="easyui-linkbutton"
                            iconCls="icon-search"
-                           onclick="searchModelEvt()">查询</a>
+                           onclick="searchProductEvt()">查询</a>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    <div id="modeldg"></div>
+    <div id="productdg"></div>
 </div>
-<div id="modeldlg-buttons" style="text-align: center;">
+<div id="productdlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#modeldlg').dialog('close')">取消</a>
+       onclick="javascript:$('#productdlg').dialog('close')">取消</a>
 </div>
 </body>
 </html>

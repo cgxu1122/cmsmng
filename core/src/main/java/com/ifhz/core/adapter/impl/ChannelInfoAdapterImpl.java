@@ -53,4 +53,9 @@ public class ChannelInfoAdapterImpl implements ChannelInfoAdapter {
         record.setUpdateTime(new Date());
         return channelInfoMapper.update(record);
     }
+
+    @Override
+    public ChannelInfo getChannelInfoByUserId(Long userId) {
+        return channelInfoMapper.getChannelInfoByUserId(userId);
+    }
 }

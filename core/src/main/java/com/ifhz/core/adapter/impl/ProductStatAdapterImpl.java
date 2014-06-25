@@ -2,6 +2,7 @@ package com.ifhz.core.adapter.impl;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.ProductStatAdapter;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.ProductStatMapper;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.api.bean.StatUpdateBean;
@@ -52,5 +53,10 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
     @Override
     public int updateStat(StatUpdateBean statUpdateBean) {
         return productStatMapper.updateStat(statUpdateBean);
+    }
+
+    @Override
+    public List<ProductStat> queryByVo(Pagination page, ProductStat record) {
+        return productStatMapper.queryByVo(page, record);
     }
 }

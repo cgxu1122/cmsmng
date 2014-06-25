@@ -1,7 +1,9 @@
 package com.ifhz.core.mapper;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.api.bean.StatUpdateBean;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -25,4 +27,6 @@ public interface ProductStatMapper {
     public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
 
     public int updateStat(StatUpdateBean statUpdateBean);
+
+    public List<ProductStat> queryByVo(Pagination page, @Param(value = "record") ProductStat record);
 }

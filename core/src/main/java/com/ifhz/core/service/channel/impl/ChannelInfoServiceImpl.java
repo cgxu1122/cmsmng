@@ -75,4 +75,10 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     public int delete(ChannelInfo record) {
         return channelInfoAdapter.delete(record);
     }
+
+    @Override
+    public ChannelInfo getChannelInfoByUserId(Long userId) {
+        if (userId == null) return null;
+        return channelInfoAdapter.getChannelInfoByUserId(userId);
+    }
 }

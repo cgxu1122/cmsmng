@@ -29,7 +29,7 @@
             var ua = $('#ua').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/partnerQuery/listLogStat",
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua}
+                queryParams: {groupId: 4, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
 
@@ -42,7 +42,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/partnerQuery/listLogStat',
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
+                queryParams: {groupId: 4, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -76,7 +76,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/modelInfo/list',
-                queryParams: {groupId: 1},
+                queryParams: {groupId: 4},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -97,7 +97,7 @@
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
                 url: "<%=basePath%>/modelInfo/list",
-                queryParams: {modelNameCondition: value, groupId: 1}
+                queryParams: {modelNameCondition: value, groupId: 4}
             });
         }
         function selectModel(ua, modelName) {

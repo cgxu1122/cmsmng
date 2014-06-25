@@ -35,6 +35,11 @@
         <include refid="TABLE_NAME"/>
         where CHANNEL_ID = #{channelId}
     </select>
+    <select id="getChannelInfoByUserId" parameterType="long" resultMap="ChannelInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where USER_ID = #{userId}
+    </select>
 
     <insert id="insert" parameterType="com.ifhz.core.po.ChannelInfo">
         <selectKey resultType="long" keyProperty="channelId">

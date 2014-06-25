@@ -5,10 +5,14 @@ import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
+import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
+import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +35,8 @@ import java.util.Map;
 @RequestMapping("/partnerQuery")
 public class PartnerQueryController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerQueryController.class);
+    @Autowired
+    private ChannelInfoService channelInfoService;
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
@@ -58,7 +64,7 @@ public class PartnerQueryController extends BaseController {
 
     @RequestMapping(value = "/listLogStat", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject list(HttpServletRequest request) {
+    public JSONObject listLogStat(HttpServletRequest request) {
         /**分页*/
         String pageNum = request.getParameter("page");
         String pageSize = request.getParameter("rows");
@@ -82,6 +88,10 @@ public class PartnerQueryController extends BaseController {
         }
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+        if (channelInfo != null) {
+            logStat.setChannelId(channelInfo.getChannelId());
         }
         List<LogStat> list = logStatQueryService.queryByVo(page, logStat);
         JSONObject result = new JSONObject();
@@ -119,6 +129,64 @@ public class PartnerQueryController extends BaseController {
         titleMap.put("channelName", "仓库名称");
         titleMap.put("modelName", "机型名称");
         titleMap.put("devicePrsDayNum", "装机数量");
+        exportModel.setTitleMap(titleMap);
+        exportModel.setDataList(list);
+        super.exportXLSData(request, response, exportModel);
+    }
+
+    @RequestMapping(value = "/listProductStat", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listProductStat(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String productId = request.getParameter("productId");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        ProductStat productStat = new ProductStat();
+        if (StringUtils.isNotEmpty(productId)) {
+            productStat.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        List<ProductStat> list = productStatQueryService.queryByVo(page, productStat);
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/exportProductData")
+    @ResponseBody
+    public void exportProductData(HttpServletRequest request, HttpServletResponse response) {
+        String productId = request.getParameter("productId");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
+        ProductStat productStat = new ProductStat();
+        if (StringUtils.isNotEmpty(productId)) {
+            productStat.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        List<ProductStat> list = productStatQueryService.queryByVo(null, productStat);
+        BaseExportModel exportModel = new BaseExportModel();
+        Map<String, String> titleMap = new LinkedHashMap<String, String>();
+        titleMap.put("processDate", "日期");
+        titleMap.put("modelName", "机型名称");
+        titleMap.put("productPrsDayNum", "装机数量");
         exportModel.setTitleMap(titleMap);
         exportModel.setDataList(list);
         super.exportXLSData(request, response, exportModel);

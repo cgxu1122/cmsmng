@@ -29,7 +29,7 @@
             var ua = $('#ua').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/partnerQuery/listLogStat",
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua}
+                queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
 
@@ -42,7 +42,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/partnerQuery/listLogStat',
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
+                queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -76,7 +76,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/modelInfo/list',
-                queryParams: {groupId: 1},
+                queryParams: {groupId: 2},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -109,7 +109,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
-            window.location.href = "<%=basePath%>/partnerQuery/exportData?groupId=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
+            window.location.href = "<%=basePath%>/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
         }
     </script>
 </head>

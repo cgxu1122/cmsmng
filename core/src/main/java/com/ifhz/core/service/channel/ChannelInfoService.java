@@ -20,4 +20,6 @@ public interface ChannelInfoService {
     public int update(ChannelInfo record);
 
     public int delete(ChannelInfo record);
+
+    public ChannelInfo getChannelInfoByUserId(Long userId);
 }
