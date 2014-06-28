@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/28 14:00:27                           */
+/* Created on:     2014/6/28 14:03:00                           */
 /*==============================================================*/
 
 
@@ -217,7 +217,7 @@ create table TY_APK_INFO  (
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2 CHAR)               default 'Y',
-   PACKAGE_PATH         VARCHAR2(2 CHAR),
+   PACKAGE_PATH         VARCHAR2(200 CHAR),
    constraint PK_TY_APK_INFO primary key (APK_ID)
 );
 
