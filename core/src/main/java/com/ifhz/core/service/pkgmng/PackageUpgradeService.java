@@ -19,4 +19,6 @@ public interface PackageUpgradeService {
     public PackageVo queryCommonPkgList(long groupId, Date startTime, Date endTime);
 
     public List<ApkVo> queryApkList(Date startTime, Date endTime);
+
+    public List<ApkVo> queryApkList(long groupId, long channelId, Date startTime, Date endTime);
 }

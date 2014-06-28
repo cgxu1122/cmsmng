@@ -26,4 +26,6 @@ public interface ApkInfoAdapter {
     public List<ApkInfo> queryUpgradeList(Date startTime, Date endTime);
 
     public List<ApkInfo> queryListByPackageId(Long packageId, String active);
+
+    public List<ApkInfo> queryListByApkIdList(List<Long> apkIdList);
 }

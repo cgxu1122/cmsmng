@@ -122,5 +122,4 @@ public class StatCounterServiceImpl implements StatCounterService {
         }
         LOGGER.info("Counter Stat ---------结束");
     }
-
 }

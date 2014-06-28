@@ -167,4 +167,25 @@ create table TY_PUB_CHL_MOD_REF  (
         order by UPDATE_TIME desc
     </select>
 
+    <select id="queryApkIdListForNormalPkg" resultType="java.lang.Long">
+        select distinct APK_ID
+        from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID = #{groupId}
+        and CHANNEL_ID = #{channelId}
+        and PKG_TYPE = 'N'
+        and ACTIVE = 'Y'
+        and UPDATE_TIME between #{startTime} and #{endTime}
+        order by UPDATE_TIME desc
+    </select>
+
+    <select id="queryApkIdListForCommonPkg" resultType="java.lang.Long">
+        select distinct APK_ID
+        from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID = #{groupId}
+        and PKG_TYPE = 'Y'
+        and ACTIVE = 'Y'
+        and UPDATE_TIME between #{startTime} and #{endTime}
+    </select>
 </mapper>

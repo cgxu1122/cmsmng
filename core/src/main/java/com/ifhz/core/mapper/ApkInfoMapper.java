@@ -25,4 +25,6 @@ public interface ApkInfoMapper {
     public int delete(ApkInfo record);
 
     public List<ApkInfo> queryUpgradeList(@Param("startTime") Date date, @Param("endTime") Date endTime);
+
+    public List<ApkInfo> queryListByApkIdList(@Param("apkIdList") List<Long> apkIdList);
 }

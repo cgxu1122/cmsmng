@@ -103,7 +103,6 @@ public class ApkVo implements Serializable {
         root.put("status", 0);
         root.put("apkVersion", String.valueOf(new Date().getTime()));
 
-
         List<ApkVo> voList = Lists.newArrayList();
         ApkVo apkVo1 = new ApkVo();
         apkVo1.setApkId(1L);

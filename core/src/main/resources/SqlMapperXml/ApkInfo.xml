@@ -148,10 +148,23 @@
         and UPDATE_TIME between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
     </select>
 
+
     <delete id="delete" parameterType="com.ifhz.core.po.ApkInfo">
         update
         <include refid="TABLE_NAME"/>
         set ACTIVE = 'N', UPDATE_TIME = #{updateTime}
         where APK_ID = #{apkId}
     </delete>
+
+
+    <select id="queryListByApkIdList" resultMap="ApkInfoResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where APK_ID in
+        <foreach item="item" index="index" collection="apkIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

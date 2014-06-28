@@ -75,6 +75,7 @@ public final class PoToVoHandler {
         vo.setMd5value(info.getMd5Value());
         vo.setPath(info.getDownloadUrl());
         vo.setType(ApiEnums.UpdateType.Add.VALUE);
+        vo.setPackagePath(info.getPackagePath());
 
         return vo;
     }
