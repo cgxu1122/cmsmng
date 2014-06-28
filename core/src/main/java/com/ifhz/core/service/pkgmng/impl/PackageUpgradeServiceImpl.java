@@ -122,4 +122,33 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
         }
         return result;
     }
+
+    @Override
+    public List<ApkVo> queryApkList(long groupId, long channelId, Date startTime, Date endTime) {
+        List<Long> paramList = Lists.newArrayList();
+        List<ApkVo> result = Lists.newArrayList();
+
+        List<Long> normalApkIdList = pubChlModRefAdapter.queryApkIdListForNormalPkg(groupId, channelId, startTime, endTime);
+        List<Long> commonApkIdList = pubChlModRefAdapter.queryApkIdListForCommonPkg(groupId, startTime, endTime);
+        if (CollectionUtils.isNotEmpty(normalApkIdList)) {
+            paramList.addAll(normalApkIdList);
+        }
+        if (CollectionUtils.isNotEmpty(commonApkIdList)) {
+            paramList.addAll(commonApkIdList);
+        }
+
+        if (CollectionUtils.isNotEmpty(paramList)) {
+            List<ApkInfo> apkInfoList = apkInfoAdapter.queryListByApkIdList(paramList);
+            if (CollectionUtils.isNotEmpty(apkInfoList)) {
+                for (ApkInfo apkInfo : apkInfoList) {
+                    ApkVo vo = PoToVoHandler.translateApkVo(apkInfo);
+                    if (vo != null) {
+                        result.add(vo);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 }

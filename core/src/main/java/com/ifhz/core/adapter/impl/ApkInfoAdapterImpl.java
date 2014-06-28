@@ -64,4 +64,10 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     public List<ApkInfo> queryListByPackageId(Long packageId, String active) {
         return null;
     }
+
+    @Override
+    public List<ApkInfo> queryListByApkIdList(List<Long> apkIdList) {
+        List<ApkInfo> result = apkInfoMapper.queryListByApkIdList(apkIdList);
+        return result == null ? Lists.<ApkInfo>newArrayList() : result;
+    }
 }
