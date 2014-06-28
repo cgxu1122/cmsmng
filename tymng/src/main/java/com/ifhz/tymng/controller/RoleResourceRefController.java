@@ -4,15 +4,6 @@
  */
 package com.ifhz.tymng.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.ifhz.core.po.Role;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
@@ -25,13 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
  * 角色管理
- * 
+ *
  * @author luyujian
  */
 @Controller
@@ -95,13 +93,13 @@ public class RoleResourceRefController {
 
     @RequestMapping("/loadroleresourceref/{id}")
     public void loadroleresourceref(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable("id") long roleId) {
+                                    @PathVariable("id") long roleId) {
         response.setContentType("text/xml; charset=UTF-8");
         boolean adminflag = false;
         boolean noResFlag = false;
         ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
 
-        if(user.roleId.intValue()==roleId){
+        if (user.roleId.intValue() == roleId) {
             StringBuffer sbXml = new StringBuffer();
             sbXml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
             sbXml.append("<tree id=\"0\">\n");
@@ -116,19 +114,18 @@ public class RoleResourceRefController {
 
 
         RoleVo roleVo = roleService.findById(user.roleId.intValue());
-        if(roleVo.getParentId()==-1){
+        if (roleVo.getParentId() == -1) {
             adminflag = true;
-        }else{
+        } else {
             List<RoleResourceRef> rrrList = roleResourceRefService.findAllResourceForRoleByRoleId(roleId);
-            if(rrrList.size()<1){
+            if (rrrList.size() < 1) {
                 noResFlag = true;
             }
         }
 
 
-
         //传当前用户的角色
-        String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(roleId,adminflag,noResFlag);
+        String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(roleId, adminflag, noResFlag);
         try {
             response.getWriter().print(dhtmlXTreeXmlString);
             response.getWriter().close();
@@ -144,9 +141,12 @@ public class RoleResourceRefController {
     }
 
     @RequestMapping("/authorization/{str}")
-    public void authorization(HttpServletRequest request, HttpServletResponse response, @PathVariable("str") String str) {
+    @ResponseBody
+    public String authorization(HttpServletRequest request, HttpServletResponse response, @PathVariable("str") String str) {
         response.setContentType("text/xml; charset=UTF-8");
         List<String> resIdList = null;
+        ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+
 
         String roleIdAndResIds[] = str.split("_");
 
@@ -156,27 +156,19 @@ public class RoleResourceRefController {
             String resIds[] = roleIdAndResIds[1].split(",");
             resIdList = Arrays.asList(resIds);
         }
-        String msg="授权成功";
+        String msg = "授权成功";
         try {
-            roleResourceRefService.authorization(roleIdAndResIds[0], resIdList);
-            response.getWriter().print("授权成功");
-            response.getWriter().close();
-        }catch(RuntimeException re){
-            logger.error(re.getMessage());
-            msg=re.getMessage();
-        } catch (IOException e) {
-            e.printStackTrace();
-            msg="授权失败";
-        }catch(Exception e){
-            e.printStackTrace();
-            msg="授权失败";
-        } finally {
-            try {
-                response.getWriter().print(msg);
-                response.getWriter().close();
-            } catch (IOException e) {
-                logger.error(e.getMessage());
+            long roleId = Long.parseLong(roleIdAndResIds[0]);
+            if (user.roleId.intValue() == roleId) {
+                msg = "不能给自己授权";
             }
+
+            roleResourceRefService.authorization(String.valueOf(roleId), resIdList);
+        } catch (Exception e) {
+            logger.error("/authorization/{str}", e);
+            msg = "授权失败";
         }
+
+        return msg;
     }
 }
