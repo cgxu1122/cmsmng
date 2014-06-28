@@ -8,11 +8,11 @@
 </head>
 
 <frameset rows="50,*" cols="*" frameborder="no" border="0" framespacing="0">
-    <frame src="<%=basePath%>/rrr/top" name="topFrame" scrolling="no" noresize="noresize" id="topFrame"
+    <frame src="<%=basePath%>/tymng/rrr/top" name="topFrame" scrolling="no" noresize="noresize" id="topFrame"
            title="topFrame"/>
     <frameset cols="230,*" frameborder="yes" framespacing="0" border="1">
-        <frame src="<%=basePath%>/rrr/tree" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame"/>
-        <frame src="<%=basePath%>/rrr/blank" name="mainFrame" id="mainFrame" title="mainFrame"/>
+        <frame src="<%=basePath%>/tymng/rrr/tree" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame"/>
+        <frame src="<%=basePath%>/tymng/rrr/blank" name="mainFrame" id="mainFrame" title="mainFrame"/>
     </frameset>
 </frameset>
 <noframes>

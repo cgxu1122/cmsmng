@@ -136,7 +136,6 @@ public class User implements java.io.Serializable {
         result = 31 * result + status;
         result = 31 * result + type;
         result = 31 * result + createTime.hashCode();
-        result = 31 * result + updateTime.hashCode();
         return result;
     }
 }

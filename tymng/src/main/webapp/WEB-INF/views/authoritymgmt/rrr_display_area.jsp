@@ -23,7 +23,7 @@
     tree.setImagePath("<%=basePath%>/plug/dhtmlxTree/codebase/imgs/csh_bluebooks/");
     tree.enableCheckBoxes(1);
     tree.enableThreeStateCheckboxes(true);
-    tree.loadXML("<%=basePath%>/rrr/loadroleresourceref/${id}", function () {
+    tree.loadXML("<%=basePath%>/tymng/rrr/loadroleresourceref/${id}", function () {
         $(".standartTreeRow").css({"text-align": "left"});
     });
 
@@ -39,7 +39,7 @@
         <%--}--%>
         <%--});--%>
         var _data = roleId + '_' + checkedNodes;
-        var _url = '<%=basePath%>/rrr/authorization/';
+        var _url = '<%=basePath%>/tymng/rrr/authorization/';
         $.ajax({
             method: 'post',
             url: _url + _data,

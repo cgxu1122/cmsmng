@@ -8,11 +8,11 @@
 </head>
 
 <frameset rows="50,*" cols="*" frameborder="no" border="0" framespacing="0">
-    <frame src="<%=basePath%>/role/top" name="topFrame" scrolling="no" noresize="noresize" id="topFrame"
+    <frame src="<%=basePath%>/tymng/role/top" name="topFrame" scrolling="no" noresize="noresize" id="topFrame"
            title="topFrame"/>
     <frameset cols="230,*" frameborder="yes" framespacing="0" border="1">
-        <frame src="<%=basePath%>/role/tree" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame"/>
-        <frame src="<%=basePath%>/role/blank" name="mainFrame" id="mainFrame" title="mainFrame"/>
+        <frame src="<%=basePath%>/tymng/role/tree" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame"/>
+        <frame src="<%=basePath%>/tymng/role/blank" name="mainFrame" id="mainFrame" title="mainFrame"/>
     </frameset>
 </frameset>
 <noframes>

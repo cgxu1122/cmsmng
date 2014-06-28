@@ -29,14 +29,13 @@ import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.shiro.exception.CaptchaException;
 import com.ifhz.core.shiro.exception.UserNamePasswordErrorException;
 import com.ifhz.core.shiro.token.UsernamePasswordCaptchaToken;
-import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -105,7 +104,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
     /**
      * 用户认证
-     * 
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
@@ -124,7 +122,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
             User user = userService.findUserByLoginName(loginName);
             logger.info("login_user:{}", user);
             // 进行密码校验
-            if (user != null && user.getPassword().equals(MD5keyUtil.getMD5Str(password)) && user.getStatus()==(UserStatusEnum.ENABLE.getStatusValue())) {
+            if (user != null && user.getPassword().equals(password) && user.getStatus() == (UserStatusEnum.ENABLE.getStatusValue())) {
                 RoleVo role = null;
 
                 UserRoleRef userRoleRef = userRoleRefService.findRoleIdByUserId(user.getUserId());
@@ -137,16 +135,16 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
                 ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName());
                 return new SimpleAuthenticationInfo(shiroUser, user.getPassword(), getName());
-            }else{
+            } else {
                 throw new UserNamePasswordErrorException("用户名密码错误");
             }
-        } catch (CaptchaException e){
+        } catch (CaptchaException e) {
             e.printStackTrace();
             throw e;
-        }catch (UserNamePasswordErrorException e1){
+        } catch (UserNamePasswordErrorException e1) {
             e1.printStackTrace();
             throw e1;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new AuthenticationException();
         }
@@ -154,8 +152,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
     @PostConstruct
     public void initCredentialsMatcher() {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher("MD5");
-        matcher.setHashIterations(1);
+        SimpleCredentialsMatcher matcher = new SimpleCredentialsMatcher();
         setCredentialsMatcher(matcher);
     }
 
@@ -170,7 +167,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
         public Long roleId;
         public String roleName;
 
-        public ShiroUser(Long userId, String loginName,String realName, Long roleId, String roleName) {
+        public ShiroUser(Long userId, String loginName, String realName, Long roleId, String roleName) {
             this.userId = userId;
             this.loginName = loginName;
             this.realName = realName;
