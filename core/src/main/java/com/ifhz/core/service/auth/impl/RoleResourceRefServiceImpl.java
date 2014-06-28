@@ -4,22 +4,20 @@
  */
 package com.ifhz.core.service.auth.impl;
 
-import java.util.Date;
-import java.util.List;
-
 import com.ifhz.core.mapper.RoleResourceRefMapper;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 
 /**
  * 角色管理实现类
- * 
+ *
  * @author radish
  */
 @Service
@@ -40,54 +38,74 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      */
     @Override
     public List<RoleResourceRef> roleIdAndResourceId(long roleId, long resourceId) {
-        return roleResourceRefMapper.getRoleIdAndResourceId(null,roleId, resourceId);
+        return roleResourceRefMapper.getRoleIdAndResourceId(null, roleId, resourceId);
     }
 
     /**
      * 授权
-     * 
+     *
      * @author radish
      */
     @Override
     public void authorization(String roleid, List<String> resIdList) {
         long roleId = Long.parseLong(roleid);
-        List<Long> existList = null;
-        Object[] noExistList = null;
-        List<Long> fullList = null;
+        List<RoleResourceRef> rrrOriginList = roleResourceRefMapper.findAllResourceForRoleByRoleId(roleId);
 
-        List<RoleResourceRef> rrrList = roleResourceRefMapper.findAllResourceForRoleByRoleId(roleId);
+        List<RoleResourceRef> toMarkAccessList = new ArrayList<RoleResourceRef>();
+        Map<String, Long> toAddMap = new HashMap<String, Long>();
+        Map<String, Long> toMarkNotAccessMap = new HashMap<String, Long>();
 
-        for(int i=0;i<rrrList.size();i++){
+
+        for (String resid : resIdList) {
+            toAddMap.put(resid, Long.valueOf(resid));
+        }
+
+        for (RoleResourceRef rrr : rrrOriginList) {
+            toMarkNotAccessMap.put(rrr.getResourceId().toString(), rrr.getResourceId());
+        }
+
+
+        if (rrrOriginList.size() == 0 && resIdList.size() > 0) {
             for (String resid : resIdList) {
-                long resId = Long.parseLong(resid);
-                if(rrrList.get(i).getResourceId()==resId){
-                    existList.add(resId);
-                    continue;
+                this.insert(roleId, Long.valueOf(resid));
+            }
+            return;
+        }
+
+        for (int i = 0; i < rrrOriginList.size(); i++) {
+            long orgResId = rrrOriginList.get(i).getResourceId();
+            for (String resid : resIdList) {
+                long resId = Long.valueOf(resid);
+                if (resId == orgResId) {
+                    if (rrrOriginList.get(i).getAcces() == 0) {
+                        toMarkAccessList.add(rrrOriginList.get(i));
+                        continue;
+                    }
+                    toMarkNotAccessMap.remove(String.valueOf(resId));
+                    toAddMap.remove(String.valueOf(resId));
                 }
             }
-
-            fullList.add(rrrList.get(i).getResourceId());
         }
 
-        noExistList = CollectionUtils.disjunction(fullList,existList).toArray();
-
-
-
-
-
-        for (long resid : existList) {
-            RoleResourceRef rrr = roleResourceRefMapper.findByResIdAndRoleId(resid,roleId);
-            if(rrr==null){
-                this.insert(roleId, resid);
-            }
+        for (int i = 0; i < toMarkAccessList.size(); i++) {
+            roleResourceRefMapper.updateRoleResourceRefAccess(roleId, toMarkAccessList.get(i).getResourceId());
         }
 
-        for(Object obj :noExistList){
-            long resId = (Long)obj;
-            RoleResourceRef rrr = roleResourceRefMapper.findByResIdAndRoleId(resId,roleId);
-            if(rrr!=null){
 
-            }
+        Set set = toMarkNotAccessMap.keySet();
+        for (Iterator itr = set.iterator(); itr.hasNext(); ) {
+            roleResourceRefMapper.updateRoleResourceRefNotAccess(roleId, toMarkNotAccessMap.get(itr.next()));
+        }
+
+        Set addSet = toAddMap.keySet();
+        for (Iterator itr = addSet.iterator(); itr.hasNext(); ) {
+            RoleResourceRef rrr = new RoleResourceRef();
+            rrr.setAcces(1);
+            rrr.setCreateTime(new Date());
+            String resId = (String) itr.next();
+            rrr.setResourceId(Long.valueOf(resId));
+            rrr.setRoleId(roleId);
+            roleResourceRefMapper.insert(rrr);
         }
 
     }
@@ -95,13 +113,13 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     /**
      * 获取角色树
      *
+     * @param roleId
      * @return
      * @author radish
-     * @param roleId
      */
     @Override
     public String findRoleTreeXmlStringByRoleId(long roleId) {
-        return roleService.findRoleTreeXmlStringByRoleId(roleId );
+        return roleService.findRoleTreeXmlStringByRoleId(roleId);
     }
 
     /**
@@ -112,8 +130,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
      * @author radish
      */
     @Override
-    public String findAllRoleResourceXmlString(long roleId,boolean adminFlag,boolean noResFlag) {
-        return resourceService.findAllRoleResourceXmlString(roleId,adminFlag,noResFlag);
+    public String findAllRoleResourceXmlString(long roleId, boolean adminFlag, boolean noResFlag) {
+        return resourceService.findAllRoleResourceXmlString(roleId, adminFlag, noResFlag);
     }
 
     public Boolean deleteAllRefByRoleId(long roleid) {
@@ -132,10 +150,10 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     }
 
 /**
-     * 找到所有角色
-     * 
-     * @author radish
-     *//*
+ * 找到所有角色
+ *
+ * @author radish
+ *//*
 
     @Override
     public String findRoleTreeXmlStringByRoleId() {
@@ -143,9 +161,10 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
     }
 
     */
-/**
+
+    /**
      * 找到角色对应的所有资源
-     * 
+     *
      * @author radish
      *//*
 
@@ -154,7 +173,6 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
         return resourceService.findAllRoleResourceXmlString(id);
     }
 */
-
     @Override
     public void deleteAllRefByResId(long resId) {
         roleResourceRefMapper.deleteAllRefByResId(resId);
@@ -167,8 +185,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
 
     @Override
     public RoleResourceRef findByRoleIdAndResourceId(long roleId, Long resourceId) {
-        List<RoleResourceRef> rrr = this.roleIdAndResourceId(roleId,resourceId);
-        if(rrr.size()==0){
+        List<RoleResourceRef> rrr = this.roleIdAndResourceId(roleId, resourceId);
+        if (rrr.size() == 0) {
             return null;
         }
         return rrr.get(0);

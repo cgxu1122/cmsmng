@@ -4,28 +4,23 @@
  */
 package com.ifhz.core.service.auth.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.google.common.collect.Lists;
 import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
 import com.ifhz.core.mapper.ResourceMapper;
-import com.ifhz.core.mapper.RoleMapper;
 import com.ifhz.core.po.Resource;
-import com.ifhz.core.po.Role;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
 import com.ifhz.core.vo.ResourceVo;
 import com.ifhz.core.vo.RoleVo;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -94,14 +89,13 @@ public class ResourceServiceImpl implements ResourceService {
         List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
         String checkedStr = "";
 
-        // 根据主体类型和主体标识查询此资源标识在acl中是否存在
         RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
-        if (childrenList.size() == 0&&rrr!=null) {
+        if (childrenList.size() == 0 && rrr != null && rrr.getAcces() == 1) {
                 checkedStr = "   checked=\"1\"";
         }
 
        // RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(parentRoleId, resource.getResourceId());
-        if(rrr!=null && rrr.getAcces()==1){
+        if (rrr != null) {
             sbXml.append("<item text=\"" + resource.getResName() + "\" id=\""
                     + resource.getResourceId() + "\" " + "open=\"1\"" + checkedStr + ">\n");
         }
@@ -110,16 +104,16 @@ public class ResourceServiceImpl implements ResourceService {
             Resource child = (Resource) iter.next();
             doBuildCheckboxNotFullResourceTree(child,roleId);
         }
-       if(rrr!=null && rrr.getAcces()==1){
+        if (rrr != null) {
             sbXml.append("</item>\n");
        }
     }
+
 
     protected void doBuildCheckboxNotResourceTree(Resource resource, long roleId) {
         List<Resource> childrenList = resourceMapper.findAllChildrenById(resource.getResourceId());
         String checkedStr = "";
 
-        // 根据主体类型和主体标识查询此资源标识在acl中是否存在
         RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
 
         if(rrr!=null && rrr.getAcces()==1){
@@ -159,7 +153,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         if (childrenList.size() == 0) {
             RoleResourceRef rrr = roleResourceRefService.findByRoleIdAndResourceId(roleId, resource.getResourceId());
-            if (rrr!=null) {
+            if (rrr != null && rrr.getAcces() == 1) {
                 checkedStr = "   checked=\"1\"";
             }
         }
