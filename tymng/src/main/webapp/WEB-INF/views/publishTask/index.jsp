@@ -36,14 +36,14 @@ function addrow() {
 function reloadTree(groupId) {
     /*$('#tt').tree({
      url: "
-    <%=basePath%>/channelInfo/listTree?groupId=" + groupId,
+    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId,
      onClick: function (node) {
      $('#parentIdCondition').val(node.id);
      searchChannelEvt();
      },
      onBeforeExpand: function (node, param) {
      $('#tt').tree('options').url = "
-    <%=basePath%>/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
+    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
      }
      });*/
     $('#searchGroupIdValue').val(groupId);
@@ -51,7 +51,7 @@ function reloadTree(groupId) {
 }
 function saverow() {
     $('#fm').form('submit', {
-        url: '<%=basePath%>/publishTask/insert',
+        url: '<%=basePath%>/tymng/publishTask/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -114,7 +114,7 @@ function delrow() {
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.publishId + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/publishTask/delete', {publishId: row.publishId}, function (result) {
+                $.post('<%=basePath%>/tymng/publishTask/delete', {publishId: row.publishId}, function (result) {
                     if (result.errorMsg) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
@@ -129,7 +129,7 @@ function delrow() {
 function searchEvt() {
     var value = $('#searchValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/publishTask/list",
+        url: "<%=basePath%>/tymng/publishTask/list",
         queryParams: {packageNameCondition: value}
     });
 }
@@ -140,7 +140,7 @@ function initPage() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/publishTask/list',
+        url: '<%=basePath%>/tymng/publishTask/list',
         queryParams: {type: '${type}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -178,7 +178,7 @@ function showPackageDialog() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/packageInfo/list',
+        url: '<%=basePath%>/tymng/packageInfo/list',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -208,7 +208,7 @@ function showPackageDialog() {
 function searchPackageEvt() {
     var value = $('#searchPackageValue').val();
     $('#packagedg').datagrid({
-        url: "<%=basePath%>/packageInfo/list",
+        url: "<%=basePath%>/tymng/packageInfo/list",
         queryParams: {packageNameCondition: value}
     });
 }
@@ -240,7 +240,7 @@ function showModelDialog() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/modelInfo/list',
+        url: '<%=basePath%>/tymng/modelInfo/list',
         queryParams: {groupId: groupId},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -261,7 +261,7 @@ function searchModelEvt() {
     var value = $('#searchModelValue').val();
     var groupId = $('#groupId').combobox('getValue');
     $('#modeldg').datagrid({
-        url: "<%=basePath%>/modelInfo/list",
+        url: "<%=basePath%>/tymng/modelInfo/list",
         queryParams: {modelNameCondition: value, groupId: groupId}
     });
 }
@@ -285,7 +285,7 @@ function showChannelDialog() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/channelInfo/listAll',
+        url: '<%=basePath%>/tymng/channelInfo/listAll',
         queryParams: {groupId: groupId},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -307,7 +307,7 @@ function searchChannelEvt() {
     var value = $('#searchChannelValue').val();
     var parentIdCondition = $('#parentIdCondition').val();
     $('#channeldg').datagrid({
-        url: "<%=basePath%>/channelInfo/list",
+        url: "<%=basePath%>/tymng/channelInfo/list",
         queryParams: {groupId: groupId, channelNameCondition: value, parentIdCondition: parentIdCondition}
     });
 }

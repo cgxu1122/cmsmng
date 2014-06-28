@@ -29,11 +29,10 @@ import java.util.List;
 
 
 /**
- *
  * @author luyujian
  */
 @Controller
-@RequestMapping("/role")
+@RequestMapping("/tymng/role")
 public class RoleController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(RoleController.class);
     @Autowired
@@ -55,7 +54,7 @@ public class RoleController extends BaseController {
     }
 
     @RequestMapping("/showdetail/{id}")
-    public ModelAndView showdetail(@PathVariable("id") long id,HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView showdetail(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("authoritymgmt/role_display_area");
         mav.addObject("parentId", id);
         return mav;
@@ -63,7 +62,7 @@ public class RoleController extends BaseController {
 
     @RequestMapping("/getById/{id}")
     @ResponseBody()
-    public JSONObject getById(@PathVariable("id") long id,HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject getById(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) {
         RoleVo role = roleService.findById(id);
         List<RoleVo> userVoList = new ArrayList<RoleVo>();
         userVoList.add(role);
@@ -135,7 +134,7 @@ public class RoleController extends BaseController {
 
         Role role = new Role();
         role.setParentId(parentRole.getRoleId());
-        role.setLevels(parentRole.getLevels()+1);
+        role.setLevels(parentRole.getLevels() + 1);
         role.setRoleName(roleName);
         roleService.insert(role);
 
@@ -169,10 +168,10 @@ public class RoleController extends BaseController {
      */
     private boolean checkUniqueBesideSelf(String roleName, long id) {
         boolean flag = false;
-		Role role = roleService.findByRoleNameBesideSelf(roleName, id);
-		if (role == null) {
-			flag = true;
-		}
+        Role role = roleService.findByRoleNameBesideSelf(roleName, id);
+        if (role == null) {
+            flag = true;
+        }
         return flag;
     }
 
@@ -190,37 +189,37 @@ public class RoleController extends BaseController {
         result.setCode(1);
         result.setMessage("密码角色成功");
 
-		String roleName = StringUtils.trim(req.getParameter("roleName"));
+        String roleName = StringUtils.trim(req.getParameter("roleName"));
         if (StringUtils.isBlank(roleName)) {
             result.setCode(-1);
             result.setMessage("请输入角色名称");
             return JSON.toJSONString(result);
         }
 
-		String id = StringUtils.trim(req.getParameter("roleId"));
+        String id = StringUtils.trim(req.getParameter("roleId"));
         if (StringUtils.isBlank(id)) {
             result.setCode(-1);
             result.setMessage("请输入角色id");
             return JSON.toJSONString(result);
         }
-		long roleId = Long.parseLong(id);
+        long roleId = Long.parseLong(id);
 
 
-		if (!checkUniqueBesideSelf(roleName, roleId)) {
+        if (!checkUniqueBesideSelf(roleName, roleId)) {
             result.setCode(-1);
             result.setMessage("角色名称重复");
             return JSON.toJSONString(result);
-		}
+        }
 
-		RoleVo dbrole = roleService.findById(roleId);
-		if (StringUtils.equals(dbrole.getRoleName(), roleName)) {
+        RoleVo dbrole = roleService.findById(roleId);
+        if (StringUtils.equals(dbrole.getRoleName(), roleName)) {
 
-		} else {
-			Role role = new Role();
-			role.setRoleId(dbrole.getRoleId());
-			role.setRoleName(roleName);
-			roleService.update(role);
-		}
+        } else {
+            Role role = new Role();
+            role.setRoleId(dbrole.getRoleId());
+            role.setRoleName(roleName);
+            roleService.update(role);
+        }
 
         return JSON.toJSONString(result);
     }
@@ -239,22 +238,22 @@ public class RoleController extends BaseController {
         result.setCode(1);
         result.setMessage("密码角色成功");
 
-		String id = StringUtils.trim(request.getParameter("id"));
+        String id = StringUtils.trim(request.getParameter("id"));
         if (StringUtils.isBlank(id)) {
             result.setCode(-1);
             result.setMessage("请输入id");
             return JSON.toJSONString(result);
         }
-		long roleId = Long.parseLong(id);
+        long roleId = Long.parseLong(id);
 
-		if (this.check2Delete(roleId)) {
+        if (this.check2Delete(roleId)) {
             result.setCode(-1);
             result.setMessage("请先删除引用用户");
             return JSON.toJSONString(result);
-		}
+        }
 
-		roleService.deleteAllRefByRoleId(roleId);
-		roleService.delete(roleId);
+        roleService.deleteAllRefByRoleId(roleId);
+        roleService.delete(roleId);
         return JSON.toJSONString(result);
     }
 

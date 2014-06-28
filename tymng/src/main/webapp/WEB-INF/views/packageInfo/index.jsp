@@ -29,7 +29,7 @@ function addrow() {
 function saverow() {
     $("#type").val("${type}");
     $('#fm').form('submit', {
-        url: '<%=basePath%>/packageInfo/insert',
+        url: '<%=basePath%>/tymng/packageInfo/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -85,7 +85,7 @@ function editrow() {
 }
 function saveUpdate() {
     $('#upfm').form('submit', {
-        url: '<%=basePath%>/packageInfo/update',
+        url: '<%=basePath%>/tymng/packageInfo/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -106,7 +106,7 @@ function delrow() {
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.packageName + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/packageInfo/delete', {packageId: row.packageId}, function (result) {
+                $.post('<%=basePath%>/tymng/packageInfo/delete', {packageId: row.packageId}, function (result) {
                     if (result.errorMsg) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
@@ -121,7 +121,7 @@ function delrow() {
 function searchEvt() {
     var value = $('#searchValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/packageInfo/list",
+        url: "<%=basePath%>/tymng/packageInfo/list",
         queryParams: {packageNameCondition: value}
     });
 }
@@ -132,7 +132,7 @@ function initPage() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/packageInfo/list',
+        url: '<%=basePath%>/tymng/packageInfo/list',
         queryParams: {type: '${type}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -166,7 +166,7 @@ function getBatchInfoByPackageName(packageName) {
     }
     var batchCode = packageName.substring(packageName.lastIndexOf("#") + 1, packageName.length);
     $.ajax({
-        url: "<%=basePath%>/batchInfo/getBatchInfoByCode?batchCode=" + batchCode,
+        url: "<%=basePath%>/tymng/batchInfo/getBatchInfoByCode?batchCode=" + batchCode,
         success: function (result) {
             var result = eval('(' + result + ')');
             if (result.errorMsg) {
@@ -188,7 +188,7 @@ function showApkDialog(type) {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/apkInfo/list',
+        url: '<%=basePath%>/tymng/apkInfo/list',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -224,7 +224,7 @@ function showApkDialog(type) {
 function searchApkEvt() {
     var value = $('#searchApkValue').val();
     $('#apkdg').datagrid({
-        url: "<%=basePath%>/apkInfo/list",
+        url: "<%=basePath%>/tymng/apkInfo/list",
         queryParams: {apkNameCondition: value}
     });
 }

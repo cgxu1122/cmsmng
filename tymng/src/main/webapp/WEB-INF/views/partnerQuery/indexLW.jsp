@@ -27,9 +27,10 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
+            var channelId = $('#channelId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/partnerQuery/listLogStat",
-                queryParams: {groupId: 4, startDate: startDate, endDate: endDate, ua: ua}
+                url: "<%=basePath%>/tymng/partnerQuery/listLogStat",
+                queryParams: {groupId: 4, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId}
             });
         }
 
@@ -41,7 +42,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/partnerQuery/listLogStat',
+                url: '<%=basePath%>/tymng/partnerQuery/listLogStat',
                 queryParams: {groupId: 4, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -75,8 +76,8 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/modelInfo/list',
-                queryParams: {groupId: 4},
+                url: '<%=basePath%>/tymng/modelInfo/list',
+                queryParams: {groupId: 2},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -96,8 +97,8 @@
         function searchModelEvt() {
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
-                url: "<%=basePath%>/modelInfo/list",
-                queryParams: {modelNameCondition: value, groupId: 4}
+                url: "<%=basePath%>/tymng/modelInfo/list",
+                queryParams: {modelNameCondition: value, groupId: 2}
             });
         }
         function selectModel(ua, modelName) {
@@ -105,11 +106,48 @@
             $("#ua").val(ua);
             $('#modeldlg').dialog('close');
         }
+        function showChannelDialog() {
+            $('#channeldlg').dialog('open').dialog('setTitle', '选择渠道商');
+            $('#channeldg').datagrid({
+                width: 'auto',
+                height: 'auto',
+                striped: true,
+                singleSelect: true,
+                url: '<%=basePath%>/tymng/channelInfo/listChannelByLW',
+                queryParams: {},
+                loadMsg: '数据加载中请稍后……',
+                pagination: true,
+                rownumbers: true,
+                columns: [
+                    [
+                        {field: 'channelName', title: '渠道商名称', align: 'center', width: 150},
+                        {field: 'action', title: '操作', align: 'center', width: 100,
+                            formatter: function (value, row, index) {
+                                return "<a href='javascript:void(0)' onclick=javascript:selectChannel('" + row.channelId + "','" + row.channelName + "')>选择</a>";
+                            }
+                        }
+                    ]
+                ]
+            });
+        }
+        function searchChannelEvt() {
+            var value = $('#searchChannelValue').val();
+            $('#channeldg').datagrid({
+                url: "<%=basePath%>/tymng/channelInfo/listChannelByLW",
+                queryParams: {channelNameCondition: value}
+            });
+        }
+        function selectChannel(channelId, channelName) {
+            $("#channelName").val(channelName);
+            $("#channelId").val(channelId);
+            $('#channeldlg').dialog('close');
+        }
         function exportData() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
-            window.location.href = "<%=basePath%>/partnerQuery/exportData?groupId=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
+            var channelId = $('#channelId').val();
+            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportData?groupId=4&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
         }
     </script>
 </head>
@@ -124,7 +162,12 @@
                     <input type="hidden" name="ua" id="ua"/>
                 </td>
                 <td>
-                    <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
+                    <input type="text" name="channelName" id="channelName" placeholder="选择渠道商" readonly="readonly"
+                           onclick="showChannelDialog()"/>
+                    <input type="hidden" name="channelId" id="channelId"/>
+                </td>
+                <td>
+                <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
                 </td>
                 <td>
                     <input type="text" name="endDate" id="endDate" placeholder="结束时间"/>
@@ -164,6 +207,31 @@
 <div id="modeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#modeldlg').dialog('close')">取消</a>
+</div>
+
+<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     buttons="#channeldlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="渠道商名称"/>
+                    </td>
+                    <td align="center">
+                        <a id="searchChannelBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           iconCls="icon-search"
+                           onclick="searchChannelEvt()">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="channeldg"></div>
+</div>
+<div id="channeldlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#channeldlg').dialog('close')">取消</a>
 </div>
 </body>
 </html>

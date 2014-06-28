@@ -36,7 +36,7 @@
                 height: 300,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/demo/list/',
+                url: '<%=basePath%>/tymng/demo/list/',
                 //queryParams:{},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,

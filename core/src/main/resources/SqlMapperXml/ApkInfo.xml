@@ -26,6 +26,7 @@
         DOWNLOAD_URL,
         ACTIVE,
         TYPE,
+        PACKAGE_PATH,
         CREATE_TIME,
         UPDATE_TIME
     </sql>
@@ -39,6 +40,7 @@
         <result column="DOWNLOAD_URL" property="downloadUrl" jdbcType="VARCHAR"/>
         <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
         <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="PACKAGE_PATH" property="packagePath" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -70,6 +72,7 @@
         #{downloadUrl,jdbcType=VARCHAR},
         #{active},
         #{type,jdbcType=VARCHAR},
+        #{packagePath,jdbcType=VARCHAR},
         #{createTime},
         #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -96,6 +99,9 @@
             <if test="type != null">
                 TYPE = #{type},
             </if>
+            <if test="packagePath != null">
+                PACKAGE_PATH = #{packagePath},
+            </if>
             <if test="active != null">
                 ACTIVE = #{active},
             </if>
@@ -121,6 +127,9 @@
         </if>
         <if test="record.ftpPath != null and record.ftpPath != ''">
             and FTP_PATH = #{record.ftpPath}
+        </if>
+        <if test="record.packagePath != null and record.packagePath != ''">
+            and PACKAGE_PATH = #{record.packagePath}
         </if>
         <if test="record.active != null and record.active != ''">
             and ACTIVE = #{record.active}

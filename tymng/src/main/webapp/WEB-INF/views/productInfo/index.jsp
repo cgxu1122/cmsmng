@@ -22,7 +22,7 @@
         }
         function saverow() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/productInfo/insert',
+                url: '<%=basePath%>/tymng/productInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -49,7 +49,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/productInfo/update',
+                url: '<%=basePath%>/tymng/productInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -70,7 +70,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.productName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/productInfo/delete', {productId: row.productId}, function (result) {
+                        $.post('<%=basePath%>/tymng/productInfo/delete', {productId: row.productId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -85,7 +85,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/productInfo/list",
+                url: "<%=basePath%>/tymng/productInfo/list",
                 queryParams: {productNameCondition: value}
             });
         }
@@ -96,7 +96,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/productInfo/list',
+                url: '<%=basePath%>/tymng/productInfo/list',
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -139,7 +139,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/partnerInfo/list',
+                url: '<%=basePath%>/tymng/partnerInfo/list',
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -165,7 +165,7 @@
         function searchPartnerEvt() {
             var value = $('#searchPartnerValue').val();
             $('#channeldg').datagrid({
-                url: "<%=basePath%>/partnerInfo/list",
+                url: "<%=basePath%>/tymng/partnerInfo/list",
                 queryParams: {channelNameCondition: value}
             });
         }

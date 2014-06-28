@@ -4,9 +4,6 @@
  */
 package com.ifhz.tymng.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.alibaba.fastjson.JSON;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.po.User;
@@ -18,7 +15,6 @@ import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.util.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +25,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 /**
  * @author luyujian
  */
 @Controller
+@RequestMapping("/tymng")
 public class LoginController extends BaseController {
 
     @Autowired

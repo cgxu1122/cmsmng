@@ -215,7 +215,7 @@
             return false;
         }
         var form = $('#form')[0];
-        form.action = "<%=basePath%>/login";
+        form.action = "<%=basePath%>/tymng/login";
         form.method = "post";
         form.submit();
     }
@@ -241,7 +241,7 @@
 
                 <div class='switchIdentify'>
                     <a href='javascript:changeImg();' class='switchBtn'>看不清？换一张</a>
-                    <span class='identify_code'><img id="imgObj" alt="" src="/vc/vc"/></span>
+                    <span class='identify_code'><img id="imgObj" alt="" src="/tymng/vc/vc"/></span>
                 </div>
             </div>
             <div class='submitBtn'>

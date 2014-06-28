@@ -25,7 +25,7 @@ import java.util.List;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/partnerInfo")
+@RequestMapping("/tymng/partnerInfo")
 public class PartnerInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerInfoController.class);
     @Autowired

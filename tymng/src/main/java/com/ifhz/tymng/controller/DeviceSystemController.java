@@ -30,7 +30,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/deviceSystem")
+@RequestMapping("/tymng/deviceSystem")
 public class DeviceSystemController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceSystemController.class);
     @Autowired

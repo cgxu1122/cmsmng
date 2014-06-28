@@ -25,6 +25,7 @@ public final class GlobalConstants {
     public static final String FTP_SERVER_DEVICEDIR = "ftp.server.deviceDir";
     public static final String FTP_SERVER_APKDIR = "ftp.server.apkDir";
     public static final String EXPORT_NUM_MAX = "export.num.max";
+    public static final String FTP_SERVER_DOWNLOADURL = "ftp.server.downloadUrl";
 
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";

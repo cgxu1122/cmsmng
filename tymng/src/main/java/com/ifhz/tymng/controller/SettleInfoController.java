@@ -26,7 +26,7 @@ import java.util.List;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/settleInfo")
+@RequestMapping("/tymng/settleInfo")
 public class SettleInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SettleInfoController.class);
     @Autowired

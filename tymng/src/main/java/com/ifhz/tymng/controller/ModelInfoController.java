@@ -25,7 +25,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/modelInfo")
+@RequestMapping("/tymng/modelInfo")
 public class ModelInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ModelInfoController.class);
     @Autowired

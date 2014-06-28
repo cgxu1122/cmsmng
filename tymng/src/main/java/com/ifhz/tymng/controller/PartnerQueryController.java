@@ -2,6 +2,7 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
@@ -32,7 +33,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/partnerQuery")
+@RequestMapping("/tymng/partnerQuery")
 public class PartnerQueryController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerQueryController.class);
     @Autowired
@@ -93,6 +94,17 @@ public class PartnerQueryController extends BaseController {
         if (channelInfo != null) {
             logStat.setChannelId(channelInfo.getChannelId());
         }
+        if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
+            //如果是劳务渠道合作方查询
+            String channelId = request.getParameter("channelId");
+            if (StringUtils.isNotEmpty(channelId)) {
+                logStat.setChannelId(Long.parseLong(channelId));
+            }
+            if (channelInfo != null) {
+                logStat.setLaowuId(channelInfo.getChannelId());
+            }
+            logStat.setGroupId(null);
+        }
         List<LogStat> list = logStatQueryService.queryByVo(page, logStat);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -120,6 +132,21 @@ public class PartnerQueryController extends BaseController {
         }
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+        if (channelInfo != null) {
+            logStat.setChannelId(channelInfo.getChannelId());
+        }
+        if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
+            //如果是劳务渠道合作方查询
+            String channelId = request.getParameter("channelId");
+            if (StringUtils.isNotEmpty(channelId)) {
+                logStat.setChannelId(Long.parseLong(channelId));
+            }
+            if (channelInfo != null) {
+                logStat.setLaowuId(channelInfo.getChannelId());
+            }
+            logStat.setGroupId(null);
         }
         List<LogStat> list = logStatQueryService.queryByVo(null, logStat);
         BaseExportModel exportModel = new BaseExportModel();
@@ -191,4 +218,5 @@ public class PartnerQueryController extends BaseController {
         exportModel.setDataList(list);
         super.exportXLSData(request, response, exportModel);
     }
+
 }

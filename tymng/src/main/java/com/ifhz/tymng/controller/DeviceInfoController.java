@@ -22,7 +22,7 @@ import java.util.List;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/deviceInfo")
+@RequestMapping("/tymng/deviceInfo")
 public class DeviceInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceInfoController.class);
     @Autowired
