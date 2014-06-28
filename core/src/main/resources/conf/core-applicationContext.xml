@@ -25,7 +25,7 @@
 
     <bean id="commonHttpClientService" class="com.ifhz.core.base.commons.http.client.HttpClientService">
         <constructor-arg name="maxConPerHost" value="100"/>
-        <constructor-arg name="conTimeOutMs" value="5000"/>
-        <constructor-arg name="soTimeOutMs" value="5000"/>
+        <constructor-arg name="conTimeOutMs" value="60000"/>
+        <constructor-arg name="soTimeOutMs" value="60000"/>
     </bean>
 </beans>

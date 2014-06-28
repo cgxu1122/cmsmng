@@ -36,7 +36,7 @@
     </sql>
 
     <insert id="insertDeviceData" parameterType="com.ifhz.core.po.DataLog">
-        <selectKey resultType="long" keyProperty="id">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
             SELECT SEQ_DATA_LOG.CURRVAL FROM DUAL
         </selectKey>
         insert into ${tableName}
@@ -54,7 +54,7 @@
         #{batchCode,jdbcType=VARCHAR},
         #{processTime,jdbcType=DATE},
         #{deviceUploadTime,jdbcType=TIMESTAMP},
-        #{active,jdbcType=INTEGER}
+        #{active,jdbcType=INTEGER},
         #{counterUploadTime,jdbcType=TIMESTAMP},
         #{md5Key,jdbcType=VARCHAR},
         #{pmd5Key,jdbcType=VARCHAR}

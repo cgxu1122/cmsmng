@@ -23,6 +23,7 @@ public class DataLogAdapterImpl implements DataLogAdapter {
     @Resource(name = "dataLogMapper")
     private DataLogMapper dataLogMapper;
 
+
     @Override
     public int insertDeviceData(DataLog record) {
         return dataLogMapper.insertDeviceData(record);

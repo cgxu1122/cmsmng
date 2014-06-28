@@ -10,6 +10,7 @@ import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.DataLogApiService;
+import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.model.ModelInfoService;
 import com.ifhz.core.service.stat.StatCounterService;
@@ -101,19 +102,27 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 DeviceCommonLog.info("{}", JSON.toJSONString(po));
                 return;
             }
-            // 通过渠道id 获取渠道组id
-            ChannelInfo channelInfo = channelInfoService.getById(po.getChannelId());
-            if (channelInfo != null) {
-                Long groupId = channelInfo.getGroupId();
-                po.setGroupId(groupId);
-                po.setModelName(getModelName(groupId, po.getUa()));
+            // 查询imei是否已经到达过
+            DataLog dataLog = dataLogApiService.getByImei(po.getImei());
+            LOGGER.info("DataLog接口数据：{},DataLog数据库数据：{}", JSON.toJSONString(po), JSON.toJSONString(dataLog));
+            if (dataLog == null) {
+                // 通过渠道id 获取渠道组id
+                ChannelInfo channelInfo = channelInfoService.getById(po.getChannelId());
+                if (channelInfo != null) {
+                    Long groupId = channelInfo.getGroupId();
+                    po.setGroupId(groupId);
+                    po.setUa(ModelHandler.translateUa(po.getUa()));
+                    po.setModelName(getModelName(groupId, po.getUa()));
 
-                String md5Key = StatConvertHandler.getMd5KeyByLogDataForLogStat(po);
-                po.setMd5Key(md5Key);
+                    String md5Key = StatConvertHandler.getMd5KeyByLogDataForLogStat(po);
+                    po.setMd5Key(md5Key);
 
-                dataLogApiService.insertDeviceData(po);
+                    dataLogApiService.insertDeviceData(po);
+                } else {
+                    LOGGER.info("渠道id[{}]--不在系统范围内", po.getChannelId());
+                }
             } else {
-                LOGGER.error("渠道id[{}]--不在系统范围内", po.getChannelId());
+                LOGGER.info("{} 记录已经存在", po.getImei());
             }
         }
     }
@@ -123,8 +132,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         String result = "未知";
         if (StringUtils.isNotBlank(ua) && groupId != null) {
             //空格 或者多个连续空格 用下划线代替
-            String uaTemp = StringUtils.replace(ua, " +", " ");
-            uaTemp = StringUtils.replace(uaTemp, " ", "_");
+            String uaTemp = ModelHandler.translateUa(ua);
             ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, uaTemp);
             if (modelInfo != null) {
                 result = modelInfo.getModelName();
@@ -138,7 +146,12 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     public void batchSave(List<DataLog> processLogList) {
         if (CollectionUtils.isNotEmpty(processLogList)) {
             for (DataLog log : processLogList) {
-                saveDeviceDataLog(log);
+                try {
+                    saveDeviceDataLog(log);
+                } catch (Exception e) {
+                    LOGGER.error("saveDeviceDataLog error", e);
+                    DeviceCommonLog.info("{}", JSON.toJSONString(log));
+                }
             }
         }
     }
