@@ -14,4 +14,5 @@
     <entry key="export.num.max">50000</entry>
     <entry key="stat.pageSize">10000</entry>
     <entry key="wdj.query.url">http://115.29.46.109/interface/export?upload_dt=</entry>
+    <entry key="local.store.dir">D:\\store</entry>
 </properties>

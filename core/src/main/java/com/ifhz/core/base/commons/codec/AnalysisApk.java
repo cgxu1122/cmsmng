@@ -3,13 +3,21 @@ package com.ifhz.core.base.commons.codec;
 import android.content.res.AXmlResourceParser;
 import android.util.TypedValue;
 import com.google.common.collect.Maps;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
+import com.ifhz.core.base.commons.MapConfig;
+import com.ifhz.core.constants.GlobalConstants;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -36,10 +44,32 @@ public class AnalysisApk {
             "%", "%p", "", "", "", "", "", ""
     };
 
+
+    public static String genApkPackageName(InputStream inputStream) {
+        String result = null;
+        try {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
+            buffer.append(File.separator);
+            buffer.append(new Date().getTime());
+            buffer.append(".apk");
+            File toFile = new File(buffer.toString());
+            ByteStreams.copy(inputStream, Files.newOutputStreamSupplier(toFile));
+            Map<String, String> map = parseApk(toFile);
+            if (MapUtils.isNotEmpty(map)) {
+                result = map.get("fullPackagePath");
+            }
+        } catch (Exception e) {
+            LOGGER.error("copyFile error", e);
+        }
+
+        return result;
+    }
+
     /**
      * 解压 zip 文件(apk可以当成一个zip文件)，只能解压zip文件
      *
-     * @param apkPath zip 文件
+     * @param apkFile zip 文件
      * @return Map<String,String>
      * <p>
      * version:版本号;
@@ -48,7 +78,7 @@ public class AnalysisApk {
      * </p>
      * @throws IOException
      */
-    public static Map<String, String> parseApk(String apkPath) {
+    public static Map<String, String> parseApk(File apkFile) {
         Map<String, String> result = Maps.newHashMap();
         //version:版本号;
         //fullPackagePath:包名;
@@ -57,7 +87,7 @@ public class AnalysisApk {
         int length;
         ZipFile zipFile;
         try {
-            zipFile = new ZipFile(new File(apkPath));
+            zipFile = new ZipFile(apkFile);
             Enumeration enumeration = zipFile.entries();
             ZipEntry zipEntry = null;
             while (enumeration.hasMoreElements()) {
@@ -82,7 +112,9 @@ public class AnalysisApk {
                                             } else if ("package".equals(parser.getAttributeName(i))) {
                                                 result.put("fullPackagePath", getAttributeValue(parser, i));
                                             }
-                                            LOGGER.info("{}={}", parser.getAttributeName(i), getAttributeValue(parser, i));
+                                            if (LOGGER.isDebugEnabled()) {
+                                                LOGGER.debug("{}={}", parser.getAttributeName(i), getAttributeValue(parser, i));
+                                            }
                                         }
                                     }
                                 }
@@ -91,19 +123,6 @@ public class AnalysisApk {
                             LOGGER.error("AnalysisApk AndroidManifest_xml error", e);
                         }
                     }
-
-                    /*try {
-                        if (StringUtils.equalsIgnoreCase("res/drawable-ldpi/icon.png", zipEntry.getName())) {
-                            OutputStream outputStream = new FileOutputStream(iconSavePath);
-                            InputStream inputStream = zipFile.getInputStream(zipEntry);
-                            while ((length = inputStream.read(b)) > 0) {
-                                outputStream.write(b, 0, length);
-                            }
-                            result.put("icon", iconSavePath);
-                        }
-                    } catch (IOException e) {
-                        LOGGER.error("parse icon error", e);
-                    }*/
                 }
             }
         } catch (IOException e) {
@@ -111,6 +130,7 @@ public class AnalysisApk {
         }
         return result;
     }
+
 
     private static String getAttributeValue(AXmlResourceParser parser, int index) {
         int type = parser.getAttributeValueType(index);
@@ -181,5 +201,9 @@ public class AnalysisApk {
         ret = parseApk(apkPath, iconSavePath);
         System.out.println(JSON.toJSONString(ret));*/
 
+        File file = new File("D:\\\\gedouzhiwang3.apk");
+        InputStream ins = new FileInputStream(file);
+
+        System.out.println(genApkPackageName(ins));
     }
 }
