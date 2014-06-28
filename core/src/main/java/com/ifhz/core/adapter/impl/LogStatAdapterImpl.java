@@ -47,4 +47,9 @@ public class LogStatAdapterImpl implements LogStatAdapter {
         List<LogStat> list = logStatMapper.queryByVo(page, record);
         return list == null ? Lists.<LogStat>newArrayList() : list;
     }
+
+    @Override
+    public LogStat queryCountByVO(LogStat record) {
+        return logStatMapper.queryCountByVO(record);
+    }
 }

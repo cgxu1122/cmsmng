@@ -33,6 +33,15 @@ public class LogStat implements Serializable {
 
     private String md5Key;
     private String dataLogMd5Key;
+    private Integer version;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public String getDataLogMd5Key() {
         return dataLogMd5Key;
@@ -45,6 +54,7 @@ public class LogStat implements Serializable {
     //查询条件
     private Date startDate;
     private Date endDate;
+    private Integer processType;
     //页面返回值
     private String channelName;
 
@@ -54,6 +64,14 @@ public class LogStat implements Serializable {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public Integer getProcessType() {
+        return processType;
+    }
+
+    public void setProcessType(Integer processType) {
+        this.processType = processType;
     }
 
     public Date getStartDate() {

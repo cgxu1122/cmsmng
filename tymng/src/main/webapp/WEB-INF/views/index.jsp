@@ -369,9 +369,27 @@
 --%>
 <div title="报表统计" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/warehouseQuery','menu_icon_datadeal')">
-            <span class="menu_icon_datadeal"></span>
+        <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
+        <span class="menu_icon_datadeal"></span>
             <span>按仓库查询</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('按渠道加工数据','<%=basePath%>/tymng/reportCount/indexChannelProcess','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按渠道加工数据</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('按渠道到达数据','<%=basePath%>/tymng/reportCount/indexChannelCounter','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按渠道到达数据</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('按产品查询','<%=basePath%>/tymng/reportCount/indexProduct','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按产品查询</span>
         </a>
     </div>
 </div>

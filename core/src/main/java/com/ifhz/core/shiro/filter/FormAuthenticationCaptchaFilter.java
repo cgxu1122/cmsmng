@@ -2,7 +2,10 @@ package com.ifhz.core.shiro.filter;
 
 import com.ifhz.core.shiro.token.UsernamePasswordCaptchaToken;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
@@ -46,6 +49,21 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
         return new UsernamePasswordCaptchaToken(username,
                 password.toCharArray(), rememberMe, host, captcha);
 
+    }
+
+    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject,
+                                     ServletRequest request, ServletResponse response) throws Exception {
+        String successUrl = getSuccessUrl();
+        boolean contextRelative = true;
+        SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
+        if (savedRequest != null && savedRequest.getMethod().equalsIgnoreCase(AccessControlFilter.GET_METHOD)) {
+            if (successUrl == null) {
+                successUrl = savedRequest.getRequestUrl();
+            }
+            contextRelative = false;
+        }
+        WebUtils.issueRedirect(request, response, successUrl, null, contextRelative);
+        return false;
     }
 
 }

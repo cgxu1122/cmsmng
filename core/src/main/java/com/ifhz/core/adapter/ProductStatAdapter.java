@@ -25,4 +25,6 @@ public interface ProductStatAdapter {
     public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
 
     public List<ProductStat> queryByVo(Pagination page, ProductStat record);
+
+    public ProductStat queryCountByVo(ProductStat record);
 }

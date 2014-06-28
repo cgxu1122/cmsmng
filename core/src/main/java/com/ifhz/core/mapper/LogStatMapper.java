@@ -26,4 +26,6 @@ public interface LogStatMapper {
     public List<LogStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
 
     public List<LogStat> queryByVo(Pagination page, @Param(value = "record") LogStat record);
+
+    public LogStat queryCountByVO(LogStat record);
 }

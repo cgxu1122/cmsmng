@@ -22,4 +22,6 @@ public interface LogStatAdapter {
     public LogStat getByMd5Key(String md5Key);
 
     public List<LogStat> queryByVO(Pagination page, LogStat record);
+
+    public LogStat queryCountByVO(LogStat record);
 }

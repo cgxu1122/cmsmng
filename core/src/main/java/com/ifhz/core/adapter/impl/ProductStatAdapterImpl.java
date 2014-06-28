@@ -53,4 +53,9 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
     public List<ProductStat> queryByVo(Pagination page, ProductStat record) {
         return productStatMapper.queryByVo(page, record);
     }
+
+    @Override
+    public ProductStat queryCountByVo(ProductStat record) {
+        return productStatMapper.queryCountByVo(record);
+    }
 }

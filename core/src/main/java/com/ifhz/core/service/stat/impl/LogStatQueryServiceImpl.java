@@ -53,4 +53,9 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
         }
         return logStatList;
     }
+
+    @Override
+    public LogStat queryCountByVo(LogStat record) {
+        return logStatAdapter.queryCountByVO(record);
+    }
 }
