@@ -20,7 +20,8 @@
         PRS_INVALID_REPLACE_NUM,
         PRS_INVALID_UNINSTALL_NUM,
         COUNTER_UPD_DAY_NUM,
-        MD5_KEY
+        MD5_KEY,
+        VERSION
     </sql>
 
     <resultMap id="LogStatResultMap" type="com.ifhz.core.po.LogStat">
@@ -44,6 +45,8 @@
         <result column="COUNTER_UPD_DAY_NUM" property="counterUpdDayNum" jdbcType="BIGINT"/>
 
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
+
     </resultMap>
 
 
@@ -75,7 +78,8 @@
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
         #{counterUpdDayNum,jdbcType=BIGINT},
-        #{md5Key,jdbcType=VARCHAR}
+        #{md5Key,jdbcType=VARCHAR},
+        #{version,jdbcType=BIGINT}
         )
     </insert>
 
@@ -83,6 +87,9 @@
         update
         <include refid="TABLE_NAME"/>
         <set>
+            <if test="version != null">
+                VERSION = VERSION + 1,
+            </if>
             <if test="devicePrsDayNum != null and devicePrsDayNum != 0">
                 DEVICE_PRS_DAY_NUM = #{devicePrsDayNum},
             </if>
@@ -109,6 +116,7 @@
             </if>
         </set>
         where ID = #{id}
+        and VERSION = #{version}
     </update>
 
 
@@ -155,73 +163,4 @@
             ]]>
         </if>
     </select>
-
-
-    <update id="updateStat" parameterType="com.ifhz.core.service.api.bean.StatUpdateBean">
-        update
-        <include refid="TABLE_NAME"/>
-        <set>
-            <if test="isUpdateTotalNum">
-                PRS_ACTIVE_TOTAL_NUM = PRS_ACTIVE_TOTAL_NUM + 1,
-            </if>
-            <if test="isUpdateValidNum">
-                PRS_ACTIVE_VALID_NUM = PRS_ACTIVE_VALID_NUM + 1,
-            </if>
-            <if test="isUpdateInvalidNum">
-                PRS_ACTIVE_INVALID_NUM = PRS_ACTIVE_INVALID_NUM + 1,
-            </if>
-            <if test="isUpdateReplaceNum">
-                PRS_INVALID_REPLACE_NUM = PRS_INVALID_REPLACE_NUM + 1,
-            </if>
-            <if test="isUpdateUninstallNum">
-                PRS_INVALID_UNINSTALL_NUM = PRS_INVALID_UNINSTALL_NUM + 1,
-            </if>
-        </set>
-        where MD5_KEY = #{md5Key}
-    </update>
-
-    <!--<insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
-        <selectKey resultType="long" keyProperty="id" order="BEFORE">
-            SELECT SEQ_LOG_COUNT.NEXTVAL FROM DUAL
-        </selectKey>
-        insert into TY_LOG_COUNT
-        ( LOG_COUNT_ID,
-        MODLE_NAME,
-        CHANNEL_ID,
-        DEVICE_CODE,
-        GROUP_ID,
-        BATCH_CODE,
-        COUNT_TIME,
-        PROCESS_KEY,
-        LAOWU_ID,
-        PROCESS_DAY_COUNT,
-        DEVICE_UPLOAD_DAY_COUNT,
-        COUNTER_UPLOAD_DAY_COUNT,
-        ALLCOUNT,
-        ACTIVE_COUNT,
-        NONACTIVE_COUNT,
-        NONACTIVE_UNINSTALL_COUNT,
-        NONACTIVE_REPLACE_COUNT
-        ) select SEQ_LOG_COUNT.NEXTVAL,A.* from(
-        <foreach collection="list" item="item" index="index" separator="UNION ALL">
-            SELECT
-            #{item.modleName},
-            #{item.channelId},
-            #{item.deviceCode},
-            #{item.groupId},
-            #{item.batchCode},
-            #{item.countTime},
-            #{item.processKey},
-            #{item.laowuId},
-            #{item.processDayCount},
-            #{item.deviceUploadDayCount},
-            #{item.counterUploadDayCount},
-            #{item.allCount},
-            #{item.activeCount},
-            #{item.nonActiveCount},
-            #{item.nonActiveUninstallCount},
-            #{item.nonActiveReplaceCount}
-            from dual
-        </foreach>) A
-    </insert>-->
 </mapper>

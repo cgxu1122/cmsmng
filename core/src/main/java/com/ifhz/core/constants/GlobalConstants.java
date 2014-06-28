@@ -38,6 +38,7 @@ public final class GlobalConstants {
      */
     public static final String KEY_SYS_INIT_DATE = "system_init_date";
     public static final String KEY_LOCAL_STORE_DIR = "local.store.dir";
+    public static final String KEY_STAT_INTERVAL_MINUTE = "stat.interval.minute";
 
     /**
      * 统计时分页处理条目，默认10000条

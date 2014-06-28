@@ -5,7 +5,6 @@ import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.ProductStatMapper;
 import com.ifhz.core.po.ProductStat;
-import com.ifhz.core.service.api.bean.StatUpdateBean;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -48,11 +47,6 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
     public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime) {
         List<ProductStat> list = productStatMapper.queryListByQueryKey(queryKey, startTime, endTime);
         return list == null ? Lists.<ProductStat>newArrayList() : list;
-    }
-
-    @Override
-    public int updateStat(StatUpdateBean statUpdateBean) {
-        return productStatMapper.updateStat(statUpdateBean);
     }
 
     @Override

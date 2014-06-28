@@ -47,13 +47,14 @@ public class AnalysisApk {
 
     public static String genApkPackageName(InputStream inputStream) {
         String result = null;
+        File toFile = null;
         try {
             StringBuffer buffer = new StringBuffer();
             buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
             buffer.append(File.separator);
             buffer.append(new Date().getTime());
             buffer.append(".apk");
-            File toFile = new File(buffer.toString());
+            toFile = new File(buffer.toString());
             ByteStreams.copy(inputStream, Files.newOutputStreamSupplier(toFile));
             Map<String, String> map = parseApk(toFile);
             if (MapUtils.isNotEmpty(map)) {
@@ -61,6 +62,10 @@ public class AnalysisApk {
             }
         } catch (Exception e) {
             LOGGER.error("copyFile error", e);
+        } finally {
+            if (toFile != null) {
+                toFile.deleteOnExit();
+            }
         }
 
         return result;

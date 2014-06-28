@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.ChannelInfoAdapter;
 import com.ifhz.core.adapter.DataLogAdapter;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.enums.GroupType;
@@ -37,7 +38,7 @@ import java.util.Map;
  * Date: 2014/6/21
  * Time: 17:15
  */
-@Service("logStatService")
+@Service("statTaskService")
 public class StatTaskServiceImpl implements StatTaskService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatTaskServiceImpl.class);
 
@@ -64,7 +65,7 @@ public class StatTaskServiceImpl implements StatTaskService {
      * @param endTime   结束时间 不允许跨天
      */
     public void scanDataLog(Date startTime, Date endTime) {
-        LOGGER.info("统计程序开始执行{},{}", startTime, endTime);
+        LOGGER.info("统计程序开始执行{},{}", DateFormatUtils.formatDate(startTime, "yyyy-MM-dd HH:mm:ss:sss"), DateFormatUtils.formatDate(endTime, "yyyy-MM-dd HH:mm:ss:sss"));
         Map<String, LogStat> logStatHashMap = Maps.newHashMap();
         Map<String, ProductStat> productStatHashMap = Maps.newHashMap();
         String tableName = splitTableService.getCurrentTableName(startTime);

@@ -2,7 +2,6 @@ package com.ifhz.core.mapper;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.LogStat;
-import com.ifhz.core.service.api.bean.StatUpdateBean;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -25,8 +24,6 @@ public interface LogStatMapper {
     public LogStat getByMd5Key(String md5Key);
 
     public List<LogStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
-
-    public int updateStat(StatUpdateBean statUpdateBean);
 
     public List<LogStat> queryByVo(Pagination page, @Param(value = "record") LogStat record);
 }

@@ -13,18 +13,6 @@ import java.io.Serializable;
  */
 public class WdjDataResult implements Serializable {
     private static final long serialVersionUID = -4902115632994530807L;
-    /*
-    {
-        "info": "未知专题",
-        "account": "dimengjie",
-        "version": "1.0.2.80",
-        "result": true,
-        "batch_no": "",
-        "imei": "862384020279837",
-        "model": "TCL Y910",
-        "install_dt": "2014-05-15"
-    }
-     */
 
     private String info;
     private String account;
