@@ -21,8 +21,8 @@
         <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
         <result column="COUNTER_PRODUCT_DAY_NUM" property="counterProductDayNum" jdbcType="BIGINT"/>
 
-        <result column="QUERY_KEY" property="queryKey" jdbcType="VARCHAR"/>
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
+        <result column="VERSION" property="version" jdbcType="BIGINT"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.ifhz.core.po.ProductStat">
@@ -47,6 +47,7 @@
         PRS_INVALID_UNINSTALL_NUM,
         COUNTER_PRODUCT_DAY_NUM,
         MD5_KEY,
+        VERSION
         ) values (
         SEQ_PRODUCT_STAT.NEXTVAL,
         #{productId,jdbcType=BIGINT},
@@ -62,7 +63,8 @@
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
         #{counterProductDayNum,jdbcType=BIGINT},
-        #{md5Key,jdbcType=VARCHAR}
+        #{md5Key,jdbcType=VARCHAR},
+        #{version,jdbcType=BIGINT}
         )
     </insert>
 
@@ -70,55 +72,33 @@
         update
         <include refid="TABLE_NAME"/>
         <set>
-            <if test="productPrsDayNum != null">
+            <if test="productPrsDayNum != null and productPrsDayNum != 0">
                 PRODUCT_PRS_DAY_NUM = #{productPrsDayNum},
             </if>
-            <if test="productUpdDayNum != null">
+            <if test="productUpdDayNum != null and productUpdDayNum != 0">
                 PRODUCT_UPD_DAY_NUM = #{productUpdDayNum},
             </if>
-            <if test="prsActiveTotalNum != null">
+            <if test="prsActiveTotalNum != null and prsActiveTotalNum != 0">
                 PRS_ACTIVE_TOTAL_NUM = #{prsActiveTotalNum},
             </if>
-            <if test="prsActiveValidNum != null">
+            <if test="prsActiveValidNum != null and prsActiveValidNum != 0">
                 PRS_ACTIVE_VALID_NUM = #{prsActiveValidNum},
             </if>
-            <if test="prsActiveInvalidNum != null">
+            <if test="prsActiveInvalidNum != null and prsActiveInvalidNum != 0">
                 PRS_ACTIVE_INVALID_NUM = #{prsActiveInvalidNum},
             </if>
-            <if test="prsInvalidReplaceNum != null">
+            <if test="prsInvalidReplaceNum != null  and prsInvalidReplaceNum != 0">
                 PRS_INVALID_REPLACE_NUM = #{prsInvalidReplaceNum},
             </if>
-            <if test="prsInvalidUninstallNum != null">
+            <if test="prsInvalidUninstallNum != null and prsInvalidUninstallNum != 0">
                 PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
             </if>
-            <if test="counterProductDayNum != null">
+            <if test="counterProductDayNum != null and counterProductDayNum != 0">
                 COUNTER_PRODUCT_DAY_NUM = #{counterProductDayNum},
             </if>
         </set>
         where ID = #{id}
-    </update>
-
-    <update id="updateStat" parameterType="com.ifhz.core.service.api.bean.StatUpdateBean">
-        update
-        <include refid="TABLE_NAME"/>
-        <set>
-            <if test="isUpdateTotalNum">
-                PRS_ACTIVE_TOTAL_NUM = PRS_ACTIVE_TOTAL_NUM + 1,
-            </if>
-            <if test="isUpdateValidNum">
-                PRS_ACTIVE_VALID_NUM = PRS_ACTIVE_VALID_NUM + 1,
-            </if>
-            <if test="isUpdateInvalidNum">
-                PRS_ACTIVE_INVALID_NUM = PRS_ACTIVE_INVALID_NUM + 1,
-            </if>
-            <if test="isUpdateReplaceNum">
-                PRS_INVALID_REPLACE_NUM = PRS_INVALID_REPLACE_NUM + 1,
-            </if>
-            <if test="isUpdateUninstallNum">
-                PRS_INVALID_UNINSTALL_NUM = PRS_INVALID_UNINSTALL_NUM + 1,
-            </if>
-        </set>
-        where MD5_KEY = #{md5Key}
+        and VERSION = #{version}
     </update>
 
     <select id="queryByVo" resultMap="ProductStatResultMap">

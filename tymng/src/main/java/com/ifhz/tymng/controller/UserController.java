@@ -11,25 +11,20 @@ import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
-import com.ifhz.core.po.UserRoleRef;
-import com.ifhz.core.service.auth.UserRoleRefService;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -38,10 +33,10 @@ import java.util.*;
  * @useror radish moon
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/tymng/user")
 public class UserController extends BaseController {
 
-	@Autowired
+    @Autowired
     private UserService userService;
 
 
@@ -84,32 +79,32 @@ public class UserController extends BaseController {
         String roleId = req.getParameter("roleId");
         if (StringUtils.isBlank(roleId)) {
             result.setCode(-1);
-            result.setMessage( "请选择角色");
+            result.setMessage("请选择角色");
             return JSON.toJSONString(result);
         }
-        if(!(user.getType()== UserConstants.USER_TYPE_MANAGER||user.getType()== UserConstants.USER_TYPE_NORMAL)){
+        if (!(user.getType() == UserConstants.USER_TYPE_MANAGER || user.getType() == UserConstants.USER_TYPE_NORMAL)) {
             result.setCode(-1);
-            result.setMessage( "请选择用户类型");
+            result.setMessage("请选择用户类型");
             return JSON.toJSONString(result);
         }
-        if(!(user.getStatus()== UserConstants.USER_STATUS_DISABLE||user.getStatus()== UserConstants.USER_STATUS_ENABLE)){
+        if (!(user.getStatus() == UserConstants.USER_STATUS_DISABLE || user.getStatus() == UserConstants.USER_STATUS_ENABLE)) {
             result.setCode(-1);
-            result.setMessage( "请选择用户状态");
+            result.setMessage("请选择用户状态");
             return JSON.toJSONString(result);
         }
 
-		boolean flag = this.checkUnique(user.getLoginName());
-		if (!flag) {
+        boolean flag = this.checkUnique(user.getLoginName());
+        if (!flag) {
             result.setCode(-1);
-            result.setMessage( "用户名称重复");
-			return JSON.toJSONString(result);
-		}
+            result.setMessage("用户名称重复");
+            return JSON.toJSONString(result);
+        }
         user.setCreateTime(new Date());
-		String password = StringUtils.trim(user.getPassword());
+        String password = StringUtils.trim(user.getPassword());
         user.setPassword(MD5keyUtil.getMD5Str(password));
 
         //save user
-        result = userService.insertUser(user,Long.valueOf(roleId));
+        result = userService.insertUser(user, Long.valueOf(roleId));
         return JSON.toJSONString(result);
     }
 
@@ -122,7 +117,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/update")
     @ResponseBody()
-    public String update(User user,HttpServletRequest req) {
+    public String update(User user, HttpServletRequest req) {
         Result result = new Result();
         result.setCode(1);
         result.setMessage("添加成功");
@@ -130,10 +125,10 @@ public class UserController extends BaseController {
         String roleId = req.getParameter("roleId");
         if (StringUtils.isBlank(roleId)) {
             result.setCode(-1);
-            result.setMessage( "请选择角色");
+            result.setMessage("请选择角色");
             return JSON.toJSONString(result);
         }
-        result = userService.updateUserAdmin(user,Long.valueOf(roleId));
+        result = userService.updateUserAdmin(user, Long.valueOf(roleId));
         return JSON.toJSONString(result);
     }
 
@@ -154,23 +149,22 @@ public class UserController extends BaseController {
         String userId = req.getParameter("userIdUpPw");
         if (StringUtils.isBlank(userId)) {
             result.setCode(-1);
-            result.setMessage( "请选择用户");
+            result.setMessage("请选择用户");
             return JSON.toJSONString(result);
         }
 
         String password = req.getParameter("password");
         if (StringUtils.isBlank(password)) {
             result.setCode(-1);
-            result.setMessage( "请输入密码");
+            result.setMessage("请输入密码");
             return JSON.toJSONString(result);
         }
 
         String newPassword = MD5keyUtil.getMD5Str(password);
-        result = userService.updateUserPassword(Long.parseLong(userId),newPassword);
+        result = userService.updateUserPassword(Long.parseLong(userId), newPassword);
 
         return JSON.toJSONString(result);
     }
-
 
 
     /**
@@ -183,8 +177,8 @@ public class UserController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody()
     public String delete(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		userService.deleteUser(Integer.parseInt(id));
+        String id = request.getParameter("id");
+        userService.deleteUser(Integer.parseInt(id));
         return "";
     }
 
@@ -197,10 +191,10 @@ public class UserController extends BaseController {
      */
     private boolean checkUnique(String name) {
         boolean flag = false;
-		User user = userService.findUserByLoginName(name);
-		if (user == null) {
-			flag = true;
-		}
+        User user = userService.findUserByLoginName(name);
+        if (user == null) {
+            flag = true;
+        }
         return flag;
     }
 
@@ -214,20 +208,20 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/getAll", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject getAllUser(HttpServletRequest request) {
-		String searchValue = request.getParameter("searchValue");
-        if(StringUtils.isBlank(searchValue)){
+        String searchValue = request.getParameter("searchValue");
+        if (StringUtils.isBlank(searchValue)) {
             searchValue = null;
         }
 
-		// 查询记录
-		List<UserVo> userDtoList = userService.findAllUser(searchValue);
-		// 记录数
-		Long counts = userService.getUserVoCount(searchValue);
+        // 查询记录
+        List<UserVo> userDtoList = userService.findAllUser(searchValue);
+        // 记录数
+        Long counts = userService.getUserVoCount(searchValue);
 
         JSONObject result = new JSONObject();
         result.put("total", counts);
         result.put("rows", userDtoList);
-		return result;
+        return result;
 
     }
 
@@ -260,8 +254,8 @@ public class UserController extends BaseController {
     @RequestMapping("/getAllRole")
     @ResponseBody
     public JSONArray getAllRole() {
-		List<Role> roleList = userService.findAllRole();
-		return JSON.parseArray(JSON.toJSONString(roleList));
+        List<Role> roleList = userService.findAllRole();
+        return JSON.parseArray(JSON.toJSONString(roleList));
     }
 
 }

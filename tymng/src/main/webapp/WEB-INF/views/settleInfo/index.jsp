@@ -20,7 +20,7 @@
         }
         function saverow() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/settleInfo/insert',
+                url: '<%=basePath%>/tymng/settleInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -48,7 +48,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/settleInfo/update',
+                url: '<%=basePath%>/tymng/settleInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -69,7 +69,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.modelName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/settleInfo/delete', {settleId: row.settleId}, function (result) {
+                        $.post('<%=basePath%>/tymng/settleInfo/delete', {settleId: row.settleId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -84,7 +84,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/settleInfo/list",
+                url: "<%=basePath%>/tymng/settleInfo/list",
                 queryParams: {modelNameCondition: value}
             });
         }
@@ -95,7 +95,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/settleInfo/list',
+                url: '<%=basePath%>/tymng/settleInfo/list',
                 queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,

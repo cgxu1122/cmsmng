@@ -128,7 +128,7 @@
 
             $.ajax({
                 method: 'post',
-                url: '<%=basePath%>/mpd',
+                url: '<%=basePath%>/tymng/mpd',
                 data: {
                     "oldPassword": oldPassword,
                     "newPassword": newPassword,
@@ -154,7 +154,7 @@
         <div class="iheadertit">内置业务管理系统</div>
         <div class="iheadermsg">
             <span class="iheadername">欢迎：<shiro:principal></shiro:principal></span>
-            <a class="easyui-linkbutton" href="<%=basePath%>/logout">退出</a>
+            <a class="easyui-linkbutton" href="<%=basePath%>/tymng/logout">退出</a>
             <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
             </span>
         </div>
@@ -168,26 +168,26 @@
 <%--<shiro:hasPermission name="channel">--%>
 <div title="渠道管理" selected="true" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('天音渠道','<%=basePath%>/channelInfo/index?groupId=1','menu_icon_datadeal')">
+        <a href="javascript:addTab('天音渠道','<%=basePath%>/tymng/channelInfo/index?groupId=1','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>天音渠道</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('地包渠道','<%=basePath%>/channelInfo/index?groupId=2','menu_icon_datadeal')">
+        <a href="javascript:addTab('地包渠道','<%=basePath%>/tymng/channelInfo/index?groupId=2','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <!---->
             <span>地包渠道</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('其他渠道','<%=basePath%>/channelInfo/index?groupId=3','menu_icon_datadeal')">
+        <a href="javascript:addTab('其他渠道','<%=basePath%>/tymng/channelInfo/index?groupId=3','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>其他渠道</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('劳务渠道','<%=basePath%>/channelInfo/index?groupId=4','menu_icon_datadeal')">
+        <a href="javascript:addTab('劳务渠道','<%=basePath%>/tymng/channelInfo/index?groupId=4','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>劳务渠道</span>
         </a>
@@ -197,19 +197,19 @@
 <%--<shiro:hasPermission name="model">--%>
 <div title="机型管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('天音渠道机型','<%=basePath%>/modelInfo/index?groupId=1','menu_icon_datadeal')">
+        <a href="javascript:addTab('天音渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=1','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>天音渠道机型</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('地包渠道机型','<%=basePath%>/modelInfo/index?groupId=2','menu_icon_datadeal')">
+        <a href="javascript:addTab('地包渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=2','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>地包渠道机型</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('其他渠道机型','<%=basePath%>/modelInfo/index?groupId=3','menu_icon_datadeal')">
+        <a href="javascript:addTab('其他渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=3','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>其他渠道机型</span>
         </a>
@@ -219,7 +219,7 @@
 <%--<shiro:hasPermission name="device">--%>
 <div title="工装管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('工装管理','<%=basePath%>/deviceInfo/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('工装管理','<%=basePath%>/tymng/deviceInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>工装管理</span>
         </a>
@@ -231,7 +231,7 @@
 --%>
 <div title="合作方管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('合作方管理','<%=basePath%>/partnerInfo/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('合作方管理','<%=basePath%>/tymng/partnerInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>合作方管理</span>
         </a>
@@ -243,7 +243,7 @@
 --%>
 <div title="产品管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('产品管理','<%=basePath%>/productInfo/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('产品管理','<%=basePath%>/tymng/productInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>产品管理</span>
         </a>
@@ -255,19 +255,19 @@
 --%>
 <div title="批次管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('天音渠道批次','<%=basePath%>/batchInfo/index?groupId=1','menu_icon_datadeal')">
+        <a href="javascript:addTab('天音渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=1','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>天音渠道批次</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('地包渠道批次','<%=basePath%>/batchInfo/index?groupId=2','menu_icon_datadeal')">
+        <a href="javascript:addTab('地包渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=2','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>地包渠道批次</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('其他渠道批次','<%=basePath%>/batchInfo/index?groupId=3','menu_icon_datadeal')">
+        <a href="javascript:addTab('其他渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=3','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>其他渠道批次</span>
         </a>
@@ -279,7 +279,7 @@
 --%>
 <div title="设备系统管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('设备系统管理','<%=basePath%>/deviceSystem/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('设备系统管理','<%=basePath%>/tymng/deviceSystem/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>设备系统管理</span>
         </a>
@@ -291,7 +291,7 @@
 --%>
 <div title="APK管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('APK管理','<%=basePath%>/apkInfo/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>APK管理</span>
         </a>
@@ -303,13 +303,13 @@
 --%>
 <div title="打包管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('普通包管理','<%=basePath%>/packageInfo/index?type=N','menu_icon_datadeal')">
+        <a href="javascript:addTab('普通包管理','<%=basePath%>/tymng/packageInfo/index?type=N','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>普通包管理</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('通用包管理','<%=basePath%>/packageInfo/index?type=Y','menu_icon_datadeal')">
+        <a href="javascript:addTab('通用包管理','<%=basePath%>/tymng/packageInfo/index?type=Y','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>通用包管理</span>
         </a>
@@ -321,7 +321,7 @@
 --%>
 <div title="发布任务管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('发布任务管理','<%=basePath%>/publishTask/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('发布任务管理','<%=basePath%>/tymng/publishTask/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>发布任务管理</span>
         </a>
@@ -330,7 +330,7 @@
 <%--</shiro:hasPermission>--%>
 <div title="地包渠道结算条款" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('地包渠道结算条款','<%=basePath%>/settleInfo/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('地包渠道结算条款','<%=basePath%>/tymng/settleInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>地包渠道结算条款</span>
         </a>
@@ -339,25 +339,25 @@
 <%--<shiro:hasPermission name="logCount">--%>
 <div title="合作方查询后台" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('天音渠道查询','<%=basePath%>/partnerQuery/indexTY','menu_icon_datadeal')">
+        <a href="javascript:addTab('天音渠道查询','<%=basePath%>/tymng/partnerQuery/indexTY','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>天音渠道</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('地包渠道查询','<%=basePath%>/partnerQuery/indexDB','menu_icon_datadeal')">
+        <a href="javascript:addTab('地包渠道查询','<%=basePath%>/tymng/partnerQuery/indexDB','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>地包渠道</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('cp合作方查询','<%=basePath%>/partnerQuery/indexCP','menu_icon_datadeal')">
+        <a href="javascript:addTab('cp合作方查询','<%=basePath%>/tymng/partnerQuery/indexCP','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>cp合作方</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/partnerQuery/indexLW','menu_icon_datadeal')">
+        <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/tymng/partnerQuery/indexLW','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>劳务渠道</span>
         </a>
@@ -369,7 +369,7 @@
 --%>
 <div title="报表统计" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
+        <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/warehouseQuery','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>按仓库查询</span>
         </a>
@@ -381,20 +381,20 @@
 --%>
 <div title="系统用户管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('系统用户管理','<%=basePath%>/user/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('系统用户管理','<%=basePath%>/tymng/user/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>系统用户管理</span>
         </a>
     </div>
     <div class="nav-item">
-        <a href="javascript:addTab('角色管理','<%=basePath%>/role/index','menu_icon_wjldgl')">
+        <a href="javascript:addTab('角色管理','<%=basePath%>/tymng/role/index','menu_icon_wjldgl')">
             <span class="menu_icon_wjldgl"></span>
             <span>角色管理</span>
         </a>
     </div>
     <%--<shiro:hasPermission name="A01">--%>
     <div class="nav-item">
-        <a href="javascript:addTab('授权管理','<%=basePath%>/rrr/index','menu_icon_wjldgl')">
+        <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/rrr/index','menu_icon_wjldgl')">
             <span class="menu_icon_wjldgl"></span>
             <span>授权管理</span>
         </a>

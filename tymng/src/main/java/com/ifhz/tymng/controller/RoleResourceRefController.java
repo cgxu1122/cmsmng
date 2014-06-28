@@ -33,7 +33,7 @@ import java.util.List;
  * @author luyujian
  */
 @Controller
-@RequestMapping("/rrr")
+@RequestMapping("/tymng/rrr")
 public class RoleResourceRefController {
     private static Logger logger = LoggerFactory.getLogger(RoleResourceRefController.class);
     @Autowired

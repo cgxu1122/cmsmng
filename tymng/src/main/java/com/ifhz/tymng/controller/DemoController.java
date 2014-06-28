@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author radishlee
  */
 @Controller
-@RequestMapping("/demo")
+@RequestMapping("/tymng/demo")
 public class DemoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DemoController.class);
 

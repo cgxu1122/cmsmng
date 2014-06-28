@@ -28,7 +28,7 @@
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/partnerQuery/listLogStat",
+                url: "<%=basePath%>/tymng/partnerQuery/listLogStat",
                 queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
@@ -41,7 +41,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/partnerQuery/listLogStat',
+                url: '<%=basePath%>/tymng/partnerQuery/listLogStat',
                 queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -75,7 +75,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/modelInfo/list',
+                url: '<%=basePath%>/tymng/modelInfo/list',
                 queryParams: {groupId: 2},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -96,7 +96,7 @@
         function searchModelEvt() {
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
-                url: "<%=basePath%>/modelInfo/list",
+                url: "<%=basePath%>/tymng/modelInfo/list",
                 queryParams: {modelNameCondition: value, groupId: 1}
             });
         }
@@ -109,7 +109,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
-            window.location.href = "<%=basePath%>/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
+            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
         }
     </script>
 </head>

@@ -1,0 +1,13 @@
+<dependency>
+            <groupId>com.ifhz.tech.codec</groupId>
+            <artifactId>AXMLPrinter2</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+默认本机安装maven，并配置了M2HOME变量
+步骤1：复制AXMLPrinter2.jar 到D: 根目录下：
+步骤3：开始 --》 运行 --》cmd
+       依次运行一下命令：
+       cd D:
+       D:
+       mvn install:install-file -DgroupId=com.ifhz.tech.codec -DartifactId=AXMLPrinter2 -Dversion=2.0.0 -Dpackaging=jar -Dfile=AXMLPrinter2.jar

@@ -27,7 +27,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/packageInfo")
+@RequestMapping("/tymng/packageInfo")
 public class PackageInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageInfoController.class);
     @Autowired

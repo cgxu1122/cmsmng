@@ -24,8 +24,8 @@
 
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="/" />
+        <property name="loginUrl" value="/tymng/login"/>
+        <property name="successUrl" value="/tymng/"/>
         <property name="filters">
             <map>
                 <entry key="authc" value-ref="myCaptchaFilter"/>
@@ -33,13 +33,14 @@
         </property>
 		<property name="filterChainDefinitions">
 			<value>
-				/login = authc  
-				/logout = logout  
-				/image/** = anon
-                /vc/* = anon
-				/common/** = anon
-				/plug/** = anon
-				/** = authc
+                /tymng/login = authc
+                /tymng/logout = logout
+                /tymng/image/** = anon
+                /tymng/vc/* = anon
+                /tymng/common/** = anon
+                /tymng/plug/** = anon
+                /tymng/schedule = anon
+                /tymng/** = authc
 			</value>
 		</property>
 	</bean>

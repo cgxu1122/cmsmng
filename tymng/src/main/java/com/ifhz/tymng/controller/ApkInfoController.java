@@ -2,6 +2,7 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.codec.AnalysisApk;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
@@ -30,7 +31,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/apkInfo")
+@RequestMapping("/tymng/apkInfo")
 public class ApkInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApkInfoController.class);
     @Autowired
@@ -77,8 +78,8 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         String softName = file.getName();
-        String extName = softName.substring(softName.lastIndexOf("."), softName.length());
-        if ("apk".equals(extName)) {
+        String extName = softName.substring(softName.lastIndexOf(".") + 1, softName.length());
+        if (!"apk".equals(extName)) {
             errorMsg = "请上传后缀名为Apk的文件！";
             result.put("errorMsg", errorMsg);
             return result;
@@ -117,10 +118,16 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
+        try {
+            String packagePath = AnalysisApk.genApkPackageName(file.getInputStream());
+            ai.setPackagePath(packagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ai.setApkName(apkName.trim());
         ai.setSoftName(softName);
         ai.setActive(JcywConstants.ACTIVE_Y);
-        ai.setFtpPath(dir + softName);
+        ai.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
         ai.setMd5Value(md5Value);
         ai.setType(type);
         apkInfoService.insert(ai);
@@ -179,17 +186,25 @@ public class ApkInfoController extends BaseController {
         if (StringUtils.isNotEmpty(file.getName())) {
             try {
                 String softName = file.getName();
+                String extName = softName.substring(softName.lastIndexOf(".") + 1, softName.length());
+                if (!"apk".equals(extName)) {
+                    errorMsg = "请上传后缀名为Apk的文件！";
+                    result.put("errorMsg", errorMsg);
+                    return result;
+                }
                 String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
                 FtpUtils.ftpUpload(file.getInputStream(),
                         dir,
                         softName
                 );
                 apkInfo.setSoftName(softName);
-                apkInfo.setFtpPath(dir + softName);
+                apkInfo.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
                 if (!MD5keyUtil.getMD5(file.getInputStream()).equals(apkInfo.getMd5Value())) {
                     apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
                     apkInfo.setUpdateTime(new Date());
                 }
+                String packagePath = AnalysisApk.genApkPackageName(file.getInputStream());
+                apkInfo.setPackagePath(packagePath);
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);

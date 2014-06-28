@@ -58,14 +58,14 @@ function saverow() {
     }
 
     $('#fm').form('submit', {
-        url: '<%=basePath%>/user/insert',
+        url: '<%=basePath%>/tymng/user/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
         success: function (result) {
             var result = eval('(' + result + ')');
             result = eval('(' + result + ')');
-            if (result.code==-1) {
+            if (result.code == -1) {
                 $.messager.alert('错误', result.message);
             } else {
                 $.messager.alert('成功', result.message);
@@ -84,7 +84,7 @@ function saveUpdatePassword() {
         return;
     }
     $('#upfm').form('submit', {
-        url: '<%=basePath%>/user/updatePassowrd',
+        url: '<%=basePath%>/tymng/user/updatePassowrd',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -92,7 +92,7 @@ function saveUpdatePassword() {
         success: function (result) {
             var result = eval('(' + result + ')');
             result = eval('(' + result + ')');
-            if (result.code==-1) {
+            if (result.code == -1) {
                 $.messager.alert('错误', result.message);
             } else {
                 $.messager.alert('成功', result.message);
@@ -119,14 +119,14 @@ function updaterow() {
 
 
     $('#fm1').form('submit', {
-        url: '<%=basePath%>/user/update',
+        url: '<%=basePath%>/tymng/user/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
         success: function (result) {
             var result = eval('(' + result + ')');
             result = eval('(' + result + ')');
-            if (result.code==-1) {
+            if (result.code == -1) {
                 $.messager.alert('错误', result.message);
             } else {
                 $.messager.alert('成功', result.message);
@@ -141,7 +141,7 @@ function deleterow() {
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.name + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/auth/delete', {id: row.id}, function (result) {
+                $.post('<%=basePath%>/tymng/auth/delete', {id: row.id}, function (result) {
                     if (result.success) {
                         $('#dg').datagrid('reload');
                     } else {
@@ -162,12 +162,14 @@ function initPage() {
         panelWidth: 300,
         idField: 'roleId',
         textField: 'roleName',
-        url: '<%=basePath%>/user/getAllRole',
+        url: '<%=basePath%>/tymng/user/getAllRole',
         method: 'post',
-        columns: [[
-            {field:'roleId',hidden:true},
-            {field:'roleName',title:'角色名称',width:120}
-        ]],
+        columns: [
+            [
+                {field: 'roleId', hidden: true},
+                {field: 'roleName', title: '角色名称', width: 120}
+            ]
+        ],
         fitColumns: true
     });
 
@@ -175,12 +177,14 @@ function initPage() {
         panelWidth: 300,
         idField: 'roleId',
         textField: 'roleName',
-        url: '<%=basePath%>/user/getAllRole',
+        url: '<%=basePath%>/tymng/user/getAllRole',
         method: 'post',
-        columns: [[
-            {field:'roleId',hidden:true},
-            {field:'roleName',title:'角色名称',width:120}
-        ]],
+        columns: [
+            [
+                {field: 'roleId', hidden: true},
+                {field: 'roleName', title: '角色名称', width: 120}
+            ]
+        ],
         fitColumns: true
     });
 
@@ -189,7 +193,7 @@ function initPage() {
         height: '522',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/user/getAll',
+        url: '<%=basePath%>/tymng/user/getAll',
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         fitColumns: true,
@@ -201,24 +205,24 @@ function initPage() {
                 {field: 'realName', title: '姓名', align: 'center', width: 100},
                 {field: 'roleName', title: '角色', align: 'center', width: 100},
                 {field: 'type', title: '用户类型', align: 'center', width: 100, formatter: function (value) {
-                                                                                    if (value == 1) {
-                                                                                        return "普通用户";
-                                                                                    }else if(value == 2){
-                                                                                        return "负责人";
-                                                                                    }else{
-                                                                                        return null;
-                                                                                    }
-                                                                                }
+                    if (value == 1) {
+                        return "普通用户";
+                    } else if (value == 2) {
+                        return "负责人";
+                    } else {
+                        return null;
+                    }
+                }
                 },
                 {field: 'cellphone', title: '手机', align: 'center', width: 200},
                 {field: 'address', title: '地址', align: 'center', width: 200},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 200},
                 {field: 'status', title: '状态', align: 'center', width: 100, formatter: function (value) {
-                                                                                        if (value == 1) {
-                                                                                            return "启用";
-                                                                                        }
-                                                                                        return "禁用";
-                                                                                    }
+                    if (value == 1) {
+                        return "启用";
+                    }
+                    return "禁用";
+                }
                 },
                 {field: 'id', hidden: true}
             ]
@@ -228,7 +232,7 @@ function initPage() {
 
     //设置角色选择下拉框去获取所有角色列表
     $("#allRoles").combobox({
-        url: "<%=basePath%>/user/getAllRole",
+        url: "<%=basePath%>/tymng/user/getAllRole",
         valueField: "roleId",
         textField: "roleName"
     });
@@ -241,7 +245,7 @@ function initPage() {
 function search() {
     var value = $('#searchValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/user/getAll",
+        url: "<%=basePath%>/tymng/user/getAll",
         queryParams: { 'searchValue': value}
     });
 }
@@ -296,11 +300,13 @@ function search() {
         </div>
         <div class="fitem" style="margin-left:25px">
             <label><font color="red">*</font>密码:</label>
-            <input type="password" id="password" name="password" class="easyui-validatebox" required="true" validType="isPasswd">
+            <input type="password" id="password" name="password" class="easyui-validatebox" required="true"
+                   validType="isPasswd">
         </div>
         <div class="fitem">
             <label><font color="red">*</font>确认密码:</label>
-            <input type="password" id="comfirmPassword" name="comfirmPassword" class="easyui-validatebox"  required="true">
+            <input type="password" id="comfirmPassword" name="comfirmPassword" class="easyui-validatebox"
+                   required="true">
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>手机:</label>
@@ -312,7 +318,7 @@ function search() {
         </div>
         <div class="fitem" style="margin-left:30px">
             <label><font color="red">*</font>角色:</label>
-            <input id="addUser"  name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
+            <input id="addUser" name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
         </div>
         <div class="fitem">
             <label><font color="red">*</font>状态:</label>
@@ -332,22 +338,27 @@ function search() {
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 <div>
-    <div id="updatePassworddlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"  buttons="#updatePasswprd-buttons">
+    <div id="updatePassworddlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
+         buttons="#updatePasswprd-buttons">
         <form id="upfm" method="get" novalidate>
             <input type="hidden" id="userIdUpPw" name="userIdUpPw"/>
+
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>密码:</label>
-                <input id="passwordUp" type="password" name="password" class="easyui-validatebox" required="true" validType="isPasswd">
+                <input id="passwordUp" type="password" name="password" class="easyui-validatebox" required="true"
+                       validType="isPasswd">
             </div>
             <div class="fitem">
                 <label><font color="red">*</font>确认密码:</label>
-                <input type="password" id="comfirmPasswordUp" name="comfirmPassword" class="easyui-validatebox" required="true">
+                <input type="password" id="comfirmPasswordUp" name="comfirmPassword" class="easyui-validatebox"
+                       required="true">
             </div>
         </form>
     </div>
     <div id="updatePasswprd-buttons" style="text-align: center;">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdatePassword()">确定</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"  onclick="javascript:$('#updatePassworddlg').dialog('close')">取消</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+           onclick="javascript:$('#updatePassworddlg').dialog('close')">取消</a>
     </div>
 
 
@@ -358,6 +369,7 @@ function search() {
 
         <form id="fm1" method="post" novalidate>
             <input type="hidden" id="userId" name="userId"/>
+
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>手机:</label>
                 <input id="cellphoneUp" name="cellphone" class="easyui-numberbox" required="true" validType="digits">

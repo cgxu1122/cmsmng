@@ -21,7 +21,7 @@
         function saverow() {
             $("#groupId").val("${groupId}");
             $('#fm').form('submit', {
-                url: '<%=basePath%>/modelInfo/insert',
+                url: '<%=basePath%>/tymng/modelInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -47,7 +47,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/modelInfo/update',
+                url: '<%=basePath%>/tymng/modelInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -68,7 +68,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.modelName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/modelInfo/delete', {modelId: row.modelId}, function (result) {
+                        $.post('<%=basePath%>/tymng/modelInfo/delete', {modelId: row.modelId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -83,7 +83,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/modelInfo/list",
+                url: "<%=basePath%>/tymng/modelInfo/list",
                 queryParams: {groupId: '${groupId}', modelNameCondition: value}
             });
         }
@@ -94,7 +94,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/modelInfo/list',
+                url: '<%=basePath%>/tymng/modelInfo/list',
                 queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -125,7 +125,7 @@
         }
         /* function exportData() {
          var value = $('#searchValue').val();
-         window.location.href = "<%=basePath%>/modelInfo/export?groupId=${groupId}&modelNameCondition=" + value;
+         window.location.href = "<%=basePath%>/tymng/modelInfo/export?groupId=${groupId}&modelNameCondition=" + value;
          }*/
     </script>
 </head>

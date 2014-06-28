@@ -19,7 +19,7 @@ function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新增');
     $('#fm').form('clear');
     $.ajax({
-        url: "<%=basePath%>/batchInfo/getSeqByGroupId?groupId=${groupId}",
+        url: "<%=basePath%>/tymng/batchInfo/getSeqByGroupId?groupId=${groupId}",
         success: function (result) {
             var result = eval('(' + result + ')');
             $("#batchCode").val(result.batchCode);
@@ -31,7 +31,7 @@ function addrow() {
 function saverow() {
     $("#groupId").val("${groupId}");
     $('#fm').form('submit', {
-        url: '<%=basePath%>/batchInfo/insert',
+        url: '<%=basePath%>/tymng/batchInfo/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -73,7 +73,7 @@ function editrow() {
 }
 function saveUpdate() {
     $('#upfm').form('submit', {
-        url: '<%=basePath%>/batchInfo/update',
+        url: '<%=basePath%>/tymng/batchInfo/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -94,7 +94,7 @@ function delrow() {
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.batchCode + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/batchInfo/delete', {batchId: row.batchId}, function (result) {
+                $.post('<%=basePath%>/tymng/batchInfo/delete', {batchId: row.batchId}, function (result) {
                     if (result.errorMsg) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
@@ -110,7 +110,7 @@ function searchEvt() {
     var batchCodeCondition = $('#searchValue').val();
     var batchProductName = $('#searchProductNameValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/batchInfo/list",
+        url: "<%=basePath%>/tymng/batchInfo/list",
         queryParams: {groupId: '${groupId}', batchCodeCondition: batchCodeCondition, batchProductName: batchProductName}
     });
 }
@@ -121,7 +121,7 @@ function initPage() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/batchInfo/list',
+        url: '<%=basePath%>/tymng/batchInfo/list',
         queryParams: {groupId: '${groupId}'},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -161,7 +161,7 @@ function showProductDialog(type) {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/productInfo/list',
+        url: '<%=basePath%>/tymng/productInfo/list',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -187,7 +187,7 @@ function showProductDialog(type) {
 function searchProductEvt() {
     var value = $('#searchProductValue').val();
     $('#productdg').datagrid({
-        url: "<%=basePath%>/productInfo/list",
+        url: "<%=basePath%>/tymng/productInfo/list",
         queryParams: {productNameCondition: value}
     });
 }
@@ -227,7 +227,7 @@ function importTemplateBatch(type) {
         return;
     }
     $.ajax({
-        url: "<%=basePath%>/batchInfo/importTemplateBatch?groupId=${groupId}&batchCode=" + batchCode,
+        url: "<%=basePath%>/tymng/batchInfo/importTemplateBatch?groupId=${groupId}&batchCode=" + batchCode,
         success: function (result) {
             var result = eval('(' + result + ')');
             if (result.errorMsg) {

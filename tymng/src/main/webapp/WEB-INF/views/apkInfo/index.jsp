@@ -22,7 +22,7 @@
         }
         function saverow() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/apkInfo/insert',
+                url: '<%=basePath%>/tymng/apkInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -49,7 +49,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/apkInfo/update',
+                url: '<%=basePath%>/tymng/apkInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -70,7 +70,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.apkName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/apkInfo/delete', {apkId: row.apkId}, function (result) {
+                        $.post('<%=basePath%>/tymng/apkInfo/delete', {apkId: row.apkId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -85,7 +85,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/apkInfo/list",
+                url: "<%=basePath%>/tymng/apkInfo/list",
                 queryParams: {apkNameCondition: value}
             });
         }
@@ -96,7 +96,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/apkInfo/list',
+                url: '<%=basePath%>/tymng/apkInfo/list',
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,

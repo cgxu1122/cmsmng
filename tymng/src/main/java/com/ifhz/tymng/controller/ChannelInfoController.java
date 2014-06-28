@@ -10,6 +10,7 @@ import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.channel.ChannelGroupService;
 import com.ifhz.core.service.channel.ChannelInfoService;
+import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/channelInfo")
+@RequestMapping("/tymng/channelInfo")
 public class ChannelInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChannelInfoController.class);
     @Autowired
@@ -116,6 +117,33 @@ public class ChannelInfoController extends BaseController {
         ci.setActive(JcywConstants.ACTIVE_Y);
         ci.setGroupId(Long.parseLong(groupId));
         if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
+        List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/listChannelByLW", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listChannelByLW(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String channelNameCondition = request.getParameter("channelNameCondition");
+        ChannelInfo ci = new ChannelInfo();
+        ci.setActive(JcywConstants.ACTIVE_Y);
+        ci.setGroupId(JcywConstants.CHANNEL_GROUP_DB_ID_2);
+        if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
+
+        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+        if (channelInfo != null) {
+            ci.setLaowuId(channelInfo.getChannelId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());

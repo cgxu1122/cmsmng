@@ -20,7 +20,7 @@
         }
         function saverow() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/deviceSystem/insert',
+                url: '<%=basePath%>/tymng/deviceSystem/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -48,7 +48,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/deviceSystem/update',
+                url: '<%=basePath%>/tymng/deviceSystem/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -69,7 +69,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.version + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/deviceSystem/delete', {systemId: row.systemId}, function (result) {
+                        $.post('<%=basePath%>/tymng/deviceSystem/delete', {systemId: row.systemId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -84,7 +84,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/deviceSystem/list",
+                url: "<%=basePath%>/tymng/deviceSystem/list",
                 queryParams: {versionCondition: value}
             });
         }
@@ -95,7 +95,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/deviceSystem/list',
+                url: '<%=basePath%>/tymng/deviceSystem/list',
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,

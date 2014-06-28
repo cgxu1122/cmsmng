@@ -7,15 +7,15 @@ package com.ifhz.core.enums;
  * Time: 19:28
  */
 public enum GroupType {
-    TY(1, "天音渠道"),
-    DB(2, "地包渠道"),
-    QT(3, "其他渠道"),
-    LW(4, "劳务渠道");
+    TY(1L, "天音渠道"),
+    DB(2L, "地包渠道"),
+    QT(3L, "其他渠道"),
+    LW(4L, "劳务渠道");
 
-    public int VALUE;
+    public long VALUE;
     public String DESC;
 
-    GroupType(int VALUE, String DESC) {
+    GroupType(long VALUE, String DESC) {
         this.VALUE = VALUE;
         this.DESC = DESC;
     }

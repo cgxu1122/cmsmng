@@ -28,6 +28,7 @@ public final class FtpUtils {
                     MapConfig.getInt(GlobalConstants.FTP_SERVER_PORT, GlobalConstants.GLOBAL_CONFIG, 21));
             ftpClient.login(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_USERNAME),
                     GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_PASSWORD));
+            ftpClient.makeDirectory(srcDir);
             //设置上传目录
             ftpClient.changeWorkingDirectory(srcDir);
             ftpClient.setBufferSize(1024);

@@ -32,11 +32,20 @@ public class ApkInfo implements Serializable {
     private String downloadUrl;
     private String active;
     private String type;
+    private String packagePath;
     private Date createTime;
     private Date updateTime;
 
+
     private String apkNameCondition;
 
+    public String getPackagePath() {
+        return packagePath;
+    }
+
+    public void setPackagePath(String packagePath) {
+        this.packagePath = packagePath;
+    }
 
     public Long getApkId() {
         return apkId;

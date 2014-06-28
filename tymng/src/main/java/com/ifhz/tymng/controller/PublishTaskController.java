@@ -26,7 +26,7 @@ import java.util.List;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/publishTask")
+@RequestMapping("/tymng/publishTask")
 public class PublishTaskController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PublishTaskController.class);
     @Autowired

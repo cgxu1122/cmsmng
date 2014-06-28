@@ -5,7 +5,6 @@ import com.ifhz.core.adapter.LogStatAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.LogStatMapper;
 import com.ifhz.core.po.LogStat;
-import com.ifhz.core.service.api.bean.StatUpdateBean;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -47,10 +46,5 @@ public class LogStatAdapterImpl implements LogStatAdapter {
     public List<LogStat> queryByVO(Pagination page, LogStat record) {
         List<LogStat> list = logStatMapper.queryByVo(page, record);
         return list == null ? Lists.<LogStat>newArrayList() : list;
-    }
-
-    @Override
-    public int updateStat(StatUpdateBean statUpdateBean) {
-        return logStatMapper.updateStat(statUpdateBean);
     }
 }

@@ -28,7 +28,7 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/batchInfo")
+@RequestMapping("/tymng/batchInfo")
 public class BatchInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchInfoController.class);
     @Autowired

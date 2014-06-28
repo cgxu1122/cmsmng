@@ -24,7 +24,7 @@
         }
         function saverow() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/partnerInfo/insert',
+                url: '<%=basePath%>/tymng/partnerInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -50,7 +50,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/partnerInfo/update',
+                url: '<%=basePath%>/tymng/partnerInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -71,7 +71,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.partnerName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/partnerInfo/delete', {partnerId: row.partnerId}, function (result) {
+                        $.post('<%=basePath%>/tymng/partnerInfo/delete', {partnerId: row.partnerId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -86,7 +86,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/partnerInfo/list",
+                url: "<%=basePath%>/tymng/partnerInfo/list",
                 queryParams: {partnerNameCondition: value}
             });
         }
@@ -97,7 +97,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/partnerInfo/list',
+                url: '<%=basePath%>/tymng/partnerInfo/list',
                 queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,

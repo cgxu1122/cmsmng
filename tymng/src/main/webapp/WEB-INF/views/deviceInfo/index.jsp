@@ -31,7 +31,7 @@ function addrow() {
 }
 function saverow() {
     $('#fm').form('submit', {
-        url: '<%=basePath%>/deviceInfo/insert',
+        url: '<%=basePath%>/tymng/deviceInfo/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -68,7 +68,7 @@ function editrow() {
 }
 function saveUpdate() {
     $('#upfm').form('submit', {
-        url: '<%=basePath%>/deviceInfo/update',
+        url: '<%=basePath%>/tymng/deviceInfo/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -89,7 +89,7 @@ function delrow() {
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.deviceCode + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/deviceInfo/delete', {deviceId: row.deviceId}, function (result) {
+                $.post('<%=basePath%>/tymng/deviceInfo/delete', {deviceId: row.deviceId}, function (result) {
                     if (result.errorMsg) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
@@ -104,7 +104,7 @@ function delrow() {
 function searchEvt() {
     var value = $('#searchValue').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/deviceInfo/list",
+        url: "<%=basePath%>/tymng/deviceInfo/list",
         queryParams: {deviceCodeCondition: value}
     });
 }
@@ -115,7 +115,7 @@ function initPage() {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/deviceInfo/list',
+        url: '<%=basePath%>/tymng/deviceInfo/list',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -162,7 +162,7 @@ function showChannelDialog(type, upChannelId) {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/channelInfo/listAll',
+        url: '<%=basePath%>/tymng/channelInfo/listAll',
         queryParams: {groupId: groupId},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -188,14 +188,14 @@ function showChannelDialog(type, upChannelId) {
 function reloadTree(groupId) {
     /* $('#tt').tree({
      url: "
-    <%=basePath%>/channelInfo/listTree?groupId=" + groupId,
+    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId,
      onClick: function (node) {
      $('#parentIdCondition').val(node.id);
      searchChannelEvt();
      },
      onBeforeExpand: function (node, param) {
      $('#tt').tree('options').url = "
-    <%=basePath%>/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
+    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
      }
      });*/
     //需求改为：不加树结构，默认全部展现出来
@@ -207,7 +207,7 @@ function searchChannelEvt() {
     var groupId = $('#searchGroupIdValue').val();
     var parentIdCondition = $('#parentIdCondition').val();
     $('#channeldg').datagrid({
-        url: "<%=basePath%>/channelInfo/listAll",
+        url: "<%=basePath%>/tymng/channelInfo/listAll",
         queryParams: {groupId: groupId, channelNameCondition: value, parentIdCondition: parentIdCondition}
     });
 }

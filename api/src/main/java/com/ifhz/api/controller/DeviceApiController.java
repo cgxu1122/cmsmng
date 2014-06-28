@@ -40,8 +40,9 @@ public class DeviceApiController {
     @RequestMapping(value = "/processLog.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject processLog(@RequestParam(value = "data", required = true) String data) {
-        LOGGER.info("receive encode processList={}", data);
+    JSONObject processLog(@RequestParam(value = "id", required = true) String id,
+                          @RequestParam(value = "data", required = true) String data) {
+        LOGGER.info("receive request id={},data={}", id, data);
         JSONObject result = null;
         try {
             if (StringUtils.isNotEmpty(data)) {
@@ -65,15 +66,18 @@ public class DeviceApiController {
                     if (CollectionUtils.isNotEmpty(dataLogList)) {
                         apiUploadService.batchSave(dataLogList);
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+                        result.put("id", id);
                     }
                 }
             }
 
             if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+                result.put("id", id);
             }
         } catch (Exception e) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            result.put("id", id);
             LOGGER.error("processLog error ", e);
         } finally {
             LOGGER.info("processLog:returnObj={}", result);

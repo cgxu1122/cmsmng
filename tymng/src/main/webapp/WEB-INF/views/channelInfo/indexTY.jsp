@@ -21,7 +21,7 @@
         function saverow() {
             $("#groupId").val("${groupId}");
             $('#fm').form('submit', {
-                url: '<%=basePath%>/channelInfo/insert',
+                url: '<%=basePath%>/tymng/channelInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -47,7 +47,7 @@
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/channelInfo/update',
+                url: '<%=basePath%>/tymng/channelInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -68,7 +68,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要删除[' + row.channelName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/channelInfo/delete', {channelId: row.channelId}, function (result) {
+                        $.post('<%=basePath%>/tymng/channelInfo/delete', {channelId: row.channelId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -83,7 +83,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/channelInfo/list",
+                url: "<%=basePath%>/tymng/channelInfo/list",
                 queryParams: {groupId: '${groupId}', channelNameCondition: value}
             });
         }
@@ -94,7 +94,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/channelInfo/list',
+                url: '<%=basePath%>/tymng/channelInfo/list',
                 queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
