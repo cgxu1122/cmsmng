@@ -2,18 +2,15 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
-import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
-import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
-import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -34,9 +31,9 @@ import java.util.Map;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/tymng/partnerQuery")
-public class PartnerQueryController extends BaseController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PartnerQueryController.class);
+@RequestMapping("/tymng/reportCount")
+public class ReportCountController extends BaseController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportCountController.class);
     @Autowired
     private ChannelInfoService channelInfoService;
     @Autowired
@@ -44,24 +41,24 @@ public class PartnerQueryController extends BaseController {
     @Autowired
     private ProductStatQueryService productStatQueryService;
 
-    @RequestMapping("/indexTY")
+    @RequestMapping("/indexStore")
     public ModelAndView indexTY(HttpServletRequest request) {
-        return new ModelAndView("partnerQuery/indexTY");
+        return new ModelAndView("reportCount/indexStore");
     }
 
-    @RequestMapping("/indexDB")
+    @RequestMapping("/indexChannelProcess")
     public ModelAndView indexDB(HttpServletRequest request) {
-        return new ModelAndView("partnerQuery/indexDB");
+        return new ModelAndView("reportCount/indexChannelProcess");
     }
 
-    @RequestMapping("/indexCP")
+    @RequestMapping("/indexChannelCounter")
     public ModelAndView indexCP(HttpServletRequest request) {
-        return new ModelAndView("partnerQuery/indexCP");
+        return new ModelAndView("reportCount/indexChannelCounter");
     }
 
-    @RequestMapping("/indexLW")
+    @RequestMapping("/indexProduct")
     public ModelAndView indexLW(HttpServletRequest request) {
-        return new ModelAndView("partnerQuery/indexLW");
+        return new ModelAndView("reportCount/indexProduct");
     }
 
     @RequestMapping(value = "/listLogStat", produces = {"application/json;charset=UTF-8"})
@@ -75,12 +72,16 @@ public class PartnerQueryController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String ua = request.getParameter("ua");
+        String channelId = request.getParameter("channelId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
         LogStat logStat = new LogStat();
         if (StringUtils.isNotEmpty(groupId)) {
             logStat.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(channelId)) {
+            logStat.setChannelId(Long.parseLong(channelId));
         }
         if (StringUtils.isNotEmpty(ua)) {
             logStat.setUa(ua.trim());
@@ -90,21 +91,6 @@ public class PartnerQueryController extends BaseController {
         }
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
-        if (channelInfo != null) {
-            logStat.setChannelId(channelInfo.getChannelId());
-        }
-        if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
-            //如果是劳务渠道合作方查询
-            String channelId = request.getParameter("channelId");
-            if (StringUtils.isNotEmpty(channelId)) {
-                logStat.setChannelId(Long.parseLong(channelId));
-            }
-            if (channelInfo != null) {
-                logStat.setLaowuId(channelInfo.getChannelId());
-            }
-            logStat.setGroupId(null);
         }
         List<LogStat> list = logStatQueryService.queryByVo(page, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -138,21 +124,6 @@ public class PartnerQueryController extends BaseController {
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
-        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
-        if (channelInfo != null) {
-            logStat.setChannelId(channelInfo.getChannelId());
-        }
-        if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
-            //如果是劳务渠道合作方查询
-            String channelId = request.getParameter("channelId");
-            if (StringUtils.isNotEmpty(channelId)) {
-                logStat.setChannelId(Long.parseLong(channelId));
-            }
-            if (channelInfo != null) {
-                logStat.setLaowuId(channelInfo.getChannelId());
-            }
-            logStat.setGroupId(null);
-        }
         List<LogStat> list = logStatQueryService.queryByVo(null, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
             LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
@@ -161,10 +132,11 @@ public class PartnerQueryController extends BaseController {
         BaseExportModel exportModel = new BaseExportModel();
         Map<String, String> titleMap = new LinkedHashMap<String, String>();
         titleMap.put("processDate", "日期");
-        titleMap.put("deviceCode", "设备编码");
+        titleMap.put("modelName", "机型全称");
         titleMap.put("channelName", "仓库名称");
-        titleMap.put("modelName", "机型名称");
         titleMap.put("devicePrsDayNum", "装机数量");
+        titleMap.put("deviceUpdDayNum", "装机到达数量");
+        titleMap.put("prsActiveTotalNum", "累计到达数量");
         exportModel.setTitleMap(titleMap);
         exportModel.setDataList(list);
         super.exportXLSData(request, response, exportModel);
@@ -194,10 +166,6 @@ public class PartnerQueryController extends BaseController {
             productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         List<ProductStat> list = productStatQueryService.queryByVo(page, productStat);
-        if (CollectionUtils.isNotEmpty(list)) {
-            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
-            list.add(countProductStat);
-        }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);
@@ -222,10 +190,6 @@ public class PartnerQueryController extends BaseController {
             productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         List<ProductStat> list = productStatQueryService.queryByVo(null, productStat);
-        if (CollectionUtils.isNotEmpty(list)) {
-            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
-            list.add(countProductStat);
-        }
         BaseExportModel exportModel = new BaseExportModel();
         Map<String, String> titleMap = new LinkedHashMap<String, String>();
         titleMap.put("processDate", "日期");

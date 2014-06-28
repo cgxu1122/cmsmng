@@ -26,4 +26,6 @@ public interface ProductStatMapper {
     public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
 
     public List<ProductStat> queryByVo(Pagination page, @Param(value = "record") ProductStat record);
+
+    public ProductStat queryCountByVo(ProductStat record);
 }

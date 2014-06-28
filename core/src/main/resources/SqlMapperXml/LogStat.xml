@@ -163,4 +163,39 @@
             ]]>
         </if>
     </select>
+
+    <select id="queryCountByVO" parameterType="com.ifhz.core.po.LogStat" resultMap="LogStatResultMap">
+        select
+        sum(DEVICE_PRS_DAY_NUM) as DEVICE_PRS_DAY_NUM,
+        sum(DEVICE_UPD_DAY_NUM) as DEVICE_UPD_DAY_NUM,
+        sum(PRS_ACTIVE_TOTAL_NUM) as PRS_ACTIVE_TOTAL_NUM,
+        sum(PRS_ACTIVE_VALID_NUM) as PRS_ACTIVE_VALID_NUM,
+        sum(PRS_ACTIVE_INVALID_NUM) as PRS_ACTIVE_INVALID_NUM,
+        sum(PRS_INVALID_REPLACE_NUM) as PRS_INVALID_REPLACE_NUM,
+        sum(PRS_INVALID_UNINSTALL_NUM) as PRS_INVALID_UNINSTALL_NUM,
+        sum(COUNTER_UPD_DAY_NUM) as COUNTER_UPD_DAY_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="groupId != null and groupId != ''">
+            and GROUP_ID = #{groupId}
+        </if>
+        <if test="channelId != null and channelId != ''">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="laowuId != null and laowuId != ''">
+            and LAOWU_ID = #{laowuId}
+        </if>
+        <if test="ua != null and ua != ''">
+            and UA = #{ua}
+        </if>
+        <if test="startDate != null">
+            and PROCESS_DATE >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            <![CDATA[
+            and PROCESS_DATE <= #{endDate}
+            ]]>
+        </if>
+    </select>
 </mapper>

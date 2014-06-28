@@ -42,4 +42,9 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
         }
         return productStatList;
     }
+
+    @Override
+    public ProductStat queryCountByVo(ProductStat record) {
+        return productStatAdapter.queryCountByVo(record);
+    }
 }

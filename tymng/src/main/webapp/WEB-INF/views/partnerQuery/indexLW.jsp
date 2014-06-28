@@ -53,6 +53,9 @@
                     [
                         {field: 'processDate', title: '日期', align: 'center', width: 200,
                             formatter: function (value) {
+                                if (value == null) {
+                                    return "合计"
+                                }
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
@@ -167,7 +170,7 @@
                     <input type="hidden" name="channelId" id="channelId"/>
                 </td>
                 <td>
-                <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
+                    <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
                 </td>
                 <td>
                     <input type="text" name="endDate" id="endDate" placeholder="结束时间"/>

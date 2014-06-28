@@ -52,6 +52,9 @@
                     [
                         {field: 'processDate', title: '日期', align: 'center', width: 200,
                             formatter: function (value) {
+                                if (value == null) {
+                                    return "合计"
+                                }
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
