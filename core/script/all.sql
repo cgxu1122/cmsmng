@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/24 19:32:01                           */
+/* Created on:     2014/6/28 14:00:27                           */
 /*==============================================================*/
 
 
@@ -217,6 +217,7 @@ create table TY_APK_INFO  (
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2 CHAR)               default 'Y',
+   PACKAGE_PATH         VARCHAR2(2 CHAR),
    constraint PK_TY_APK_INFO primary key (APK_ID)
 );
 
@@ -249,6 +250,9 @@ comment on column TY_APK_INFO.UPDATE_TIME is
 
 comment on column TY_APK_INFO.ACTIVE is
 '数据状态 Y:有效，N:无效';
+
+comment on column TY_APK_INFO.PACKAGE_PATH is
+'Apk文件的包路径';
 
 /*==============================================================*/
 /* Table: TY_BATCH_INFO                                         */
