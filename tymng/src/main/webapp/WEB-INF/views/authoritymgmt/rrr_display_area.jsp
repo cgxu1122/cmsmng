@@ -23,7 +23,7 @@
     tree.setImagePath("<%=basePath%>/plug/dhtmlxTree/codebase/imgs/csh_bluebooks/");
     tree.enableCheckBoxes(1);
     tree.enableThreeStateCheckboxes(true);
-    tree.loadXML("<%=basePath%>/rrr/loadroleresourceref/${id}", function () {
+    tree.loadXML("<%=basePath%>/tymng/rrr/loadroleresourceref/${id}", function () {
         $(".standartTreeRow").css({"text-align": "left"});
     });
 
@@ -31,24 +31,26 @@
     function authorization() {
         var checkedNodes = tree.getAllCheckedBranches();
         var roleId = $('#roleId').val();
-//        if (roleId == 1) {
-//            $.messager.alert('错误', "系统管理员不可以修改授权");
-//            return;
-//        }
-        $.post('<%=basePath%>/rrr/authorization/' + roleId + '_' + checkedNodes, function (result) {
-            if (result.success) {
-                alert(result.success);
-                window.self.location.reload(true);
-            } else {
-                $.messager.alert('错误', result.errorMsg);
-                /*  $.messager.show({
-                 title: 'Error',
-                 msg: result.errorMsg
-                 }); */
+        <%--$.post('<%=basePath%>/rrr/authorization/' + roleId + '_' + checkedNodes, function (result) {--%>
+        <%--if (result) {--%>
+        <%--window.self.location.reload(true);--%>
+        <%--} else {--%>
+        <%--$.messager.alert('错误', result);--%>
+        <%--}--%>
+        <%--});--%>
+        var _data = roleId + '_' + checkedNodes;
+        var _url = '<%=basePath%>/tymng/rrr/authorization/';
+        $.ajax({
+            method: 'post',
+            url: _url + _data,
+            dataType: 'text',
+            success: function (result) {
+                alert(result);
             }
-        }, 'json');
+        });
     }
 </script>
+<div id="msg"></div>
 <div id="dlg1-buttons">
     <input type="hidden" id="roleId" name="roleId" value="${id}"/>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="authorization()">授权</a>

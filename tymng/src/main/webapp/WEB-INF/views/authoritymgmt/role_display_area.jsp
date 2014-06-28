@@ -19,7 +19,7 @@
                 height: 400,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/role/getById/${parentId}',
+                url: '<%=basePath%>/tymng/role/getById/${parentId}',
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -97,7 +97,7 @@
 
         function saverow() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/role/insert/${parentId}',
+                url: '<%=basePath%>/tymng/role/insert/${parentId}',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -126,7 +126,7 @@
 
         function updaterow() {
             $('#fm1').form('submit', {
-                url: '<%=basePath%>/role/update',
+                url: '<%=basePath%>/tymng/role/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -151,7 +151,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要角色[' + row.roleName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/role/delete', {id: row.roleId}, function (result) {
+                        $.post('<%=basePath%>/tymng/role/delete', {id: row.roleId}, function (result) {
                             result = eval('(' + result + ')');
                             if (result.code==-1) {
                                 $.messager.alert('错误', result.message);

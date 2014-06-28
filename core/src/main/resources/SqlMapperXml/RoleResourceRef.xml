@@ -87,4 +87,20 @@
         and RESOURCE_ID=#{resourceId}
     </select>
 
+
+    <update id="updateRoleResourceRefNotAccess">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACCES=0
+        where ROLE_ID = #{roleId}
+        and RESOURCE_ID=#{resourceId}
+    </update>
+
+    <update id="updateRoleResourceRefAccess">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACCES=1
+        where ROLE_ID = #{roleId}
+        and RESOURCE_ID=#{resourceId}
+    </update>
 </mapper>

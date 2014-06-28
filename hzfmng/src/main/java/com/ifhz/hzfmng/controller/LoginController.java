@@ -44,11 +44,10 @@ public class LoginController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/index")
     public String loginSuccess() {
-            return "index";
+        return "index";
     }
-
 
 
     @RequestMapping(value = "/favicon.ico", method = RequestMethod.GET)
@@ -57,12 +56,12 @@ public class LoginController extends BaseController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model,HttpServletRequest req) {
+    public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model, HttpServletRequest req) {
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
-        String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
-        if(exceptionClassName.equals(CaptchaException.class.getName())){
+        String exceptionClassName = (String) req.getAttribute("shiroLoginFailure");
+        if (exceptionClassName.equals(CaptchaException.class.getName())) {
             model.addAttribute("error", "验证码错误");
-        }else if(exceptionClassName.equals(UserNamePasswordErrorException.class.getName())){
+        } else if (exceptionClassName.equals(UserNamePasswordErrorException.class.getName())) {
             model.addAttribute("error", "邮箱或密码错误");
         }
         return "login";
@@ -90,33 +89,33 @@ public class LoginController extends BaseController {
         String oldPassword = req.getParameter("oldPassword");
         if (StringUtils.isBlank(oldPassword)) {
             result.setCode(-1);
-            result.setMessage( "请输入密码");
+            result.setMessage("请输入密码");
             return JSON.toJSONString(result);
         }
 
         String newPassword = req.getParameter("newPassword");
         if (StringUtils.isBlank(newPassword)) {
             result.setCode(-1);
-            result.setMessage( "请输入密码");
+            result.setMessage("请输入密码");
             return JSON.toJSONString(result);
         }
 
         String confirmPassword = req.getParameter("confirmPassword");
         if (StringUtils.isBlank(confirmPassword)) {
             result.setCode(-1);
-            result.setMessage( "请输入密码");
+            result.setMessage("请输入密码");
             return JSON.toJSONString(result);
         }
-        if(!newPassword.trim().equals(confirmPassword.trim())){
+        if (!newPassword.trim().equals(confirmPassword.trim())) {
             result.setCode(-1);
-            result.setMessage( "两次输入密码不一致");
+            result.setMessage("两次输入密码不一致");
             return JSON.toJSONString(result);
         }
 
 
         oldPassword = MD5keyUtil.getMD5Str(oldPassword.trim());
-        if(u.getPassword().equals(oldPassword)){
-            result = iStaffService.updateUserPassword(u.getUserId(),MD5keyUtil.getMD5Str(newPassword.trim()));
+        if (u.getPassword().equals(oldPassword)) {
+            result = iStaffService.updateUserPassword(u.getUserId(), MD5keyUtil.getMD5Str(newPassword.trim()));
         }
 
         return JSON.toJSONString(result);
@@ -125,13 +124,13 @@ public class LoginController extends BaseController {
 
     /**
      * 用户登陆（测试用）
-     * 
-     * @author luyujian
+     *
      * @param session
      * @param model
      * @param username
      * @param password
      * @return
+     * @author luyujian
      */
     @RequestMapping(value = "/dologin", method = RequestMethod.POST)
     public String doLogin(HttpSession session, Model model, String username, String password) {

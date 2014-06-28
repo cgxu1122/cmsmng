@@ -101,7 +101,7 @@ public class UserController extends BaseController {
         }
         user.setCreateTime(new Date());
         String password = StringUtils.trim(user.getPassword());
-        user.setPassword(MD5keyUtil.getMD5Str(password));
+        user.setPassword(password);
 
         //save user
         result = userService.insertUser(user, Long.valueOf(roleId));
