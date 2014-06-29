@@ -118,6 +118,7 @@ public class PackageInfoController extends BaseController {
         pi.setType(type);
         String[] apkIdList = request.getParameterValues("apkId");
         String[] apkNameList = request.getParameterValues("apkName");
+        String[] apkTypeList = request.getParameterValues("apkType");
         String[] autoRunList = request.getParameterValues("autoRun");
         String[] desktopIconList = request.getParameterValues("desktopIcon");
         if (apkIdList != null && apkIdList.length > 0) {
@@ -127,6 +128,11 @@ public class PackageInfoController extends BaseController {
                     PackageApkRef packageApkRef = new PackageApkRef();
                     packageApkRef.setApkId(Long.parseLong(apkIdList[i]));
                     packageApkRef.setApkName(apkNameList[i]);
+                    if (StringUtils.isNotEmpty(apkTypeList[i])) {
+                        packageApkRef.setApkType(Integer.parseInt(apkTypeList[i]));
+                    } else {
+                        packageApkRef.setApkType(1);
+                    }
                     packageApkRef.setAutoRun(autoRunList[i]);
                     packageApkRef.setDesktopIcon(desktopIconList[i]);
                     packageApkRef.setActive(JcywConstants.ACTIVE_Y);
@@ -161,6 +167,7 @@ public class PackageInfoController extends BaseController {
         }
         String[] apkIdList = request.getParameterValues("apkId");
         String[] apkNameList = request.getParameterValues("apkName");
+        String[] apkTypeList = request.getParameterValues("apkType");
         String[] autoRunList = request.getParameterValues("autoRun");
         String[] desktopIconList = request.getParameterValues("desktopIcon");
         if (apkIdList != null && apkIdList.length > 0) {
@@ -170,6 +177,11 @@ public class PackageInfoController extends BaseController {
                     PackageApkRef packageApkRef = new PackageApkRef();
                     packageApkRef.setApkId(Long.parseLong(apkIdList[i]));
                     packageApkRef.setApkName(apkNameList[i]);
+                    if (StringUtils.isNotEmpty(apkTypeList[i])) {
+                        packageApkRef.setApkType(Integer.parseInt(apkTypeList[i]));
+                    } else {
+                        packageApkRef.setApkType(1);
+                    }
                     packageApkRef.setAutoRun(autoRunList[i]);
                     packageApkRef.setDesktopIcon(desktopIconList[i]);
                     packageApkRef.setActive(JcywConstants.ACTIVE_Y);
