@@ -223,6 +223,7 @@ function selectPackage(packageId, packageName, pkgType, groupId) {
         $("#modelDiv").hide();
         $("#addModelList").empty();
         $("#groupId").combobox('select', groupId);
+        $("input[name=groupId]").removeAttr("disabled");
     } else {
         $("#groupId").combobox('enable');
         $("#channelDiv").show();
