@@ -18,7 +18,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath*:conf/**/*Context.xml
+            classpath*:conf/**/*Context.xml,classpath*:conf/shiro-config-tymng.xml
         </param-value>
     </context-param>
 

@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
  * @author luyujian
  */
 @Controller
+@RequestMapping("/hzfmng")
 public class LoginController extends BaseController {
 
     @Autowired
@@ -44,7 +45,7 @@ public class LoginController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "/")
     public String loginSuccess() {
         return "index";
     }
