@@ -214,7 +214,7 @@ function showApkDialog(type) {
                 },
                 {field: 'action', title: '操作', align: 'center', width: 100,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:selectApk('" + row.apkId + "','" + row.apkName + "','" + type + "')>添加</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:selectApk('" + row.apkId + "','" + row.apkName + "','" + row.type + "','" + type + "')>添加</a>";
                     }
                 }
             ]
@@ -228,7 +228,7 @@ function searchApkEvt() {
         queryParams: {apkNameCondition: value}
     });
 }
-function selectApk(apkId, apkName, type) {
+function selectApk(apkId, apkName, apkType, type) {
     var autoRunVal = $("#autoRun" + apkId).val();
     var desktopIconVal = $("#desktopIcon" + apkId).val();
     var autoRunMsg = "非自启动";
@@ -242,6 +242,7 @@ function selectApk(apkId, apkName, type) {
     if (type == 2) {//修改
         var apkHtml = "<div>" +
                 "<input type='hidden' name='apkId' value='" + apkId + "'>" +
+                "<input type='hidden' name='apkType' value='" + apkType + "'>" +
                 "<input type='text' name='apkName' value='" + apkName + "' readonly='readonly'>" +
                 " " + autoRunMsg + " " + desktopIconMsg +
                 "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
@@ -255,6 +256,7 @@ function selectApk(apkId, apkName, type) {
     } else if (type == 1) {//新增
         var apkHtml = "<div>" +
                 "<input type='hidden' name='apkId' value='" + apkId + "'>" +
+                "<input type='hidden' name='apkType' value='" + apkType + "'>" +
                 "<input type='text' name='apkName' value='" + apkName + "' readonly='readonly'>" +
                 " " + autoRunMsg + " " + desktopIconMsg + " " +
                 "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
