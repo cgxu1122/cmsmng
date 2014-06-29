@@ -154,8 +154,8 @@
         <div class="iheadertit">内置业务管理系统</div>
         <div class="iheadermsg">
             <span class="iheadername">欢迎：<shiro:principal></shiro:principal></span>
-                <a class="easyui-linkbutton"  href="<%=basePath%>/logout">退出</a>
-                <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
+            <a class="easyui-linkbutton" href="<%=basePath%>/hzfmng/logout">退出</a>
+            <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
             </span>
         </div>
     </div>
@@ -164,40 +164,40 @@
     <div style="text-align:center;padding:5px 0px; color: #999;">Copyright &copy; 2013 power by iqianjin</div>
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
-<div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
-    <div title="合作方查询后台" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>天音渠道</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('地包渠道查询','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>地包渠道</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('cp合作方查询','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>cp合作方</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>劳务渠道</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>按仓库查询</span>
-            </a>
+    <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
+        <div title="合作方查询后台" style="overflow: auto;">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道查询','<%=basePath%>/logCount/tianyin','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道查询','<%=basePath%>/logCount/dibao','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('cp合作方查询','<%=basePath%>/logCount/cp','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>cp合作方</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/logCount/laowu','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>劳务渠道</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('按仓库查询','<%=basePath%>/reportCount/warehouseQuery','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>按仓库查询</span>
+                </a>
+            </div>
         </div>
     </div>
-</div>
 </div>
 <div region="center">
     <div id="main-center" class="easyui-tabs" fit="true" border="false">
