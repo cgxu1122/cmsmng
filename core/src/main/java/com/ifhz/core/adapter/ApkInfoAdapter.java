@@ -6,6 +6,7 @@ import com.ifhz.core.po.ApkInfo;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 类描述
@@ -27,5 +28,5 @@ public interface ApkInfoAdapter {
 
     public List<ApkInfo> queryListByPackageId(Long packageId, String active);
 
-    public List<ApkInfo> queryListByApkIdList(List<Long> apkIdList);
+    public List<ApkInfo> queryListByApkIdList(Set<Long> apkIdList);
 }

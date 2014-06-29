@@ -173,5 +173,6 @@
         <foreach item="item" index="index" collection="pkgIdList" open="(" separator="," close=")">
         #{item}
         </foreach>
+        and info.UPDATE_TIME between #{startTime} and #{endTime}
     </select>
 </mapper>

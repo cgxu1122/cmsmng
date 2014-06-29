@@ -127,7 +127,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
 
     @Override
     public List<ApkVo> queryApkList(long groupId, long channelId, Date startTime, Date endTime) {
-        List<Long> paramList = Lists.newArrayList();
+        Set<Long> paramList = Sets.newHashSet();
         List<ApkVo> result = Lists.newArrayList();
         Set<Long> set = Sets.newHashSet();
 

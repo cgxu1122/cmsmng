@@ -175,7 +175,6 @@ create table TY_PUB_CHL_MOD_REF  (
         and CHANNEL_ID = #{channelId}
         and PKG_TYPE = 'N'
         and ACTIVE = 'Y'
-        and UPDATE_TIME between #{startTime} and #{endTime}
         order by UPDATE_TIME desc
     </select>
 
@@ -188,6 +187,5 @@ create table TY_PUB_CHL_MOD_REF  (
         where GROUP_ID = #{groupId}
         and PKG_TYPE = 'Y'
         and ACTIVE = 'Y'
-        and UPDATE_TIME between #{startTime} and #{endTime}
     </select>
 </mapper>

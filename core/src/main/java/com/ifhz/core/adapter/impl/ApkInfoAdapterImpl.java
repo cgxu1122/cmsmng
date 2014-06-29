@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 类描述
@@ -66,7 +67,7 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     }
 
     @Override
-    public List<ApkInfo> queryListByApkIdList(List<Long> apkIdList) {
+    public List<ApkInfo> queryListByApkIdList(Set<Long> apkIdList) {
         List<ApkInfo> result = apkInfoMapper.queryListByApkIdList(apkIdList);
         return result == null ? Lists.<ApkInfo>newArrayList() : result;
     }
