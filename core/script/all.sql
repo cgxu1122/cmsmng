@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/28 14:03:00                           */
+/* Created on:     2014/6/29 11:43:21                           */
 /*==============================================================*/
 
 
@@ -104,6 +104,8 @@ drop table TY_USER cascade constraints;
 
 drop table TY_USER_ROLE_REF cascade constraints;
 
+drop sequence SEQ_APK_INFO;
+
 drop sequence SEQ_BATCH_INFO;
 
 drop sequence SEQ_BATCH_INFO_DB;
@@ -111,6 +113,8 @@ drop sequence SEQ_BATCH_INFO_DB;
 drop sequence SEQ_BATCH_INFO_QT;
 
 drop sequence SEQ_BATCH_INFO_TY;
+
+drop sequence SEQ_BATCH_PRODUCT_REF;
 
 drop sequence SEQ_CHANNEL_GROUP;
 
@@ -128,7 +132,11 @@ drop sequence SEQ_DICT_INFO;
 
 drop sequence SEQ_LOG_STAT;
 
+drop sequence SEQ_MODEL_CHANNEL_REF;
+
 drop sequence SEQ_MODEL_INFO;
+
+drop sequence SEQ_PACKAGE_APK_REF;
 
 drop sequence SEQ_PACKAGE_INFO;
 
@@ -154,6 +162,8 @@ drop sequence SEQ_USER;
 
 drop sequence SEQ_USER_ROLE_REF;
 
+create sequence SEQ_APK_INFO;
+
 create sequence SEQ_BATCH_INFO;
 
 create sequence SEQ_BATCH_INFO_DB;
@@ -161,6 +171,8 @@ create sequence SEQ_BATCH_INFO_DB;
 create sequence SEQ_BATCH_INFO_QT;
 
 create sequence SEQ_BATCH_INFO_TY;
+
+create sequence SEQ_BATCH_PRODUCT_REF;
 
 create sequence SEQ_CHANNEL_GROUP;
 
@@ -178,7 +190,11 @@ create sequence SEQ_DICT_INFO;
 
 create sequence SEQ_LOG_STAT;
 
+create sequence SEQ_MODEL_CHANNEL_REF;
+
 create sequence SEQ_MODEL_INFO;
+
+create sequence SEQ_PACKAGE_APK_REF;
 
 create sequence SEQ_PACKAGE_INFO;
 
@@ -212,6 +228,7 @@ create table TY_APK_INFO  (
    APK_NAME             VARCHAR2(100 CHAR),
    SOFT_NAME            VARCHAR2(100 CHAR),
    FTP_PATH             VARCHAR2(200 CHAR),
+   TYPE                 VARCHAR2(2),
    MD5VALUE             VARCHAR2(100 CHAR),
    DOWNLOAD_URL         VARCHAR2(500 CHAR),
    CREATE_TIME          DATE                           default SYSDATE,
@@ -235,6 +252,9 @@ comment on column TY_APK_INFO.SOFT_NAME is
 
 comment on column TY_APK_INFO.FTP_PATH is
 'FTP路径';
+
+comment on column TY_APK_INFO.TYPE is
+'apk类型';
 
 comment on column TY_APK_INFO.MD5VALUE is
 'md5值';
@@ -786,6 +806,7 @@ create table TY_LOG_STAT  (
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
    COUNTER_UPD_DAY_NUM  NUMBER(15)                     default 0,
    MD5_KEY              VARCHAR2(50)                    not null,
+   VERSION              NUMBER(15),
    constraint PK_TY_LOG_STAT primary key (ID)
 );
 
@@ -842,6 +863,9 @@ comment on column TY_LOG_STAT.COUNTER_UPD_DAY_NUM is
 
 comment on column TY_LOG_STAT.MD5_KEY is
 'MD5KEY';
+
+comment on column TY_LOG_STAT.VERSION is
+'VERSION';
 
 /*==============================================================*/
 /* Index: "Index_3"                                             */
@@ -1124,6 +1148,7 @@ create table TY_PRODUCT_STAT  (
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
    COUNTER_PRODUCT_DAY_NUM NUMBER(15)                     default 0,
    MD5_KEY              VARCHAR2(50)                    not null,
+   VERSION              NUMBER(15),
    constraint PK_TY_PRODUCT_STAT primary key (ID)
 );
 
@@ -1171,6 +1196,9 @@ comment on column TY_PRODUCT_STAT.COUNTER_PRODUCT_DAY_NUM is
 
 comment on column TY_PRODUCT_STAT.MD5_KEY is
 'MD5KEY';
+
+comment on column TY_PRODUCT_STAT.VERSION is
+'VERSION';
 
 /*==============================================================*/
 /* Index: "Index_4"                                             */
@@ -1263,7 +1291,7 @@ comment on column TY_PUB_CHL_MOD_REF.MODEL_ID is
 '机型ID';
 
 comment on column TY_PUB_CHL_MOD_REF.PKG_TYPE is
-'安装包类型';
+'安装包类型 Y:通用包，N:普通包';
 
 comment on column TY_PUB_CHL_MOD_REF.CREATE_TIME is
 '创建时间';
