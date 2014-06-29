@@ -138,6 +138,7 @@
 </div>
 <div id="dg"></div>
 <div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
         <div>

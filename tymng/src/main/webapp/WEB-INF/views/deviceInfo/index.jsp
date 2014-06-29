@@ -255,6 +255,7 @@ function selectChannel(channelId, channelName, type) {
 </div>
 <div id="dg"></div>
 <div id="dlg" class="easyui-dialog" style="width:450px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle">设备</div>
     <br/>
@@ -287,6 +288,7 @@ function selectChannel(channelId, channelName, type) {
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:450px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
         <input type="hidden" id="deviceId" name="deviceId"/>
@@ -321,6 +323,7 @@ function selectChannel(channelId, channelName, type) {
 </div>
 
 <div id="channeldlg" class="easyui-dialog" style="width:800px;height:400px;padding:10px 20px"
+     data-options="iconCls:'icon-save',resizable:true"
      closed="true"
      buttons="#channeldlg-buttons">
     <div>

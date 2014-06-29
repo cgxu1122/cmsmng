@@ -80,11 +80,11 @@
             </if>
         </set>
         where 1=1
-        <if test="record.publishId != null and record.publishId != ''">
-            and PUBLISH_ID = #{record.publishId}
+        <if test="publishId != null and publishId != ''">
+            and PUBLISH_ID = #{publishId}
         </if>
-        <if test="record.PACKAGE_ID != null and record.PACKAGE_ID != ''">
-            and PACKAGE_ID = #{record.PACKAGE_ID}
+        <if test="packageId != null and packageId != ''">
+            and PACKAGE_ID = #{packageId}
         </if>
     </update>
     <select id="queryByVo" parameterType="com.ifhz.core.po.PublishTask" resultMap="PublishTaskResultMap">

@@ -136,6 +136,7 @@
 </div>
 <div id="dg"></div>
 <div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#productdlg-buttons">
     <div>
         <div>

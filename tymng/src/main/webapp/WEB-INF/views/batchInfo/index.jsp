@@ -279,6 +279,7 @@ function importTemplateBatch(type) {
 </div>
 <div id="dg"></div>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle">批次</div>
     <br/>
@@ -317,6 +318,7 @@ function importTemplateBatch(type) {
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
         <input type="hidden" id="batchId" name="batchId"/>
@@ -353,6 +355,7 @@ function importTemplateBatch(type) {
 </div>
 
 <div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#productdlg-buttons">
     <div>
         <div>

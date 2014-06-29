@@ -127,7 +127,8 @@ public class ApkInfoController extends BaseController {
         ai.setApkName(apkName.trim());
         ai.setSoftName(softName);
         ai.setActive(JcywConstants.ACTIVE_Y);
-        ai.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+        ai.setFtpPath(dir + softName);
+        ai.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
         ai.setMd5Value(md5Value);
         ai.setType(type);
         apkInfoService.insert(ai);
@@ -198,7 +199,8 @@ public class ApkInfoController extends BaseController {
                         softName
                 );
                 apkInfo.setSoftName(softName);
-                apkInfo.setFtpPath(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+                apkInfo.setFtpPath(dir + softName);
+                apkInfo.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
                 if (!MD5keyUtil.getMD5(file.getInputStream()).equals(apkInfo.getMd5Value())) {
                     apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
                     apkInfo.setUpdateTime(new Date());

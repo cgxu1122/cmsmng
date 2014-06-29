@@ -154,6 +154,7 @@
 </div>
 <div id="dg"></div>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle">设备系统</div>
     <br/>
@@ -180,6 +181,7 @@
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="systemId" name="systemId"/>

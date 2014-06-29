@@ -161,8 +161,9 @@
 </div>
 <div id="dg"></div>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
-    <div class="ftitle">设备系统</div>
+    <div class="ftitle">apk</div>
     <br/>
 
     <form id="fm" method="post" enctype="multipart/form-data" novalidate>
@@ -190,6 +191,7 @@
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" enctype="multipart/form-data" novalidate>
         <input type="hidden" id="apkId" name="apkId"/>

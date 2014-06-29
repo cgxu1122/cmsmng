@@ -274,6 +274,7 @@ function selectMng(mngId, mngName, type) {
     <div id="dg"></div>
 </div>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle">渠道</div>
     <br/>
@@ -327,6 +328,7 @@ function selectMng(mngId, mngName, type) {
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
         <input type="hidden" id="channelId" name="channelId"/>
@@ -383,6 +385,7 @@ function selectMng(mngId, mngName, type) {
 </div>
 
 <div id="laowudlg" class="easyui-dialog" style="width:600px;height:430px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#laowudlg-buttons">
     <div>
         <div>
@@ -407,6 +410,7 @@ function selectMng(mngId, mngName, type) {
 </div>
 
 <div id="mngdlg" class="easyui-dialog" style="width:600px;height:430px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#mngdlg-buttons">
     <div>
         <div>

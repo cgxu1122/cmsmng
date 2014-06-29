@@ -71,6 +71,7 @@ function editrow() {
                 }
                 var apkHtml = "<div>" +
                         "<input type='hidden' name='apkId' value='" + packageApkRefList[i].apkId + "'>" +
+                        "<input type='hidden' name='apkType' value='" + packageApkRefList[i].apkType + "'>" +
                         "<input type='text' name='apkName' value='" + packageApkRefList[i].apkName + "' readonly='readonly'>" +
                         " " + autoRunMsg + " " + desktopIconMsg +
                         "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
@@ -297,6 +298,7 @@ function selectApk(apkId, apkName, apkType, type) {
 </div>
 <div id="dg"></div>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle">安装包管理</div>
     <br/>
@@ -343,6 +345,7 @@ function selectApk(apkId, apkName, apkType, type) {
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" novalidate>
         <input type="hidden" id="packageId" name="packageId"/>
@@ -384,6 +387,7 @@ function selectApk(apkId, apkName, apkType, type) {
 
 
 <div id="apkdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#apkdlg-buttons">
     <div>
         <div>

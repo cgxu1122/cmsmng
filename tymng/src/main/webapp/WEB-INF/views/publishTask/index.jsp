@@ -351,6 +351,7 @@ function selectChannel(channelId, channelName) {
 </div>
 <div id="dg"></div>
 <div id="dlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle"> 发布任务管理</div>
     <br/>
@@ -401,6 +402,7 @@ function selectChannel(channelId, channelName) {
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" novalidate>
         <div class="fitem">
@@ -437,6 +439,7 @@ function selectChannel(channelId, channelName) {
 
 
 <div id="packagedlg" class="easyui-dialog" style="width:600px;height:500px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#packagedlg-buttons">
     <div>
         <div>
@@ -463,6 +466,7 @@ function selectChannel(channelId, channelName) {
 
 
 <div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
         <div>
@@ -489,6 +493,7 @@ function selectChannel(channelId, channelName) {
 
 
 <div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px"
+     data-options="iconCls:'icon-save',resizable:true"
      closed="true"
      buttons="#channeldlg-buttons">
     <div>

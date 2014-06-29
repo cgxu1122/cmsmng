@@ -190,6 +190,7 @@
 </div>
 <div id="dg"></div>
 <div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
         <div>
@@ -214,6 +215,7 @@
        onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
 </div>
 <div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
      buttons="#channeldlg-buttons">
     <div>
         <div>
