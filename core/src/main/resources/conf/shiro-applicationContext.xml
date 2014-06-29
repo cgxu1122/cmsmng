@@ -44,7 +44,7 @@
                 /tymng/vc/* = anon
                 /tymng/common/** = anon
                 /tymng/plug/** = anon
-                /tymng/schedule = anon
+                /tymng/schedule/** = anon
                 /tymng/** = authc
             </value>
         </property>
