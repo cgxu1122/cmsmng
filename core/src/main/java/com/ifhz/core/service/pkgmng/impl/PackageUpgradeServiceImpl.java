@@ -141,7 +141,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
         }
 
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<ApkInfo> apkInfoList = apkInfoAdapter.queryListByApkIdList(paramList);
+            List<ApkInfo> apkInfoList = apkInfoAdapter.queryListByApkIdList(paramList, startTime, endTime);
             if (CollectionUtils.isNotEmpty(apkInfoList)) {
                 for (ApkInfo apkInfo : apkInfoList) {
                     if (!set.contains(apkInfo.getApkId())) {

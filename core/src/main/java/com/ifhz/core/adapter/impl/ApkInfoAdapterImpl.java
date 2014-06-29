@@ -67,8 +67,8 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     }
 
     @Override
-    public List<ApkInfo> queryListByApkIdList(Set<Long> apkIdList) {
-        List<ApkInfo> result = apkInfoMapper.queryListByApkIdList(apkIdList);
+    public List<ApkInfo> queryListByApkIdList(Set<Long> apkIdList, Date startTime, Date endTime) {
+        List<ApkInfo> result = apkInfoMapper.queryListByApkIdList(apkIdList, startTime, endTime);
         return result == null ? Lists.<ApkInfo>newArrayList() : result;
     }
 }

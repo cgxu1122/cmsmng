@@ -159,6 +159,7 @@
 
     <select id="queryListByApkIdList" resultMap="ApkInfoResultMap">
         select
+        DISTINCT
         info.APK_ID as APK_ID,
         info.MD5VALUE as MD5VALUE,
         info.DOWNLOAD_URL as DOWNLOAD_URL,
