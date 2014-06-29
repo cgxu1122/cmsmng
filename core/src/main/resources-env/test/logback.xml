@@ -14,7 +14,7 @@
         </encoder>
     </appender>
 
-    <appender name="fileDefault"
+    <appender name="rollingFile"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/nzyw.log</file>
         <prudent>false</prudent>
@@ -38,8 +38,47 @@
         <appender-ref ref="rollingFile"/>
     </root>
 
-    <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
+    <appender name="DeviceCommonLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/device.log</file>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${data-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/device.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="CounterCommonLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/counter.log</file>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${data-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/counter.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+    </appender>
 
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.apache" level="INFO"/>
+    <appender name="ErrorLog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/error.log</file>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${file-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/error.%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+    </appender>
 </configuration>

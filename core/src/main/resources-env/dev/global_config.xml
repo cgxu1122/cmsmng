@@ -9,8 +9,6 @@
     <entry key="ftp.server.deviceDir">/data/device/{0}/</entry>
     <entry key="ftp.server.apkDir">/data/apk/{0}/</entry>
     <entry key="ftp.server.downloadUrl">http://127.0.0.1:8082</entry>
-    <entry key="root.path">D:\\rootpath</entry>
-    <entry key="temp.path">D:\\rootpath\\temp</entry>
     <entry key="export.num.max">50000</entry>
     <entry key="stat.pageSize">10000</entry>
     <entry key="wdj.query.url">http://115.29.46.109/interface/export?upload_dt=</entry>
