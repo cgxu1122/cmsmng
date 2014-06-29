@@ -26,5 +26,5 @@ public interface ApkInfoMapper {
 
     public List<ApkInfo> queryUpgradeList(@Param("startTime") Date date, @Param("endTime") Date endTime);
 
-    public List<ApkInfo> queryListByApkIdList(@Param("apkIdList") List<Long> apkIdList);
+    public List<ApkInfo> queryListByApkIdList(@Param("pkgIdList") List<Long> apkIdList);
 }

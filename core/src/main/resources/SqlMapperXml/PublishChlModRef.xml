@@ -167,8 +167,8 @@ create table TY_PUB_CHL_MOD_REF  (
         order by UPDATE_TIME desc
     </select>
 
-    <select id="queryApkIdListForNormalPkg" resultType="java.lang.Long">
-        select distinct APK_ID
+    <select id="queryPkgIdListForNormalPkg" resultType="java.lang.Long">
+        select DISTINCT PACKAGE_ID
         from
         <include refid="TABLE_NAME"/>
         where GROUP_ID = #{groupId}
@@ -179,8 +179,10 @@ create table TY_PUB_CHL_MOD_REF  (
         order by UPDATE_TIME desc
     </select>
 
-    <select id="queryApkIdListForCommonPkg" resultType="java.lang.Long">
-        select distinct APK_ID
+    <select id="queryPkgIdListForCommonPkg" resultType="java.lang.Long">
+        select
+        DISTINCT
+        PACKAGE_ID
         from
         <include refid="TABLE_NAME"/>
         where GROUP_ID = #{groupId}

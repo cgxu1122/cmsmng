@@ -23,14 +23,6 @@ public class ApkVo implements Serializable {
     private String packagePath;
     private int type;
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public Long getApkId() {
         return apkId;
     }
@@ -55,13 +47,20 @@ public class ApkVo implements Serializable {
         this.md5value = md5value;
     }
 
-
     public String getPackagePath() {
         return packagePath;
     }
 
     public void setPackagePath(String packagePath) {
         this.packagePath = packagePath;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public static void main(String[] args) throws Exception {

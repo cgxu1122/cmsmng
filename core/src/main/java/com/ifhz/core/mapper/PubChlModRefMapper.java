@@ -37,13 +37,13 @@ public interface PubChlModRefMapper {
                                                  @Param("endTime") Date endTime);
 
 
-    public List<Long> queryApkIdListForNormalPkg(@Param("groupId") Long groupId,
+    public List<Long> queryPkgIdListForNormalPkg(@Param("groupId") Long groupId,
                                                  @Param("channelId") Long channelId,
                                                  @Param("startTime") Date startTime,
                                                  @Param("endTime") Date endTime);
 
 
-    public List<Long> queryApkIdListForCommonPkg(@Param("groupId") Long groupId,
+    public List<Long> queryPkgIdListForCommonPkg(@Param("groupId") Long groupId,
                                                  @Param("startTime") Date startTime,
                                                  @Param("endTime") Date endTime);
 }
