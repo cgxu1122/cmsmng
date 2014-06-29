@@ -175,7 +175,6 @@ create table TY_PUB_CHL_MOD_REF  (
         and CHANNEL_ID = #{channelId}
         and PKG_TYPE = 'N'
         and ACTIVE = 'Y'
-        order by UPDATE_TIME desc
     </select>
 
     <select id="queryPkgIdListForCommonPkg" resultType="java.lang.Long">

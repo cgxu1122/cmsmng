@@ -82,13 +82,13 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
 
     @Override
     public List<Long> queryPkgIdListForNormalPkg(Long groupId, Long channelId, Date startTime, Date endTime) {
-        List<Long> result = pubChlModRefMapper.queryPkgIdListForNormalPkg(groupId, channelId, startTime, endTime);
+        List<Long> result = pubChlModRefMapper.queryPkgIdListForNormalPkg(groupId, channelId);
         return result == null ? Lists.<Long>newArrayList() : result;
     }
 
     @Override
     public List<Long> queryPkgIdListForCommonPkg(Long groupId, Date startTime, Date endTime) {
-        List<Long> result = pubChlModRefMapper.queryPkgIdListForCommonPkg(groupId, startTime, endTime);
+        List<Long> result = pubChlModRefMapper.queryPkgIdListForCommonPkg(groupId);
         return result == null ? Lists.<Long>newArrayList() : result;
     }
 }

@@ -38,12 +38,8 @@ public interface PubChlModRefMapper {
 
 
     public List<Long> queryPkgIdListForNormalPkg(@Param("groupId") Long groupId,
-                                                 @Param("channelId") Long channelId,
-                                                 @Param("startTime") Date startTime,
-                                                 @Param("endTime") Date endTime);
+                                                 @Param("channelId") Long channelId);
 
 
-    public List<Long> queryPkgIdListForCommonPkg(@Param("groupId") Long groupId,
-                                                 @Param("startTime") Date startTime,
-                                                 @Param("endTime") Date endTime);
+    public List<Long> queryPkgIdListForCommonPkg(@Param("groupId") Long groupId);
 }
