@@ -287,21 +287,17 @@
 </div>
 <%--
 </shiro:hasPermission>
-<shiro:hasPermission name="apk">
 --%>
-<div title="APK管理" style="overflow: auto;">
+<%--
+<shiro:hasPermission name="publishTask">
+--%>
+<div title="发布管理" style="overflow: auto;">
     <div class="nav-item">
         <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>APK管理</span>
         </a>
     </div>
-</div>
-<%--
-</shiro:hasPermission>
-<shiro:hasPermission name="package">
---%>
-<div title="打包管理" style="overflow: auto;">
     <div class="nav-item">
         <a href="javascript:addTab('普通包管理','<%=basePath%>/tymng/packageInfo/index?type=N','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
@@ -314,12 +310,6 @@
             <span>通用包管理</span>
         </a>
     </div>
-</div>
-<%--
-</shiro:hasPermission>
-<shiro:hasPermission name="publishTask">
---%>
-<div title="发布任务管理" style="overflow: auto;">
     <div class="nav-item">
         <a href="javascript:addTab('发布任务管理','<%=basePath%>/tymng/publishTask/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
@@ -370,7 +360,7 @@
 <div title="报表统计" style="overflow: auto;">
     <div class="nav-item">
         <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
-        <span class="menu_icon_datadeal"></span>
+            <span class="menu_icon_datadeal"></span>
             <span>按仓库查询</span>
         </a>
     </div>
