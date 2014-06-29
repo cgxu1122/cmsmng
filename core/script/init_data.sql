@@ -9,5 +9,5 @@ insert into TY_DICT_INFO(DICT_ID,KEY_CODE,KEY_VALUE,REMARK,CREATE_TIME,UPDATE_TI
 
 
 insert into ty_role values (seq_role.nextval,'admin',-1,'',1,sysdate);
-insert into ty_user values(seq_user.nextval,'admin','admin','E10ADC3949BA59ABBE56E057F20F883E','','',1,1,sysdate,sysdate);
+insert into ty_user values(seq_user.nextval,'admin','admin','123456','','',1,1,sysdate,sysdate);
 insert into ty_user_role_ref values(seq_user_role_ref.nextval,seq_user.currval,seq_role.currval,sysdate);

@@ -46,7 +46,7 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
             user.setLoginName(record.getUsername());
             user.setPassword(record.getPassword());
             user.setAddress(record.getAddress());
-            user.setRealName(record.getContact());
+            user.setRealName(record.getUsername());
             user.setCellphone(record.getPhone());
             user.setStatus(UserConstants.USER_STATUS_ENABLE);
             user.setType(UserConstants.USER_TYPE_NORMAL);

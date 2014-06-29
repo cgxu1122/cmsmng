@@ -43,6 +43,7 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
             User user = new User();
             user.setLoginName(record.getUsername());
+            user.setRealName(record.getUsername());
             user.setPassword(record.getPassword());
             user.setStatus(UserConstants.USER_STATUS_ENABLE);
             user.setType(UserConstants.USER_TYPE_NORMAL);
