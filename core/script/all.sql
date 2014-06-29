@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/6/29 11:43:21                           */
+/* Created on:     2014/6/29 12:20:44                           */
 /*==============================================================*/
 
 
@@ -254,7 +254,7 @@ comment on column TY_APK_INFO.FTP_PATH is
 'FTP路径';
 
 comment on column TY_APK_INFO.TYPE is
-'apk类型';
+'apk类型 1:非计数器 2:计数器';
 
 comment on column TY_APK_INFO.MD5VALUE is
 'md5值';
@@ -983,7 +983,7 @@ comment on column TY_PACKAGE_APK_REF.SORT is
 '排序';
 
 comment on column TY_PACKAGE_APK_REF.APK_TYPE is
-'计数器标识 1:计数器 2：非计数器';
+'计数器标识 1:非计数器 2:计数器';
 
 comment on column TY_PACKAGE_APK_REF.CREATE_TIME is
 '创建时间';
@@ -1218,6 +1218,7 @@ create table TY_PUBLISH_TASK  (
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2)                    default 'Y',
+   PKG_TYPE             VARCHAR(2),
    constraint PK_TY_PUBLISH_TASK primary key (PUBLISH_ID)
 );
 
@@ -1244,6 +1245,9 @@ comment on column TY_PUBLISH_TASK.UPDATE_TIME is
 
 comment on column TY_PUBLISH_TASK.ACTIVE is
 '数据状态';
+
+comment on column TY_PUBLISH_TASK.PKG_TYPE is
+'安装包类型 Y:通用包，N:普通包';
 
 /*==============================================================*/
 /* Index: "Index_9"                                             */
