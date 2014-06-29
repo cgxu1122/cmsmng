@@ -57,7 +57,7 @@
     </filter>
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/hzfmg/*</url-pattern>
     </filter-mapping>
 
 
@@ -72,7 +72,6 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
-
 
 
     <servlet-mapping>

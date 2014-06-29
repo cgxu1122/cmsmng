@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
  * @author luyujian
  */
 @Controller
+@RequestMapping("/hzfmng")
 public class LoginController extends BaseController {
 
     @Autowired

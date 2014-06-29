@@ -58,7 +58,7 @@ public class ValiCodeController extends BaseController {
         // 高度
         String strHeight = "30";
         // 字符个数
-        String strCodeCount = "4";
+        String strCodeCount = "3";
 
         // 将配置的信息转换成数值
         try {

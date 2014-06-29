@@ -25,6 +25,7 @@ import java.util.Random;
  * @author luyujian
  */
 @Controller
+@RequestMapping("/hzfmng")
 public class ValiCodeController extends BaseController {
 
     // 验证码图片的宽度。
