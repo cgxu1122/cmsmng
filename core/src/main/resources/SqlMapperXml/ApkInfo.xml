@@ -159,12 +159,20 @@
 
     <select id="queryListByApkIdList" resultMap="ApkInfoResultMap">
         select
-        <include refid="CommonFieldSql"/>
-        from
-        <include refid="TABLE_NAME"/>
-        where APK_ID in
-        <foreach item="item" index="index" collection="apkIdList" open="(" separator="," close=")">
-            #{item}
+        info.APK_ID as APK_ID,
+        info.MD5VALUE as MD5VALUE,
+        info.DOWNLOAD_URL as DOWNLOAD_URL,
+        info.ACTIVE as ACTIVE,
+        info.TYPE as TYPE,
+        info.PACKAGE_PATH as PACKAGE_PATH,
+        info.CREATE_TIME as CREATE_TIME,
+        info.UPDATE_TIME as UPDATE_TIME
+        from TY_APK_INFO info inner join TY_PACKAGE_APK_REF ref
+        on info.APK_ID = ref.APK_ID
+        where ref.PACKAGE_ID in
+        <foreach item="item" index="index" collection="pkgIdList" open="(" separator="," close=")">
+        #{item}
         </foreach>
+        and info.UPDATE_TIME between #{startTime} and #{endTime}
     </select>
 </mapper>

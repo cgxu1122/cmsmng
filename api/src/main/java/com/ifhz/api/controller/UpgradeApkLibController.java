@@ -60,7 +60,7 @@ public class UpgradeApkLibController {
                 if (StringUtils.equalsIgnoreCase(apkVersion.trim(), "0")) {
                     startTime = dictInfoCacheService.getSystemInitDate();
                 } else {
-                    startTime = new Date(Long.parseLong(apkVersion.trim()));
+                    startTime = new Date(Long.parseLong(apkVersion.trim()) - 1000);
                 }
                 List<ApkVo> apkVoList = packageUpgradeService.queryApkList(info.getGroupId(), info.getChannelId(), startTime, endTime);
                 if (CollectionUtils.isEmpty(apkVoList)) {

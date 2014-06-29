@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 类描述
@@ -26,5 +27,5 @@ public interface ApkInfoMapper {
 
     public List<ApkInfo> queryUpgradeList(@Param("startTime") Date date, @Param("endTime") Date endTime);
 
-    public List<ApkInfo> queryListByApkIdList(@Param("apkIdList") List<Long> apkIdList);
+    public List<ApkInfo> queryListByApkIdList(@Param("pkgIdList") Set<Long> pkgIdList);
 }

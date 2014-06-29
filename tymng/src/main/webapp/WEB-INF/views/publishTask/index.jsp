@@ -6,9 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/common/header.jsp" %>
 <title>Demo</title>
-<script type="text/javascript" src="<%= basePath %>/common/js/validateExtends.js"></script>
 <script type="text/javascript">
-
 $(document).ready(function () {
     initPage();
 });
@@ -32,6 +30,7 @@ function addrow() {
             }
         }
     });
+    $('#effectTime').datebox('setValue', getCurrrentDateStr());
 }
 function reloadTree(groupId) {
     /*$('#tt').tree({
@@ -398,7 +397,7 @@ function selectChannel(channelId, channelName) {
 <div id="dlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saverow()">保存</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#dlg').dialog('close')">取消</a>
+       onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
@@ -433,7 +432,7 @@ function selectChannel(channelId, channelName) {
 
 <div id="update-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
+       onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
 </div>
 
 
@@ -459,7 +458,7 @@ function selectChannel(channelId, channelName) {
 </div>
 <div id="packagedlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#packagedlg').dialog('close')">取消</a>
+       onclick="javascript:$('#packagedlg').dialog('close')">关闭</a>
 </div>
 
 
@@ -485,7 +484,7 @@ function selectChannel(channelId, channelName) {
 </div>
 <div id="modeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#modeldlg').dialog('close')">取消</a>
+       onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
 </div>
 
 
@@ -513,7 +512,7 @@ function selectChannel(channelId, channelName) {
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#channeldlg').dialog('close')">取消</a>
+       onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
 </div>
 
 </body>

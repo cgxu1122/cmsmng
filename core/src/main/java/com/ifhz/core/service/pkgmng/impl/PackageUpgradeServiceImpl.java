@@ -2,6 +2,7 @@ package com.ifhz.core.service.pkgmng.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.ifhz.core.adapter.*;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.constants.ApiEnums;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 类描述
@@ -125,25 +127,28 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
 
     @Override
     public List<ApkVo> queryApkList(long groupId, long channelId, Date startTime, Date endTime) {
-        List<Long> paramList = Lists.newArrayList();
+        Set<Long> paramList = Sets.newHashSet();
         List<ApkVo> result = Lists.newArrayList();
+        Set<Long> set = Sets.newHashSet();
 
-        List<Long> normalApkIdList = pubChlModRefAdapter.queryApkIdListForNormalPkg(groupId, channelId, startTime, endTime);
-        List<Long> commonApkIdList = pubChlModRefAdapter.queryApkIdListForCommonPkg(groupId, startTime, endTime);
-        if (CollectionUtils.isNotEmpty(normalApkIdList)) {
-            paramList.addAll(normalApkIdList);
+        List<Long> normalPkgIdList = pubChlModRefAdapter.queryPkgIdListForNormalPkg(groupId, channelId, startTime, endTime);
+        List<Long> commonPkgIdList = pubChlModRefAdapter.queryPkgIdListForCommonPkg(groupId, startTime, endTime);
+        if (CollectionUtils.isNotEmpty(normalPkgIdList)) {
+            paramList.addAll(normalPkgIdList);
         }
-        if (CollectionUtils.isNotEmpty(commonApkIdList)) {
-            paramList.addAll(commonApkIdList);
+        if (CollectionUtils.isNotEmpty(commonPkgIdList)) {
+            paramList.addAll(commonPkgIdList);
         }
 
         if (CollectionUtils.isNotEmpty(paramList)) {
             List<ApkInfo> apkInfoList = apkInfoAdapter.queryListByApkIdList(paramList);
             if (CollectionUtils.isNotEmpty(apkInfoList)) {
                 for (ApkInfo apkInfo : apkInfoList) {
-                    ApkVo vo = PoToVoHandler.translateApkVo(apkInfo);
-                    if (vo != null) {
-                        result.add(vo);
+                    if (!set.contains(apkInfo.getApkId())) {
+                        ApkVo vo = PoToVoHandler.translateApkVo(apkInfo);
+                        if (vo != null) {
+                            result.add(vo);
+                        }
                     }
                 }
             }

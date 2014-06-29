@@ -6,9 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ include file="/common/header.jsp" %>
     <title>Demo</title>
-    <script type="text/javascript" src="<%= basePath %>/common/js/validateExtends.js"></script>
     <script type="text/javascript">
-
         $(document).ready(function () {
             initPage();
         });
@@ -17,6 +15,7 @@
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
             $("input[name=file]").val("");
+            $('#effectiveTime').datebox('setValue', getCurrrentDateStr());
         }
         function saverow() {
             $('#fm').form('submit', {
@@ -177,7 +176,7 @@
 <div id="dlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saverow()">保存</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#dlg').dialog('close')">取消</a>
+       onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 </div>
 
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
@@ -204,7 +203,7 @@
 <div id="update-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdate()">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#updatedlg').dialog('close')">取消</a>
+       onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
 </div>
 
 </body>

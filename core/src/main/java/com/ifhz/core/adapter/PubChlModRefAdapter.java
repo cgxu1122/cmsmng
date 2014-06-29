@@ -29,7 +29,7 @@ public interface PubChlModRefAdapter {
 
     public List<PubChlModRef> queryCommonPkgList(Long groupId, Date startTime, Date endTime);
 
-    public List<Long> queryApkIdListForNormalPkg(Long groupId, Long channelId, Date startTime, Date endTime);
+    public List<Long> queryPkgIdListForNormalPkg(Long groupId, Long channelId, Date startTime, Date endTime);
 
-    public List<Long> queryApkIdListForCommonPkg(Long groupId, Date startTime, Date endTime);
+    public List<Long> queryPkgIdListForCommonPkg(Long groupId, Date startTime, Date endTime);
 }
