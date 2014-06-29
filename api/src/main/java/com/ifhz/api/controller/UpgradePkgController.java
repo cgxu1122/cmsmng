@@ -78,7 +78,7 @@ public class UpgradePkgController {
                     }
                 } else {
                     long pkgTimestamp = Long.parseLong(pkgVersion.trim());
-                    Date startTime = new Date(pkgTimestamp);
+                    Date startTime = new Date(pkgTimestamp - 1000);
                     long apkTimestamp = Long.parseLong(apkVersion.trim());
                     Date endTime = new Date(apkTimestamp);
                     PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), startTime, endTime);
