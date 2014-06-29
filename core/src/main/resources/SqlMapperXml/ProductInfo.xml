@@ -23,6 +23,7 @@
         pi
         JOIN TY_BATCH_PRODUCT_REF bpref on pi.PRODUCT_ID = bpref.PRODUCT_ID
         where bpref.BATCH_ID = #{batchId}
+        order by pi.UPDATE_TIME DESC
     </select>
 
     <select id="getById" parameterType="long" resultMap="ProductInfoResultMap">
@@ -89,6 +90,7 @@
         <if test="record.active != null and record.active != ''">
             and pi.ACTIVE = #{record.active}
         </if>
+        order by pi.UPDATE_TIME DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.ProductInfo">
         delete from

@@ -6,13 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ include file="/common/header.jsp" %>
     <title>Demo</title>
-    <script type="text/javascript" src="<%= basePath %>/common/js/validateExtends.js"></script>
     <script type="text/javascript">
-        function getCurrrentDateStr() {
-            var date = new Date();
-            var ctime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-            return ctime;
-        }
 
         $(document).ready(function () {
             $("#startDate").datebox({
@@ -163,7 +157,7 @@
 </div>
 <div id="productdlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#productdlg').dialog('close')">取消</a>
+       onclick="javascript:$('#productdlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>
