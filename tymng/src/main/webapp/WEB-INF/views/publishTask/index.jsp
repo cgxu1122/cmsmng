@@ -84,9 +84,9 @@ function editrow() {
             $("#upGroupName").val(pubChlList[0].groupName);
             for (var i = 0; i < pubChlList.length; i++) {
                 if (pubChlList[i].channelName) {
-                    var chlHtml = "<div>" +
-                            "<input type='text' value='" + pubChlList[i].channelName + "' readonly='readonly'>" +
-                            "</div>";
+                    var chlHtml = "<tr>" +
+                            "<td><input type='text' value='" + pubChlList[i].channelName + "' readonly='readonly'></td>" +
+                            "</tr>";
                     $('#updateChannelList').append(chlHtml);
                 } else {
                     $('#updateChannelDiv').hide();
@@ -96,9 +96,9 @@ function editrow() {
         if (pubModList != null && pubModList.length > 0) {
             for (var i = 0; i < pubModList.length; i++) {
                 if (pubModList[i]) {
-                    var modHtml = "<div>" +
-                            "<input type='text' value='" + pubModList[i].modelName + "' readonly='readonly'>" +
-                            "</div>";
+                    var modHtml = "<tr>" +
+                            "<td><input type='text' value='" + pubModList[i].modelName + "' readonly='readonly'></td>" +
+                            "</tr>";
                     $('#updateModelList').append(modHtml);
                 } else {
                     $('#updateModelDiv').hide();
@@ -266,11 +266,11 @@ function searchModelEvt() {
     });
 }
 function selectModel(modelId, modelName) {
-    var modelHtml = "<div>" +
+    var modelHtml = "<tr>" +
             "<input type='hidden' name='modelId' value='" + modelId + "'>" +
-            "<input type='text' name='modelName' value='" + modelName + "' readonly='readonly'>" +
-            "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();addModelList.pop(" + modelId + ");'>删除</a>" +
-            "</div>";
+            "<td><input type='text' name='modelName' value='" + modelName + "' readonly='readonly'></td>" +
+            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addModelList.pop(" + modelId + ");'>删除</a></td>" +
+            "</tr>";
     if (!addModelList.in_array(modelId)) {
         addModelList.push(modelId);
         $('#addModelList').append(modelHtml);
@@ -312,11 +312,11 @@ function searchChannelEvt() {
     });
 }
 function selectChannel(channelId, channelName) {
-    var channelHtml = "<div>" +
+    var channelHtml = "<tr>" +
             "<input type='hidden' name='channelId' value='" + channelId + "'>" +
-            "<input type='text' name='channelName' value='" + channelName + "' readonly='readonly'>" +
-            "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();addModelList.pop(" + channelId + ");'>删除</a>" +
-            "</div>";
+            "<td><input type='text' name='channelName' value='" + channelName + "' readonly='readonly'></td>" +
+            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addModelList.pop(" + channelId + ");'>删除</a></td>" +
+            "</tr>";
     if (!addChannelList.in_array(channelId)) {
         addChannelList.push(channelId);
         $('#addChannelList').append(channelHtml);
@@ -383,16 +383,16 @@ function selectChannel(channelId, channelName) {
             <a href="javascript:void(0)"
                onclick="showChannelDialog()">选择</a>
 
-            <div id="addChannelList">
-            </div>
+            <table id="addChannelList" style="border: solid thin">
+            </table>
         </div>
         <div class="fitem" id="modelDiv">
             <label><font color="red">*</font>选择安装机型:</label>
             <a href="javascript:void(0)"
                onclick="showModelDialog()">选择</a>
 
-            <div id="addModelList">
-            </div>
+            <table id="addModelList" style="border: solid thin">
+            </table>
         </div>
     </form>
 </div>
@@ -421,14 +421,14 @@ function selectChannel(channelId, channelName) {
         <div class="fitem" id="updateChannelDiv" style="margin-left:12px">
             <label>安装仓库:</label>
 
-            <div id="updateChannelList">
-            </div>
+            <table id="updateChannelList" style="border: solid thin">
+            </table>
         </div>
         <div class="fitem" style="margin-left:12px" id="updateModelDiv">
             <label>安装机型:</label>
 
-            <div id="updateModelList">
-            </div>
+            <table id="updateModelList" style="border: solid thin">
+            </table>
         </div>
     </form>
 </div>

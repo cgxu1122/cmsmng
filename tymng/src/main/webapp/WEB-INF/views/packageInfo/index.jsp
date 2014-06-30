@@ -69,15 +69,15 @@ function editrow() {
                 if ("Y" == desktopIconVal) {
                     desktopIconMsg = "创建快捷";
                 }
-                var apkHtml = "<div>" +
+                var apkHtml = "<tr>" +
                         "<input type='hidden' name='apkId' value='" + packageApkRefList[i].apkId + "'>" +
                         "<input type='hidden' name='apkType' value='" + packageApkRefList[i].apkType + "'>" +
-                        "<input type='text' name='apkName' value='" + packageApkRefList[i].apkName + "' readonly='readonly'>" +
-                        " " + autoRunMsg + " " + desktopIconMsg +
+                        "<td><input type='text' name='apkName' value='" + packageApkRefList[i].apkName + "' readonly='readonly'></td>" +
+                        "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
                         "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
                         "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
-                        "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();'>删除</a>" +
-                        "</div>";
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();'>删除</a></td>" +
+                        "</tr>";
                 $('#upApkList').append(apkHtml);
             }
         }
@@ -240,29 +240,29 @@ function selectApk(apkId, apkName, apkType, type) {
         desktopIconMsg = "创建快捷";
     }
     if (type == 2) {//修改
-        var apkHtml = "<div>" +
+        var apkHtml = "<tr>" +
                 "<input type='hidden' name='apkId' value='" + apkId + "'>" +
                 "<input type='hidden' name='apkType' value='" + apkType + "'>" +
-                "<input type='text' name='apkName' value='" + apkName + "' readonly='readonly'>" +
-                " " + autoRunMsg + " " + desktopIconMsg +
+                "<td><input type='text' name='apkName' value='" + apkName + "' readonly='readonly'></td>" +
+                "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
                 "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
                 "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
-                "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();updateApkList.pop(" + apkId + ");'>删除</a>" +
-                "</div>";
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateApkList.pop(" + apkId + ");'>删除</a></td>" +
+                "</tr>";
         if (!updateApkList.in_array(apkId)) {
             updateApkList.push(apkId);
             $('#upApkList').append(apkHtml);
         }
     } else if (type == 1) {//新增
-        var apkHtml = "<div>" +
+        var apkHtml = "<tr>" +
                 "<input type='hidden' name='apkId' value='" + apkId + "'>" +
                 "<input type='hidden' name='apkType' value='" + apkType + "'>" +
-                "<input type='text' name='apkName' value='" + apkName + "' readonly='readonly'>" +
-                " " + autoRunMsg + " " + desktopIconMsg + " " +
+                "<td><input type='text' name='apkName' value='" + apkName + "' readonly='readonly'></td>" +
+                "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
                 "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
                 "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
-                "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();addApkList.pop(" + apkId + ");'>删除</a>" +
-                "</div>";
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addApkList.pop(" + apkId + ");'>删除</a></td>" +
+                "</tr>";
         if (!addApkList.in_array(apkId)) {
             addApkList.push(apkId);
             $('#addApkList').append(apkHtml);
@@ -333,8 +333,8 @@ function selectApk(apkId, apkName, apkType, type) {
             <a href="javascript:void(0)"
                onclick="showApkDialog(1)">选择</a>
 
-            <div id="addApkList">
-            </div>
+            <table id="addApkList" style="border: solid thin">
+            </table>
         </div>
     </form>
 </div>
@@ -371,8 +371,8 @@ function selectApk(apkId, apkName, apkType, type) {
             <a href="javascript:void(0)"
                onclick="showApkDialog(2)">选择</a>
 
-            <div id="upApkList">
-            </div>
+            <table id="upApkList" style="border: solid thin">
+            </table>
         </div>
 </div>
 </form>

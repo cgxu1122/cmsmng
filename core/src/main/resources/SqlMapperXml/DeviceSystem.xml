@@ -8,6 +8,7 @@
         <id column="SYSTEM_ID" property="systemId" jdbcType="BIGINT"/>
         <result column="VERSION" property="version" jdbcType="VARCHAR"/>
         <result column="FTP_PATH" property="ftpPath" jdbcType="VARCHAR"/>
+        <result column="DOWNLOAD_URL" property="downloadUrl" jdbcType="VARCHAR"/>
         <result column="MD5VALUE" property="md5Value" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -27,9 +28,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        ( SYSTEM_ID,VERSION,FTP_PATH,MD5VALUE,EFFECTIVE_TIME,CREATE_TIME,UPDATE_TIME)
+        ( SYSTEM_ID,VERSION,FTP_PATH,DOWNLOAD_URL,MD5VALUE,EFFECTIVE_TIME,CREATE_TIME,UPDATE_TIME)
         values
-        ("SEQ_DEVICE_SYSTEM".nextval,#{version},#{ftpPath,jdbcType=VARCHAR},#{md5Value,jdbcType=VARCHAR},#{effectiveTime},#{createTime},#{updateTime})
+        ("SEQ_DEVICE_SYSTEM".nextval,#{version},#{ftpPath,jdbcType=VARCHAR},#{downloadUrl,jdbcType=VARCHAR},#{md5Value,jdbcType=VARCHAR},#{effectiveTime},#{createTime},#{updateTime})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.DeviceSystem">
@@ -41,6 +42,9 @@
             </if>
             <if test="ftpPath != null">
                 FTP_PATH = #{ftpPath},
+            </if>
+            <if test="downloadUrl != null">
+                DOWNLOAD_URL = #{downloadUrl},
             </if>
             <if test="md5Value != null">
                 MD5VALUE = #{md5Value},

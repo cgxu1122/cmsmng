@@ -79,7 +79,7 @@
         <if test="record.deviceCodeCondition != null and record.deviceCodeCondition != ''">
             and di.DEVICE_CODE LIKE concat(concat('%',#{record.deviceCodeCondition},'%' ))
         </if>
-        ORDER by di.DEVICE_ID DESC
+        ORDER by di.UPDATE_TIME DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.DeviceInfo">
         delete from

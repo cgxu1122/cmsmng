@@ -676,7 +676,7 @@ create table TY_DEVICE_INFO  (
    DEVICE_CODE          VARCHAR2(50 CHAR),
    GROUP_ID             NUMBER(15),
    CHANNEL_ID           NUMBER(15),
-   CCREATE_TIME         DATE                           default SYSDATE,
+   CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2)                    default 'Y',
    constraint PK_TY_DEVICE_INFO primary key (DEVICE_ID)
@@ -717,6 +717,7 @@ create table TY_DEVICE_SYSTEM  (
    MD5VALUE             VARCHAR2(50 CHAR),
    EFFECTIVE_TIME       DATE,
    CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_DEVICE_SYSTEM primary key (SYSTEM_ID)
 );
 

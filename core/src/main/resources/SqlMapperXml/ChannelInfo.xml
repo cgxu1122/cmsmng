@@ -141,7 +141,7 @@
         <if test="record.active != null and record.active != ''">
             and ci.ACTIVE = #{record.active}
         </if>
-        ORDER BY ci.CHANNEL_ID DESC
+        ORDER BY ci.UPDATE_TIME DESC
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.ChannelInfo">
         delete from

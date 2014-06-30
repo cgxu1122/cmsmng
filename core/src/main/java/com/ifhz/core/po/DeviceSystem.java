@@ -10,12 +10,21 @@ public class DeviceSystem {
     private Long systemId;
     private String version;
     private String ftpPath;
+    private String downloadUrl;
     private String md5Value;
     private Date createTime;
     private Date updateTime;
     private Date effectiveTime;
 
     private String versionCondition;
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
 
     public String getMd5Value() {
         return md5Value;

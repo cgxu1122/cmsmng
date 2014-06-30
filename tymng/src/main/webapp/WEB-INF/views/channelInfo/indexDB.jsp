@@ -210,7 +210,8 @@ function showMngDialog(type, upMngId) {
                 {field: 'loginName', title: '用户名', align: 'center', width: 200},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 150,
                     formatter: function (value) {
-                        return new Date(value).formate("yyyy-MM-dd");
+                        return value;
+                        //return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
                 {field: 'action', title: '操作', align: 'center', width: 100,

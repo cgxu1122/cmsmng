@@ -60,11 +60,11 @@ function editrow() {
         if (productInfoList) {
             for (var i = 0; i < productInfoList.length; i++) {
                 updateProductList.push(productInfoList[i].productId);
-                var productHtml = "<div>" +
+                var productHtml = "<tr>" +
                         "<input type='hidden' name='productId' value='" + productInfoList[i].productId + "'>" +
-                        "<input type='text' name='productName' value='" + productInfoList[i].productName + "' readonly='readonly'>" +
-                        "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();'>删除</a>" +
-                        "</div>";
+                        "<td><input type='text' name='productName' value='" + productInfoList[i].productName + "' readonly='readonly'></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();'>删除</a></td>" +
+                        "</tr>";
                 $('#upProductList').append(productHtml);
             }
         }
@@ -192,21 +192,21 @@ function searchProductEvt() {
 }
 function selectProduct(productId, productName, type) {
     if (type == 2) {//修改
-        var productHtml = "<div>" +
+        var productHtml = "<tr>" +
                 "<input type='hidden' name='productId' value='" + productId + "'>" +
-                "<input type='text' name='productName' value='" + productName + "' readonly='readonly'>" +
-                "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();updateProductList.pop(" + productId + ");'>删除</a>" +
-                "</div>";
+                "<td><input type='text' name='productName' value='" + productName + "' readonly='readonly'></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateProductList.pop(" + productId + ");'>删除</a></td>" +
+                "</tr>";
         if (!updateProductList.in_array(productId)) {
             updateProductList.push(productId);
             $('#upProductList').append(productHtml);
         }
     } else if (type == 1) {//新增
-        var productHtml = "<div>" +
+        var productHtml = "<tr>" +
                 "<input type='hidden' name='productId' value='" + productId + "'>" +
-                "<input type='text' name='productName' value='" + productName + "' readonly='readonly'>" +
-                "<a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().remove();addProductList.pop(" + productId + ");'>删除</a>" +
-                "</div>";
+                "<td><input type='text' name='productName' value='" + productName + "' readonly='readonly'></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addProductList.pop(" + productId + ");'>删除</a></td>" +
+                "</tr>";
         if (!addProductList.in_array(productId)) {
             addProductList.push(productId);
             $('#productList').append(productHtml);
@@ -243,11 +243,6 @@ function importTemplateBatch(type) {
     });
 }
 </script>
-<style type="text/css">
-    .datagrid .datagrid-pager {
-        position: relative;
-    }
-</style>
 </head>
 <body>
 <div id="toolBar">
@@ -306,8 +301,8 @@ function importTemplateBatch(type) {
             <a href="javascript:void(0)"
                onclick="showProductDialog(1)">选择</a>
 
-            <div id="productList">
-            </div>
+            <table id="productList" style="border: solid thin">
+            </table>
         </div>
     </form>
 </div>
@@ -342,9 +337,8 @@ function importTemplateBatch(type) {
             <a href="javascript:void(0)"
                onclick="showProductDialog(2)">选择</a>
 
-            <div id="upProductList">
-            </div>
-
+            <table id="upProductList" style="border: solid thin">
+            </table>
         </div>
     </form>
 </div>

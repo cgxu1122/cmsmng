@@ -33,6 +33,7 @@
         <if test="record.productId != null and record.productId != ''">
             and ref.PRODUCT_ID = #{record.productId}
         </if>
+        order by ref.CREATE_TIME desc
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.BatchProductRef">
         delete from

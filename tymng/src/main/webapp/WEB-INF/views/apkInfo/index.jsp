@@ -106,7 +106,7 @@
                     [
                         {field: 'apkName', title: '产品名称', align: 'center', width: 150},
                         {field: 'softName', title: '软件名称', align: 'center', width: 200},
-                        {field: 'ftpPath', title: 'ftp路径', align: 'center', width: 400},
+                        {field: 'downloadUrl', title: '下载路径', align: 'center', width: 400},
                         {field: 'type', title: '是否计数器', align: 'center', width: 80,
                             formatter: function (value) {
                                 if ("2" == value) {

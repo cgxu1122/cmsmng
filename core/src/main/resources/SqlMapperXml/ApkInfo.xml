@@ -134,7 +134,7 @@
         <if test="record.active != null and record.active != ''">
             and ACTIVE = #{record.active}
         </if>
-        order by CREATE_TIME desc
+        order by UPDATE_TIME desc
     </select>
 
 
@@ -172,7 +172,7 @@
         on info.APK_ID = ref.APK_ID
         where ref.PACKAGE_ID in
         <foreach item="item" index="index" collection="pkgIdList" open="(" separator="," close=")">
-        #{item}
+            #{item}
         </foreach>
         and info.UPDATE_TIME between #{startTime} and #{endTime}
     </select>

@@ -104,7 +104,7 @@
                 columns: [
                     [
                         {field: 'version', title: '版本号', align: 'center', width: 100},
-                        {field: 'ftpPath', title: '下载路径', align: 'center', width: 500},
+                        {field: 'downloadUrl', title: '下载路径', align: 'center', width: 500},
                         {field: 'effectiveTime', title: '生效日期', align: 'center', width: 150,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");

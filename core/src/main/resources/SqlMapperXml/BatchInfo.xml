@@ -97,6 +97,7 @@
         <if test="record.active != null and record.active != ''">
             and bi.ACTIVE = #{record.active}
         </if>
+        order by bi.UPDATE_TIME desc
     </select>
     <delete id="delete" parameterType="com.ifhz.core.po.BatchInfo">
         delete from

@@ -101,6 +101,6 @@
         <if test="record.active != null and record.active != ''">
             and pt.ACTIVE = #{record.active}
         </if>
-        ORDER BY pt.CREATE_TIME DESC
+        ORDER BY pt.UPDATE_TIME DESC
     </select>
 </mapper>

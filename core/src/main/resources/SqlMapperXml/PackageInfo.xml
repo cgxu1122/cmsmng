@@ -97,7 +97,7 @@
         <if test="record.active != null and record.active != ''">
             and pi.ACTIVE = #{record.active}
         </if>
-        ORDER BY pi.CREATE_TIME DESC
+        ORDER BY pi.UPDATE_TIME DESC
     </select>
 
     <delete id="deleteForActive" parameterType="com.ifhz.core.po.PackageInfo">
