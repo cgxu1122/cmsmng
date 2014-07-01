@@ -82,6 +82,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 if (counterTempLog == null) {
                     CounterTempLog tempLog = new CounterTempLog();
                     tempLog.setImei(po.getImei());
+                    tempLog.setUa(ModelHandler.translateUa(po.getUa()));
                     tempLog.setCreateTime(po.getCounterUploadTime());
                     tempLog.setActive(po.getActive());
                     counterTempLogAdapter.insert(tempLog);
