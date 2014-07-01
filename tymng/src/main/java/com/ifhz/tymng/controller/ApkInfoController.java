@@ -2,7 +2,7 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
-import com.ifhz.core.base.commons.codec.AnalysisApk;
+import com.ifhz.core.base.commons.codec.AnalysisApkFile;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
@@ -66,6 +66,7 @@ public class ApkInfoController extends BaseController {
     @RequestMapping(value = "/insert", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject insert(HttpServletRequest request) {
+        long start = System.currentTimeMillis();
         Map<String, FileItem> params = paserMultiData(request);
         String apkName = null;
         String type = null;
@@ -119,7 +120,7 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         try {
-            String packagePath = AnalysisApk.genApkPackageName(file.getInputStream());
+            String packagePath = AnalysisApkFile.paserApk(file.getInputStream());
             ai.setPackagePath(packagePath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -133,12 +134,15 @@ public class ApkInfoController extends BaseController {
         ai.setType(type);
         apkInfoService.insert(ai);
         result.put("msg", "添加成功!");
+        long end = System.currentTimeMillis();
+        LOGGER.info("parseApkFile totalTime={}", end - start);
         return result;
     }
 
     @RequestMapping(value = "/update", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject update(HttpServletRequest request) {
+        long start = System.currentTimeMillis();
         Map<String, FileItem> params = paserMultiData(request);
         String apkId = null;
         String apkName = null;
@@ -205,18 +209,24 @@ public class ApkInfoController extends BaseController {
                     apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
                     apkInfo.setUpdateTime(new Date());
                 }
-                String packagePath = AnalysisApk.genApkPackageName(file.getInputStream());
+                String packagePath = AnalysisApkFile.paserApk(file.getInputStream());
                 apkInfo.setPackagePath(packagePath);
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);
                 return result;
+            } finally {
+                long end = System.currentTimeMillis();
+                LOGGER.info("parseApkFile totalTime={}", end - start);
             }
         }
         apkInfo.setApkName(apkName.trim());
         apkInfo.setType(type);
         apkInfoService.update(apkInfo);
         result.put("msg", "修改成功!");
+        long end = System.currentTimeMillis();
+        LOGGER.info("parseApkFile totalTime={}", end - start);
+
         return result;
     }
 
