@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ifhz.core.mapper.UserMapper" >
-	<insert id="insertUser" parameterType="com.ifhz.core.po.User">
-		insert into ty_user(
-            user_id,
-            login_name,
-            real_name,
-			password,
-			cellphone,
-            address,
-			status,
-			create_time,
-            type,
-            update_time
-		) values(
+<mapper namespace="com.ifhz.core.mapper.UserMapper">
+    <insert id="insertUser" parameterType="com.ifhz.core.po.User">
+        insert into ty_user(
+        user_id,
+        login_name,
+        real_name,
+        password,
+        cellphone,
+        address,
+        status,
+        create_time,
+        type,
+        update_time
+        ) values(
         SEQ_USER.nextval,
-			#{loginName},
+        #{loginName},
         #{realName,jdbcType=VARCHAR},
-			#{password},
+        #{password},
         #{cellphone,jdbcType=VARCHAR},
         #{address,jdbcType=VARCHAR},
-			#{status},
-			sysdate,
-            #{type},
-            sysdate
-		)
+        #{status},
+        sysdate,
+        #{type},
+        sysdate
+        )
         <selectKey resultType="long" keyProperty="userId">
             SELECT SEQ_USER.CURRVAL FROM DUAL
-        </selectKey> 
-	</insert>
+        </selectKey>
+    </insert>
 
 
-    <select id="findById" resultType="com.ifhz.core.po.User" >
+    <select id="findById" resultType="com.ifhz.core.po.User">
         select
         user_id as userId,
         login_name as loginName,
@@ -49,60 +49,60 @@
     </select>
 
 
-	<update id="updateUserAdmin" parameterType="com.ifhz.core.po.User">
-		UPDATE ty_user
-		<set>
-                cellphone = #{cellphone},
-                address = #{address},
-                type = #{type},
-				STATUS = #{status},
-                update_time = sysdate
-		</set>
-		WHERE 
-			user_id = #{userId}
-	</update>
-	
-	<update id="updateUser" parameterType="com.ifhz.core.po.User">
-		update ty_user
-		<set>
-			<if test="cellphone != null">
-				cellphone = #{cellphone},
-			</if>
-			<if test="address != null">
-                address = #{address},
-			</if>
-		</set>
-			where user_id = #{userId}
-	</update>
-	
-	
-	<update id="updateUserPassword">
-		update ty_user
-		<set>	
-			password = #{password},
-		</set>
-		where
-             user_id = #{userId}
-	</update>
+    <update id="updateUserAdmin" parameterType="com.ifhz.core.po.User">
+        UPDATE ty_user
+        <set>
+            cellphone = #{cellphone},
+            address = #{address},
+            type = #{type},
+            STATUS = #{status},
+            update_time = sysdate
+        </set>
+        WHERE
+        user_id = #{userId}
+    </update>
 
-	<delete id="deleteUser">
+    <update id="updateUser" parameterType="com.ifhz.core.po.User">
+        update ty_user
+        <set>
+            <if test="cellphone != null">
+                cellphone = #{cellphone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+
+    <update id="updateUserPassword">
+        update ty_user
+        <set>
+            password = #{password},
+        </set>
+        where
+        user_id = #{userId}
+    </update>
+
+    <delete id="deleteUser">
         delete from 
         	 ty_user
         where 
              user_id=#{id}
     </delete>
 
-    <select id="queryAllUser"  resultType="com.ifhz.core.vo.UserVo">
-        select u.user_id       as userId,
-        u.login_name    as loginName,
-        u.real_name     as realName,
+    <select id="queryAllUser" resultType="com.ifhz.core.vo.UserVo">
+        select u.user_id as userId,
+        u.login_name as loginName,
+        u.real_name as realName,
         u.cellphone,
         u.address,
         u.type,
         u.status,
         u.create_time as createTime,
-        r.role_id     as roleId,
-        r.role_name   as roleName
+        r.role_id as roleId,
+        r.role_name as roleName
         from ty_user u
         join ty_user_role_ref urr
         on u.user_id = urr.user_id
@@ -110,12 +110,13 @@
         on urr.role_id = r.role_id
         where 1=1
         <if test="searchValue != null">
-            and ( u.login_name like  concat(concat('%',#{searchValue}),'%' ) or r.role_name like  concat(concat('%',#{searchValue}),'%' ) )
+            and ( u.login_name like concat(concat('%',#{searchValue}),'%' ) or r.role_name like
+            concat(concat('%',#{searchValue}),'%' ) )
         </if>
-        order by  u.create_time desc
+        order by u.create_time desc
     </select>
 
-    <select id="queryUserVoCount"  parameterType="String" resultType="long">
+    <select id="queryUserVoCount" parameterType="String" resultType="long">
         select count(distinct u.user_id) as countNum
         from ty_user u
         join ty_user_role_ref urr
@@ -126,11 +127,11 @@
         <if test="searchValue != null">
             and ( u.login_name = #{searchValue} or r.role_name = #{searchValue} )
         </if>
-        order by  u.create_time desc
+        order by u.create_time desc
     </select>
 
 
-	<select id="findUserByLoginName" resultType="com.ifhz.core.po.User" parameterType="String">
+    <select id="findUserByLoginName" resultType="com.ifhz.core.po.User" parameterType="String">
 		select
 		 		u.user_id       as userId,
                 u.login_name    as loginName,
@@ -149,18 +150,17 @@
 	</select>
 
 
-
     <select id="findUserByCondition" parameterType="com.ifhz.core.vo.UserVo" resultType="com.ifhz.core.po.User">
         select
-            u.user_id       as userId,
-            u.login_name    as loginName,
-            u.real_name     as realName,
-            u.cellphone,
-            u.address,
-            u.status,
-            u.type,
-            u.update_time as updateTime,
-            u.create_time as createTime
+        u.user_id as userId,
+        u.login_name as loginName,
+        u.real_name as realName,
+        u.cellphone,
+        u.address,
+        u.status,
+        u.type,
+        u.update_time as updateTime,
+        u.create_time as createTime
         from ty_user u
         join ty_user_role_ref urr
         on u.user_id = urr.user_id
@@ -185,7 +185,7 @@
     </select>
 
 
-	<select id="findUserByRoleId" resultType="com.ifhz.core.po.User">
+    <select id="findUserByRoleId" resultType="com.ifhz.core.po.User">
 		 select
             u.user_id       as userId,
             u.login_name    as loginName,
@@ -205,10 +205,11 @@
 		and
 		       r.role_id = #{roleId}
 	</select>
-	
-	
-	<select id="findUserByLoginNameAndNotId" resultType="long">
+
+
+    <select id="findUserByLoginNameAndNotId" resultType="long">
 		<![CDATA[
+
 			SELECT
 				user_id
 			FROM
@@ -217,7 +218,8 @@
 				login_name=#{loginName}
 			AND
 				user_id <> #{userId}
-		]]>
+
+        ]]>
 		
 	</select>
 
