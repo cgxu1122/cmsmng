@@ -2,13 +2,13 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>ordermon 全局配置,放在此xml中</comment>
-    <entry key="ftp.server.url">192.168.1.100</entry>
+    <entry key="ftp.server.url">192.168.1.103</entry>
     <entry key="ftp.server.port">21</entry>
     <entry key="ftp.server.username">ftp</entry>
     <entry key="ftp.server.password">ftp</entry>
     <entry key="ftp.server.deviceDir">/data/device/{0}/</entry>
     <entry key="ftp.server.apkDir">/data/apk/{0}/</entry>
-    <entry key="ftp.server.downloadUrl">http://192.168.1.100</entry>
+    <entry key="ftp.server.downloadUrl">http://192.168.1.103</entry>
     <entry key="export.num.max">50000</entry>
     <entry key="stat.pageSize">10000</entry>
     <entry key="wdj.query.url">http://115.29.46.109/interface/export?upload_dt=</entry>
