@@ -73,6 +73,30 @@ public final class AnalysisApkFile {
             LOGGER.error("paserApk error", e);
         } finally {
             long end = System.currentTimeMillis();
+            LOGGER.info("parseApkFile totalTime={}", end - start);
+        }
+
+        return result;
+    }
+
+    public static String parseApk(File toFile) {
+        long start = System.currentTimeMillis();
+        String result = null;
+        try {
+            String apkPath = toFile.getAbsolutePath();
+            if (isLinux) {
+                String winCmd = getLinuxCmd(apkPath);
+                String ret = execLinux(winCmd, WorkDir);
+                result = paserActivtyPath(ret);
+            } else {
+                String winCmd = getWinCmd(apkPath);
+                String ret = execWin(winCmd, WorkDir);
+                result = paserActivtyPath(ret);
+            }
+        } catch (Exception e) {
+            LOGGER.error("paserApk error", e);
+        } finally {
+            long end = System.currentTimeMillis();
             if (toFile != null) {
                 try {
                     toFile.deleteOnExit();

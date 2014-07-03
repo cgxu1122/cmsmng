@@ -1,15 +1,19 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.codec.AnalysisApkFile;
+import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
-import com.ifhz.core.util.MD5keyUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +77,8 @@ public class ApkInfoController extends BaseController {
         FileItem file = params.get("file");
         String errorMsg = null;
         JSONObject result = new JSONObject();
+
+
         if (StringUtils.isEmpty(file.getName())) {
             errorMsg = "请上传Apk文件！";
             result.put("errorMsg", errorMsg);
@@ -86,56 +92,64 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         String md5Value = null;
+        File localFile = null;
         String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
+            localFile = storeLocalFile(params, softName);
+            md5Value = DesencryptUtils.md5File(localFile);
             apkName = readInputStreamData(params.get("apkName").getInputStream());
             type = readInputStreamData(params.get("type").getInputStream());
-            FtpUtils.ftpUpload(file.getInputStream(),
-                    dir,
-                    softName
-            );
-            md5Value = MD5keyUtil.getMD5(file.getInputStream());
+            if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
+                errorMsg = "请正确输入产品名称！";
+                result.put("errorMsg", errorMsg);
+                return result;
+            }
+            //产品名称唯一性校验
+            boolean isRepeat = isRepeat(Type.Insert, null, apkName);
+            if (isRepeat) {
+                result.put("errorMsg", "产品名称重复，请重新输入！");
+                return result;
+            }
+
+            FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
         } catch (Exception e) {
             errorMsg = "上传文件出错，请重新上传或者联系管理员！";
             result.put("errorMsg", errorMsg);
+            LOGGER.error("insertApkInfo error", e);
             return result;
-        }
-        if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
-            errorMsg = "请正确输入产品名称！";
         }
         if (!StringUtils.isEmpty(errorMsg)) {
             result.put("errorMsg", errorMsg);
             return result;
         }
-        //产品名称唯一性校验
-        ApkInfo ai = new ApkInfo();
-        ai.setApkName(apkName.trim());
-        Pagination page = new Pagination();
-        page.setCurrentPage(1);
-        page.setPageSize(1);
-        List<ApkInfo> list = apkInfoService.queryByVo(page, ai);
-        if (list != null && list.size() > 0) {
-            errorMsg = "产品名称重复，请重新输入！";
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
+
         try {
-            String packagePath = AnalysisApkFile.paserApk(file.getInputStream());
-            ai.setPackagePath(packagePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+            ApkInfo po = new ApkInfo();
+            po.setApkName(apkName.trim());
+            if (localFile != null) {
+                String packagePath = AnalysisApkFile.parseApk(localFile);
+                if (StringUtils.isNotBlank(packagePath)) {
+                    po.setPackagePath(packagePath);
+                }
+            }
+            po.setApkName(apkName.trim());
+            po.setSoftName(softName);
+            po.setActive(JcywConstants.ACTIVE_Y);
+            po.setFtpPath(dir + softName);
+            po.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+            po.setMd5Value(md5Value);
+            po.setType(type);
+            apkInfoService.insert(po);
+            result.put("msg", "添加成功!");
+        } catch (Exception e) {
+            result.put("msg", "添加失败，请联系管理员");
+        } finally {
+            long end = System.currentTimeMillis();
+            LOGGER.info("parseApkFile totalTime={}", end - start);
+            deleteLocalFile(localFile);
         }
-        ai.setApkName(apkName.trim());
-        ai.setSoftName(softName);
-        ai.setActive(JcywConstants.ACTIVE_Y);
-        ai.setFtpPath(dir + softName);
-        ai.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
-        ai.setMd5Value(md5Value);
-        ai.setType(type);
-        apkInfoService.insert(ai);
-        result.put("msg", "添加成功!");
-        long end = System.currentTimeMillis();
-        LOGGER.info("parseApkFile totalTime={}", end - start);
+
+
         return result;
     }
 
@@ -153,13 +167,13 @@ public class ApkInfoController extends BaseController {
             apkId = readInputStreamData(params.get("apkId").getInputStream());
             apkName = readInputStreamData(params.get("apkName").getInputStream());
             type = readInputStreamData(params.get("type").getInputStream());
-        } catch (IOException e) {
-            errorMsg = "数据读取错误，请联系管理员！";
+        } catch (Exception e) {
+            errorMsg = "数据读取错误，请重新操作！";
             result.put("errorMsg", errorMsg);
             return result;
         }
         if (StringUtils.isEmpty(apkId)) {
-            errorMsg = "系统错误，请联系管理员！";
+            errorMsg = "系统错误，请重新操作！";
         } else if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
             errorMsg = "请正确输入产品名称！";
         }
@@ -173,44 +187,27 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         //产品名称唯一性校验
-        ApkInfo ai = new ApkInfo();
-        ai.setApkName(apkName.trim());
-        Pagination page = new Pagination();
-        page.setCurrentPage(1);
-        page.setPageSize(1);
-        List<ApkInfo> list = apkInfoService.queryByVo(page, ai);
-        if (list != null && list.size() > 0) {
-            for (ApkInfo repeatVersionAi : list) {
-                if (repeatVersionAi.getApkId() != apkInfo.getApkId()) {
-                    result.put("errorMsg", "产品名称重复，请重新输入！");
-                    return result;
-                }
-            }
+        boolean isRepeat = isRepeat(Type.Update, apkInfo.getApkId(), apkName);
+        if (isRepeat) {
+            result.put("errorMsg", "产品名称重复，请重新输入！");
+            return result;
         }
+        File localFile = null;
+        String md5Value = null;
         FileItem file = params.get("file");
+        String softName = file.getName();
+        String extName = softName.substring(softName.lastIndexOf(".") + 1, softName.length());
+        if (!"apk".equals(extName)) {
+            errorMsg = "请上传后缀名为Apk的文件！";
+            result.put("errorMsg", errorMsg);
+            return result;
+        }
+        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         if (StringUtils.isNotEmpty(file.getName())) {
             try {
-                String softName = file.getName();
-                String extName = softName.substring(softName.lastIndexOf(".") + 1, softName.length());
-                if (!"apk".equals(extName)) {
-                    errorMsg = "请上传后缀名为Apk的文件！";
-                    result.put("errorMsg", errorMsg);
-                    return result;
-                }
-                String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-                FtpUtils.ftpUpload(file.getInputStream(),
-                        dir,
-                        softName
-                );
-                apkInfo.setSoftName(softName);
-                apkInfo.setFtpPath(dir + softName);
-                apkInfo.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
-                if (!MD5keyUtil.getMD5(file.getInputStream()).equals(apkInfo.getMd5Value())) {
-                    apkInfo.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
-                    apkInfo.setUpdateTime(new Date());
-                }
-                String packagePath = AnalysisApkFile.paserApk(file.getInputStream());
-                apkInfo.setPackagePath(packagePath);
+                FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
+                localFile = storeLocalFile(params, softName);
+                md5Value = DesencryptUtils.md5File(localFile);
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);
@@ -218,14 +215,36 @@ public class ApkInfoController extends BaseController {
             } finally {
                 long end = System.currentTimeMillis();
                 LOGGER.info("parseApkFile totalTime={}", end - start);
+                deleteLocalFile(localFile);
             }
         }
-        apkInfo.setApkName(apkName.trim());
-        apkInfo.setType(type);
-        apkInfoService.update(apkInfo);
-        result.put("msg", "修改成功!");
-        long end = System.currentTimeMillis();
-        LOGGER.info("parseApkFile totalTime={}", end - start);
+
+        try {
+            if (StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
+                apkInfo.setMd5Value(md5Value);
+                apkInfo.setUpdateTime(new Date());
+            }
+            if (localFile != null) {
+                String packagePath = AnalysisApkFile.parseApk(localFile);
+                if (StringUtils.isNotBlank(packagePath)) {
+                    apkInfo.setPackagePath(packagePath);
+                }
+            }
+            apkInfo.setSoftName(softName);
+            apkInfo.setFtpPath(dir + softName);
+            apkInfo.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+            apkInfo.setApkName(apkName.trim());
+            apkInfo.setType(type);
+            apkInfoService.update(apkInfo);
+            result.put("msg", "修改成功!");
+        } catch (Exception e) {
+            LOGGER.error("updateApkInfo error", e);
+            result.put("msg", "修改失败，请联系管理员");
+        } finally {
+            long end = System.currentTimeMillis();
+            LOGGER.info("parseApkFile totalTime={}", end - start);
+            deleteLocalFile(localFile);
+        }
 
         return result;
     }
@@ -251,6 +270,78 @@ public class ApkInfoController extends BaseController {
             result.put("msg", "删除成功!");
         }
         return result;
+    }
+
+
+    private File storeLocalFile(Map<String, FileItem> params, String softName) throws Exception {
+        FileItem file = params.get("file");
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
+        buffer.append(File.separator);
+        buffer.append(new Date().getTime());
+        String localDirPath = buffer.toString();
+        File localDir = new File(localDirPath);
+        if (!localDir.exists()) {
+            localDir.mkdirs();
+        }
+        buffer.append(File.separator);
+        buffer.append(softName);
+
+        File localFile = new File(buffer.toString());
+        ByteStreams.copy(file.getInputStream(), Files.newOutputStreamSupplier(localFile));
+
+        return localFile;
+    }
+
+    private enum Type {
+        Insert, Update;
+    }
+
+
+    private boolean isRepeat(Type type, Long apkId, String apkName) {
+        ApkInfo temp = new ApkInfo();
+        temp.setApkName(apkName.trim());
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
+        if (CollectionUtils.isNotEmpty(list)) {
+            if (type == Type.Update) {
+                for (ApkInfo repeatVersionAi : list) {
+                    if (repeatVersionAi.getApkId() != apkId) {
+                        return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+
+        }
+        /*
+        ApkInfo temp = new ApkInfo();
+        temp.setApkName(apkName.trim());
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(1);
+        List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
+        if (list != null && list.size() > 0) {
+            errorMsg = "产品名称重复，请重新输入！";
+            result.put("errorMsg", errorMsg);
+            return result;
+        }
+         */
+
+        return false;
+    }
+
+    private void deleteLocalFile(File localFile) {
+        if (localFile != null) {
+            try {
+                localFile.deleteOnExit();
+                localFile.delete();
+            } catch (Exception e) {
+            }
+        }
     }
 
 }

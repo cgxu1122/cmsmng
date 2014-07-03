@@ -1,14 +1,15 @@
 package com.ifhz.core.base;
 
 import com.ifhz.core.base.commons.util.ExportDataUtil;
-import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import com.ifhz.core.service.export.model.BaseExportModel;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ import java.util.Map;
  * @author radishlee
  */
 public class BaseController {
+
+    @Autowired
+    private UserService userService;
+
+    private User staffInfo;
 
     public Map<String, FileItem> paserMultiData(HttpServletRequest request) {
         Map<String, FileItem> map = new HashMap<String, FileItem>();
@@ -53,17 +59,13 @@ public class BaseController {
             while ((b = in.read(tt)) != -1) {
             }
             result = new String(tt, "utf-8");
-            in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(in);
         }
         return result;
     }
 
-    @Autowired
-    private UserService userService;
-
-    private User staffInfo;
 
     public User getCuffStaff(){
         ShiroDbRealm.ShiroUser staff = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
@@ -103,10 +105,10 @@ public class BaseController {
             while ((len = inStream.read(b)) > 0) {
                 response.getOutputStream().write(b, 0, len);
             }
-            inStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            IOUtils.closeQuietly(inStream);
             if (file.exists()) {
                 System.gc();
                 file.delete();
