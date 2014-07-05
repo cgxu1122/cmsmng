@@ -185,6 +185,9 @@
         <if test="laowuId != null and laowuId != ''">
             and LAOWU_ID = #{laowuId}
         </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            and DEVICE_CODE = #{deviceCode}
+        </if>
         <if test="ua != null and ua != ''">
             and UA = #{ua}
         </if>

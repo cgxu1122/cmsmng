@@ -48,9 +48,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        ( CHANNEL_ID,PARENT_ID,GROUP_ID,MNG_ID,USER_ID,CHANNEL_NAME,"DESC",LAOWU_ID,QUERY_IMEI_SOURCE)
+        ( CHANNEL_ID,PARENT_ID,GROUP_ID,MNG_ID,USER_ID,CHANNEL_NAME,"DESC",LAOWU_ID,LEAF,"TYPE",QUERY_IMEI_SOURCE)
         values
-        ("SEQ_CHANNEL_INFO".nextval,#{parentId},#{groupId},#{mngId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{channelName},#{desc,jdbcType=VARCHAR},#{laowuId,jdbcType=BIGINT},#{queryImeiSource,jdbcType=VARCHAR})
+        ("SEQ_CHANNEL_INFO".nextval,#{parentId},#{groupId},#{mngId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{channelName},#{desc,jdbcType=VARCHAR},#{laowuId,jdbcType=BIGINT},#{leaf,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{queryImeiSource,jdbcType=VARCHAR})
         ]]>
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.ChannelInfo">

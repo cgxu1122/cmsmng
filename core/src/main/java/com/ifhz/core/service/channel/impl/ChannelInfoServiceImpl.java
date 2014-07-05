@@ -2,11 +2,13 @@ package com.ifhz.core.service.channel.impl;
 
 import com.ifhz.core.adapter.ChannelInfoAdapter;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
+import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.channel.ChannelInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,7 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     public int update(ChannelInfo record) {
         if (record.getUserId() != null) {
             User user = userService.findById(record.getUserId());
-            if (user != null) {
+            if (user != null && (record.getAddress() != null || record.getPhone() != null)) {
                 user.setPassword(record.getPassword());
                 user.setAddress(record.getAddress());
                 user.setRealName(record.getContact());
@@ -73,7 +75,23 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
 
     @Override
     public int delete(ChannelInfo record) {
+        //删除所有子节点
+        deleteSubChannel(record.getChannelId());
         return channelInfoAdapter.delete(record);
+    }
+
+    private void deleteSubChannel(Long parentId) {
+        if (parentId == null) return;
+        ChannelInfo ci = new ChannelInfo();
+        ci.setParentId(parentId);
+        ci.setActive(JcywConstants.ACTIVE_Y);
+        List<ChannelInfo> subChannelList = channelInfoAdapter.queryByVo(null, ci);
+        if (CollectionUtils.isNotEmpty(subChannelList)) {
+            for (ChannelInfo subChannelInfo : subChannelList) {
+                channelInfoAdapter.delete(subChannelInfo);
+                deleteSubChannel(subChannelInfo.getChannelId());
+            }
+        }
     }
 
     @Override

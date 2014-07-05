@@ -7,12 +7,19 @@
 <%@ include file="/common/header.jsp" %>
 <title>Demo</title>
 <script type="text/javascript">
+var userType = "${userType}";
+
 $(document).ready(function () {
     initPage();
 });
 function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新增');
     $('#fm').form('clear');
+    if (userType == "admin" && $("#parentIdCondition").val() == "-1") {
+        $("#selectMngDiv").show();
+    } else {
+        $("#selectMngDiv").hide();
+    }
 }
 function saverow() {
     $("#groupId").val("${groupId}");
@@ -41,6 +48,11 @@ function editrow() {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
         $('#upfm').form('clear');
         $('#upfm').form('load', row);
+        if (userType == "admin" && $("#parentIdCondition").val() == "-1") {
+            $("#updateMngDiv").show();
+        } else {
+            $("#updateMngDiv").hide();
+        }
     }
 }
 function saveUpdate() {
@@ -253,7 +265,7 @@ function selectMng(mngId, mngName, type) {
                 <tr>
                     <td>
                         <input type="text" name="searchValue" id="searchValue" placeholder="渠道名称"/>
-                        <input type="hidden" name="parentIdCondition" id="parentIdCondition"/>
+                        <input type="hidden" name="parentIdCondition" id="parentIdCondition" value="-1"/>
                     </td>
                     <td align="center">
                         <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
@@ -308,7 +320,7 @@ function selectMng(mngId, mngName, type) {
             <label>联系方式:</label>
             <input id="phone" name="phone" class="easyui-validatebox" maxlength="50">
         </div>
-        <div class="fitem" style="margin-left:13px">
+        <div class="fitem" style="margin-left:13px" id="selectMngDiv">
             <label><font color="red">*</font>负责人:</label>
             <input type="hidden" id="mngId" name="mngId">
             <input type="text" id="mngName" name="mngName" readonly="readonly">
@@ -348,27 +360,22 @@ function selectMng(mngId, mngName, type) {
             <input type="text" name="password" class="easyui-validatebox"
                    required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
-            <label><font color="red">*</font>地址:</label>
-            <input type="text" name="address" class="easyui-validatebox"
-                   required="true">
+        <div class="fitem" style="margin-left:31px">
+            <label>地址:</label>
+            <input type="text" name="address" class="easyui-validatebox">
         </div>
         <div class="fitem" style="margin-left:13px">
             <label><font color="red">*</font>联系人:</label>
             <input type="text" name="contact" class="easyui-validatebox"
                    required="true">
         </div>
-        <div class="fitem">
-            <label><font color="red">*</font>联系方式:</label>
-            <input type="text" name="phone" class="easyui-validatebox"
-                   required="true">
+        <div class="fitem" style="margin-left:7px">
+            <label>联系方式:</label>
+            <input type="text" name="phone" class="easyui-validatebox">
         </div>
-        <div class="fitem" style="margin-left:13px">
+        <div class="fitem" style="margin-left:13px" id="updateMngDiv">
             <label><font color="red">*</font>负责人:</label>
-            <input type="hidden" name="mngId" id="upMngId">
             <input type="text" name="mngName" id="upMngName" readonly="readonly">
-            <a href="javascript:void(0)"
-               onclick="javascript:showMngDialog(2,$('#upMngId').val())">选择负责人</a>
         </div>
         <div class="fitem" style="margin-left:7px">
             <label>劳务公司:</label>

@@ -56,4 +56,11 @@ public final class CurrentUserUtil {
 
         return null;
     }
+
+    public static Integer getType() {
+        //todo
+        ShiroDbRealm.ShiroUser user = getShiroUser();
+        if (user.roleId == 2) return 2;
+        return 1;
+    }
 }

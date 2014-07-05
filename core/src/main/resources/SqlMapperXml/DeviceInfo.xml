@@ -77,7 +77,7 @@
             and di.ACTIVE = #{record.active}
         </if>
         <if test="record.deviceCodeCondition != null and record.deviceCodeCondition != ''">
-            and di.DEVICE_CODE LIKE concat(concat('%',#{record.deviceCodeCondition},'%' ))
+            and di.DEVICE_CODE LIKE concat(concat('%',#{record.deviceCodeCondition}),'%' )
         </if>
         ORDER by di.UPDATE_TIME DESC
     </select>

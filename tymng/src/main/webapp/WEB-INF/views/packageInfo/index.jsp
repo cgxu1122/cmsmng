@@ -11,6 +11,15 @@
 $(document).ready(function () {
     initPage();
 });
+function moveUp(obj) {
+    var pre = obj.prev();
+    obj.insertBefore(pre);
+}
+function moveDown(obj) {
+    var next = obj.next();
+    next.insertBefore(obj);
+}
+
 var addApkList;
 var updateApkList;
 function addrow() {
@@ -76,6 +85,8 @@ function editrow() {
                         "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
                         "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
                         "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();'>删除</a></td>" +
                         "</tr>";
                 $('#upApkList').append(apkHtml);
@@ -228,6 +239,7 @@ function searchApkEvt() {
         queryParams: {apkNameCondition: value}
     });
 }
+
 function selectApk(apkId, apkName, apkType, type) {
     var autoRunVal = $("#autoRun" + apkId).val();
     var desktopIconVal = $("#desktopIcon" + apkId).val();
@@ -247,6 +259,8 @@ function selectApk(apkId, apkName, apkType, type) {
                 "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
                 "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
                 "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
                 "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateApkList.pop(" + apkId + ");'>删除</a></td>" +
                 "</tr>";
         if (!updateApkList.in_array(apkId)) {
@@ -261,6 +275,8 @@ function selectApk(apkId, apkName, apkType, type) {
                 "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
                 "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
                 "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
                 "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addApkList.pop(" + apkId + ");'>删除</a></td>" +
                 "</tr>";
         if (!addApkList.in_array(apkId)) {
@@ -268,6 +284,7 @@ function selectApk(apkId, apkName, apkType, type) {
             $('#addApkList').append(apkHtml);
         }
     }
+
 }
 </script>
 </head>
@@ -297,7 +314,7 @@ function selectApk(apkId, apkName, apkType, type) {
     </div>
 </div>
 <div id="dg"></div>
-<div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+<div id="dlg" class="easyui-dialog" style="width:700px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle">安装包管理</div>
@@ -344,7 +361,7 @@ function selectApk(apkId, apkName, apkType, type) {
        onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 </div>
 
-<div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
+<div id="updatedlg" class="easyui-dialog" style="width:700px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" novalidate>
@@ -386,7 +403,7 @@ function selectApk(apkId, apkName, apkType, type) {
 </div>
 
 
-<div id="apkdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="apkdlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#apkdlg-buttons">
     <div>

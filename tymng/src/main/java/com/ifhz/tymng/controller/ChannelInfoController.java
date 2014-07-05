@@ -49,6 +49,11 @@ public class ChannelInfoController extends BaseController {
         if (JcywConstants.CHANNEL_GROUP_TY_ID_1.toString().equals(groupId)) {
             return new ModelAndView("channelInfo/indexTY", result);
         } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
+            result.put("userType", "admin");
+            //如果是地包渠道的负责人登录，则进行数据过滤
+            if (UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType()) {
+                result.put("userType", "manager");
+            }
             return new ModelAndView("channelInfo/indexDB", result);
         } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
             return new ModelAndView("channelInfo/indexQT", result);
@@ -86,6 +91,10 @@ public class ChannelInfoController extends BaseController {
         ci.setActive(JcywConstants.ACTIVE_Y);
         ci.setGroupId(Long.parseLong(groupId));
         ci.setParentId(parentId);
+        //如果是地包渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(null, ci);
         if (list != null && list.size() > 0) {
             for (ChannelInfo channelInfo : list) {
@@ -175,6 +184,10 @@ public class ChannelInfoController extends BaseController {
             ci.setParentId(Long.parseLong(parentIdCondition));
         }
         if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
+        //如果是地包渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -227,17 +240,33 @@ public class ChannelInfoController extends BaseController {
             result.put("errorMsg", errorMsg);
             return result;
         }
+        String mngId = request.getParameter("mngId");
+        //如果是系统管理员添加地包一级渠道，则mngId为必选项
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_ROLE_ADMIN == CurrentUserUtil.getRoleId() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
+            if (StringUtils.isEmpty(mngId)) {
+                errorMsg = "请选择负责人！";
+                result.put("errorMsg", errorMsg);
+                return result;
+            }
+        }
+        if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
+            ci.setMngId(Long.parseLong(mngId));
+        }
+        //如果是负责人添加地包一级渠道，则mngId为当前登录人
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         if (!StringUtils.isEmpty(parentId)) {//如果有父级数据则添加上parentId，并且更改父级机构叶子节点属性
             ci.setParentId(Long.parseLong(parentId));
             ChannelInfo parentChannelInfo = channelInfoService.getById(Long.parseLong(parentId));
+            //将新添加的渠道负责人设置为和父渠道同一负责人
+            if (parentChannelInfo != null) {
+                ci.setMngId(parentChannelInfo.getMngId());
+            }
             if (parentChannelInfo != null && JcywConstants.BASE_CONSTANT_Y.equals(parentChannelInfo.getLeaf())) {
                 parentChannelInfo.setLeaf(JcywConstants.BASE_CONSTANT_N);
                 channelInfoService.update(parentChannelInfo);
             }
-        }
-        String mngId = request.getParameter("mngId");
-        if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
-            ci.setMngId(Long.parseLong(mngId));
         }
         String laowuId = request.getParameter("laowuId");
         if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
@@ -266,6 +295,7 @@ public class ChannelInfoController extends BaseController {
         ci.setContact(contact);
         String phone = request.getParameter("phone");
         ci.setPhone(phone);
+        ci.setLeaf(JcywConstants.BASE_CONSTANT_Y);
         channelInfoService.insert(ci);
         result.put("msg", "添加成功!");
         return result;
