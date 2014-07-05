@@ -52,7 +52,7 @@ public class DeviceApiController {
                     for (String processLog : processList) {
                         LOGGER.info("receive encode processLog={}", processLog);
                         if (StringUtils.isNotBlank(processLog)) {
-                            //解码
+                            //解码 手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
                             String source = CodecUtils.decode(processLog).trim();
                             LOGGER.info("receive decode processLog={}", source);
                             String[] array = StringUtils.split(source, "|");
