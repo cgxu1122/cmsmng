@@ -86,10 +86,10 @@
     </update>
 
     <delete id="deleteUser">
-        delete from 
-        	 ty_user
-        where 
-             user_id=#{id}
+        delete from
+        ty_user
+        where
+        user_id=#{id}
     </delete>
 
     <select id="queryAllUser" resultType="com.ifhz.core.vo.UserVo">
@@ -132,22 +132,22 @@
 
 
     <select id="findUserByLoginName" resultType="com.ifhz.core.po.User" parameterType="String">
-		select
-		 		u.user_id       as userId,
-                u.login_name    as loginName,
-                u.real_name     as realName,
-                u.password,
-                u.cellphone,
-                u.address,
-                u.status,
-                u.type,
-                u.update_time as updateTime,
-                u.create_time as createTime
-		from
-				ty_user u
-	    where
-	    		login_name=#{loginName}
-	</select>
+        select
+        u.user_id as userId,
+        u.login_name as loginName,
+        u.real_name as realName,
+        u.password,
+        u.cellphone,
+        u.address,
+        u.status,
+        u.type,
+        u.update_time as updateTime,
+        u.create_time as createTime
+        from
+        ty_user u
+        where
+        login_name=#{loginName}
+    </select>
 
 
     <select id="findUserByCondition" parameterType="com.ifhz.core.vo.UserVo" resultType="com.ifhz.core.po.User">
@@ -186,29 +186,29 @@
 
 
     <select id="findUserByRoleId" resultType="com.ifhz.core.po.User">
-		 select
-            u.user_id       as userId,
-            u.login_name    as loginName,
-            u.real_name     as realName,
-            u.cellphone,
-            u.address,
-            u.status,
-            u.type,
-            u.update_time as updateTime,
-            u.create_time as createTime
+        select
+        u.user_id as userId,
+        u.login_name as loginName,
+        u.real_name as realName,
+        u.cellphone,
+        u.address,
+        u.status,
+        u.type,
+        u.update_time as updateTime,
+        u.create_time as createTime
         from ty_user u
         join ty_user_role_ref urr
         on u.user_id = urr.user_id
         join ty_role r
         on urr.role_id = r.role_id
         where 1=1
-		and
-		       r.role_id = #{roleId}
-	</select>
+        and
+        r.role_id = #{roleId}
+    </select>
 
 
     <select id="findUserByLoginNameAndNotId" resultType="long">
-		<![CDATA[
+        <![CDATA[
 
 			SELECT
 				user_id
@@ -220,7 +220,30 @@
 				user_id <> #{userId}
 
         ]]>
-		
-	</select>
 
+    </select>
+
+
+    <select id="queryAllUserByType" resultType="com.ifhz.core.vo.UserVo">
+        select u.user_id as userId,
+        u.login_name as loginName,
+        u.real_name as realName,
+        u.cellphone,
+        u.address,
+        u.type,
+        u.status,
+        u.create_time as createTime,
+        r.role_id as roleId,
+        r.role_name as roleName
+        from ty_user u
+        join ty_user_role_ref urr
+        on u.user_id = urr.user_id
+        join ty_role r
+        on urr.role_id = r.role_id
+        where u.type = #{type}
+        <if test="searchValue != null">
+            and u.login_name like concat(concat('%',#{searchValue}),'%' )
+        </if>
+        order by u.create_time desc
+    </select>
 </mapper>

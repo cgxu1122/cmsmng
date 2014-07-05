@@ -1,8 +1,10 @@
 package com.ifhz.core.service.stat.impl;
 
+import com.ifhz.core.adapter.ChannelGroupAdapter;
 import com.ifhz.core.adapter.ModelInfoAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.ChannelGroup;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.stat.ProductStatQueryService;
@@ -25,6 +27,8 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     private ProductStatAdapter productStatAdapter;
     @Resource(name = "modelInfoAdapter")
     private ModelInfoAdapter modelInfoAdapter;
+    @Resource(name = "channelGroupAdapter")
+    private ChannelGroupAdapter channelGroupAdapter;
 
     @Override
     public List<ProductStat> queryByVo(Pagination page, ProductStat record) {
@@ -36,6 +40,12 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
                     ModelInfo modelInfo = modelInfoAdapter.getByGroupIdAndUa(productStat.getGroupId(), ua);
                     if (modelInfo != null) {
                         productStat.setModelName(modelInfo.getModelName());
+                    }
+                }
+                if (productStat.getGroupId() != null) {
+                    ChannelGroup channelGroup = channelGroupAdapter.getById(productStat.getGroupId());
+                    if (channelGroup != null) {
+                        productStat.setGroupName(channelGroup.getGroupName());
                     }
                 }
             }

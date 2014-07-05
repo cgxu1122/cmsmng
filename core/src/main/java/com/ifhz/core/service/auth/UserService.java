@@ -97,6 +97,8 @@ public interface UserService {
 
     List<UserVo> findAllUser(String searchValue);
 
+    List<UserVo> findUsersByType(int type, String searchValue);
+
     Long getUserVoCount(String searchValue);
 
     List<Role> findAllRoleSon(long roleId);

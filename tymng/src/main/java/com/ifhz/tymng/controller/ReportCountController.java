@@ -72,6 +72,7 @@ public class ReportCountController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String ua = request.getParameter("ua");
+        String deviceCode = request.getParameter("deviceCode");
         String channelId = request.getParameter("channelId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
@@ -82,6 +83,9 @@ public class ReportCountController extends BaseController {
         }
         if (StringUtils.isNotEmpty(channelId)) {
             logStat.setChannelId(Long.parseLong(channelId));
+        }
+        if (StringUtils.isNotEmpty(deviceCode)) {
+            logStat.setDeviceCode(deviceCode.trim());
         }
         if (StringUtils.isNotEmpty(ua)) {
             logStat.setUa(ua.trim());
@@ -108,15 +112,23 @@ public class ReportCountController extends BaseController {
     @ResponseBody
     public void exportData(HttpServletRequest request, HttpServletResponse response) {
         String ua = request.getParameter("ua");
+        String deviceCode = request.getParameter("deviceCode");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
+        String channelId = request.getParameter("channelId");
         LogStat logStat = new LogStat();
         if (StringUtils.isNotEmpty(groupId)) {
             logStat.setGroupId(Long.parseLong(groupId));
         }
+        if (StringUtils.isNotEmpty(channelId)) {
+            logStat.setChannelId(Long.parseLong(channelId));
+        }
         if (StringUtils.isNotEmpty(ua)) {
             logStat.setUa(ua.trim());
+        }
+        if (StringUtils.isNotEmpty(deviceCode)) {
+            logStat.setDeviceCode(deviceCode.trim());
         }
         if (StringUtils.isNotEmpty(startDate)) {
             logStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
@@ -127,16 +139,36 @@ public class ReportCountController extends BaseController {
         List<LogStat> list = logStatQueryService.queryByVo(null, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
             LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
+            logStat.setModelName("合计:");
             list.add(countLogStat);
         }
+        String exportType = request.getParameter("exportType");
         BaseExportModel exportModel = new BaseExportModel();
         Map<String, String> titleMap = new LinkedHashMap<String, String>();
         titleMap.put("processDate", "日期");
         titleMap.put("modelName", "机型全称");
         titleMap.put("channelName", "仓库名称");
-        titleMap.put("devicePrsDayNum", "装机数量");
-        titleMap.put("deviceUpdDayNum", "装机到达数量");
-        titleMap.put("prsActiveTotalNum", "累计到达数量");
+        if ("1".equals(exportType)) {//按仓库查询
+            titleMap.put("devicePrsDayNum", "装机数量");
+            titleMap.put("deviceUpdDayNum", "装机到达数量");
+            titleMap.put("prsActiveTotalNum", "累计到达数量");
+            titleMap.put("prsActiveValidNum", "有效到达数量");
+            titleMap.put("prsActiveInvalidNum", "无效到达数量");
+            titleMap.put("prsInvalidReplaceNum", "替换数量");
+            titleMap.put("prsInvalidUninstallNum", "卸载数量");
+        } else if ("2".equals(exportType)) {//按渠道查询加工数据
+            titleMap.put("deviceCode", "设备编码");
+            titleMap.put("devicePrsDayNum", "装机数量");
+        } else if ("3".equals(exportType)) {//按渠道查询到达数据
+            titleMap.put("deviceCode", "设备编码");
+            titleMap.put("deviceUpdDayNum", "装机到达数量");
+            titleMap.put("prsActiveTotalNum", "累计到达数量");
+            titleMap.put("prsActiveValidNum", "有效到达数量");
+            titleMap.put("prsActiveInvalidNum", "无效到达数量");
+            titleMap.put("prsInvalidReplaceNum", "替换数量");
+            titleMap.put("prsInvalidUninstallNum", "卸载数量");
+        }
+
         exportModel.setTitleMap(titleMap);
         exportModel.setDataList(list);
         super.exportXLSData(request, response, exportModel);
@@ -152,12 +184,20 @@ public class ReportCountController extends BaseController {
         if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
+        String ua = request.getParameter("ua");
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
         ProductStat productStat = new ProductStat();
+        if (StringUtils.isNotEmpty(groupId)) {
+            productStat.setGroupId(Long.parseLong(groupId));
+        }
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(ua)) {
+            productStat.setUa(ua.trim());
         }
         if (StringUtils.isNotEmpty(startDate)) {
             productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
@@ -166,6 +206,10 @@ public class ReportCountController extends BaseController {
             productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         List<ProductStat> list = productStatQueryService.queryByVo(page, productStat);
+        if (CollectionUtils.isNotEmpty(list)) {
+            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
+            list.add(countProductStat);
+        }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);
@@ -175,13 +219,20 @@ public class ReportCountController extends BaseController {
     @RequestMapping(value = "/exportProductData")
     @ResponseBody
     public void exportProductData(HttpServletRequest request, HttpServletResponse response) {
+        String ua = request.getParameter("ua");
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
         ProductStat productStat = new ProductStat();
+        if (StringUtils.isNotEmpty(groupId)) {
+            productStat.setGroupId(Long.parseLong(groupId));
+        }
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(ua)) {
+            productStat.setUa(ua.trim());
         }
         if (StringUtils.isNotEmpty(startDate)) {
             productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
@@ -190,11 +241,18 @@ public class ReportCountController extends BaseController {
             productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         List<ProductStat> list = productStatQueryService.queryByVo(null, productStat);
+        if (CollectionUtils.isNotEmpty(list)) {
+            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
+            list.add(countProductStat);
+        }
         BaseExportModel exportModel = new BaseExportModel();
         Map<String, String> titleMap = new LinkedHashMap<String, String>();
         titleMap.put("processDate", "日期");
         titleMap.put("modelName", "机型名称");
+        titleMap.put("groupName", "渠道组织");
         titleMap.put("productPrsDayNum", "装机数量");
+        titleMap.put("productUpdDayNum", "装机到达数量");
+        titleMap.put("prsActiveTotalNum", "累计到达数量");
         exportModel.setTitleMap(titleMap);
         exportModel.setDataList(list);
         super.exportXLSData(request, response, exportModel);

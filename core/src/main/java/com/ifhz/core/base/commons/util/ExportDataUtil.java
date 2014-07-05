@@ -105,9 +105,11 @@ public class ExportDataUtil {
                             try {
                                 Field field = obj.getClass().getDeclaredField(keyString);
                                 field.setAccessible(true);
-                                data[j] = field.get(obj).toString();
-                                if (field.get(obj) instanceof Date) {
-                                    data[j] = DateFormatUtils.format((Date) field.get(obj), GlobalConstants.DATE_FORMAT_DPT);
+                                if (field.get(obj) != null) {
+                                    data[j] = field.get(obj).toString();
+                                    if (field.get(obj) instanceof Date) {
+                                        data[j] = DateFormatUtils.format((Date) field.get(obj), GlobalConstants.DATE_FORMAT_DPT);
+                                    }
                                 }
                                 j++;
                             } catch (IllegalAccessException e) {

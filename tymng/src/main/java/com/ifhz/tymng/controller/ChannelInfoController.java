@@ -3,6 +3,7 @@ package com.ifhz.tymng.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
@@ -11,6 +12,7 @@ import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.channel.ChannelGroupService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
+import com.ifhz.core.vo.UserVo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -376,4 +378,21 @@ public class ChannelInfoController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/listMng", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listMng(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String searchValue = request.getParameter("searchValue");
+        List<UserVo> list = userService.findUsersByType(UserConstants.USER_TYPE_MANAGER, searchValue);
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
 }
