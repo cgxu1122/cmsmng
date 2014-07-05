@@ -130,4 +130,5 @@ public interface UserMapper {
     List<UserVo> queryAllUserByType(int type);
 
     List<Role> findAllRoleSon(long roleId);
+
 }
