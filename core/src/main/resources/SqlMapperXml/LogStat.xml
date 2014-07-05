@@ -145,6 +145,9 @@
         <if test="record.groupId != null and record.groupId != ''">
             and GROUP_ID = #{record.groupId}
         </if>
+        <if test="record.deviceCode != null and record.deviceCode != ''">
+            and DEVICE_CODE = #{record.deviceCode}
+        </if>
         <if test="record.channelId != null and record.channelId != ''">
             and CHANNEL_ID = #{record.channelId}
         </if>

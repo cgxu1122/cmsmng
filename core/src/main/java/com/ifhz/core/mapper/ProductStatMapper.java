@@ -27,5 +27,5 @@ public interface ProductStatMapper {
 
     public List<ProductStat> queryByVo(Pagination page, @Param(value = "record") ProductStat record);
 
-    public ProductStat queryCountByVo(ProductStat record);
+    public ProductStat queryCountByVO(ProductStat record);
 }
