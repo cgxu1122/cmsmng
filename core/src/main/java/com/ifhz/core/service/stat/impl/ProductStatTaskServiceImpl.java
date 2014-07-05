@@ -126,7 +126,8 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
                         request.setStartTime(startTime);
                         request.setEndTime(endTime);
                         request.setMd5Key(value.getDataLogPmd5Key());
-                        request.setProduct(true);
+                        request.setProductSwitch(true);
+
 
                         long productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
                         long counterProductDayNum = dataLogQueryService.queryCounterProductDayNum(request);
@@ -140,7 +141,7 @@ public class ProductStatTaskServiceImpl implements ProductStatTaskService {
                         request.setStartTime(startTime);
                         request.setEndTime(endTime);
                         request.setMd5Key(value.getDataLogPmd5Key());
-                        request.setProduct(true);
+                        request.setProductSwitch(true);
 
                         long productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
                         long counterProductDayNum = dataLogQueryService.queryCounterProductDayNum(request);

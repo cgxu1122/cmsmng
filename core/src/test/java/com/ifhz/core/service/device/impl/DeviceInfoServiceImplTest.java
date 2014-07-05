@@ -1,6 +1,7 @@
 package com.ifhz.core.service.device.impl;
 
 import com.ifhz.core.po.DeviceInfo;
+import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.device.DeviceInfoService;
 import com.test.BaseTest;
 import org.junit.Test;
@@ -10,10 +11,30 @@ public class DeviceInfoServiceImplTest extends BaseTest {
 
     @Autowired
     private DeviceInfoService deviceInfoService;
+    @Autowired
+    private ChannelInfoService channelInfoService;
 
     @Test
     public void testGetById() throws Exception {
         log(deviceInfoService.getById(2L));
+        /*long[] channels = new long[30];
+        for(int i = 0; i <30 ; i++){
+            channels[i] = i+21L;
+        }
+        String str = "Device";
+        Random random = new Random();
+        for(int i = 0; i < 101; i++) {
+            String d = str + i;
+            long channelId = channels[random.nextInt(30)];
+            ChannelInfo channelInfo = channelInfoService.getById(channelId);
+            DeviceInfo info = new DeviceInfo();
+            info.setDeviceCode(d);
+            info.setChannelId(channelInfo.getChannelId());
+            info.setGroupId(channelInfo.getGroupId());
+
+            deviceInfoService.insert(info);
+        }*/
+
     }
 
     @Test

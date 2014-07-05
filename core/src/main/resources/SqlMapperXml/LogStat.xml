@@ -68,7 +68,6 @@
         #{batchCode,jdbcType=VARCHAR},
         #{deviceCode,jdbcType=VARCHAR},
         #{processDate,jdbcType=DATE},
-        #{deviceCode,jdbcType=VARCHAR},
         #{laowuId,jdbcType=BIGINT},
         #{devicePrsDayNum,jdbcType=BIGINT},
         #{deviceUpdDayNum,jdbcType=BIGINT},

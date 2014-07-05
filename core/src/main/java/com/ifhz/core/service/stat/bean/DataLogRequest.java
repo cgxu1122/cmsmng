@@ -16,7 +16,10 @@ public class DataLogRequest {
     private Date startTime;
     private Date endTime;
     private Integer active;
-    private boolean isProduct = false;
+    //true 产品统计查询， false，流水统计
+    private boolean productSwitch = false;
+    //true 总条数 ，false 非总条数
+    private boolean statSwitch = false;
 
 
     public Integer getActive() {
@@ -67,11 +70,19 @@ public class DataLogRequest {
         this.endTime = endTime;
     }
 
-    public boolean isProduct() {
-        return isProduct;
+    public boolean isProductSwitch() {
+        return productSwitch;
     }
 
-    public void setProduct(boolean isProduct) {
-        this.isProduct = isProduct;
+    public void setProductSwitch(boolean productSwitch) {
+        this.productSwitch = productSwitch;
+    }
+
+    public boolean isStatSwitch() {
+        return statSwitch;
+    }
+
+    public void setStatSwitch(boolean statSwitch) {
+        this.statSwitch = statSwitch;
     }
 }

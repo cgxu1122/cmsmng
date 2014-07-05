@@ -39,6 +39,7 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
         long deviceUpdDayNum = 0L;
         String tableName = splitTableService.getCurrentTableName(dataLogRequest.getDate());
         if (StringUtils.isNotBlank(tableName)) {
+            dataLogRequest.setTableName(tableName);
             deviceUpdDayNum = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
         }
 
@@ -89,9 +90,10 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
     @Override
     public long queryProductUpdDayNum(DataLogRequest dataLogRequest) {
         long productUpdDayNum = 0L;
-        dataLogRequest.setProduct(true);
+        dataLogRequest.setProductSwitch(true);
         String tableName = splitTableService.getCurrentTableName(dataLogRequest.getDate());
         if (StringUtils.isNotBlank(tableName)) {
+            dataLogRequest.setTableName(tableName);
             productUpdDayNum = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
         }
 
@@ -111,7 +113,7 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
                 temp.setEndTime(dataLogRequest.getEndTime());
                 temp.setMd5Key(dataLogRequest.getMd5Key());
                 temp.setTableName(tableName);
-                temp.setProduct(true);
+                temp.setProductSwitch(true);
                 QueryCounterUpdNumTask task = new QueryCounterUpdNumTask(temp);
                 taskList.add(task);
             }

@@ -24,6 +24,7 @@ public class StatConvertHandler {
         logStat.setModelName(dataLog.getModelName());
         logStat.setChannelId(dataLog.getChannelId());
         logStat.setProcessDate(dataLog.getProcessTime());
+        logStat.setGroupId(dataLog.getGroupId());
 
         logStat.setDevicePrsDayNum(0L);
         logStat.setDevicePrsDayNum(0L);
@@ -33,6 +34,7 @@ public class StatConvertHandler {
         logStat.setPrsInvalidReplaceNum(0L);
         logStat.setPrsInvalidUninstallNum(0L);
         logStat.setCounterUpdDayNum(0L);
+        logStat.setVersion(0);
 
         return logStat;
     }
@@ -76,6 +78,7 @@ public class StatConvertHandler {
         productStat.setPrsInvalidReplaceNum(0L);
         productStat.setPrsInvalidUninstallNum(0L);
         productStat.setCounterProductDayNum(0L);
+        productStat.setVersion(0);
 
         productStat.setMd5Key(getMd5KeyForProductStat(dataLog, productId));
 

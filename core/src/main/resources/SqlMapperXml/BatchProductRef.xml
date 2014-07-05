@@ -45,10 +45,10 @@
 
     </delete>
     <select id="queryProductIdList" resultType="long">
-        select PRODUCT_ID
-        from
-        <include refid="TABLE_NAME"/>
-        where BATCH_CODE = #{batchCode}
-
+        select ref.PRODUCT_ID as PRODUCT_ID
+        from TY_BATCH_PRODUCT_REF ref
+        inner join TY_BATCH_INFO batch
+        on ref.BATCH_ID = batch.BATCH_ID
+        where batch.BATCH_CODE = #{batchCode}
     </select>
 </mapper>

@@ -78,18 +78,22 @@
         where ID = #{id}
     </update>
 
-    <select id="queryTotalCountForDevice" resultType="long">
-        select count(0)
-        from ${dataLogRequest.tableName}
-        where DEVICE_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
-        <choose>
-            <when test="dataLogRequest.isProduct">
-                and P_MD5_KEY = #{dataLogRequest.md5Key}
-            </when>
-            <otherwise>
-                and MD5_KEY = #{dataLogRequest.md5Key}
-            </otherwise>
-        </choose>
+    <select id="queryTotalCountForDevice" resultType="long"
+            parameterType="com.ifhz.core.service.stat.bean.DataLogRequest">
+        select
+        count(0)
+        from ${tableName}
+        where DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+        <if test="!statSwitch">
+            <choose>
+                <when test="productSwitch">
+                    and P_MD5_KEY = #{md5Key}
+                </when>
+                <otherwise>
+                    and MD5_KEY = #{md5Key}
+                </otherwise>
+            </choose>
+        </if>
     </select>
 
     <select id="queryTotalCountForCounter" resultType="long">
@@ -115,7 +119,7 @@
         from ${dataLogRequest.tableName}
         where COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
         <choose>
-            <when test="dataLogRequest.isProduct">
+            <when test="dataLogRequest.productSwitch">
                 and P_MD5_KEY = #{dataLogRequest.md5Key}
             </when>
             <otherwise>

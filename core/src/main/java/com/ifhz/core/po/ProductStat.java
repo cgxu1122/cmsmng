@@ -19,14 +19,15 @@ public class ProductStat implements Serializable {
     private Date processDate;
     private String batchCode;
 
-    private Long productPrsDayNum;
-    private Long productUpdDayNum;
-    private Long prsActiveTotalNum;
-    private Long prsActiveValidNum;
-    private Long prsActiveInvalidNum;
-    private Long prsInvalidReplaceNum;
-    private Long prsInvalidUninstallNum;
-    private Long counterProductDayNum;
+    private Long productPrsDayNum = 0L;
+    private Long productUpdDayNum = 0L;
+    private Long prsActiveTotalNum = 0L;
+    private Long prsActiveValidNum = 0L;
+    private Long prsActiveInvalidNum = 0L;
+    private Long prsInvalidReplaceNum = 0L;
+    private Long prsInvalidUninstallNum = 0L;
+    private Long counterProductDayNum = 0L;
+    private Integer version;
 
     private String md5Key;
     private String dataLogPmd5Key;
@@ -184,5 +185,13 @@ public class ProductStat implements Serializable {
 
     public void setDataLogPmd5Key(String dataLogPmd5Key) {
         this.dataLogPmd5Key = dataLogPmd5Key;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

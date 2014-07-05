@@ -74,6 +74,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         dataLogRequest.setDate(startTime);
         dataLogRequest.setStartTime(startTime);
         dataLogRequest.setEndTime(endTime);
+        dataLogRequest.setStatSwitch(true);
 
         long totalCount = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
         if (totalCount > 0) {
@@ -91,6 +92,7 @@ public class StatTaskServiceImpl implements StatTaskService {
                             LogStat logStat = getLogStatFromMap(logStatHashMap, logMd5Key, dataLog);
                             logStat.setMd5Key(logMd5Key);
                             logStat.setDataLogMd5Key(logStatMd5Key);
+
                             logStat.setDevicePrsDayNum(logStat.getDeviceUpdDayNum() + 1);
                             //重新放入容器中
                             logStatHashMap.put(logMd5Key, logStat);
@@ -198,8 +200,8 @@ public class StatTaskServiceImpl implements StatTaskService {
                     String md5Key = entry.getKey();
                     ProductStat value = entry.getValue();
                     ProductStat entity = productStatUpdateService.getByMd5Key(md5Key);
-                    Date startTime = DateHandler.getStartTime(entity.getProcessDate());
-                    Date endTime = DateHandler.getEndTime(entity.getProcessDate());
+                    Date startTime = DateHandler.getStartTime(value.getProcessDate());
+                    Date endTime = DateHandler.getEndTime(value.getProcessDate());
                     //是否需要再次查询 每天固定的数据
                     boolean isQueryCount = isQueryCount(value.getProcessDate(), date);
                     long productUpdDayNum = 0L;
@@ -208,9 +210,10 @@ public class StatTaskServiceImpl implements StatTaskService {
                         DataLogRequest request = new DataLogRequest();
                         request.setStartTime(value.getProcessDate());
                         request.setStartTime(startTime);
+                        request.setDate(startTime);
                         request.setEndTime(endTime);
                         request.setMd5Key(value.getDataLogPmd5Key());
-                        request.setProduct(true);
+                        request.setProductSwitch(true);
 
                         productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
                         counterProductDayNum = dataLogQueryService.queryCounterProductDayNum(request);

@@ -10,7 +10,6 @@
         <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
-        <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
 
         <result column="PRODUCT_PRS_DAY_NUM" property="productPrsDayNum" jdbcType="BIGINT"/>
         <result column="PRODUCT_UPD_DAY_NUM" property="productUpdDayNum" jdbcType="BIGINT"/>
@@ -37,7 +36,6 @@
         UA,
         GROUP_ID,
         PROCESS_DATE,
-        BATCH_CODE,
         PRODUCT_PRS_DAY_NUM,
         PRODUCT_UPD_DAY_NUM,
         PRS_ACTIVE_TOTAL_NUM,
@@ -54,7 +52,6 @@
         #{ua,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{processDate,jdbcType=DATE},
-        #{batchCode,jdbcType=VARCHAR},
         #{productPrsDayNum,jdbcType=BIGINT},
         #{productUpdDayNum,jdbcType=BIGINT},
         #{prsActiveTotalNum,jdbcType=BIGINT},
@@ -72,6 +69,9 @@
         update
         <include refid="TABLE_NAME"/>
         <set>
+            <if test="version != null">
+                VERSION = VERSION + 1,
+            </if>
             <if test="productPrsDayNum != null and productPrsDayNum != 0">
                 PRODUCT_PRS_DAY_NUM = #{productPrsDayNum},
             </if>

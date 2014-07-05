@@ -25,7 +25,7 @@ public interface DataLogMapper {
 
     public List<DataLog> queryPageForCounter(Pagination page, @Param("dataLogRequest") DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForDevice(@Param("dataLogRequest") DataLogRequest dataLogRequest);
+    public long queryTotalCountForDevice(DataLogRequest dataLogRequest);
 
     public long queryTotalCountForCounter(@Param("dataLogRequest") DataLogRequest dataLogRequest);
 }

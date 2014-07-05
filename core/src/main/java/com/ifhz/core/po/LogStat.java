@@ -22,14 +22,14 @@ public class LogStat implements Serializable {
     private Date processDate;
     private Long laowuId;
 
-    private Long devicePrsDayNum;
-    private Long deviceUpdDayNum;
-    private Long prsActiveTotalNum;
-    private Long prsActiveValidNum;
-    private Long prsActiveInvalidNum;
-    private Long prsInvalidReplaceNum;
-    private Long prsInvalidUninstallNum;
-    private Long counterUpdDayNum;
+    private Long devicePrsDayNum = 0L;
+    private Long deviceUpdDayNum = 0L;
+    private Long prsActiveTotalNum = 0L;
+    private Long prsActiveValidNum = 0L;
+    private Long prsActiveInvalidNum = 0L;
+    private Long prsInvalidReplaceNum = 0L;
+    private Long prsInvalidUninstallNum = 0L;
+    private Long counterUpdDayNum = 0L;
 
     private String md5Key;
     private String dataLogMd5Key;
