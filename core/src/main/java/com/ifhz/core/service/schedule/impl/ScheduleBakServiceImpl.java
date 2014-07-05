@@ -19,7 +19,7 @@ import java.util.Date;
  * Date: 2014/6/15
  * Time: 11:20
  */
-@Service("scheduleService")
+@Service("scheduleBakService")
 public class ScheduleBakServiceImpl implements ScheduleBakService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleBakServiceImpl.class);

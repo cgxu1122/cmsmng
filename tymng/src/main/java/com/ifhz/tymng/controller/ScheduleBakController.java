@@ -1,7 +1,9 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ifhz.core.service.schedule.ScheduleService;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.service.schedule.ScheduleBakService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * 类描述
@@ -22,8 +25,8 @@ import javax.annotation.Resource;
 public class ScheduleBakController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleBakController.class);
 
-    @Resource(name = "scheduleService")
-    private ScheduleService scheduleService;
+    @Resource(name = "scheduleBakService")
+    private ScheduleBakService scheduleBakService;
 
     @RequestMapping(value = "/wdj.do", produces = {"application/json;charset=UTF-8"})
     public
@@ -32,7 +35,8 @@ public class ScheduleBakController {
         LOGGER.info("receive msg date={} --------------------start", date);
         JSONObject result = new JSONObject();
         try {
-            scheduleService.fetchWdjData();
+            Date temp = DateFormatUtils.parse(date, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.fetchWdjData(temp);
             result.put("ret", true);
         } catch (Exception e) {
             LOGGER.error("arrivalData error ", e);
@@ -48,11 +52,14 @@ public class ScheduleBakController {
     @RequestMapping(value = "/scanCounterTempLog.do", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject scanCounterTempLog() {
+    JSONObject scanCounterTempLog(@RequestParam(value = "startTime", required = true) String startTime,
+                                  @RequestParam(value = "endTime", required = true) String endTime) {
         LOGGER.info("receive msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
-            scheduleService.scanCounterTempLog();
+            Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
+            Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.scanCounterTempLog(startDate, endDate);
             result.put("ret", true);
         } catch (Exception e) {
             result.put("ret", false);
@@ -67,11 +74,14 @@ public class ScheduleBakController {
     @RequestMapping(value = "/statisticsData.do", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject statisticsData() {
+    JSONObject statisticsData(@RequestParam(value = "startTime", required = true) String startTime,
+                              @RequestParam(value = "endTime", required = true) String endTime) {
         LOGGER.info("receive msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
-            scheduleService.statisticsData();
+            Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
+            Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.statisticsData(startDate, endDate);
             result.put("ret", true);
         } catch (Exception e) {
             result.put("ret", false);
