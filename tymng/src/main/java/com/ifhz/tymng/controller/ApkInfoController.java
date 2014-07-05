@@ -156,6 +156,7 @@ public class ApkInfoController extends BaseController {
     @RequestMapping(value = "/update", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject update(HttpServletRequest request) {
+        LOGGER.info("update ApkInfo  --------------------------start");
         long start = System.currentTimeMillis();
         Map<String, FileItem> params = paserMultiData(request);
         String apkId = null;
@@ -167,6 +168,7 @@ public class ApkInfoController extends BaseController {
             apkId = readInputStreamData(params.get("apkId").getInputStream());
             apkName = readInputStreamData(params.get("apkName").getInputStream());
             type = readInputStreamData(params.get("type").getInputStream());
+            LOGGER.info("update ApkInfo  process step 1--------------------------");
         } catch (Exception e) {
             errorMsg = "数据读取错误，请重新操作！";
             result.put("errorMsg", errorMsg);
@@ -192,6 +194,7 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
         }
+        LOGGER.info("update ApkInfo  process step 2--------------------------");
         File localFile = null;
         String md5Value = null;
         FileItem file = params.get("file");
@@ -218,7 +221,7 @@ public class ApkInfoController extends BaseController {
                 deleteLocalFile(localFile);
             }
         }
-
+        LOGGER.info("update ApkInfo  process step 3--------------------------");
         try {
             if (StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
                 apkInfo.setMd5Value(md5Value);
@@ -241,6 +244,7 @@ public class ApkInfoController extends BaseController {
             LOGGER.error("updateApkInfo error", e);
             result.put("msg", "修改失败，请联系管理员");
         } finally {
+            LOGGER.info("update ApkInfo  process step 4--------------------------");
             long end = System.currentTimeMillis();
             LOGGER.info("parseApkFile totalTime={}", end - start);
             deleteLocalFile(localFile);
