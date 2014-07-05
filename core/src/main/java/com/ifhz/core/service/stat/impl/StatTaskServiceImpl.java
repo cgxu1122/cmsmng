@@ -235,12 +235,12 @@ public class StatTaskServiceImpl implements StatTaskService {
                     }
                     if (entity != null) {//数据库有数据则更新
                         entity.setProductPrsDayNum(entity.getProductPrsDayNum() + value.getProductPrsDayNum());
-                        entity.setProductPrsDayNum(productUpdDayNum);
+                        entity.setProductUpdDayNum(productUpdDayNum);
                         entity.setCounterProductDayNum(counterProductDayNum);
 
                         productStatUpdateService.update(entity);
                     } else {//数据库无数据则插入
-                        value.setProductPrsDayNum(productUpdDayNum);
+                        value.setProductUpdDayNum(productUpdDayNum);
                         value.setCounterProductDayNum(counterProductDayNum);
 
                         productStatUpdateService.insert(value);
