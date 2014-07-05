@@ -6,13 +6,10 @@ package com.ifhz.core.mapper;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.Role;
-import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.vo.RoleVo;
 import org.apache.ibatis.annotations.Param;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -32,8 +29,8 @@ public interface RoleMapper {
 
     /**
      * 批量添加角色与资源关联关系
-     *
-    /**
+     * <p/>
+     * /**
      * 查询角色
      *
      * @param roleName
@@ -116,7 +113,7 @@ public interface RoleMapper {
      * @return
      * @author wangshaofen
      */
-    public Role findParentById(Pagination page,@Param(value = "id") long id);
+    public Role findParentById(Pagination page, @Param(value = "id") long id);
 
     /**
      * 根据名称查询
@@ -132,7 +129,7 @@ public interface RoleMapper {
      * @return
      * @author radishlee
      */
-    public Role findByRoleNameBesideSelf(Pagination pape,@Param(value = "roleName") String roleName, @Param(value = "id") long id);
+    public Role findByRoleNameBesideSelf(Pagination pape, @Param(value = "roleName") String roleName, @Param(value = "id") long id);
 
     /**
      * 更新全路径
@@ -161,4 +158,5 @@ public interface RoleMapper {
      */
     public int delete(long id);
 
+    List<Role> findAllRoleSon(long roleId);
 }

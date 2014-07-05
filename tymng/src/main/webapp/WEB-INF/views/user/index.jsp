@@ -209,6 +209,8 @@ function initPage() {
                         return "普通用户";
                     } else if (value == 2) {
                         return "负责人";
+                    } else if (value == 3) {
+                        return "管理员";
                     } else {
                         return null;
                     }

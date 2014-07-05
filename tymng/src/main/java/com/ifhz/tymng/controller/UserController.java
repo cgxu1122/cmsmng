@@ -12,10 +12,12 @@ import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.service.auth.impl.ShiroDbRealm;
 import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -254,8 +256,11 @@ public class UserController extends BaseController {
     @RequestMapping("/getAllRole")
     @ResponseBody
     public JSONArray getAllRole() {
-        List<Role> roleList = userService.findAllRole();
+        ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        long roleId = user.roleId;
+        List<Role> roleList = userService.findAllRoleSon(roleId);
         return JSON.parseArray(JSON.toJSONString(roleList));
     }
 
 }
+

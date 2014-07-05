@@ -8,7 +8,6 @@ import com.ifhz.core.po.Role;
 import com.ifhz.core.vo.RoleVo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 角色管理
@@ -54,18 +53,18 @@ public interface RoleService {
     /**
      * 获取资源树
      *
-     * @author radishlee
      * @return
+     * @author radishlee
      */
     public String findAllRoleResourceXmlString(long id);
 
     /**
      * 授权
      *
-     * @author radishlee
      * @param string
      * @param resIdList
      * @return
+     * @author radishlee
      */
     public void authorization(String string, List<String> resIdList);
 
@@ -106,34 +105,34 @@ public interface RoleService {
     /**
      * 根据名称查询 除了自己
      *
-     * @author radishlee
      * @param roleName
      * @return
+     * @author radishlee
      */
     public Role findByRoleNameBesideSelf(String roleName, long id);
 
     /**
-     * @author radishlee
      * @param role
+     * @author radishlee
      */
     public void update(Role role);
 
     /**
-     * @author radishlee
      * @param id
+     * @author radishlee
      */
     public void delete(long id);
 
     /**
-     * @author radishlee
      * @param roleId
+     * @author radishlee
      */
     public void deleteAllRefByRoleId(long roleId);
 
     /**
-     * @author radishlee
      * @param roleId
      * @return
+     * @author radishlee
      */
     public boolean check2Delete(long roleId);
 
@@ -148,10 +147,12 @@ public interface RoleService {
     public Role findParentById(long parentId);
 
     /**
-     * @author radish
      * @return
+     * @author radish
      */
     public RoleVo getAdminRole();
 
     String findRoleTreeXmlStringByRoleId(long roleId);
+
+    List<Role> findAllRoleSon(long roleId);
 }

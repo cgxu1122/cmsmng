@@ -10,88 +10,86 @@ import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * 用户业务接口
- * 
+ *
  * @author radish
  */
 public interface UserService {
 
-	/**
-	 * 用户新增接口
-	 * 
-	 * @author radish
-	 * @param user
-	 * @return
-	 */
-	public Result insertUser(User user,long roleId);
+    /**
+     * 用户新增接口
+     *
+     * @param user
+     * @return
+     * @author radish
+     */
+    public Result insertUser(User user, long roleId);
 
-	/**
-	 * 用户更新接口
-	 * 
-	 * @author radish
-	 * @param user
-	 * @return
-	 */
-	public boolean updateUser(User user);
+    /**
+     * 用户更新接口
+     *
+     * @param user
+     * @return
+     * @author radish
+     */
+    public boolean updateUser(User user);
 
-	/**
-	 * 管理员修改用户信息
-	 * 
-	 * @author wangshaofen
-	 * @param user
-	 * @return
-	 */
-	public Result updateUserAdmin(User user,Long roleId);
+    /**
+     * 管理员修改用户信息
+     *
+     * @param user
+     * @return
+     * @author wangshaofen
+     */
+    public Result updateUserAdmin(User user, Long roleId);
 
-	/**
-	 * 用户删除接口
-	 * 
-	 * @author radish
-	 * @param id
-	 * @return
-	 */
-	public boolean deleteUser(int id);
-
-
-
-	/**
-	 * 获取所有角色
-	 * 
-	 * @author radishlee
-	 * @return
-	 */
-	public List<Role> findAllRole();
-
-	/**
-	 * 更新用户密码
-	 * 
-	 * @author radishlee
-	 * @param userId
-	 */
-	public Result updateUserPassword(long userId, String newPassword);
-
-	/**
-	 * 根据角色查询用户
-	 * 
-	 * @author radishlee
-	 * @param roleId
-	 * @return
-	 */
-	public List<User>  findUserByRoleId(long roleId);
+    /**
+     * 用户删除接口
+     *
+     * @param id
+     * @return
+     * @author radish
+     */
+    public boolean deleteUser(int id);
 
 
-	/**
-	 * 更新User信息
-	 * 
-	 * @param loginName
-	 * @param id
-	 * @return
-	 */
-	public Long findUserByLoginNameAndNotId(String loginName, long id);
+    /**
+     * 获取所有角色
+     *
+     * @return
+     * @author radishlee
+     */
+    public List<Role> findAllRole();
+
+    /**
+     * 更新用户密码
+     *
+     * @param userId
+     * @author radishlee
+     */
+    public Result updateUserPassword(long userId, String newPassword);
+
+    /**
+     * 根据角色查询用户
+     *
+     * @param roleId
+     * @return
+     * @author radishlee
+     */
+    public List<User> findUserByRoleId(long roleId);
+
+
+    /**
+     * 更新User信息
+     *
+     * @param loginName
+     * @param id
+     * @return
+     */
+    public Long findUserByLoginNameAndNotId(String loginName, long id);
 
     public User findUserByLoginName(String name);
 
@@ -100,4 +98,6 @@ public interface UserService {
     List<UserVo> findAllUser(String searchValue);
 
     Long getUserVoCount(String searchValue);
+
+    List<Role> findAllRoleSon(long roleId);
 }

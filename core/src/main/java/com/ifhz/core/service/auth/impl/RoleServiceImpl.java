@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -61,10 +63,14 @@ public class RoleServiceImpl implements RoleService {
 //        ltResource = roleMapper.getResourceList();
 //        return ltResource;
 //    }
-
     @Override
     public String findRoleTreeXmlStringByRoleId(long roleId) {
         return this.buildTree(AuthrityTreeConstants.NORMAL_ROLE_TREE, roleId);
+    }
+
+    @Override
+    public List<Role> findAllRoleSon(long roleId) {
+        return roleMapper.findAllRoleSon(roleId);
     }
 
     /**
@@ -94,9 +100,9 @@ public class RoleServiceImpl implements RoleService {
         switch (type) {
             case 1: {
                 Role root = roleMapper.findRootRole();
-                if(root.getRoleId()==roleId){
+                if (root.getRoleId() == roleId) {
                     doBuildNormalRoleTree(root);
-                }else{
+                } else {
                     RoleVo roleVo = roleMapper.findById(roleId);
                     Role role = new Role();
                     role.setRoleId(roleVo.getRoleId());
@@ -133,7 +139,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public String findAllRoleResourceXmlString(long id) {
-        return resourceService.findAllRoleResourceXmlString(id,false,false);
+        return resourceService.findAllRoleResourceXmlString(id, false, false);
     }
 
     /**
@@ -154,17 +160,17 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleVo findById(long id) {
         Role role = findParentById(id);
-        if(role.getParentId()==-1){
+        if (role.getParentId() == -1) {
             RoleVo rv = new RoleVo();
             try {
-                BeanUtils.copyProperties(rv,role);
+                BeanUtils.copyProperties(rv, role);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
             return rv;
-        }else {
+        } else {
             RoleVo roleVo = roleMapper.findById(id);
             return roleVo;
         }
@@ -207,7 +213,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Role findByRoleNameBesideSelf(String roleName, long id) {
-        return roleMapper.findByRoleNameBesideSelf(null,roleName, id);
+        return roleMapper.findByRoleNameBesideSelf(null, roleName, id);
     }
 
     /**
@@ -233,8 +239,8 @@ public class RoleServiceImpl implements RoleService {
     /**
      * 级联删除
      *
-     * @author radishlee
      * @param id
+     * @author radishlee
      */
     private void doDelete(long id) {
         List<Role> roleList = roleMapper.findAllChildrenById(id);
@@ -267,7 +273,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findParentById(long parentId) {
-        return roleMapper.findParentById(null,parentId);
+        return roleMapper.findParentById(null, parentId);
     }
 
     @Override
