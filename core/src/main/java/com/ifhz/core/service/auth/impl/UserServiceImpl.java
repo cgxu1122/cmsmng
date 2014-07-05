@@ -249,7 +249,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public List<UserVo> findUsersByType(int type) {
-        return userMapper.findUsersByType(type);
+    public List<UserVo> findUsersByType(int type, String searchValue) {
+        return userMapper.queryAllUserByType(type, searchValue);
     }
 }

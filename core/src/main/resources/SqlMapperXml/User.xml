@@ -224,7 +224,7 @@
     </select>
 
 
-    <select id="queryAllUser" resultType="com.ifhz.core.vo.UserVo">
+    <select id="queryAllUserByType" resultType="com.ifhz.core.vo.UserVo">
         select u.user_id as userId,
         u.login_name as loginName,
         u.real_name as realName,
@@ -241,6 +241,9 @@
         join ty_role r
         on urr.role_id = r.role_id
         where u.type = #{type}
+        <if test="searchValue != null">
+            and u.login_name like concat(concat('%',#{searchValue}),'%' )
+        </if>
         order by u.create_time desc
     </select>
 </mapper>

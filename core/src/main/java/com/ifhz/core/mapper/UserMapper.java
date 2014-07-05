@@ -127,7 +127,7 @@ public interface UserMapper {
 
     Long queryUserVoCount(Pagination pape, @Param("searchValue") String searchValue);
 
-    List<UserVo> queryAllUserByType(int type);
+    List<UserVo> queryAllUserByType(@Param("type") int type, @Param("searchValue") String searchValue);
 
     List<Role> findAllRoleSon(long roleId);
 

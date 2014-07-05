@@ -199,15 +199,15 @@ function showMngDialog(type, upMngId) {
         height: 'auto',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/user/getAll',
+        url: '<%=basePath%>/tymng/channelInfo/listMng',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         rownumbers: true,
         columns: [
             [
-                {field: 'userId', title: '负责人id', align: 'center', width: 50},
-                {field: 'loginName', title: '用户名', align: 'center', width: 200},
+                {field: 'userId', title: '负责人id', align: 'center', width: 80},
+                {field: 'loginName', title: '用户名', align: 'center', width: 150},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 150,
                     formatter: function (value) {
                         return value;
@@ -226,7 +226,7 @@ function showMngDialog(type, upMngId) {
 function searchMngEvt() {
     var value = $('#searchMngValue').val();
     $('#mngdg').datagrid({
-        url: "<%=basePath%>/tymng/user/getAll",
+        url: "<%=basePath%>/tymng/channelInfo/listMng",
         queryParams: {searchValue: value}
     });
 }
@@ -418,11 +418,11 @@ function selectMng(mngId, mngName, type) {
             <table>
                 <tr>
                     <td>
-                        <input type="text" name="searchLaowuValue" id="searchLaowuValue" placeholder="劳务名称"/>
+                        <input type="text" name="searchMngValue" id="searchMngValue" placeholder="用户名"/>
                     </td>
                     <td align="center">
-                        <a id="searchLaowubtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
-                           onclick="searchLaowuEvt()">查询</a>
+                        <a id="searchMngbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
+                           onclick="searchMngEvt()">查询</a>
                     </td>
                 </tr>
             </table>
