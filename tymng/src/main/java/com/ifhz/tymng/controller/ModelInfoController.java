@@ -53,7 +53,9 @@ public class ModelInfoController extends BaseController {
         String modelNameCondition = request.getParameter("modelNameCondition");
         ModelInfo mi = new ModelInfo();
         mi.setActive(JcywConstants.ACTIVE_Y);
-        mi.setGroupId(Long.parseLong(groupId));
+        if (StringUtils.isNotEmpty(groupId)) {
+            mi.setGroupId(Long.parseLong(groupId));
+        }
         mi.setModelNameCondition(modelNameCondition);
         List<ModelInfo> list = modelInfoService.queryByVo(page, mi);
         JSONObject result = new JSONObject();

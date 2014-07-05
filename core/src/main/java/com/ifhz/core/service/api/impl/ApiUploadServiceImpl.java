@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
 import com.ifhz.core.base.commons.log.CounterCommonLog;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
+import com.ifhz.core.constants.TempLogType;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.CounterTempLog;
 import com.ifhz.core.po.DataLog;
@@ -63,32 +64,36 @@ public class ApiUploadServiceImpl implements ApiUploadService {
             }
             // 查询imei是否已经到达过
             DataLog dataLog = dataLogApiService.getByImei(po.getImei());
+            TempLogType type = TempLogType.UnDo;
             LOGGER.info("DataLog接口数据：{},DataLog数据库数据：{}", JSON.toJSONString(po), JSON.toJSONString(dataLog));
             if (dataLog != null) {
                 if (dataLog.getActive() == null && dataLog.getCounterUploadTime() == null) {
                     dataLog.setCounterUploadTime(po.getCounterUploadTime());
                     dataLog.setActive(po.getActive());
-
                     String pmd5Key = StatConvertHandler.getMd5KeyByLogDataForProductStat(dataLog);
                     dataLog.setPmd5Key(pmd5Key);
-
                     dataLogApiService.updateCounterData(dataLog);
-                    //异步统计到达数据
-                    taskExecutor.execute(new StatRunnable(dataLog));
+                    type = TempLogType.Done;
                 }
+            }
+            CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
+            LOGGER.info("DataLog中没有找到对应数据，CounterTempLog查询数据为：{}", JSON.toJSONString(counterTempLog));
+            if (counterTempLog == null) {
+                CounterTempLog tempLog = new CounterTempLog();
+                tempLog.setImei(po.getImei());
+                tempLog.setUa(ModelHandler.translateUa(po.getUa()));
+                tempLog.setCreateTime(po.getCounterUploadTime());
+                tempLog.setActive(po.getActive());
+                tempLog.setType(type.value);
+
+                counterTempLogAdapter.insert(tempLog);
             } else {
-                CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
-                LOGGER.info("DataLog中没有找到对应数据，CounterTempLog查询数据为：{}", JSON.toJSONString(counterTempLog));
-                if (counterTempLog == null) {
-                    CounterTempLog tempLog = new CounterTempLog();
-                    tempLog.setImei(po.getImei());
-                    tempLog.setUa(ModelHandler.translateUa(po.getUa()));
-                    tempLog.setCreateTime(po.getCounterUploadTime());
-                    tempLog.setActive(po.getActive());
-                    counterTempLogAdapter.insert(tempLog);
-                } else {
-                    LOGGER.info("DataLog中没有找到对应数据，CounterTempLog中已经存在。");
-                }
+                LOGGER.info("DataLog中没有找到对应数据，CounterTempLog中已经存在。");
+            }
+
+            if (type == TempLogType.Done) {
+                //异步统计到达数据
+                taskExecutor.execute(new StatRunnable(dataLog));
             }
         }
     }

@@ -321,19 +321,6 @@ public class ApkInfoController extends BaseController {
             }
 
         }
-        /*
-        ApkInfo temp = new ApkInfo();
-        temp.setApkName(apkName.trim());
-        Pagination page = new Pagination();
-        page.setCurrentPage(1);
-        page.setPageSize(1);
-        List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
-        if (list != null && list.size() > 0) {
-            errorMsg = "产品名称重复，请重新输入！";
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
-         */
 
         return false;
     }

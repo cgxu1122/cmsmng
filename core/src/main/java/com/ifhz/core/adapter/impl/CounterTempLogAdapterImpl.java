@@ -29,8 +29,8 @@ public class CounterTempLogAdapterImpl implements CounterTempLogAdapter {
     }
 
     @Override
-    public int delete(Long id) {
-        return counterTempLogMapper.delete(id);
+    public int update(String imei, Integer type) {
+        return counterTempLogMapper.update(imei, type);
     }
 
     @Override
@@ -47,5 +47,10 @@ public class CounterTempLogAdapterImpl implements CounterTempLogAdapter {
     public List<CounterTempLog> queryPage(Pagination page, Date startTime, Date endTime) {
         List<CounterTempLog> result = counterTempLogMapper.queryPage(page, startTime, endTime);
         return result == null ? Lists.<CounterTempLog>newArrayList() : result;
+    }
+
+    @Override
+    public void batchDelete(Date startTime, Date endTime) {
+        counterTempLogMapper.batchDelete(startTime, endTime);
     }
 }

@@ -29,10 +29,29 @@ public class ProductStat implements Serializable {
     private Long counterProductDayNum;
 
     private String md5Key;
+    private String version;
     private String dataLogPmd5Key;
 
     private Date startDate;
     private Date endDate;
+
+    private String groupName;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 
     public Date getStartDate() {
         return startDate;

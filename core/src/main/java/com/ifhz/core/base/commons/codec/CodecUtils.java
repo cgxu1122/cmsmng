@@ -1,6 +1,11 @@
 package com.ifhz.core.base.commons.codec;
 
+import com.alibaba.fastjson.JSONArray;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.constants.GlobalConstants;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Date;
 
 /**
  * 类描述
@@ -24,8 +29,15 @@ public final class CodecUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(decode("~^&%$#"));
-        System.out.println(decode("L"));
+        String dd = "2014-07-05 12:30:00";
+        Date date = DateFormatUtils.parse(dd, GlobalConstants.DEFAULT_DATE_FORMAT);
+
+        String str = decode("864545023839806|MI MU|7|C4:46:19:73:37:A7|TY2|" + date.getTime());
+        JSONArray array = new JSONArray();
+        array.add(str);
+        System.out.println(array.toJSONString());
+        System.out.println(decode("864545023839805|MI MU|7|C4:46:19:73:37:A7|TY2|" + new Date().getTime()));
+        System.out.println(decode("*$&'&'\" !*!+*\"'n_[2_Gn%nQ&(&$(#+(%!(!%(S%nFK n#&\"&'!'%+%%$&"));
     }
 
     private CodecUtils() {

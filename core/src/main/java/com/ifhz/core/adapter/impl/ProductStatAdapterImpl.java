@@ -56,6 +56,6 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
 
     @Override
     public ProductStat queryCountByVo(ProductStat record) {
-        return productStatMapper.queryCountByVo(record);
+        return productStatMapper.queryCountByVO(record);
     }
 }

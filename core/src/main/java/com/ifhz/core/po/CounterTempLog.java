@@ -16,8 +16,17 @@ public class CounterTempLog implements Serializable {
     private String imei;
     private String ua;
     private Integer active;
+    private Integer type;
     private Date createTime;
 
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getActive() {
         return active;

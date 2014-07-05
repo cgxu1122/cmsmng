@@ -13,4 +13,6 @@ public interface ScheduleService {
     public void statisticsData();
 
     public void fetchWdjData();
+
+    public void deleteCounterTempLog();
 }

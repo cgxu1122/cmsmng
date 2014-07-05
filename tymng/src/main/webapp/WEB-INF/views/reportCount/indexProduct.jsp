@@ -14,24 +14,28 @@
             $("#endDate").datebox({
                 value: getCurrrentDateStr()
             });
+            var data = $('#groupId').combobox('getData');
+            $("#groupId").combobox('select', data[0].value);
             initPage();
         });
         function searchEvt() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
-            var channelId = $('#channelId').val();
+            var groupId = $('#groupId').combobox('getValue');
+            var productId = $('#productId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/reportCount/listLogStat",
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId}
+                url: "<%=basePath%>/tymng/reportCount/listProductStat",
+                queryParams: {groupId: groupId, startDate: startDate, endDate: endDate, ua: ua, productId: productId}
             });
         }
 
         function resetEvt() {
             $('#ua').val("");
             $('#modelName').val("");
-            $('#channelId').val("");
-            $('#channelName').val("");
+            $('#productId').val("");
+            $('#productName').val("");
+            $("#groupId").combobox('select', "");
         }
 
         function initPage() {
@@ -42,8 +46,8 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/reportCount/listLogStat',
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
+                url: '<%=basePath%>/tymng/reportCount/listProductStat',
+                queryParams: {startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -60,13 +64,13 @@
                             }
                         },
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
-                        {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
-                        {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
+                        {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
+                        {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 return "<a href='javascript:void(0)'>" + value + "</a>";
                             }
                         },
-                        {field: 'deviceUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
+                        {field: 'productUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 return "<a href='javascript:void(0)'>" + value + "</a>";
                             }
@@ -74,26 +78,6 @@
                         {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 //return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>"+value+"</a>";
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
-                        },
-                        {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
-                        },
-                        {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
-                        },
-                        {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
-                        },
-                        {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
                                 return "<a href='javascript:void(0)'>" + value + "</a>";
                             }
                         }
@@ -109,7 +93,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/modelInfo/list',
-                queryParams: {groupId: 1},
+                queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -130,7 +114,7 @@
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
                 url: "<%=basePath%>/tymng/modelInfo/list",
-                queryParams: {modelNameCondition: value, groupId: 1}
+                queryParams: {modelNameCondition: value}
             });
         }
         function selectModel(ua, modelName) {
@@ -138,48 +122,49 @@
             $("#ua").val(ua);
             $('#modeldlg').dialog('close');
         }
-        function showChannelDialog() {
-            $('#channeldlg').dialog('open').dialog('setTitle', '选择仓库');
-            $('#channeldg').datagrid({
+        function showProductDialog() {
+            $('#productdlg').dialog('open').dialog('setTitle', '选择产品');
+            $('#productdg').datagrid({
                 width: 'auto',
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/channelInfo/listAll',
-                queryParams: {groupId: 1},
+                url: '<%=basePath%>/tymng/productInfo/list',
+                queryParams: {},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
+                        {field: 'productName', title: '仓库名称', align: 'center', width: 150},
                         {field: 'action', title: '操作', align: 'center', width: 100,
                             formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectChannel('" + row.channelId + "','" + row.channelName + "')>选择</a>";
+                                return "<a href='javascript:void(0)' onclick=javascript:selectProduct('" + row.productId + "','" + row.productName + "')>选择</a>";
                             }
                         }
                     ]
                 ]
             });
         }
-        function searchChannelEvt() {
-            var value = $('#searchChannelValue').val();
-            $('#channeldg').datagrid({
-                url: "<%=basePath%>/tymng/channelInfo/listAll",
-                queryParams: {channelNameCondition: value, groupId: 1}
+        function searchProductEvt() {
+            var value = $('#searchProductValue').val();
+            $('#productdg').datagrid({
+                url: "<%=basePath%>/tymng/productInfo/list",
+                queryParams: {productNameCondition: value}
             });
         }
-        function selectChannel(channelId, channelName) {
-            $("#channelName").val(channelName);
-            $("#channelId").val(channelId);
-            $('#channeldlg').dialog('close');
+        function selectProduct(productId, productName) {
+            $("#productName").val(productName);
+            $("#productId").val(productId);
+            $('#productdlg').dialog('close');
         }
         function exportData() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
-            var channelId = $('#channelId').val();
-            window.location.href = "<%=basePath%>/tymng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
+            var groupId = $('#groupId').combobox('getValue');
+            var productId = $('#productId').val();
+            window.location.href = "<%=basePath%>/tymng/reportCount/exportProductData?groupId=" + groupId + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId;
         }
     </script>
 </head>
@@ -189,14 +174,22 @@
         <table>
             <tr>
                 <td>
+                    <input type="text" name="productName" id="productName" placeholder="选择产品" readonly="readonly"
+                           onclick="showProductDialog()"/>
+                    <input type="hidden" name="productId" id="productId"/>
+                </td>
+                <td>
                     <input type="text" name="modelName" id="modelName" placeholder="选择机型" readonly="readonly"
                            onclick="showModelDialog()"/>
                     <input type="hidden" name="ua" id="ua"/>
                 </td>
                 <td>
-                    <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"
-                           onclick="showChannelDialog()"/>
-                    <input type="hidden" name="channelId" id="channelId"/>
+                    <select class="easyui-combobox" name="groupId" id="groupId" style="width:150px;">
+                        <option value="">全部渠道组</option>
+                        <option value="1">天音渠道</option>
+                        <option value="2">地包渠道</option>
+                        <option value="3">其他渠道</option>
+                    </select>
                 </td>
                 <td>
                     <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
@@ -244,30 +237,30 @@
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
 </div>
-<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
-     buttons="#channeldlg-buttons">
+     buttons="#productdlg-buttons">
     <div>
         <div>
             <table>
                 <tr>
                     <td>
-                        <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="仓库名称"/>
+                        <input type="text" name="searchProductValue" id="searchProductValue" placeholder="产品名称"/>
                     </td>
                     <td align="center">
-                        <a id="searchChannelBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                        <a id="searchProductBtn" href="javascript:void(0)" class="easyui-linkbutton"
                            iconCls="icon-search"
-                           onclick="searchChannelEvt()">查询</a>
+                           onclick="searchProductEvt()">查询</a>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    <div id="channeldg"></div>
+    <div id="productdg"></div>
 </div>
-<div id="channeldlg-buttons" style="text-align: center;">
+<div id="productdlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
+       onclick="javascript:$('#productdlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>

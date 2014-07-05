@@ -5,14 +5,14 @@ import java.util.Date;
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
- * Date: 2014/5/21
- * Time: 16:14
+ * Date: 2014/6/15
+ * Time: 11:19
  */
-public interface CounterTempLogService {
+public interface ScheduleBakService {
 
     public void scanCounterTempLog(Date startTime, Date endTime);
 
+    public void statisticsData(Date startTime, Date endTime);
 
-    public void batchDelete(Date startTime, Date endTime);
-
+    public void fetchWdjData(Date date);
 }
