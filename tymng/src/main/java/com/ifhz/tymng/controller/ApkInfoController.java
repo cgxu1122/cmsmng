@@ -223,7 +223,7 @@ public class ApkInfoController extends BaseController {
         }
         LOGGER.info("update ApkInfo  process step 3--------------------------");
         try {
-            if (StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
+            if (!StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
                 apkInfo.setMd5Value(md5Value);
                 apkInfo.setUpdateTime(new Date());
             }
