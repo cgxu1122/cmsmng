@@ -16,11 +16,13 @@ public interface CounterTempLogAdapter {
 
     public int insert(CounterTempLog po);
 
-    public int delete(Long id);
+    public int update(String imei, Integer type);
 
     public CounterTempLog queryByImei(String imei);
 
     public long queryTotalCount(Date startTime, Date endTime);
 
     public List<CounterTempLog> queryPage(Pagination page, Date startTime, Date endTime);
+
+    public void batchDelete(Date startTime, Date endTime);
 }

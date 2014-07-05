@@ -2,8 +2,10 @@ package com.ifhz.core.service.stat.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
+import com.ifhz.core.adapter.CounterTempLogAdapter;
 import com.ifhz.core.adapter.LogStatAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
+import com.ifhz.core.constants.TempLogType;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
@@ -36,11 +38,14 @@ public class StatCounterServiceImpl implements StatCounterService {
     private LogStatAdapter logStatAdapter;
     @Resource(name = "productStatAdapter")
     private ProductStatAdapter productStatAdapter;
+    @Resource(name = "counterTempLogAdapter")
+    private CounterTempLogAdapter counterTempLogAdapter;
 
 
     public void updateStat(DataLog dataLog) {
         LOGGER.info("Counter Stat ---------开始");
         if (dataLog != null) {
+            boolean isUpdateTempLog = false;
             String md5Key = StatConvertHandler.getMd5KeyForLogStat(dataLog);
             LOGGER.info("LogStat md5Key={}", md5Key);
             if (StringUtils.isNotBlank(md5Key)) {
@@ -68,6 +73,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                     }
                     int num = logStatAdapter.update(logStat);
                     if (num == 1) {
+                        isUpdateTempLog = true;
                         LOGGER.info("LogStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                         break;
                     }
@@ -107,6 +113,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                                 }
                                 int num = productStatAdapter.update(productStat);
                                 if (num == 1) {
+                                    isUpdateTempLog = true;
                                     LOGGER.info("ProductStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                                     break;
                                 }
@@ -118,6 +125,9 @@ public class StatCounterServiceImpl implements StatCounterService {
                         }
                     }
                 }
+            }
+            if (isUpdateTempLog) {
+                counterTempLogAdapter.update(dataLog.getImei(), TempLogType.Done.value);
             }
         }
         LOGGER.info("Counter Stat ---------结束");

@@ -12,4 +12,7 @@ public interface CounterTempLogService {
 
     public void scanCounterTempLog(Date startTime, Date endTime);
 
+
+    public void batchDelete(Date startTime, Date endTime);
+
 }

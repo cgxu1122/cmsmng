@@ -63,6 +63,11 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
         LOGGER.info("scanCounterTempLog -------end,[{},{}]", startTime, endTime);
     }
 
+    @Override
+    public void batchDelete(Date startTime, Date endTime) {
+        counterTempLogAdapter.batchDelete(startTime, endTime);
+    }
+
 
     private void processCounterTempLog(CounterTempLog tempLog) {
         LOGGER.info("scanCounterTempLog -------start,tempLog={}", JSON.toJSONString(tempLog));
@@ -81,6 +86,7 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
                     dataLogApiService.updateCounterData(dataLog);
                     //统计到达数据
                     statCounterService.updateStat(dataLog);
+
                 }
             }
         }

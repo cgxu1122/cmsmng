@@ -3,6 +3,7 @@ package com.ifhz.core.service.schedule.impl;
 import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.schedule.CounterTempLogService;
 import com.ifhz.core.service.schedule.ScheduleService;
 import com.ifhz.core.service.stat.StatTaskService;
@@ -33,6 +34,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private CounterTempLogService counterTempLogService;
     @Resource(name = "statTaskService")
     private StatTaskService statTaskService;
+    @Resource(name = "dictInfoCacheService")
+    private DictInfoCacheService dictInfoCacheService;
 
     @Override
     public void scanCounterTempLog() {
@@ -104,6 +107,21 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         return false;
+    }
+
+
+    @Override
+    public void deleteCounterTempLog() {
+        LOGGER.info("scanCounterTempLog ------------------------start");
+        Date date = DateFormatUtils.addMonth(new Date(), -3);
+        Date startTime = dictInfoCacheService.getSystemInitDate();
+        Date endTime = DateHandler.getEndTime(date);
+        try {
+            counterTempLogService.batchDelete(startTime, endTime);
+        } catch (Exception e) {
+            LOGGER.error("scanCounterTempLog error", e);
+        }
+        LOGGER.info("scanCounterTempLog --------------------------end");
     }
 
 }

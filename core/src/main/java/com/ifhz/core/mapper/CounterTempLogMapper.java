@@ -17,7 +17,7 @@ public interface CounterTempLogMapper {
 
     public int insert(CounterTempLog po);
 
-    public int delete(@Param("id") Long id);
+    public int update(@Param("imei") String imei, @Param("type") Integer type);
 
     public CounterTempLog queryByImei(@Param("imei") String imei);
 
@@ -27,4 +27,7 @@ public interface CounterTempLogMapper {
     public List<CounterTempLog> queryPage(Pagination page,
                                           @Param(value = "startTime") Date startTime,
                                           @Param(value = "endTime") Date endTime);
+
+
+    public void batchDelete(@Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime);
 }
