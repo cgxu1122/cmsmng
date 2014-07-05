@@ -9,8 +9,6 @@ import org.apache.commons.lang.StringUtils;
  * Time: 0:13
  */
 public final class CodecUtils {
-    public static String START_CHAR = "^";
-
     private static byte KEY = 0x12;
 
     public static String decode(String source) {

@@ -5,14 +5,12 @@
 package com.ifhz.core.util;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.Logger;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * MD5加密工具类，
@@ -20,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
  * @author luyujian
  */
 public class MD5keyUtil {
-    private static Logger log = Logger.getLogger(MD5keyUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MD5keyUtil.class);
 
     /**
      * 返回加密的密文
@@ -35,11 +33,8 @@ public class MD5keyUtil {
             messageDigest.reset();
 
             messageDigest.update(str.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("NoSuchAlgorithmException caught!");
-            System.exit(-1);
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("NoSuchAlgorithmException error", e);
         }
 
         byte[] byteArray = messageDigest.digest();
@@ -72,21 +67,10 @@ public class MD5keyUtil {
                 messageDigest.update(buffer, 0, length);
             }
             return new String(Hex.encodeHex(messageDigest.digest())).toLowerCase();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("getMD5 error", e);
         } finally {
-            try {
-                if (inputStream != null)
-                    inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            IOUtils.closeQuietly(inputStream);
         }
         return null;
     }

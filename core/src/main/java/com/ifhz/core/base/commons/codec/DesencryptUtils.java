@@ -4,7 +4,6 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import org.apache.commons.io.FileUtils;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -55,10 +54,10 @@ public final class DesencryptUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        String fileName = "D:\\b7d2f6b63577c6bf34b84b5cbddeb450.txt";
-        String fileName2 = "D:\\a.txt";
+        String fileName = "D:\\1.apk";
+        String fileName2 = "D:\\2.apk";
 
-        FileUtils.copyFile(new File(fileName2), new File(fileName));
+//        FileUtils.copyFile(new File(fileName2), new File(fileName));
 
 
         System.out.println(md5File(new File(fileName)));

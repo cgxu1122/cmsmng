@@ -5,6 +5,8 @@ import com.ifhz.core.constants.GlobalConstants;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.util.Calendar;
  * @author yangjian
  */
 public final class FtpUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FtpUtils.class);
 
     /**
      * FTP上传单个文件测试
@@ -43,8 +47,8 @@ public final class FtpUtils {
             IOUtils.closeQuietly(is);
             try {
                 ftpClient.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                LOGGER.error("ftpUpload error", e);
                 throw new RuntimeException("关闭FTP连接发生异常！", e);
             }
         }
@@ -74,8 +78,8 @@ public final class FtpUtils {
             IOUtils.closeQuietly(fos);
             try {
                 ftpClient.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                LOGGER.error("ftpDownload error", e);
                 throw new RuntimeException("关闭FTP连接发生异常！", e);
             }
         }
