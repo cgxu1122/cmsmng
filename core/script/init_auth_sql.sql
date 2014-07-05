@@ -1,16 +1,16 @@
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (1,-1,'∏˘','root','1',0,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (2,1,'«˛µ¿π‹¿Ì','channel','1/2',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (3,1,'ª˙–Õπ‹¿Ì','model','1/3',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (4,1,'π§◊∞π‹¿Ì','device','1/4',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (5,1,'∫œ◊˜∑Ωπ‹¿Ì','partner','1/5',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (6,1,'≤˙∆∑π‹¿Ì','product','1/6',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (7,1,'≈˙¥Œπ‹¿Ì','batch','1/7',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (8,1,'…Ë±∏œµÕ≥π‹¿Ì','devSys','1/8',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (9,1,'∑¢≤ºπ‹¿Ì','publish','1/9',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (10,1,'µÿ∞¸«˛µ¿Ω·À„ÃıøÓ','settle','1/10',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (11,1,'∫œ◊˜∑Ω≤È—Ø∫ÛÃ®','logCount','1/11',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (12,1,'±®±ÌÕ≥º∆','report','1/12',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (13,1,'œµÕ≥”√ªßπ‹¿Ì','system','1/13',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (1,-1,'Ê†π','root','1',0,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (2,1,'Ê∏†ÈÅìÁÆ°ÁêÜ','channel','1/2',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (3,1,'Êú∫ÂûãÁÆ°ÁêÜ','model','1/3',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (4,1,'Â∑•Ë£ÖÁÆ°ÁêÜ','device','1/4',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (5,1,'Âêà‰ΩúÊñπÁÆ°ÁêÜ','partner','1/5',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (6,1,'‰∫ßÂìÅÁÆ°ÁêÜ','product','1/6',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (7,1,'ÊâπÊ¨°ÁÆ°ÁêÜ','batch','1/7',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (8,1,'ËÆæÂ§áÁ≥ªÁªüÁÆ°ÁêÜ','devSys','1/8',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (9,1,'ÂèëÂ∏ÉÁÆ°ÁêÜ','publish','1/9',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (10,1,'Âú∞ÂåÖÊ∏†ÈÅìÁªìÁÆóÊù°Ê¨æ','settle','1/10',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (11,1,'Âêà‰ΩúÊñπÊü•ËØ¢ÂêéÂè∞','logCount','1/11',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (12,1,'Êä•Ë°®ÁªüËÆ°','report','1/12',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (13,1,'Á≥ªÁªüÁî®Êà∑ÁÆ°ÁêÜ','system','1/13',1,to_date('2014-06-28', 'YYYY-mm-dd'));
 
 
 
@@ -34,7 +34,7 @@ Insert into NZYW.TY_ROLE_RESOURCE_REF (ID,ROLE_ID,RESOURCE_ID,ACCES,CREATE_TIME)
 Insert into NZYW.TY_ROLE_RESOURCE_REF (ID,ROLE_ID,RESOURCE_ID,ACCES,CREATE_TIME) values (13,1,13,1,to_date('2014-06-28', 'YYYY-mm-dd'));
 
 
-Insert into NZYW.TY_USER (USER_ID,LOGIN_NAME,REAL_NAME,PASSWORD,CELLPHONE,ADDRESS,STATUS,TYPE,CREATE_TIME,UPDATE_TIME) values (1,'admin','admin','123456','1388888888','±±æ© –∫£µÌ«¯',1,3,to_date('2014-06-28', 'YYYY-mm-dd'),to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into NZYW.TY_USER (USER_ID,LOGIN_NAME,REAL_NAME,PASSWORD,CELLPHONE,ADDRESS,STATUS,TYPE,CREATE_TIME,UPDATE_TIME) values (1,'admin','admin','123456','1388888888','Âåó‰∫¨Â∏ÇÊµ∑Ê∑ÄÂå∫',1,3,to_date('2014-06-28', 'YYYY-mm-dd'),to_date('2014-06-28', 'YYYY-mm-dd'));
 
 
 Insert into NZYW.TY_USER_ROLE_REF (ID,USER_ID,ROLE_ID,CREATE_TIME) values (1,1,1,to_date('2014-06-28', 'YYYY-mm-dd'));

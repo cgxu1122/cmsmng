@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/7/5 12:52:15                            */
+/* Created on:     2014/7/5 14:38:09                            */
 /*==============================================================*/
 
 
@@ -463,6 +463,7 @@ create table TY_COUNTER_TEMP_LOG  (
    UA                   VARCHAR2(100),
    CREATE_TIME          DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
+   TYPE                 NUMBER(2)                      default 1,
    constraint PK_TY_COUNTER_TEMP_LOG primary key (ID)
 );
 
@@ -483,6 +484,9 @@ comment on column TY_COUNTER_TEMP_LOG.CREATE_TIME is
 
 comment on column TY_COUNTER_TEMP_LOG.ACTIVE is
 '到达状态';
+
+comment on column TY_COUNTER_TEMP_LOG.TYPE is
+'类型 0：未上传 1：未统计 2：已统计';
 
 /*==============================================================*/
 /* Index: "Index_17"                                            */
