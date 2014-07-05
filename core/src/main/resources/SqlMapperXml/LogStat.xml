@@ -8,7 +8,6 @@
         UA,
         GROUP_ID,
         CHANNEL_ID,
-        BATCH_CODE,
         DEVICE_CODE,
         PROCESS_DATE,
         LAOWU_ID,
@@ -30,7 +29,6 @@
         <result column="MODLE_NAME" property="modleName" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
-        <result column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
         <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
@@ -65,7 +63,6 @@
         #{ua,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{channelId,jdbcType=BIGINT},
-        #{batchCode,jdbcType=VARCHAR},
         #{deviceCode,jdbcType=VARCHAR},
         #{processDate,jdbcType=DATE},
         #{laowuId,jdbcType=BIGINT},

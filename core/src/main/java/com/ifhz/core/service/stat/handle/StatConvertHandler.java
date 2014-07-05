@@ -53,7 +53,6 @@ public class StatConvertHandler {
         buffer.append(dataLog.getUa());
         buffer.append(dataLog.getChannelId());
         buffer.append(dataLog.getDeviceCode());
-        buffer.append(dataLog.getBatchCode());
         buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
 
         return DesencryptUtils.md5Str(buffer.toString());
@@ -106,10 +105,8 @@ public class StatConvertHandler {
     }
 
 
-    //针对以下列进行MD5加密UA + ChannelId + DeviceCode + BatchCode
-
     /**
-     * MD5加密UA + ChannelId + DeviceCode + BatchCode
+     * MD5加密UA + ChannelId + DeviceCode
      * 数据流水表 加工数据维度加密
      *
      * @param dataLog
@@ -120,7 +117,6 @@ public class StatConvertHandler {
         buffer.append(dataLog.getUa());
         buffer.append(dataLog.getChannelId());
         buffer.append(dataLog.getDeviceCode());
-        buffer.append(dataLog.getBatchCode());
 
         return DesencryptUtils.md5Str(buffer.toString());
     }

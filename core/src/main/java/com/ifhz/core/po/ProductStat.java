@@ -30,21 +30,12 @@ public class ProductStat implements Serializable {
     private Integer version;
 
     private String md5Key;
-    private String version;
     private String dataLogPmd5Key;
 
     private Date startDate;
     private Date endDate;
 
     private String groupName;
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 
     public String getGroupName() {
         return groupName;

@@ -1,5 +1,6 @@
 package com.ifhz.core.service.stat.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.ChannelInfoAdapter;
@@ -77,14 +78,17 @@ public class StatTaskServiceImpl implements StatTaskService {
         dataLogRequest.setStatSwitch(true);
 
         long totalCount = dataLogAdapter.queryTotalCountForDevice(dataLogRequest);
+        LOGGER.info("数据总量为{}", totalCount);
         if (totalCount > 0) {
             long pageNum = StatConvertHandler.getPageNum(totalCount, GlobalConstants.PAGE_SIZE);
+            LOGGER.info("数据总量为{},分页值为{}", totalCount, pageNum);
             for (int i = 0; i < pageNum; i++) {
                 Pagination page = new Pagination();
                 page.setPageSize(GlobalConstants.PAGE_SIZE);
                 page.setCurrentPage(i + 1);
                 List<DataLog> dataLogList = dataLogAdapter.queryPageForDevice(page, dataLogRequest);
                 if (CollectionUtils.isNotEmpty(dataLogList)) {
+                    LOGGER.info("第{}次查询统计开始", i + 1);
                     for (DataLog dataLog : dataLogList) {
                         {//流水统计
                             String logMd5Key = StatConvertHandler.getMd5KeyForLogStat(dataLog);
@@ -116,9 +120,14 @@ public class StatTaskServiceImpl implements StatTaskService {
                             }
                         }
                     }
+                    LOGGER.info("第{}次查询统计完成", i + 1);
                     //统计完成 保存入库
+                    LOGGER.info("第{}次查询统计流水数据保存入库开始", i + 1);
                     saveLogStatMap(logStatHashMap, startTime);
+                    LOGGER.info("第{}次查询统计流水数据保存入库结束", i + 1);
+                    LOGGER.info("第{}次查询统计产品数据保存入库开始", i + 1);
                     saveProductStatMap(productStatHashMap, startTime);
+                    LOGGER.info("第{}次查询统计产品数据保存入库结束", i + 1);
                 }
             }
         }
@@ -149,6 +158,7 @@ public class StatTaskServiceImpl implements StatTaskService {
                     String md5Key = entry.getKey();
                     LogStat value = entry.getValue();
                     LogStat entity = logStatUpdateService.getByMd5Key(md5Key);
+                    LOGGER.info("统计数据为:{}，数据库统计数据为:{}", JSON.toJSONString(value), JSON.toJSONString(entity));
                     Date startTime = DateHandler.getStartTime(value.getProcessDate());
                     Date endTime = DateHandler.getEndTime(value.getProcessDate());
                     //是否需要再次查询 每天固定的数据
@@ -163,8 +173,10 @@ public class StatTaskServiceImpl implements StatTaskService {
                         dataLogRequest.setEndTime(endTime);
                         //加工日期 累计上传数量   日期过期后，数值固定
                         deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
+                        LOGGER.info("{} -- {} 的加工设备累计上传数量为{}", value.getDataLogMd5Key(), deviceUpdDayNum);
                         //加工日期 计数器上传数量 日期过期后，数值固定
                         counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(dataLogRequest);
+                        LOGGER.info("{} -- {} 的计数器累计上传数量为{}", value.getDataLogMd5Key(), counterUpdDayNum);
                     }
                     if (entity != null) {//数据库有数据则更新
                         entity.setDevicePrsDayNum(entity.getDevicePrsDayNum() + value.getDevicePrsDayNum());
@@ -200,6 +212,7 @@ public class StatTaskServiceImpl implements StatTaskService {
                     String md5Key = entry.getKey();
                     ProductStat value = entry.getValue();
                     ProductStat entity = productStatUpdateService.getByMd5Key(md5Key);
+                    LOGGER.info("统计数据为:{}，数据库统计数据为:{}", JSON.toJSONString(value), JSON.toJSONString(entity));
                     Date startTime = DateHandler.getStartTime(value.getProcessDate());
                     Date endTime = DateHandler.getEndTime(value.getProcessDate());
                     //是否需要再次查询 每天固定的数据
@@ -216,7 +229,9 @@ public class StatTaskServiceImpl implements StatTaskService {
                         request.setProductSwitch(true);
 
                         productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
+                        LOGGER.info("{} -- {} 的加工设备累计上传数量为{}", value.getDataLogPmd5Key(), value.getMd5Key(), productUpdDayNum);
                         counterProductDayNum = dataLogQueryService.queryCounterProductDayNum(request);
+                        LOGGER.info("{} -- {} 的计数器累计上传数量为{}", value.getDataLogPmd5Key(), value.getMd5Key(), counterProductDayNum);
                     }
                     if (entity != null) {//数据库有数据则更新
                         entity.setProductPrsDayNum(entity.getProductPrsDayNum() + value.getProductPrsDayNum());

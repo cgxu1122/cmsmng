@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/7/5 14:38:09                            */
+/* Created on:     2014/7/5 22:11:14                            */
 /*==============================================================*/
 
 
@@ -399,7 +399,7 @@ create table TY_CHANNEL_INFO  (
    USER_ID              NUMBER(15),
    CHANNEL_NAME         VARCHAR(200 CHAR),
    "DESC"               VARCHAR(500 CHAR),
-   LEAF                 VARCHAR2(2 CHAR),
+   LEAF                 VARCHAR2(2 CHAR)               default 'Y',
    TYPE                 VARCHAR2(2 CHAR),
    LAOWU_ID             NUMBER(15),
    QUERY_IMEI_SOURCE    VARCHAR2(2 CHAR),
@@ -559,7 +559,7 @@ comment on column TY_DATA_LOG_20141.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_20141.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+'MD5_KEY=(UA + ChannelId + DeviceCode)';
 
 comment on column TY_DATA_LOG_20141.P_MD5_KEY is
 'P_MD5_KEY=(UA + GroupId + BatchCode)';
@@ -656,7 +656,7 @@ comment on column TY_DATA_LOG_20142.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_20142.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+'MD5_KEY=(UA + ChannelId + DeviceCode)';
 
 comment on column TY_DATA_LOG_20142.P_MD5_KEY is
 'P_MD5_KEY=(UA + GroupId + BatchCode)';
@@ -753,7 +753,7 @@ comment on column TY_DATA_LOG_20143.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_20143.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+'MD5_KEY=(UA + ChannelId + DeviceCode )';
 
 comment on column TY_DATA_LOG_20143.P_MD5_KEY is
 'P_MD5_KEY=(UA + GroupId + BatchCode)';
@@ -850,7 +850,7 @@ comment on column TY_DATA_LOG_20144.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
 comment on column TY_DATA_LOG_20144.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode + BatchCode)';
+'MD5_KEY=(UA + ChannelId + DeviceCode)';
 
 comment on column TY_DATA_LOG_20144.P_MD5_KEY is
 'P_MD5_KEY=(UA + GroupId + BatchCode)';
@@ -1015,7 +1015,6 @@ create table TY_LOG_STAT  (
    UA                   VARCHAR2(100),
    GROUP_ID             NUMBER(15),
    CHANNEL_ID           NUMBER(15),
-   BATCH_CODE           VARCHAR2(100),
    DEVICE_CODE          VARCHAR2(100),
    PROCESS_DATE         DATE,
    LAOWU_ID             NUMBER(15),
@@ -1028,7 +1027,7 @@ create table TY_LOG_STAT  (
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
    COUNTER_UPD_DAY_NUM  NUMBER(15)                     default 0,
    MD5_KEY              VARCHAR2(50)                    not null,
-   VERSION              NUMBER(15),
+   VERSION              NUMBER(15)                     default 0,
    constraint PK_TY_LOG_STAT primary key (ID)
 );
 
@@ -1046,9 +1045,6 @@ comment on column TY_LOG_STAT.GROUP_ID is
 
 comment on column TY_LOG_STAT.CHANNEL_ID is
 '渠道ID';
-
-comment on column TY_LOG_STAT.BATCH_CODE is
-'批次号';
 
 comment on column TY_LOG_STAT.DEVICE_CODE is
 '设备编码';
@@ -1370,7 +1366,7 @@ create table TY_PRODUCT_STAT  (
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
    COUNTER_PRODUCT_DAY_NUM NUMBER(15)                     default 0,
    MD5_KEY              VARCHAR2(50)                    not null,
-   VERSION              NUMBER(15),
+   VERSION              NUMBER(15)                     default 0,
    constraint PK_TY_PRODUCT_STAT primary key (ID)
 );
 
