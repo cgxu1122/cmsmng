@@ -32,10 +32,12 @@ public class ScheduleController {
         JSONObject result = new JSONObject();
         try {
             scheduleService.fetchWdjData();
+            result.put("ret", true);
         } catch (Exception e) {
             LOGGER.error("arrivalData error ", e);
         } finally {
             LOGGER.info("returnObj={}", result);
+            result.put("ret", false);
         }
 
         return result;
@@ -50,7 +52,9 @@ public class ScheduleController {
         JSONObject result = new JSONObject();
         try {
             scheduleService.scanCounterTempLog();
+            result.put("ret", true);
         } catch (Exception e) {
+            result.put("ret", false);
             LOGGER.error("scanCounterTempLog error ", e);
         } finally {
             LOGGER.info("returnObj={}", result);
@@ -67,7 +71,9 @@ public class ScheduleController {
         JSONObject result = new JSONObject();
         try {
             scheduleService.statisticsData();
+            result.put("ret", true);
         } catch (Exception e) {
+            result.put("ret", false);
             LOGGER.error("statisticsData error ", e);
         } finally {
             LOGGER.info("returnObj={}", result);

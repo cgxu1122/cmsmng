@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -47,6 +48,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         LOGGER.info("scanCounterTempLog --------------------------end");
     }
 
+
+    /**
+     * 统计 流水数据
+     * 开始时间 当前时间向前推一个小时
+     * 结束时间 开始时间+30分钟
+     */
     @Override
     public void statisticsData() {
         LOGGER.info("statisticsData ------------------------start");
@@ -58,7 +65,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             date = DateFormatUtils.addMinute(date, interval);
             Date endTime = DateHandler.getStartTimeForMinute(date);
 
-            statTaskService.scanDataLog(startTime, endTime);
+            if (isCrossDay(startTime, endTime)) {
+                Date currentEndTime = DateHandler.getEndTime(startTime);
+                statTaskService.scanDataLog(startTime, currentEndTime);
+                Date nextStartTime = DateHandler.getStartTime(endTime);
+                statTaskService.scanDataLog(nextStartTime, endTime);
+            } else {
+                statTaskService.scanDataLog(startTime, endTime);
+            }
         } catch (Exception e) {
             LOGGER.error("statisticsData error", e);
         }
@@ -76,4 +90,20 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         LOGGER.info("fetch Wdj Data --------------------------end");
     }
+
+    private boolean isCrossDay(Date startTime, Date endTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startTime);
+        int startDay = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.clear();
+        calendar.setTime(endTime);
+        int endDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        if (startDay != endDay) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
