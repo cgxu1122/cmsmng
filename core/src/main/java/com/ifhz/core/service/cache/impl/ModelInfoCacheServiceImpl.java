@@ -35,7 +35,7 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
     private ModelInfoAdapter modelInfoAdapter;
 
     private Cache<String, ModelInfo> createCache() {
-        return CacheBuilder.newBuilder().maximumSize(3000).expireAfterWrite(60, TimeUnit.MINUTES).build();
+        return CacheBuilder.newBuilder().maximumSize(2000).expireAfterWrite(60, TimeUnit.MINUTES).build();
     }
 
     @Override

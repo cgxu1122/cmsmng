@@ -34,7 +34,7 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
     private ChannelInfoAdapter channelInfoAdapter;
 
     private Cache<Long, ChannelInfo> createCache() {
-        return CacheBuilder.newBuilder().maximumSize(3000).expireAfterWrite(60, TimeUnit.MINUTES).build();
+        return CacheBuilder.newBuilder().maximumSize(2000).expireAfterWrite(60, TimeUnit.MINUTES).build();
     }
 
     @Override
