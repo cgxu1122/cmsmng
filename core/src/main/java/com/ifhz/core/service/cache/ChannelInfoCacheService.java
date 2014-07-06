@@ -1,7 +1,7 @@
 package com.ifhz.core.service.cache;
 
 import com.google.common.cache.CacheStats;
-import com.ifhz.core.po.ModelInfo;
+import com.ifhz.core.po.ChannelInfo;
 
 /**
  * 类描述
@@ -9,10 +9,10 @@ import com.ifhz.core.po.ModelInfo;
  * Date: 2014/7/6
  * Time: 18:49
  */
-public interface ModelInfoCacheService {
+public interface ChannelInfoCacheService {
 
 
-    public ModelInfo getByUaAndGrouId(String ua, Long groupId) throws Exception;
+    public ChannelInfo getByChannelId(Long channelId) throws Exception;
 
     /**
      * 清空Cache数据
@@ -30,6 +30,6 @@ public interface ModelInfoCacheService {
     /**
      * 清空指定key 的数据
      */
-    public void remove(String ua, Long groupId) throws Exception;
+    public void remove(Long channelId) throws Exception;
 
 }

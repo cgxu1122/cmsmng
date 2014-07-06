@@ -22,5 +22,4 @@ public interface CommonCacheService {
      */
     public CacheStats status();
 
-
 }
