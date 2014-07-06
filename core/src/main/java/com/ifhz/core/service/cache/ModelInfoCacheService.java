@@ -12,7 +12,7 @@ import com.ifhz.core.po.ModelInfo;
 public interface ModelInfoCacheService {
 
 
-    public ModelInfo getByUaAndGrouId(String ua, Long groupId) throws Exception;
+    public ModelInfo getByUaAndGrouId(String ua, Long groupId);
 
     /**
      * 清空Cache数据
@@ -30,6 +30,6 @@ public interface ModelInfoCacheService {
     /**
      * 清空指定key 的数据
      */
-    public void remove(String ua, Long groupId) throws Exception;
+    public void remove(String ua, Long groupId);
 
 }

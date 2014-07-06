@@ -12,8 +12,8 @@ import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.api.handle.ModelHandler;
-import com.ifhz.core.service.channel.ChannelInfoService;
-import com.ifhz.core.service.model.ModelInfoService;
+import com.ifhz.core.service.cache.ChannelInfoCacheService;
+import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.StatCounterService;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,10 +42,10 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     private CounterTempLogAdapter counterTempLogAdapter;
     @Resource(name = "dataLogApiService")
     private DataLogApiService dataLogApiService;
-    @Resource(name = "channelInfoService")
-    private ChannelInfoService channelInfoService;
-    @Resource(name = "modelInfoService")
-    private ModelInfoService modelInfoService;
+    @Resource(name = "channelInfoCacheService")
+    private ChannelInfoCacheService channelInfoCacheService;
+    @Resource(name = "modelInfoCacheService")
+    private ModelInfoCacheService modelInfoCacheService;
     @Resource(name = "statCounterService")
     private StatCounterService statCounterService;
     @Resource(name = "taskExecutor")
@@ -113,7 +113,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
             LOGGER.info("DataLog接口数据：{},DataLog数据库数据：{}", JSON.toJSONString(po), JSON.toJSONString(dataLog));
             if (dataLog == null) {
                 // 通过渠道id 获取渠道组id
-                ChannelInfo channelInfo = channelInfoService.getById(po.getChannelId());
+                ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(po.getChannelId());
                 if (channelInfo != null) {
                     Long groupId = channelInfo.getGroupId();
                     po.setGroupId(groupId);
@@ -139,7 +139,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         if (StringUtils.isNotBlank(ua) && groupId != null) {
             //空格 或者多个连续空格 用下划线代替
             String uaTemp = ModelHandler.translateUa(ua);
-            ModelInfo modelInfo = modelInfoService.getByGroupIdAndUa(groupId, uaTemp);
+            ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(uaTemp, groupId);
             if (modelInfo != null) {
                 result = modelInfo.getModelName();
             }

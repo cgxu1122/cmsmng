@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,20 +50,34 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
 
 
     @Override
-    public ModelInfo getByUaAndGrouId(String ua, Long groupId) throws Exception {
+    public ModelInfo getByUaAndGrouId(String ua, Long groupId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(ua), "ua must be not empty");
         Preconditions.checkArgument(groupId != null, "groupId must be not empty");
         String keyCode = ua.trim() + "," + String.valueOf(groupId);
-        return CACHE.get(keyCode, new CacheCallable(keyCode));
+        ModelInfo ret = null;
+        try {
+            ret = CACHE.get(keyCode, new CacheCallable(keyCode));
+        } catch (ExecutionException e) {
+            LOGGER.error("getByUaAndGrouId error", e);
+        }
+        if (ret == null || ret.getModelId() == null) {
+            return null;
+        } else {
+            return ret;
+        }
     }
 
     @Override
-    public void remove(String ua, Long groupId) throws Exception {
+    public void remove(String ua, Long groupId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(ua), "ua must be not empty");
         Preconditions.checkArgument(groupId != null, "groupId must be not empty");
 
         String keyCode = ua.trim() + "," + String.valueOf(groupId);
-        CACHE.invalidate(keyCode);
+        try {
+            CACHE.invalidate(keyCode);
+        } catch (Exception e) {
+            LOGGER.error("remove error", e);
+        }
     }
 
 
@@ -94,6 +109,9 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
                 LOGGER.error("query ModelInfo Failure", e);
             } finally {
                 LOGGER.info("result={}", JSON.toJSONString(result));
+            }
+            if (result == null) {
+                result = new ModelInfo();
             }
             return result;
         }

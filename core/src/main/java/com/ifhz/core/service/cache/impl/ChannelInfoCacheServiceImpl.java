@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,15 +38,30 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
     }
 
     @Override
-    public ChannelInfo getByChannelId(Long channelId) throws Exception {
+    public ChannelInfo getByChannelId(Long channelId) {
         Preconditions.checkArgument(channelId != null, "channelId must be not null");
-        return CACHE.get(channelId, new CacheCallable(channelId));
+        ChannelInfo ret = null;
+        try {
+            ret = CACHE.get(channelId, new CacheCallable(channelId));
+        } catch (ExecutionException e) {
+            LOGGER.error("getByChannelId error", e);
+        }
+
+        if (ret == null || ret.getChannelId() == null) {
+            return null;
+        } else {
+            return ret;
+        }
     }
 
     @Override
-    public void remove(Long channelId) throws Exception {
+    public void remove(Long channelId) {
         Preconditions.checkArgument(channelId != null, "channelId must be not null");
-        CACHE.invalidate(channelId);
+        try {
+            CACHE.invalidate(channelId);
+        } catch (Exception e) {
+            LOGGER.error("remove error", e);
+        }
     }
 
 
@@ -76,12 +92,15 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
             ChannelInfo result = null;
             try {
                 if (keyCode != null) {
-                    channelInfoAdapter.getById(keyCode);
+                    result = channelInfoAdapter.getById(keyCode);
                 }
             } catch (Exception e) {
                 LOGGER.error("query ChannelInfo Failure", e);
             } finally {
                 LOGGER.info("result={}", JSON.toJSONString(result));
+            }
+            if (result == null) {
+                result = new ChannelInfo();
             }
             return result;
         }

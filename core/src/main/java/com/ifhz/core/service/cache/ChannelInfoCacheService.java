@@ -12,7 +12,7 @@ import com.ifhz.core.po.ChannelInfo;
 public interface ChannelInfoCacheService {
 
 
-    public ChannelInfo getByChannelId(Long channelId) throws Exception;
+    public ChannelInfo getByChannelId(Long channelId);
 
     /**
      * 清空Cache数据
@@ -30,6 +30,6 @@ public interface ChannelInfoCacheService {
     /**
      * 清空指定key 的数据
      */
-    public void remove(Long channelId) throws Exception;
+    public void remove(Long channelId);
 
 }
