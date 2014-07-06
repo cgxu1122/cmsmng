@@ -6,6 +6,7 @@ import com.ifhz.core.service.stat.bean.DataLogRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -28,4 +29,8 @@ public interface DataLogMapper {
     public long queryTotalCountForDevice(DataLogRequest dataLogRequest);
 
     public long queryTotalCountForCounter(@Param("dataLogRequest") DataLogRequest dataLogRequest);
+
+    public List<String> getLogImeiList(Map<String, Object> params);
+
+    public List<String> getProductImeiList(Map<String, Object> params);
 }

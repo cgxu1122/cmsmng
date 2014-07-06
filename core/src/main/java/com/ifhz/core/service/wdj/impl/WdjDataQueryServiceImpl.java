@@ -63,6 +63,7 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
         Map<String, DataLog> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(dataResultList)) {
             for (WdjDataResult dataResult : dataResultList) {
+                LOGGER.info("WdjDataResult={}", JSON.toJSONString(dataResult));
                 DataLog dataLog = translateDataLog(dataResult);
                 if (dataLog != null && StringUtils.isNotBlank(dataLog.getImei())) {
                     if (!map.containsKey(dataLog.getImei())) {
@@ -92,9 +93,6 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
                     if (StringUtils.isNotBlank(dataResult.getDeptId())) {
                         dataLog.setChannelId(Long.parseLong(dataResult.getDeptId()));
                     }
-                    //TODO 测试数据
-                    dataLog.setChannelId(1L);
-
                     if (StringUtils.isNotBlank(dataResult.getInstallDate())) {
                         dataLog.setProcessTime(DateFormatUtils.parse(dataResult.getInstallDate(), GlobalConstants.DATE_FORMAT_DPT));
                     }

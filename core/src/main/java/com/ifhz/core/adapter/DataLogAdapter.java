@@ -5,6 +5,7 @@ import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.stat.bean.DataLogRequest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -27,4 +28,8 @@ public interface DataLogAdapter {
     public long queryTotalCountForDevice(DataLogRequest dataLogRequest);
 
     public long queryTotalCountForCounter(DataLogRequest dataLogRequest);
+
+    public List<String> getLogImeiList(Map<String, Object> params);
+
+    public List<String> getProductImeiList(Map<String, Object> params);
 }

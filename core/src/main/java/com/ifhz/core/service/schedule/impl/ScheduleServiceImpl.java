@@ -87,6 +87,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LOGGER.info("fetch Wdj Data ------------------------start");
         Date date = DateFormatUtils.addDay(new Date(), -1);
         try {
+            LOGGER.info("process Wdj Data date={}------------loading", DateFormatUtils.formatDate(date, GlobalConstants.DATE_FORMAT_DPT));
             wdjDataQueryService.queryDataList(date);
         } catch (Exception e) {
             LOGGER.error("fetchWdjData error", e);

@@ -45,6 +45,14 @@ public class SplitTableServiceImpl implements SplitTableService {
         return list;
     }
 
+    @Override
+    public List<String> getListFromDate2Now(Date date) {
+        Date now = new Date();
+        List<String> list = getQueryTableList(TablePrefix, date, now);
+        LOGGER.info("{},{},{}", JSON.toJSONString(date), JSON.toJSONString(now), list);
+        return list;
+    }
+
 
     private String getTableSuffix(Date now) {
         StringBuffer buff = new StringBuffer("");
@@ -64,6 +72,18 @@ public class SplitTableServiceImpl implements SplitTableService {
         List<String> tableList = Lists.newArrayList();
         Date initDate = dictInfoCacheService.getSystemInitDate();
         SplitTableBean bean = new SplitTableBean(initDate, now);
+        List<String> suffixList = bean.getSuffixList();
+        for (String suffix : suffixList) {
+            tableList.add(prefix + suffix);
+        }
+
+        return tableList;
+    }
+
+
+    private List<String> getQueryTableList(String prefix, Date date, Date now) {
+        List<String> tableList = Lists.newArrayList();
+        SplitTableBean bean = new SplitTableBean(date, now);
         List<String> suffixList = bean.getSuffixList();
         for (String suffix : suffixList) {
             tableList.add(prefix + suffix);

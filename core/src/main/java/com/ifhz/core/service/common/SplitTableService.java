@@ -26,4 +26,13 @@ public interface SplitTableService {
      * @return
      */
     public List<String> getTableNameList(Date now);
+
+
+    /**
+     * 流水数据 从指定日期到当前日期的表明列表
+     *
+     * @param date
+     * @return
+     */
+    public List<String> getListFromDate2Now(Date date);
 }
