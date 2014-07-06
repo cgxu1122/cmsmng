@@ -1,15 +1,8 @@
 package com.ifhz.core.mapper;
 
-import com.ifhz.core.po.Role;
-import com.ifhz.core.po.RoleResourceRef;
 import com.test.BaseTest;
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author radishlee
@@ -51,9 +44,7 @@ public class RoleMapperTest extends BaseTest {
 //    }
 
 
-
 //    }
-
 
 
     //    @Test
@@ -109,7 +100,7 @@ public class RoleMapperTest extends BaseTest {
 //    }
 //    @Test
 //    public void testUpdateRoleName() throws Exception {
-//        int cnt = roleMapper.updateFullPath(3l,"pathaaaa");
+//        int cnt = roleMapper.saveFullPathAndType(3l,"pathaaaa");
 //        log(cnt);
 //    }
 //    @Test
@@ -125,8 +116,6 @@ public class RoleMapperTest extends BaseTest {
         int cnt = roleMapper.delete(3l);
         log(cnt);
     }
-
-
 
 
 }

@@ -1,48 +1,42 @@
 package com.ifhz.core.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
  * 不能处理中文文件名
  */
-public class ZipUtils{
+public class ZipUtils {
     private static final int buffer = 2048;
 
-    public static void main(String[] args){
-        unZip("D:\\ss\\test.zip");
+    public static void main(String[] args) {
+        unZip("E:\\test.zip");
     }
 
-    public static void unZip(String path){
+    public static void unZip(String path) {
         int count = -1;
         int index = -1;
 
-        String savepath = "";
+        String savepath = "E:\\save";
         boolean flag = false;
 
         savepath = path.substring(0, path.lastIndexOf("\\")) + "\\";
+        if (!savepath.endsWith(".zip")) {
+            return;
+        }
 
-        try{
+        try {
             BufferedOutputStream bos = null;
             ZipEntry entry = null;
             FileInputStream fis = new FileInputStream(path);
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
 
-            while((entry = zis.getNextEntry()) != null){
+            while ((entry = zis.getNextEntry()) != null) {
                 byte data[] = new byte[buffer];
                 String temp = entry.getName();
-                flag = isPics(temp);
-                if(!flag) {
-                    continue;
-                }
-
                 index = temp.lastIndexOf("/");
-                if(index > -1) {
+                if (index > -1) {
                     temp = temp.substring(index + 1);
                 }
                 temp = savepath + temp;
@@ -53,7 +47,7 @@ public class ZipUtils{
                 FileOutputStream fos = new FileOutputStream(f);
                 bos = new BufferedOutputStream(fos, buffer);
 
-                while((count = zis.read(data, 0, buffer)) != -1){
+                while ((count = zis.read(data, 0, buffer)) != -1) {
                     bos.write(data, 0, count);
                 }
                 bos.flush();
@@ -63,13 +57,5 @@ public class ZipUtils{
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static boolean isPics(String filename){
-        boolean flag = false;
-        if(filename.endsWith(".jpg") || filename.endsWith(".gif")  || filename.endsWith(".bmp") || filename.endsWith(".png")) {
-            flag = true;
-        }
-        return flag;
     }
 }

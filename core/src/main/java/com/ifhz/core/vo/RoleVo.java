@@ -51,6 +51,32 @@ public class RoleVo implements Serializable {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    /**
+     * 删除权限
+     */
+    private Long delDisable;
+
+    /**
+     * 类型
+     */
+    private Long type;
+
+    public Long getDelDisable() {
+        return delDisable;
+    }
+
+    public void setDelDisable(Long delDisable) {
+        this.delDisable = delDisable;
+    }
+
+    public Long getType() {
+        return type;
+    }
+
+    public void setType(Long type) {
+        this.type = type;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }

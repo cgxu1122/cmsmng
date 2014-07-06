@@ -100,7 +100,7 @@ public interface RoleService {
      * @param dbRole
      * @author radishlee
      */
-    public void saveRoleFullPath(Role dbRole);
+    public void saveFullPathAndType(Role dbRole);
 
     /**
      * 根据名称查询 除了自己

@@ -42,10 +42,28 @@ public class Role {
     private Long levels;
 
     /**
+     * 删除权限
+     */
+    private Long delDisable;
+
+    /**
+     * 类型
+     */
+    private Long type;
+
+    /**
      * 创建时间
      */
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+
+    public Long getDelDisable() {
+        return delDisable;
+    }
+
+    public void setDelDisable(Long delDisable) {
+        this.delDisable = delDisable;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -100,4 +118,11 @@ public class Role {
         return "Role [roleName=" + roleName + ", createTime=" + createTime + "]";
     }
 
+    public Long getType() {
+        return type;
+    }
+
+    public void setType(Long type) {
+        this.type = type;
+    }
 }

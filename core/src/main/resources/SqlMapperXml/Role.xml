@@ -4,9 +4,9 @@
     <!-- 插入角色记录 -->
     <insert id="insertRole" parameterType="com.ifhz.core.po.Role">
         insert into ty_role
-        (role_id,role_name,create_time,parent_id,levels)
+        (role_id,role_name,create_time,parent_id,levels,type,del_disable)
         values
-        (SEQ_ROLE.nextval,#{roleName},sysdate,#{parentId},#{levels})
+        (SEQ_ROLE.nextval,#{roleName},sysdate,#{parentId},#{levels},#{type},#{delDisable})
         <selectKey resultType="long" keyProperty="role_id">
             SELECT SEQ_ROLE.CURRVAL FROM DUAL
         </selectKey>
@@ -137,6 +137,8 @@
         <result column="parentName" property="parentName" jdbcType="TIMESTAMP"/>
         <result column="levels" property="levels" jdbcType="BIGINT"/>
         <result column="fullPath" property="fullPath" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="BIGINT"/>
+        <result column="delDisable" property="delDisable" jdbcType="BIGINT"/>
     </resultMap>
     <select id="findById" resultMap="VoMap">
         select
@@ -146,7 +148,9 @@
         child.parent_id as parentId,
         parent.role_name as parentName,
         child.levels,
-        child.full_path as fullPath
+        child.full_path as fullPath,
+        child.type as type,
+        child.del_disable as delDisable
         from
         ty_role child
         join
@@ -179,6 +183,8 @@
         create_time as createTime,
         parent_id as parentId,
         levels,
+        type as type,
+        del_disable as delDisable,
         full_path as fullPath
         from
         ty_role

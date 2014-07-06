@@ -161,7 +161,7 @@
     </div>
 </div>
 <div region="south">
-    <div style="text-align:center;padding:5px 0px; color: #999;">Copyright &copy; 2013 power by iqianjin</div>
+    <div style="text-align:center;padding:5px 0px; color: #999;">Copyright &copy; 2013 power by yitianxindong</div>
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
 <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
@@ -293,7 +293,7 @@
 --%>
 <div title="发布管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/\/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>APK管理</span>
         </a>

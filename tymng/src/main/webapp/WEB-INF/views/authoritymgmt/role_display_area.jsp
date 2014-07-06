@@ -104,7 +104,7 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     result = eval('(' + result + ')');
-                    if (result.code==-1) {
+                    if (result.code == -1) {
                         $.messager.alert('错误', result.message);
                     } else {
                         $.messager.alert('成功', result.message);
@@ -134,7 +134,7 @@
                 success: function (result) {
                     var result = eval('(' + result + ')');
                     result = eval('(' + result + ')');
-                    if (result.code==-1) {
+                    if (result.code == -1) {
                         $.messager.alert('错误', result.message);
                     } else {
                         $('#dlg1').dialog('close');
@@ -153,10 +153,11 @@
                     if (r) {
                         $.post('<%=basePath%>/tymng/role/delete', {id: row.roleId}, function (result) {
                             result = eval('(' + result + ')');
-                            if (result.code==-1) {
+                            if (result.code == -1) {
                                 $.messager.alert('错误', result.message);
                             } else {
-                                $('#dg').datagrid('reload');
+                                //$('#dg').datagrid('reload');
+                                window.self.location.reload(true);
                                 parent.frames['leftFrame'].location.reload(true);
                             }
                         }, 'json');
@@ -173,10 +174,12 @@
      style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
     <div class="ftitle">新建角色</div>
     <br/>
+
     <form id="fm" method="post" novalidate>
         <input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
+
         <div class="fitem">
-            <label>角色名称:</label> <input name="roleName" class="easyui-validatebox"  required="true">
+            <label>角色名称:</label> <input name="roleName" class="easyui-validatebox" required="true">
         </div>
     </form>
 </div>
@@ -186,14 +189,16 @@
        onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
-<div id="dlg1" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg1-buttons">
+<div id="dlg1" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true"
+     buttons="#dlg1-buttons">
     <div class="ftitle">修改角色</div>
     <br/>
 
     <form id="fm1" method="post" novalidate>
         <input type="hidden" id="roleId" name="roleId" value="${roleId}"/>
+
         <div class="fitem">
-            <label>角色名称:</label> <input name="roleName" id="roleName" class="easyui-validatebox"  required="true">
+            <label>角色名称:</label> <input name="roleName" id="roleName" class="easyui-validatebox" required="true">
         </div>
     </form>
 </div>

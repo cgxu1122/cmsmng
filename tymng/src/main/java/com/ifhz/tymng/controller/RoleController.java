@@ -136,11 +136,13 @@ public class RoleController extends BaseController {
         role.setParentId(parentRole.getRoleId());
         role.setLevels(parentRole.getLevels() + 1);
         role.setRoleName(roleName);
+        role.setDelDisable(1l);
+        role.setType(parentRole.getType());
         roleService.insert(role);
 
         Role dbRole = roleService.findByRoleName(roleName);
         dbRole.setFullPath(parentRole.getFullPath() + "/" + dbRole.getRoleId());
-        roleService.saveRoleFullPath(dbRole);
+        roleService.saveFullPathAndType(dbRole);
 
         return JSON.toJSONString(result);
     }
@@ -252,8 +254,12 @@ public class RoleController extends BaseController {
             return JSON.toJSONString(result);
         }
 
-        roleService.deleteAllRefByRoleId(roleId);
-        roleService.delete(roleId);
+        RoleVo roleVo = roleService.findById(roleId);
+        if (roleVo.getDelDisable() == 1) {//1可以删 0 不能删
+            roleService.deleteAllRefByRoleId(roleId);
+            roleService.delete(roleId);
+        }
+
         return JSON.toJSONString(result);
     }
 

@@ -160,6 +160,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleVo findById(long id) {
         Role role = findParentById(id);
+        if (role == null) {
+            return null;
+        }
         if (role.getParentId() == -1) {
             RoleVo rv = new RoleVo();
             try {
@@ -202,7 +205,7 @@ public class RoleServiceImpl implements RoleService {
      * @auther radish
      */
     @Override
-    public void saveRoleFullPath(Role dbRole) {
+    public void saveFullPathAndType(Role dbRole) {
         roleMapper.updateFullPath(dbRole.getRoleId(), dbRole.getFullPath());
     }
 
