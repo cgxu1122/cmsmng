@@ -2,6 +2,7 @@ package com.ifhz.core.utils;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -18,46 +19,25 @@ public class ZipUtils {
         if (!path.endsWith(".zip")) {
             return;
         }
-
-        int count = -1;
-        int index = -1;
-
-        String savepath = "E:\\save";
-        boolean flag = false;
-
-        savepath = path.substring(0, path.lastIndexOf("\\")) + "\\";
-
+        BufferedOutputStream bos = null;
+        ZipEntry entry = null;
         try {
-            BufferedOutputStream bos = null;
-            ZipEntry entry = null;
             FileInputStream fis = new FileInputStream(path);
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
+            ZipFile zipfile = new ZipFile(path);
 
             while ((entry = zis.getNextEntry()) != null) {
-                byte data[] = new byte[buffer];
-                String temp = entry.getName();
-                index = temp.lastIndexOf("/");
-                if (index > -1) {
-                    temp = temp.substring(index + 1);
+                if (entry.isDirectory()) {
+                    continue;
+                } else {
+                    InputStreamReader is = new InputStreamReader(zipfile.getInputStream(entry));
+                    BufferedReader br = new BufferedReader(is);
+                    String con = null;
+                    while ((con = br.readLine()) != null) {
+                        System.out.println(entry.getName());
+                        System.out.println(con);
+                    }
                 }
-                temp = savepath + temp;
-
-                File f = new File(temp);
-                f.createNewFile();
-
-                FileOutputStream fos = new FileOutputStream(f);
-                bos = new BufferedOutputStream(fos, buffer);
-                System.out.println(buffer);
-
-                while ((count = zis.read(data, 0, buffer)) != -1) {
-                    System.out.println("======");
-                    System.out.println(data);
-                    System.out.println(count);
-                    System.out.println("======");
-                    bos.write(data, 0, count);
-                }
-                bos.flush();
-                bos.close();
             }
             zis.close();
         } catch (Exception e) {

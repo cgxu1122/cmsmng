@@ -18,7 +18,11 @@ Array.prototype.pop = function (val) {
         this.splice(index, 1);
     }
 }
-
+function getCurrrentDateStr() {
+    var date = new Date();
+    var ctime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    return ctime;
+}
 String.prototype.trim = function () {
     return this.replace(/(^\s*)|(\s*$)/g, "");
 }
