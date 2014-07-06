@@ -1,60 +1,48 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/7/5 22:11:14                            */
+/* Created on:     2014/7/6 23:28:49                            */
 /*==============================================================*/
 
+
+drop index "Index_5";
 
 drop index "Index_17";
 
 drop index "Index_19";
 
-drop index IDX_DL_20141_CTIME;
+drop index IDX_DUTIME;
 
-drop index IDX_DL_20141_DTIME;
+drop index IDX_PTIME;
 
-drop index IDX_DL_20141_MD5;
+drop index IDX_UA_CID_DCODE;
 
-drop index IDX_DL_20141_PMD5;
+drop index IDX_UA_GID_BCODE;
 
-drop index UNIQ_DL_20141_IMEI;
-
-drop index IDX_DL_20142_CTIME;
-
-drop index IDX_DL_20142_DTIME;
-
-drop index IDX_DL_20142_MD5;
-
-drop index IDX_DL_20142_PMD5;
-
-drop index UNIQ_DL_20142_IMEI;
-
-drop index IDX_DL_20143_CTIME;
-
-drop index IDX_DL_20143_DTIME;
-
-drop index IDX_DL_20143_MD5;
-
-drop index IDX_DL_20143_PMD5;
-
-drop index UNIQ_DL_20143_IMEI;
-
-drop index IDX_DL_20144_CTIME;
-
-drop index IDX_DL_20144_DTIME;
-
-drop index IDX_DL_20144_MD5;
-
-drop index IDX_DL_20144_PMD5;
-
-drop index UNIQ_DL_20144_IMEI;
+drop index UNIQ_IMEI;
 
 drop index "Index_7";
 
+drop index "Index_16";
+
+drop index "Index_18";
+
+drop index "Index_20";
+
+drop index "Index_21";
+
 drop index "Index_3";
+
+drop index "Index_22";
 
 drop index "Index_13";
 
+drop index "Index_14";
+
+drop index "Index_15";
+
 drop index "Index_4";
+
+drop index "Index_6";
 
 drop index "Index_9";
 
@@ -63,6 +51,8 @@ drop index "Index_10";
 drop index "Index_11";
 
 drop index "Index_12";
+
+drop index "Index_23";
 
 drop index "Index_8";
 
@@ -82,13 +72,7 @@ drop table TY_CHANNEL_INFO cascade constraints;
 
 drop table TY_COUNTER_TEMP_LOG cascade constraints;
 
-drop table TY_DATA_LOG_20141 cascade constraints;
-
-drop table TY_DATA_LOG_20142 cascade constraints;
-
-drop table TY_DATA_LOG_20143 cascade constraints;
-
-drop table TY_DATA_LOG_20144 cascade constraints;
+drop table TY_DATA_LOG cascade constraints;
 
 drop table TY_DEVICE_INFO cascade constraints;
 
@@ -362,13 +346,22 @@ comment on column TY_BATCH_PRODUCT_REF.BATCH_ID is
 '批次ID';
 
 comment on column TY_BATCH_PRODUCT_REF.BATCH_CODE is
-'批次CODE';
+'批次号';
 
 comment on column TY_BATCH_PRODUCT_REF.PRODUCT_ID is
 '产品ID';
 
 comment on column TY_BATCH_PRODUCT_REF.CREATE_TIME is
 '创建时间';
+
+/*==============================================================*/
+/* Index: "Index_5"                                             */
+/*==============================================================*/
+create unique index "Index_5" on TY_BATCH_PRODUCT_REF (
+   PRODUCT_ID ASC,
+   BATCH_CODE ASC,
+   BATCH_ID ASC
+);
 
 /*==============================================================*/
 /* Table: TY_CHANNEL_GROUP                                      */
@@ -467,7 +460,7 @@ create table TY_COUNTER_TEMP_LOG  (
    UA                   VARCHAR2(100),
    CREATE_TIME          DATE                           default SYSDATE not null,
    ACTIVE               NUMBER(2),
-   TYPE                 NUMBER(2)                      default 1,
+   TYPE                 NUMBER(2)                      default 0,
    constraint PK_TY_COUNTER_TEMP_LOG primary key (ID)
 );
 
@@ -490,7 +483,7 @@ comment on column TY_COUNTER_TEMP_LOG.ACTIVE is
 '到达状态';
 
 comment on column TY_COUNTER_TEMP_LOG.TYPE is
-'类型 0：未上传 1：未统计 2：已统计';
+'类型 0：未整合 1：未统计 2：已统计';
 
 /*==============================================================*/
 /* Index: "Index_17"                                            */
@@ -507,391 +500,96 @@ create index "Index_19" on TY_COUNTER_TEMP_LOG (
 );
 
 /*==============================================================*/
-/* Table: TY_DATA_LOG_20141                                     */
+/* Table: TY_DATA_LOG                                           */
 /*==============================================================*/
-create table TY_DATA_LOG_20141  (
+create table TY_DATA_LOG  (
    ID                   NUMBER(15)                      not null,
    IMEI                 VARCHAR2(50)                    not null,
-   UA                   VARCHAR2(100),
-   CHANNEL_ID           NUMBER(15),
-   DEVICE_CODE          VARCHAR2(100),
-   GROUP_ID             NUMBER(15),
-   BATCH_CODE           VARCHAR2(100),
-   PROCESS_TIME         DATE,
+   UA                   VARCHAR2(100)                   not null,
+   CHANNEL_ID           NUMBER(15)                      not null,
+   DEVICE_CODE          VARCHAR2(100)                   not null,
+   GROUP_ID             NUMBER(15)                      not null,
+   BATCH_CODE           VARCHAR2(100)                   not null,
+   PROCESS_TIME         DATE                            not null,
    DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
-   ACTIVE               NUMBER(2),
+   ACTIVE               NUMBER(2)                      default 0 not null,
    COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50)                    not null,
-   P_MD5_KEY            VARCHAR2(50),
-   constraint PK_TY_DATA_LOG_20141 primary key (ID)
+   constraint PK_TY_DATA_LOG primary key (ID)
 );
 
-comment on table TY_DATA_LOG_20141 is
-'数据流水表201401';
+comment on table TY_DATA_LOG is
+'数据流水表-模板';
 
-comment on column TY_DATA_LOG_20141.ID is
+comment on column TY_DATA_LOG.ID is
 '主键ID';
 
-comment on column TY_DATA_LOG_20141.IMEI is
+comment on column TY_DATA_LOG.IMEI is
 'IMEI码';
 
-comment on column TY_DATA_LOG_20141.UA is
+comment on column TY_DATA_LOG.UA is
 '手机UA';
 
-comment on column TY_DATA_LOG_20141.CHANNEL_ID is
+comment on column TY_DATA_LOG.CHANNEL_ID is
 '渠道ID';
 
-comment on column TY_DATA_LOG_20141.DEVICE_CODE is
+comment on column TY_DATA_LOG.DEVICE_CODE is
 '设备编码';
 
-comment on column TY_DATA_LOG_20141.GROUP_ID is
+comment on column TY_DATA_LOG.GROUP_ID is
 '渠道组ID';
 
-comment on column TY_DATA_LOG_20141.BATCH_CODE is
+comment on column TY_DATA_LOG.BATCH_CODE is
 '批次号';
 
-comment on column TY_DATA_LOG_20141.PROCESS_TIME is
+comment on column TY_DATA_LOG.PROCESS_TIME is
 '加工时间';
 
-comment on column TY_DATA_LOG_20141.DEVICE_UPLOAD_TIME is
+comment on column TY_DATA_LOG.DEVICE_UPLOAD_TIME is
 '设备上传时间';
 
-comment on column TY_DATA_LOG_20141.ACTIVE is
+comment on column TY_DATA_LOG.ACTIVE is
 '到达状态';
 
-comment on column TY_DATA_LOG_20141.COUNTER_UPLOAD_TIME is
+comment on column TY_DATA_LOG.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-comment on column TY_DATA_LOG_20141.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode)';
-
-comment on column TY_DATA_LOG_20141.P_MD5_KEY is
-'P_MD5_KEY=(UA + GroupId + BatchCode)';
-
 /*==============================================================*/
-/* Index: UNIQ_DL_20141_IMEI                                    */
+/* Index: UNIQ_IMEI                                             */
 /*==============================================================*/
-create unique index UNIQ_DL_20141_IMEI on TY_DATA_LOG_20141 (
+create unique index UNIQ_IMEI on TY_DATA_LOG (
    IMEI ASC
 );
 
 /*==============================================================*/
-/* Index: IDX_DL_20141_DTIME                                    */
+/* Index: IDX_UA_CID_DCODE                                      */
 /*==============================================================*/
-create index IDX_DL_20141_DTIME on TY_DATA_LOG_20141 (
+create index IDX_UA_CID_DCODE on TY_DATA_LOG (
+   UA ASC,
+   CHANNEL_ID ASC,
+   DEVICE_CODE ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_UA_GID_BCODE                                      */
+/*==============================================================*/
+create index IDX_UA_GID_BCODE on TY_DATA_LOG (
+   UA ASC,
+   GROUP_ID ASC,
+   BATCH_CODE ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_PTIME                                             */
+/*==============================================================*/
+create index IDX_PTIME on TY_DATA_LOG (
+   PROCESS_TIME ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_DUTIME                                            */
+/*==============================================================*/
+create index IDX_DUTIME on TY_DATA_LOG (
    DEVICE_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20141_CTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20141_CTIME on TY_DATA_LOG_20141 (
-   COUNTER_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20141_MD5                                      */
-/*==============================================================*/
-create index IDX_DL_20141_MD5 on TY_DATA_LOG_20141 (
-   MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20141_PMD5                                     */
-/*==============================================================*/
-create index IDX_DL_20141_PMD5 on TY_DATA_LOG_20141 (
-   P_MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Table: TY_DATA_LOG_20142                                     */
-/*==============================================================*/
-create table TY_DATA_LOG_20142  (
-   ID                   NUMBER(15)                      not null,
-   IMEI                 VARCHAR2(50)                    not null,
-   UA                   VARCHAR2(100),
-   CHANNEL_ID           NUMBER(15),
-   DEVICE_CODE          VARCHAR2(100),
-   GROUP_ID             NUMBER(15),
-   BATCH_CODE           VARCHAR2(100),
-   PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
-   ACTIVE               NUMBER(2),
-   COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50)                    not null,
-   P_MD5_KEY            VARCHAR2(50),
-   constraint PK_TY_DATA_LOG_20142 primary key (ID)
-);
-
-comment on table TY_DATA_LOG_20142 is
-'数据流水表20142';
-
-comment on column TY_DATA_LOG_20142.ID is
-'主键ID';
-
-comment on column TY_DATA_LOG_20142.IMEI is
-'IMEI码';
-
-comment on column TY_DATA_LOG_20142.UA is
-'手机UA';
-
-comment on column TY_DATA_LOG_20142.CHANNEL_ID is
-'渠道ID';
-
-comment on column TY_DATA_LOG_20142.DEVICE_CODE is
-'设备编码';
-
-comment on column TY_DATA_LOG_20142.GROUP_ID is
-'渠道组ID';
-
-comment on column TY_DATA_LOG_20142.BATCH_CODE is
-'批次号';
-
-comment on column TY_DATA_LOG_20142.PROCESS_TIME is
-'加工时间';
-
-comment on column TY_DATA_LOG_20142.DEVICE_UPLOAD_TIME is
-'设备上传时间';
-
-comment on column TY_DATA_LOG_20142.ACTIVE is
-'到达状态';
-
-comment on column TY_DATA_LOG_20142.COUNTER_UPLOAD_TIME is
-'计数器上传时间';
-
-comment on column TY_DATA_LOG_20142.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode)';
-
-comment on column TY_DATA_LOG_20142.P_MD5_KEY is
-'P_MD5_KEY=(UA + GroupId + BatchCode)';
-
-/*==============================================================*/
-/* Index: UNIQ_DL_20142_IMEI                                    */
-/*==============================================================*/
-create unique index UNIQ_DL_20142_IMEI on TY_DATA_LOG_20142 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20142_DTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20142_DTIME on TY_DATA_LOG_20142 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20142_CTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20142_CTIME on TY_DATA_LOG_20142 (
-   COUNTER_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20142_MD5                                      */
-/*==============================================================*/
-create index IDX_DL_20142_MD5 on TY_DATA_LOG_20142 (
-   MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20142_PMD5                                     */
-/*==============================================================*/
-create index IDX_DL_20142_PMD5 on TY_DATA_LOG_20142 (
-   P_MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Table: TY_DATA_LOG_20143                                     */
-/*==============================================================*/
-create table TY_DATA_LOG_20143  (
-   ID                   NUMBER(15)                      not null,
-   IMEI                 VARCHAR2(50)                    not null,
-   UA                   VARCHAR2(100),
-   CHANNEL_ID           NUMBER(15),
-   DEVICE_CODE          VARCHAR2(100),
-   GROUP_ID             NUMBER(15),
-   BATCH_CODE           VARCHAR2(100),
-   PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
-   ACTIVE               NUMBER(2),
-   COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50)                    not null,
-   P_MD5_KEY            VARCHAR2(50),
-   constraint PK_TY_DATA_LOG_20143 primary key (ID)
-);
-
-comment on table TY_DATA_LOG_20143 is
-'数据流水表20143';
-
-comment on column TY_DATA_LOG_20143.ID is
-'主键ID';
-
-comment on column TY_DATA_LOG_20143.IMEI is
-'IMEI码';
-
-comment on column TY_DATA_LOG_20143.UA is
-'手机UA';
-
-comment on column TY_DATA_LOG_20143.CHANNEL_ID is
-'渠道ID';
-
-comment on column TY_DATA_LOG_20143.DEVICE_CODE is
-'设备编码';
-
-comment on column TY_DATA_LOG_20143.GROUP_ID is
-'渠道组ID';
-
-comment on column TY_DATA_LOG_20143.BATCH_CODE is
-'批次号';
-
-comment on column TY_DATA_LOG_20143.PROCESS_TIME is
-'加工时间';
-
-comment on column TY_DATA_LOG_20143.DEVICE_UPLOAD_TIME is
-'设备上传时间';
-
-comment on column TY_DATA_LOG_20143.ACTIVE is
-'到达状态';
-
-comment on column TY_DATA_LOG_20143.COUNTER_UPLOAD_TIME is
-'计数器上传时间';
-
-comment on column TY_DATA_LOG_20143.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode )';
-
-comment on column TY_DATA_LOG_20143.P_MD5_KEY is
-'P_MD5_KEY=(UA + GroupId + BatchCode)';
-
-/*==============================================================*/
-/* Index: UNIQ_DL_20143_IMEI                                    */
-/*==============================================================*/
-create unique index UNIQ_DL_20143_IMEI on TY_DATA_LOG_20143 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20143_DTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20143_DTIME on TY_DATA_LOG_20143 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20143_CTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20143_CTIME on TY_DATA_LOG_20143 (
-   COUNTER_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20143_MD5                                      */
-/*==============================================================*/
-create index IDX_DL_20143_MD5 on TY_DATA_LOG_20143 (
-   MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20143_PMD5                                     */
-/*==============================================================*/
-create index IDX_DL_20143_PMD5 on TY_DATA_LOG_20143 (
-   P_MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Table: TY_DATA_LOG_20144                                     */
-/*==============================================================*/
-create table TY_DATA_LOG_20144  (
-   ID                   NUMBER(15)                      not null,
-   IMEI                 VARCHAR2(50)                    not null,
-   UA                   VARCHAR2(100),
-   CHANNEL_ID           NUMBER(15),
-   DEVICE_CODE          VARCHAR2(100),
-   GROUP_ID             NUMBER(15),
-   BATCH_CODE           VARCHAR2(100),
-   PROCESS_TIME         DATE,
-   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
-   ACTIVE               NUMBER(2),
-   COUNTER_UPLOAD_TIME  DATE,
-   MD5_KEY              VARCHAR2(50)                    not null,
-   P_MD5_KEY            VARCHAR2(50),
-   constraint PK_TY_DATA_LOG_20144 primary key (ID)
-);
-
-comment on table TY_DATA_LOG_20144 is
-'数据流水表20144';
-
-comment on column TY_DATA_LOG_20144.ID is
-'主键ID';
-
-comment on column TY_DATA_LOG_20144.IMEI is
-'IMEI码';
-
-comment on column TY_DATA_LOG_20144.UA is
-'手机UA';
-
-comment on column TY_DATA_LOG_20144.CHANNEL_ID is
-'渠道ID';
-
-comment on column TY_DATA_LOG_20144.DEVICE_CODE is
-'设备编码';
-
-comment on column TY_DATA_LOG_20144.GROUP_ID is
-'渠道组ID';
-
-comment on column TY_DATA_LOG_20144.BATCH_CODE is
-'批次号';
-
-comment on column TY_DATA_LOG_20144.PROCESS_TIME is
-'加工时间';
-
-comment on column TY_DATA_LOG_20144.DEVICE_UPLOAD_TIME is
-'设备上传时间';
-
-comment on column TY_DATA_LOG_20144.ACTIVE is
-'到达状态';
-
-comment on column TY_DATA_LOG_20144.COUNTER_UPLOAD_TIME is
-'计数器上传时间';
-
-comment on column TY_DATA_LOG_20144.MD5_KEY is
-'MD5_KEY=(UA + ChannelId + DeviceCode)';
-
-comment on column TY_DATA_LOG_20144.P_MD5_KEY is
-'P_MD5_KEY=(UA + GroupId + BatchCode)';
-
-/*==============================================================*/
-/* Index: UNIQ_DL_20144_IMEI                                    */
-/*==============================================================*/
-create unique index UNIQ_DL_20144_IMEI on TY_DATA_LOG_20144 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20144_DTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20144_DTIME on TY_DATA_LOG_20144 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20144_CTIME                                    */
-/*==============================================================*/
-create index IDX_DL_20144_CTIME on TY_DATA_LOG_20144 (
-   COUNTER_UPLOAD_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20144_MD5                                      */
-/*==============================================================*/
-create index IDX_DL_20144_MD5 on TY_DATA_LOG_20144 (
-   MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DL_20144_PMD5                                     */
-/*==============================================================*/
-create index IDX_DL_20144_PMD5 on TY_DATA_LOG_20144 (
-   P_MD5_KEY ASC
 );
 
 /*==============================================================*/
@@ -1016,11 +714,11 @@ create unique index "Index_7" on TY_DICT_INFO (
 /*==============================================================*/
 create table TY_LOG_STAT  (
    ID                   NUMBER(15)                      not null,
-   UA                   VARCHAR2(100),
-   GROUP_ID             NUMBER(15),
-   CHANNEL_ID           NUMBER(15),
-   DEVICE_CODE          VARCHAR2(100),
-   PROCESS_DATE         DATE,
+   UA                   VARCHAR2(100)                   not null,
+   GROUP_ID             NUMBER(15)                      not null,
+   CHANNEL_ID           NUMBER(15)                      not null,
+   DEVICE_CODE          VARCHAR2(100)                   not null,
+   PROCESS_DATE         DATE                            not null,
    LAOWU_ID             NUMBER(15),
    DEVICE_PRS_DAY_NUM   NUMBER(15)                     default 0,
    DEVICE_UPD_DAY_NUM   NUMBER(15)                     default 0,
@@ -1029,7 +727,6 @@ create table TY_LOG_STAT  (
    PRS_ACTIVE_INVALID_NUM NUMBER(15)                     default 0,
    PRS_INVALID_REPLACE_NUM NUMBER(15)                     default 0,
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
-   COUNTER_UPD_DAY_NUM  NUMBER(15)                     default 0,
    MD5_KEY              VARCHAR2(50)                    not null,
    VERSION              NUMBER(15)                     default 0,
    constraint PK_TY_LOG_STAT primary key (ID)
@@ -1080,9 +777,6 @@ comment on column TY_LOG_STAT.PRS_INVALID_REPLACE_NUM is
 comment on column TY_LOG_STAT.PRS_INVALID_UNINSTALL_NUM is
 '装机数量中卸载总数';
 
-comment on column TY_LOG_STAT.COUNTER_UPD_DAY_NUM is
-'计数器当天上传的总数';
-
 comment on column TY_LOG_STAT.MD5_KEY is
 'MD5KEY';
 
@@ -1094,6 +788,34 @@ comment on column TY_LOG_STAT.VERSION is
 /*==============================================================*/
 create unique index "Index_3" on TY_LOG_STAT (
    MD5_KEY ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_16"                                            */
+/*==============================================================*/
+create index "Index_16" on TY_LOG_STAT (
+   UA ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_18"                                            */
+/*==============================================================*/
+create index "Index_18" on TY_LOG_STAT (
+   CHANNEL_ID ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_20"                                            */
+/*==============================================================*/
+create index "Index_20" on TY_LOG_STAT (
+   PROCESS_DATE ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_21"                                            */
+/*==============================================================*/
+create index "Index_21" on TY_LOG_STAT (
+   DEVICE_CODE ASC
 );
 
 /*==============================================================*/
@@ -1120,6 +842,14 @@ comment on column TY_MODEL_CHANNEL_REF.GROUP_ID is
 
 comment on column TY_MODEL_CHANNEL_REF.CREATE_TIME is
 '创建时间';
+
+/*==============================================================*/
+/* Index: "Index_22"                                            */
+/*==============================================================*/
+create index "Index_22" on TY_MODEL_CHANNEL_REF (
+   MODEL_ID ASC,
+   CHANNEL_ID ASC
+);
 
 /*==============================================================*/
 /* Table: TY_MODEL_INFO                                         */
@@ -1266,7 +996,7 @@ comment on column TY_PACKAGE_INFO.UPDATE_TIME is
 '修改时间';
 
 comment on column TY_PACKAGE_INFO.ACTIVE is
-'数据状态 Y:????效，N:无效';
+'数据状态 Y:有效，N:无效';
 
 /*==============================================================*/
 /* Table: TY_PARTNER_INFO                                       */
@@ -1368,7 +1098,6 @@ create table TY_PRODUCT_STAT  (
    PRS_ACTIVE_INVALID_NUM NUMBER(15)                     default 0,
    PRS_INVALID_REPLACE_NUM NUMBER(15)                     default 0,
    PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
-   COUNTER_PRODUCT_DAY_NUM NUMBER(15)                     default 0,
    MD5_KEY              VARCHAR2(50)                    not null,
    VERSION              NUMBER(15)                     default 0,
    constraint PK_TY_PRODUCT_STAT primary key (ID)
@@ -1413,9 +1142,6 @@ comment on column TY_PRODUCT_STAT.PRS_INVALID_REPLACE_NUM is
 comment on column TY_PRODUCT_STAT.PRS_INVALID_UNINSTALL_NUM is
 '装机数量中卸载总数';
 
-comment on column TY_PRODUCT_STAT.COUNTER_PRODUCT_DAY_NUM is
-'产品当天上传总数';
-
 comment on column TY_PRODUCT_STAT.MD5_KEY is
 'MD5KEY';
 
@@ -1430,6 +1156,27 @@ create unique index "Index_4" on TY_PRODUCT_STAT (
 );
 
 /*==============================================================*/
+/* Index: "Index_6"                                             */
+/*==============================================================*/
+create index "Index_6" on TY_PRODUCT_STAT (
+   PRODUCT_ID ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_14"                                            */
+/*==============================================================*/
+create index "Index_14" on TY_PRODUCT_STAT (
+   UA ASC
+);
+
+/*==============================================================*/
+/* Index: "Index_15"                                            */
+/*==============================================================*/
+create index "Index_15" on TY_PRODUCT_STAT (
+   PROCESS_DATE ASC
+);
+
+/*==============================================================*/
 /* Table: TY_PUBLISH_TASK                                       */
 /*==============================================================*/
 create table TY_PUBLISH_TASK  (
@@ -1440,7 +1187,7 @@ create table TY_PUBLISH_TASK  (
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    ACTIVE               VARCHAR2(2)                    default 'Y',
-   PKG_TYPE             VARCHAR(2),
+   PKG_TYPE             VARCHAR(2)                     default 'N',
    constraint PK_TY_PUBLISH_TASK primary key (PUBLISH_ID)
 );
 
@@ -1491,7 +1238,7 @@ create table TY_PUB_CHL_MOD_REF  (
    PKG_TYPE             VARCHAR(2),
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
-   ACTIVE               VARCHAR(2),
+   ACTIVE               VARCHAR(2)                     default 'Y',
    constraint PK_TY_PUB_CHL_MOD_REF primary key (ID)
 );
 
@@ -1577,11 +1324,34 @@ create table TY_ROLE  (
    FULL_PATH            VARCHAR2(500),
    LEVELS               NUMBER(15),
    CREATE_TIME          DATE                           default SYSDATE,
+   "type"               NUMBER(15),
+   "del_disable"        NUMBER(15),
    constraint PK_TY_ROLE primary key (ROLE_ID)
 );
 
 comment on table TY_ROLE is
 '角色表';
+
+comment on column TY_ROLE.ROLE_NAME is
+'角色名称';
+
+comment on column TY_ROLE.PARENT_ID is
+'父ID';
+
+comment on column TY_ROLE.FULL_PATH is
+'路径';
+
+comment on column TY_ROLE.LEVELS is
+'level';
+
+comment on column TY_ROLE.CREATE_TIME is
+'创建时间';
+
+comment on column TY_ROLE."type" is
+'角色类型';
+
+comment on column TY_ROLE."del_disable" is
+'能否删除';
 
 /*==============================================================*/
 /* Table: TY_ROLE_RESOURCE_REF                                  */
@@ -1612,6 +1382,14 @@ comment on column TY_ROLE_RESOURCE_REF.ACCES is
 
 comment on column TY_ROLE_RESOURCE_REF.CREATE_TIME is
 'DATE';
+
+/*==============================================================*/
+/* Index: "Index_23"                                            */
+/*==============================================================*/
+create index "Index_23" on TY_ROLE_RESOURCE_REF (
+   ROLE_ID ASC,
+   RESOURCE_ID ASC
+);
 
 /*==============================================================*/
 /* Table: TY_SETTLE_INFO                                        */

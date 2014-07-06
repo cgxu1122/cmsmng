@@ -7,7 +7,6 @@
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR"/>
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
-        <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
 

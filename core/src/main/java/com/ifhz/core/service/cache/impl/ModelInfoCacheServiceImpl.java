@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.ifhz.core.adapter.ModelInfoAdapter;
+import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import org.apache.commons.lang.StringUtils;
@@ -56,15 +57,18 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
         String keyCode = ua.trim() + "," + String.valueOf(groupId);
         ModelInfo ret = null;
         try {
+            if (StringUtils.equalsIgnoreCase(ua.trim(), GlobalConstants.DEFAULT_UA)) {
+                return null;
+            }
             ret = CACHE.get(keyCode, new CacheCallable(keyCode));
         } catch (ExecutionException e) {
             LOGGER.error("getByUaAndGrouId error", e);
         }
         if (ret == null || ret.getModelId() == null) {
             return null;
-        } else {
-            return ret;
         }
+
+        return ret;
     }
 
     @Override

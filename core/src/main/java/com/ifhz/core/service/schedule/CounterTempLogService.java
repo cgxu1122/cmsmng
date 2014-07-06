@@ -10,7 +10,9 @@ import java.util.Date;
  */
 public interface CounterTempLogService {
 
-    public void scanCounterTempLog(Date startTime, Date endTime);
+    public void scanCounterTempLogFoUnDo(Date startTime, Date endTime);
+
+    public void scanCounterTempLogFoUnStat(Date startTime, Date endTime);
 
 
     public void batchDelete(Date startTime, Date endTime);

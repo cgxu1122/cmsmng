@@ -19,19 +19,37 @@ public class ProductStat implements Serializable {
     private Date processDate;
     private String batchCode;
 
+    /**
+     * 产品当天安装数量
+     */
     private Long productPrsDayNum = 0L;
+    /**
+     * 产品当天安装上传数量
+     */
     private Long productUpdDayNum = 0L;
+    /**
+     * 产品安装数量中已到达总数
+     */
     private Long prsActiveTotalNum = 0L;
+    /**
+     * 产品安装数量中已到达-有效总数
+     */
     private Long prsActiveValidNum = 0L;
+    /**
+     * 产品安装数量中已到达-无效总数
+     */
     private Long prsActiveInvalidNum = 0L;
+    /**
+     * 产品安装数量中已到达-无效替换总数
+     */
     private Long prsInvalidReplaceNum = 0L;
+    /**
+     * 产品安装数量中已到达-无效卸载总数
+     */
     private Long prsInvalidUninstallNum = 0L;
-    private Long counterProductDayNum = 0L;
     private Integer version;
 
     private String md5Key;
-    private String dataLogPmd5Key;
-
     private Date startDate;
     private Date endDate;
 
@@ -179,22 +197,6 @@ public class ProductStat implements Serializable {
 
     public void setPrsInvalidUninstallNum(Long prsInvalidUninstallNum) {
         this.prsInvalidUninstallNum = prsInvalidUninstallNum;
-    }
-
-    public Long getCounterProductDayNum() {
-        return counterProductDayNum;
-    }
-
-    public void setCounterProductDayNum(Long counterProductDayNum) {
-        this.counterProductDayNum = counterProductDayNum;
-    }
-
-    public String getDataLogPmd5Key() {
-        return dataLogPmd5Key;
-    }
-
-    public void setDataLogPmd5Key(String dataLogPmd5Key) {
-        this.dataLogPmd5Key = dataLogPmd5Key;
     }
 
     public Integer getVersion() {

@@ -45,6 +45,10 @@ public final class GlobalConstants {
      */
     public static int PAGE_SIZE = MapConfig.getInt("stat.pageSize", GlobalConstants.GLOBAL_CONFIG, 10000);
 
+    /**
+     * UA 为空时的默认值NaN
+     */
+    public static final String DEFAULT_UA = "NaN";
 
     private GlobalConstants() {
     }

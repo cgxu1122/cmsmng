@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.constants.TempLogType;
 import com.ifhz.core.po.CounterTempLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.DataLogApiService;
@@ -11,7 +12,6 @@ import com.ifhz.core.service.schedule.CounterTempLogService;
 import com.ifhz.core.service.stat.StatCounterService;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,28 +39,57 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
     private StatCounterService statCounterService;
 
     @Override
-    public void scanCounterTempLog(Date startTime, Date endTime) {
-        LOGGER.info("scanCounterTempLog -------start,[{},{}]", startTime, endTime);
-        long totalCount = counterTempLogAdapter.queryTotalCount(startTime, endTime);
+    public void scanCounterTempLogFoUnDo(Date startTime, Date endTime) {
+        LOGGER.info("scanCounterTempLogFoUnDo -------start,[{},{}]", startTime, endTime);
+        long totalCount = counterTempLogAdapter.queryTotalCount(startTime, endTime, TempLogType.UnDo.value);
+        LOGGER.info("数据总量为{}", totalCount);
         if (totalCount > 0) {
             long pageNum = StatConvertHandler.getPageNum(totalCount, GlobalConstants.PAGE_SIZE);
+            LOGGER.info("数据总量为{},分页值为{}", totalCount, pageNum);
             for (int i = 0; i < pageNum; i++) {
                 Pagination page = new Pagination();
                 page.setPageSize(GlobalConstants.PAGE_SIZE);
                 page.setCurrentPage(i + 1);
-                List<CounterTempLog> tempLogList = counterTempLogAdapter.queryPage(page, startTime, endTime);
+                List<CounterTempLog> tempLogList = counterTempLogAdapter.queryPage(page, startTime, endTime, TempLogType.UnDo.value);
                 if (CollectionUtils.isNotEmpty(tempLogList)) {
                     for (CounterTempLog tempLog : tempLogList) {
                         try {
-                            processCounterTempLog(tempLog);
+                            processCounterTempLog(tempLog, true);
                         } catch (Exception e) {
-                            LOGGER.error("processCounterTempLog error", e);
+                            LOGGER.error("scanCounterTempLogFoUnDo error", e);
                         }
                     }
                 }
             }
         }
-        LOGGER.info("scanCounterTempLog -------end,[{},{}]", startTime, endTime);
+        LOGGER.info("scanCounterTempLogFoUnDo -------end,[{},{}]", startTime, endTime);
+    }
+
+    @Override
+    public void scanCounterTempLogFoUnStat(Date startTime, Date endTime) {
+        LOGGER.info("scanCounterTempLogFoUnStat -------start,[{},{}]", startTime, endTime);
+        long totalCount = counterTempLogAdapter.queryTotalCount(startTime, endTime, TempLogType.UnDo.value);
+        LOGGER.info("数据总量为{}", totalCount);
+        if (totalCount > 0) {
+            long pageNum = StatConvertHandler.getPageNum(totalCount, GlobalConstants.PAGE_SIZE);
+            LOGGER.info("数据总量为{},分页值为{}", totalCount, pageNum);
+            for (int i = 0; i < pageNum; i++) {
+                Pagination page = new Pagination();
+                page.setPageSize(GlobalConstants.PAGE_SIZE);
+                page.setCurrentPage(i + 1);
+                List<CounterTempLog> tempLogList = counterTempLogAdapter.queryPage(page, startTime, endTime, TempLogType.UnDo.value);
+                if (CollectionUtils.isNotEmpty(tempLogList)) {
+                    for (CounterTempLog tempLog : tempLogList) {
+                        try {
+                            processCounterTempLog(tempLog, false);
+                        } catch (Exception e) {
+                            LOGGER.error("scanCounterTempLogFoUnStat error", e);
+                        }
+                    }
+                }
+            }
+        }
+        LOGGER.info("scanCounterTempLogFoUnStat -------end,[{},{}]", startTime, endTime);
     }
 
     @Override
@@ -69,27 +98,34 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
     }
 
 
-    private void processCounterTempLog(CounterTempLog tempLog) {
-        LOGGER.info("scanCounterTempLog -------start,tempLog={}", JSON.toJSONString(tempLog));
+    private void processCounterTempLog(CounterTempLog tempLog, boolean isUpdateDataLog) {
+        LOGGER.info("processCounterTempLog -------start,isUpdateDataLog={},tempLog={}", isUpdateDataLog, JSON.toJSONString(tempLog));
         if (tempLog != null) {
             DataLog dataLog = dataLogApiService.getByImei(tempLog.getImei());
             if (dataLog != null) {
-                if (dataLog.getActive() == null && dataLog.getCounterUploadTime() == null) {
-                    dataLog.setCounterUploadTime(tempLog.getCreateTime());
-                    dataLog.setActive(tempLog.getActive());
-                    if (StringUtils.isBlank(dataLog.getUa()) && StringUtils.isNotBlank(tempLog.getUa())) {
-                        dataLog.setUa(tempLog.getUa());
+                if (isUpdateDataLog) {
+                    if (dataLog.getCounterUploadTime() == null) {
+                        dataLog.setCounterUploadTime(tempLog.getCreateTime());
+                        dataLog.setActive(tempLog.getActive());
                     }
-                    String pmd5Key = StatConvertHandler.getMd5KeyByLogDataForProductStat(dataLog);
-                    dataLog.setPmd5Key(pmd5Key);
                     //更新流水表数据
                     dataLogApiService.updateCounterData(dataLog);
                     //统计到达数据
                     statCounterService.updateStat(dataLog);
-
+                } else {
+                    if (dataLog.getCounterUploadTime() == null) {
+                        dataLog.setCounterUploadTime(tempLog.getCreateTime());
+                        dataLog.setActive(tempLog.getActive());
+                        //更新流水表数据
+                        dataLogApiService.updateCounterData(dataLog);
+                    }
+                    //统计到达数据
+                    statCounterService.updateStat(dataLog);
                 }
+
+
             }
         }
-        LOGGER.info("scanCounterTempLog -------end,tempLog={}", JSON.toJSONString(tempLog));
+        LOGGER.info("processCounterTempLog -------end,isUpdateDataLog={},tempLog={}", isUpdateDataLog, JSON.toJSONString(tempLog));
     }
 }

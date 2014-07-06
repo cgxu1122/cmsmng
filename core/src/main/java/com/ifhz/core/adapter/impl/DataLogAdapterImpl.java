@@ -41,26 +41,26 @@ public class DataLogAdapterImpl implements DataLogAdapter {
     }
 
     @Override
-    public List<DataLog> queryPageForDevice(Pagination page, DataLogRequest dataLogRequest) {
-        List<DataLog> result = dataLogMapper.queryPageForDevice(page, dataLogRequest);
+    public List<DataLog> queryPageForStat(Pagination page, DataLogRequest dataLogRequest) {
+        List<DataLog> result = dataLogMapper.queryPageForStat(page, dataLogRequest);
         return result == null ? Lists.<DataLog>newArrayList() : result;
     }
 
     @Override
-    public List<DataLog> queryPageForCounter(Pagination page, DataLogRequest dataLogRequest) {
-        List<DataLog> result = dataLogMapper.queryPageForDevice(page, dataLogRequest);
-        return result == null ? Lists.<DataLog>newArrayList() : result;
+    public long queryDeviceUpdDayNum(DataLogRequest dataLogRequest) {
+        return dataLogMapper.queryDeviceUpdDayNum(dataLogRequest);
     }
 
     @Override
-    public long queryTotalCountForDevice(DataLogRequest dataLogRequest) {
-        return dataLogMapper.queryTotalCountForDevice(dataLogRequest);
+    public long queryProductUpdDayNum(DataLogRequest dataLogRequest) {
+        return dataLogMapper.queryProductUpdDayNum(dataLogRequest);
     }
 
     @Override
-    public long queryTotalCountForCounter(DataLogRequest dataLogRequest) {
-        return dataLogMapper.queryTotalCountForCounter(dataLogRequest);
+    public long queryTotalCountForStat(DataLogRequest dataLogRequest) {
+        return dataLogMapper.queryTotalCountForStat(dataLogRequest);
     }
+
 
     @Override
     public List<String> getLogImeiList(Map<String, Object> params) {

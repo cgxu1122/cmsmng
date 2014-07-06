@@ -22,11 +22,13 @@ public interface CounterTempLogMapper {
     public CounterTempLog queryByImei(@Param("imei") String imei);
 
     public long queryTotalCount(@Param(value = "startTime") Date startTime,
-                                @Param(value = "endTime") Date endTime);
+                                @Param(value = "endTime") Date endTime,
+                                @Param(value = "type") Integer type);
 
     public List<CounterTempLog> queryPage(Pagination page,
                                           @Param(value = "startTime") Date startTime,
-                                          @Param(value = "endTime") Date endTime);
+                                          @Param(value = "endTime") Date endTime,
+                                          @Param(value = "type") Integer type);
 
 
     public void batchDelete(@Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime);

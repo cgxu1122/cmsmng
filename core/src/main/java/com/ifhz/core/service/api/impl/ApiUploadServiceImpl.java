@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
 import com.ifhz.core.base.commons.log.CounterCommonLog;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
+import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.constants.TempLogType;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.CounterTempLog;
@@ -15,7 +16,6 @@ import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.StatCounterService;
-import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -67,13 +67,14 @@ public class ApiUploadServiceImpl implements ApiUploadService {
             TempLogType type = TempLogType.UnDo;
             LOGGER.info("DataLog接口数据：{},DataLog数据库数据：{}", JSON.toJSONString(po), JSON.toJSONString(dataLog));
             if (dataLog != null) {
-                if (dataLog.getActive() == null && dataLog.getCounterUploadTime() == null) {
+                if (dataLog.getCounterUploadTime() == null) {
                     dataLog.setCounterUploadTime(po.getCounterUploadTime());
                     dataLog.setActive(po.getActive());
-                    String pmd5Key = StatConvertHandler.getMd5KeyByLogDataForProductStat(dataLog);
-                    dataLog.setPmd5Key(pmd5Key);
+                    LOGGER.info("计数器数据执行更新操作");
                     dataLogApiService.updateCounterData(dataLog);
-                    type = TempLogType.Done;
+                    type = TempLogType.UnStat;
+                } else {
+                    LOGGER.info("计数器数据已经到达过，程序结束");
                 }
             }
             CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
@@ -88,10 +89,10 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
                 counterTempLogAdapter.insert(tempLog);
             } else {
-                LOGGER.info("DataLog中没有找到对应数据，CounterTempLog中已经存在。");
+                LOGGER.info("CounterTempLog中已经存在,忽略此数据");
             }
 
-            if (type == TempLogType.Done) {
+            if (type == TempLogType.UnStat) {
                 //异步统计到达数据
                 taskExecutor.execute(new StatRunnable(dataLog));
             }
@@ -101,6 +102,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void saveDeviceDataLog(DataLog po) {
+        LOGGER.info("执行DataLog保存操作 --- 开始");
         if (po != null) {
             //验证非法数据
             if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null || StringUtils.isBlank(po.getBatchCode())) {
@@ -117,12 +119,13 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 if (channelInfo != null) {
                     Long groupId = channelInfo.getGroupId();
                     po.setGroupId(groupId);
-                    po.setUa(ModelHandler.translateUa(po.getUa()));
-                    po.setModelName(getModelName(groupId, po.getUa()));
-
-                    String md5Key = StatConvertHandler.getMd5KeyByLogDataForLogStat(po);
-                    po.setMd5Key(md5Key);
-
+//                    po.setModelName(getModelName(groupId, po.getUa()));
+                    if (StringUtils.isBlank(po.getUa())) {
+                        po.setUa(GlobalConstants.DEFAULT_UA);
+                    } else {
+                        po.setUa(ModelHandler.translateUa(po.getUa()));
+                    }
+                    LOGGER.info("dataLogApiService.insertDeviceData");
                     dataLogApiService.insertDeviceData(po);
                 } else {
                     LOGGER.info("渠道id[{}]--不在系统范围内", po.getChannelId());
@@ -131,6 +134,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 LOGGER.info("{} 记录已经存在", po.getImei());
             }
         }
+        LOGGER.info("执行DataLog插入操作 --- 结束");
     }
 
 

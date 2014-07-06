@@ -7,8 +7,8 @@ package com.ifhz.core.constants;
  * Time: 14:01
  */
 public enum TempLogType {
-    //0：未上传 1：未统计 2：已统计
-    UnDo(0, "未上传"),
+    //0：未整合 1：未统计 2：已统计
+    UnDo(0, "未整合"),
     UnStat(1, "未统计"),
     Done(2, "已统计");
     public int value;

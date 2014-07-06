@@ -38,17 +38,39 @@ public class ScheduleServiceImpl implements ScheduleService {
     private DictInfoCacheService dictInfoCacheService;
 
     @Override
-    public void scanCounterTempLog() {
-        LOGGER.info("scanCounterTempLog ------------------------start");
-        Date date = DateFormatUtils.addDay(new Date(), -1);
+    public void scanCounterTempLogFoUnDo() {
+        LOGGER.info("scanCounterTempLogFoUnDo ------------------------start");
+        long start = System.currentTimeMillis();
+        Date now = new Date();
+        Date date = DateFormatUtils.addMonth(now, -3);
         Date startTime = DateHandler.getStartTime(date);
-        Date endTime = DateHandler.getEndTime(date);
+        Date endTime = DateHandler.getEndTime(now);
         try {
-            counterTempLogService.scanCounterTempLog(startTime, endTime);
+            counterTempLogService.scanCounterTempLogFoUnDo(startTime, endTime);
         } catch (Exception e) {
-            LOGGER.error("scanCounterTempLog error", e);
+            LOGGER.error("scanCounterTempLogFoUnDo error", e);
         }
-        LOGGER.info("scanCounterTempLog --------------------------end");
+        long end = System.currentTimeMillis();
+        LOGGER.info("scanCounterTempLogFoUnDo --------------------------end");
+        LOGGER.info("scanCounterTempLogFoUnDo totalTime={}", (end - start));
+    }
+
+    @Override
+    public void scanCounterTempLogFoUnStat() {
+        LOGGER.info("scanCounterTempLogFoUnStat ------------------------start");
+        long start = System.currentTimeMillis();
+        Date now = new Date();
+        Date date = DateFormatUtils.addMonth(now, -3);
+        Date startTime = DateHandler.getStartTime(date);
+        Date endTime = DateHandler.getEndTime(now);
+        try {
+            counterTempLogService.scanCounterTempLogFoUnStat(startTime, endTime);
+        } catch (Exception e) {
+            LOGGER.error("scanCounterTempLogFoUnStat error", e);
+        }
+        long end = System.currentTimeMillis();
+        LOGGER.info("scanCounterTempLogFoUnStat --------------------------end");
+        LOGGER.info("scanCounterTempLogFoUnStat totalTime={}", (end - start));
     }
 
 
@@ -60,6 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void statisticsData() {
         LOGGER.info("statisticsData ------------------------start");
+        long start = System.currentTimeMillis();
         Date date = new Date();
         try {
             int interval = MapConfig.getInt(GlobalConstants.KEY_STAT_INTERVAL_MINUTE, GlobalConstants.GLOBAL_CONFIG, 30);
@@ -79,12 +102,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         } catch (Exception e) {
             LOGGER.error("statisticsData error", e);
         }
+        long end = System.currentTimeMillis();
+        LOGGER.info("statisticsData totalTime={}", (end - start));
         LOGGER.info("statisticsData --------------------------end");
     }
 
     @Override
     public void fetchWdjData() {
         LOGGER.info("fetch Wdj Data ------------------------start");
+        long start = System.currentTimeMillis();
         Date date = DateFormatUtils.addDay(new Date(), -1);
         try {
             LOGGER.info("process Wdj Data date={}------------loading", DateFormatUtils.formatDate(date, GlobalConstants.DATE_FORMAT_DPT));
@@ -92,6 +118,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         } catch (Exception e) {
             LOGGER.error("fetchWdjData error", e);
         }
+        long end = System.currentTimeMillis();
+        LOGGER.info("fetch Wdj Data  totalTime={}", (end - start));
         LOGGER.info("fetch Wdj Data --------------------------end");
     }
 
@@ -113,7 +141,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void deleteCounterTempLog() {
-        LOGGER.info("scanCounterTempLog ------------------------start");
+        LOGGER.info("deleteCounterTempLog ------------------------start");
+        long start = System.currentTimeMillis();
         Date date = DateFormatUtils.addMonth(new Date(), -3);
         Date startTime = dictInfoCacheService.getSystemInitDate();
         Date endTime = DateHandler.getEndTime(date);
@@ -122,7 +151,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         } catch (Exception e) {
             LOGGER.error("scanCounterTempLog error", e);
         }
-        LOGGER.info("scanCounterTempLog --------------------------end");
+        long end = System.currentTimeMillis();
+        LOGGER.info("deleteCounterTempLog  totalTime={}", (end - start));
+        LOGGER.info("deleteCounterTempLog --------------------------end");
     }
 
 }

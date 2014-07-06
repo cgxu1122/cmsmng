@@ -46,6 +46,7 @@
         from
         <include refid="TABLE_NAME"/>
         where create_time between #{startTime} and #{endTime}
+        and TYPE = #{type}
     </select>
 
     <select id="queryPage" resultMap="CounterTempLogResultMap">
@@ -54,6 +55,7 @@
         from
         <include refid="TABLE_NAME"/>
         where create_time between #{startTime} and #{endTime}
+        and TYPE = #{type}
     </select>
 
     <select id="queryByImei" resultMap="CounterTempLogResultMap">

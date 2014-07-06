@@ -22,13 +22,13 @@ public interface DataLogMapper {
 
     public DataLog getByImei(@Param("tableName") String tableName, @Param("imei") String imei);
 
-    public List<DataLog> queryPageForDevice(Pagination page, @Param("dataLogRequest") DataLogRequest dataLogRequest);
+    public List<DataLog> queryPageForStat(Pagination page, @Param("dataLogRequest") DataLogRequest dataLogRequest);
 
-    public List<DataLog> queryPageForCounter(Pagination page, @Param("dataLogRequest") DataLogRequest dataLogRequest);
+    public long queryDeviceUpdDayNum(DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForDevice(DataLogRequest dataLogRequest);
+    public long queryProductUpdDayNum(DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForCounter(@Param("dataLogRequest") DataLogRequest dataLogRequest);
+    public long queryTotalCountForStat(DataLogRequest dataLogRequest);
 
     public List<String> getLogImeiList(Map<String, Object> params);
 

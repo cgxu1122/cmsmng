@@ -33,7 +33,6 @@ public class StatConvertHandler {
         logStat.setPrsActiveInvalidNum(0L);
         logStat.setPrsInvalidReplaceNum(0L);
         logStat.setPrsInvalidUninstallNum(0L);
-        logStat.setCounterUpdDayNum(0L);
         logStat.setVersion(0);
 
         return logStat;
@@ -42,7 +41,7 @@ public class StatConvertHandler {
     //针对以下列进行MD5加密UA + ChannelId + DeviceCode + BatchCode + ProcessTime
 
     /**
-     * MD5加密 UA + ChannelId + DeviceCode + BatchCode + ProcessTime
+     * MD5加密 UA + ChannelId + DeviceCode  + ProcessTime
      * 数据统计表中 数据加密 表中唯一
      *
      * @param dataLog
@@ -53,6 +52,25 @@ public class StatConvertHandler {
         buffer.append(dataLog.getUa());
         buffer.append(dataLog.getChannelId());
         buffer.append(dataLog.getDeviceCode());
+        buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
+
+        return DesencryptUtils.md5Str(buffer.toString());
+
+    }
+
+    /**
+     * MD5加密 UA + GrroupId + productId + ProcessTime
+     * 产品数据统计表中 数据加密 表中唯一
+     *
+     * @param dataLog
+     * @param productId
+     * @return
+     */
+    public static String getMd5KeyForProductStat(DataLog dataLog, Long productId) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(dataLog.getUa());
+        buffer.append(dataLog.getGroupId());
+        buffer.append(productId);
         buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
 
         return DesencryptUtils.md5Str(buffer.toString());
@@ -76,68 +94,10 @@ public class StatConvertHandler {
         productStat.setPrsActiveInvalidNum(0L);
         productStat.setPrsInvalidReplaceNum(0L);
         productStat.setPrsInvalidUninstallNum(0L);
-        productStat.setCounterProductDayNum(0L);
         productStat.setVersion(0);
-
-        productStat.setMd5Key(getMd5KeyForProductStat(dataLog, productId));
 
         return productStat;
     }
-
-
-    /**
-     * MD5加密 UA + GrroupId + productId + ProcessTime
-     * 产品数据统计表中 数据加密 表中唯一
-     *
-     * @param dataLog
-     * @param productId
-     * @return
-     */
-    public static String getMd5KeyForProductStat(DataLog dataLog, Long productId) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(dataLog.getUa());
-        buffer.append(dataLog.getGroupId());
-        buffer.append(productId);
-        buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
-
-        return DesencryptUtils.md5Str(buffer.toString());
-
-    }
-
-
-    /**
-     * MD5加密UA + ChannelId + DeviceCode
-     * 数据流水表 加工数据维度加密
-     *
-     * @param dataLog
-     * @return
-     */
-    public static String getMd5KeyByLogDataForLogStat(DataLog dataLog) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(dataLog.getUa());
-        buffer.append(dataLog.getChannelId());
-        buffer.append(dataLog.getDeviceCode());
-
-        return DesencryptUtils.md5Str(buffer.toString());
-    }
-
-    /**
-     * MD5加密 UA + GroupId + BatchCode
-     * 数据流水表 产品维度加密
-     *
-     * @param dataLog
-     * @return
-     */
-    public static String getMd5KeyByLogDataForProductStat(DataLog dataLog) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(dataLog.getUa());
-        buffer.append(dataLog.getGroupId());
-        buffer.append(dataLog.getBatchCode());
-
-        return DesencryptUtils.md5Str(buffer.toString());
-
-    }
-
 
     public static long getPageNum(long totalCount, long pageSize) {
         long pageNum;
