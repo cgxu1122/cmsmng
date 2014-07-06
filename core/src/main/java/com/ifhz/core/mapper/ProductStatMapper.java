@@ -4,7 +4,6 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductStat;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +21,6 @@ public interface ProductStatMapper {
     public ProductStat getById(Long id);
 
     public ProductStat getByMd5Key(String md5Key);
-
-    public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
 
     public List<ProductStat> queryByVo(Pagination page, @Param(value = "record") ProductStat record);
 

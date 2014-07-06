@@ -18,7 +18,6 @@
         PRS_ACTIVE_INVALID_NUM,
         PRS_INVALID_REPLACE_NUM,
         PRS_INVALID_UNINSTALL_NUM,
-        COUNTER_UPD_DAY_NUM,
         MD5_KEY,
         VERSION
     </sql>
@@ -40,7 +39,6 @@
         <result column="PRS_ACTIVE_INVALID_NUM" property="prsActiveInvalidNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_REPLACE_NUM" property="prsInvalidReplaceNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
-        <result column="COUNTER_UPD_DAY_NUM" property="counterUpdDayNum" jdbcType="BIGINT"/>
 
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
         <result column="VERSION" property="version" jdbcType="BIGINT"/>
@@ -73,7 +71,6 @@
         #{prsActiveInvalidNum,jdbcType=BIGINT},
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
-        #{counterUpdDayNum,jdbcType=BIGINT},
         #{md5Key,jdbcType=VARCHAR},
         #{version,jdbcType=BIGINT}
         )
@@ -106,9 +103,6 @@
             </if>
             <if test="prsInvalidUninstallNum != null and prsInvalidUninstallNum != 0 ">
                 PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
-            </if>
-            <if test="counterUpdDayNum != null and counterUpdDayNum != 0">
-                COUNTER_UPD_DAY_NUM = #{counterUpdDayNum},
             </if>
         </set>
         where ID = #{id}
@@ -172,7 +166,6 @@
         sum(PRS_ACTIVE_INVALID_NUM) as PRS_ACTIVE_INVALID_NUM,
         sum(PRS_INVALID_REPLACE_NUM) as PRS_INVALID_REPLACE_NUM,
         sum(PRS_INVALID_UNINSTALL_NUM) as PRS_INVALID_UNINSTALL_NUM,
-        sum(COUNTER_UPD_DAY_NUM) as COUNTER_UPD_DAY_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1

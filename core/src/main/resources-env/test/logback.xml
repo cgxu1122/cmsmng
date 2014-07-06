@@ -24,7 +24,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/flightchangemon.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/nzyw.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>

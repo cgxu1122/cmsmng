@@ -1,3 +1,108 @@
+drop index IDX_DUTIME_20142;
+
+drop index IDX_PTIME_20142;
+
+drop index IDX_UA_CID_DCODE_20142;
+
+drop index IDX_UA_GID_BCODE_20142;
+
+drop index UNIQ_IMEI_20142;
+
+drop table TY_DATA_LOG_20142 cascade constraints;
+
+/*==============================================================*/
+/* Table: TY_DATA_LOG_20142                                     */
+/*==============================================================*/
+create table TY_DATA_LOG_20142  (
+   ID                   NUMBER(15)                      not null,
+   IMEI                 VARCHAR2(50)                    not null,
+   UA                   VARCHAR2(100)                   not null,
+   CHANNEL_ID           NUMBER(15)                      not null,
+   DEVICE_CODE          VARCHAR2(100)                   not null,
+   GROUP_ID             NUMBER(15)                      not null,
+   BATCH_CODE           VARCHAR2(100)                   not null,
+   PROCESS_TIME         DATE                            not null,
+   DEVICE_UPLOAD_TIME   DATE                           default SYSDATE not null,
+   ACTIVE               NUMBER(2)                      default 0 not null,
+   COUNTER_UPLOAD_TIME  DATE,
+   constraint PK_TY_DATA_LOG_20142 primary key (ID)
+);
+
+comment on table TY_DATA_LOG_20142 is
+'数据流水表20142';
+
+comment on column TY_DATA_LOG_20142.ID is
+'主键ID';
+
+comment on column TY_DATA_LOG_20142.IMEI is
+'IMEI码';
+
+comment on column TY_DATA_LOG_20142.UA is
+'手机UA';
+
+comment on column TY_DATA_LOG_20142.CHANNEL_ID is
+'渠道ID';
+
+comment on column TY_DATA_LOG_20142.DEVICE_CODE is
+'设备编码';
+
+comment on column TY_DATA_LOG_20142.GROUP_ID is
+'渠道组ID';
+
+comment on column TY_DATA_LOG_20142.BATCH_CODE is
+'批次号';
+
+comment on column TY_DATA_LOG_20142.PROCESS_TIME is
+'加工时间';
+
+comment on column TY_DATA_LOG_20142.DEVICE_UPLOAD_TIME is
+'设备上传时间';
+
+comment on column TY_DATA_LOG_20142.ACTIVE is
+'到达状态';
+
+comment on column TY_DATA_LOG_20142.COUNTER_UPLOAD_TIME is
+'计数器上传时间';
+
+/*==============================================================*/
+/* Index: UNIQ_IMEI_20142                                       */
+/*==============================================================*/
+create unique index UNIQ_IMEI_20142 on TY_DATA_LOG_20142 (
+   IMEI ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_UA_CID_DCODE_20142                                */
+/*==============================================================*/
+create index IDX_UA_CID_DCODE_20142 on TY_DATA_LOG_20142 (
+   UA ASC,
+   CHANNEL_ID ASC,
+   DEVICE_CODE ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_UA_GID_BCODE_20142                                */
+/*==============================================================*/
+create index IDX_UA_GID_BCODE_20142 on TY_DATA_LOG_20142 (
+   UA ASC,
+   GROUP_ID ASC,
+   BATCH_CODE ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_PTIME_20142                                       */
+/*==============================================================*/
+create index IDX_PTIME_20142 on TY_DATA_LOG_20142 (
+   PROCESS_TIME ASC
+);
+
+/*==============================================================*/
+/* Index: IDX_DUTIME_20142                                      */
+/*==============================================================*/
+create index IDX_DUTIME_20142 on TY_DATA_LOG_20142 (
+   DEVICE_UPLOAD_TIME ASC
+);
+
 drop index IDX_DUTIME_20143;
 
 drop index IDX_PTIME_20143;

@@ -16,6 +16,7 @@ import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.StatCounterService;
+import com.ifhz.core.service.stat.constants.CounterActive;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -125,6 +126,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     } else {
                         po.setUa(ModelHandler.translateUa(po.getUa()));
                     }
+                    po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");
                     dataLogApiService.insertDeviceData(po);
                 } else {

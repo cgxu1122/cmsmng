@@ -1,8 +1,3 @@
-INSERT INTO TY_CHANNEL_GROUP(GROUP_ID,GROUP_NAME) VALUES(1,'天音渠道');
-INSERT INTO TY_CHANNEL_GROUP(GROUP_ID,GROUP_NAME) VALUES(2,'地包渠道');
-INSERT INTO TY_CHANNEL_GROUP(GROUP_ID,GROUP_NAME) VALUES(3,'其他渠道');
-INSERT INTO TY_CHANNEL_GROUP(GROUP_ID,GROUP_NAME) VALUES(4,'劳务渠道');
-
 insert into ty_channel_info(channel_id,parent_id,group_id,channel_name)values(SEQ_CHANNEL_INFO.NEXTVAL,-1,1,'北京');
 insert into ty_channel_info(channel_id,parent_id,group_id,channel_name)values(SEQ_CHANNEL_INFO.NEXTVAL,-1,1,'成都');
 insert into ty_channel_info(channel_id,parent_id,group_id,channel_name)values(SEQ_CHANNEL_INFO.NEXTVAL,-1,1,'广州');
@@ -404,8 +399,3 @@ insert into TY_MODEL_INFO(MODEL_ID,UA,MODEL_NAME,GROUP_ID,TAGNUM,TAGPRICE) value
 insert into TY_MODEL_INFO(MODEL_ID,UA,MODEL_NAME,GROUP_ID,TAGNUM,TAGPRICE) values(SEQ_MODEL_INFO.NEXTVAL,'3C','荣耀3C',2,1,1);
 insert into TY_MODEL_INFO(MODEL_ID,UA,MODEL_NAME,GROUP_ID,TAGNUM,TAGPRICE) values(SEQ_MODEL_INFO.NEXTVAL,'3C','荣耀3C',3,1,1);
 insert into TY_MODEL_INFO(MODEL_ID,UA,MODEL_NAME,GROUP_ID,TAGNUM,TAGPRICE) values(SEQ_MODEL_INFO.NEXTVAL,'3C','荣耀3C',4,1,1);
-
-
-
-
-

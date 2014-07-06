@@ -1,5 +1,7 @@
 package com.ifhz.core.service.schedule.impl;
 
+import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.schedule.ScheduleBakService;
 import com.ifhz.core.service.stat.handle.DateHandler;
 import com.test.BaseTest;
@@ -21,8 +23,9 @@ public class ScheduleBakServiceImplTest extends BaseTest {
     @Test
     public void testStatisticsData() throws Exception {
         long start = System.currentTimeMillis();
-        DateHandler.getStartTime(new Date());
-        scheduleBakService.statisticsData(DateHandler.getStartTime(new Date()), DateHandler.getEndTime(new Date()));
+        String str = "2014-07-07 03:18:05";
+        Date startTime = DateFormatUtils.parse(str, GlobalConstants.DEFAULT_DATE_FORMAT);
+        scheduleBakService.statisticsData(startTime, DateHandler.getEndTime(new Date()));
         long end = System.currentTimeMillis();
         System.out.println("totalTime:" + (end - start));
     }
