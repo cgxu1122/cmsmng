@@ -182,9 +182,8 @@
     <select id="getProductImeiList" resultType="java.lang.String">
         select log.IMEI
         from ${tableName} log
-        inner join TY_BATCH_PRODUCT_REF ref
-        on log.BATCH_CODE = ref.BATCH_CODE
-        where ref.PRODUCT_ID = #{productId}
+        where exists (select * from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and ref.BATCH_CODE =
+        log.BATCH_CODE)
         and log.UA = #{ua}
         and log.GROUP_ID = #{groupId}
         <choose>
