@@ -47,6 +47,7 @@ public class BatchInfoServiceImpl implements BatchInfoService {
             for (ProductInfo productInfo : productInfoList) {
                 BatchProductRef ref = new BatchProductRef();
                 ref.setBatchId(record.getBatchId());
+                ref.setBatchCode(record.getBatchCode());
                 ref.setProductId(productInfo.getProductId());
                 batchProductRefAdapter.insert(ref);
                 batchProductName += productInfo.getProductName() + ",";
@@ -76,6 +77,7 @@ public class BatchInfoServiceImpl implements BatchInfoService {
             for (ProductInfo productInfo : productInfoList) {
                 BatchProductRef ref = new BatchProductRef();
                 ref.setBatchId(record.getBatchId());
+                ref.setBatchCode(record.getBatchCode());
                 ref.setProductId(productInfo.getProductId());
                 batchProductRefAdapter.insert(ref);
                 batchProductName += productInfo.getProductName() + ",";

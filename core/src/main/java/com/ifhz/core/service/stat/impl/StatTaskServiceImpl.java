@@ -173,10 +173,10 @@ public class StatTaskServiceImpl implements StatTaskService {
                         dataLogRequest.setEndTime(endTime);
                         //加工日期 累计上传数量   日期过期后，数值固定
                         deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
-                        LOGGER.info("{} -- {} 的加工设备累计上传数量为{}", value.getDataLogMd5Key(), deviceUpdDayNum);
+                        LOGGER.info("{} -- {} 的加工设备累计上传数量为{}", value.getDataLogMd5Key(), value.getMd5Key(), deviceUpdDayNum);
                         //加工日期 计数器上传数量 日期过期后，数值固定
                         counterUpdDayNum = dataLogQueryService.queryCounterUpdDayNum(dataLogRequest);
-                        LOGGER.info("{} -- {} 的计数器累计上传数量为{}", value.getDataLogMd5Key(), counterUpdDayNum);
+                        LOGGER.info("{} -- {} 的计数器累计上传数量为{}", value.getDataLogMd5Key(), value.getMd5Key(), counterUpdDayNum);
                     }
                     if (entity != null) {//数据库有数据则更新
                         entity.setDevicePrsDayNum(entity.getDevicePrsDayNum() + value.getDevicePrsDayNum());

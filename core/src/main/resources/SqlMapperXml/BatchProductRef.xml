@@ -6,6 +6,7 @@
 
     <resultMap id="BatchProductRefResultMap" type="com.ifhz.core.po.BatchProductRef">
         <id column="BATCH_ID" property="batchId" jdbcType="BIGINT"/>
+        <id column="BATCH_CODE" property="batchCode" jdbcType="VARCHAR"/>
         <id column="PRODUCT_ID" property="productId" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
@@ -16,9 +17,9 @@
         insert into
         <include refid="TABLE_NAME"/>
         <![CDATA[
-        ( BATCH_ID,PRODUCT_ID)
+        ( BATCH_ID,BATCH_CODE,PRODUCT_ID)
         values
-        (#{batchId},#{productId})
+        (#{batchId},#{batchCode,jdbcType=VARCHAR},#{productId})
         ]]>
     </insert>
     <select id="queryByVo" parameterType="com.ifhz.core.po.BatchProductRef" resultMap="BatchProductRefResultMap">
@@ -29,6 +30,9 @@
         where 1=1
         <if test="record.batchId != null and record.batchId != ''">
             and ref.BATCH_ID = #{record.batchId}
+        </if>
+        <if test="record.batchCode != null and record.batchCode != ''">
+            and ref.BATCH_CODE = #{record.batchCode}
         </if>
         <if test="record.productId != null and record.productId != ''">
             and ref.PRODUCT_ID = #{record.productId}

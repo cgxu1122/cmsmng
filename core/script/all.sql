@@ -349,6 +349,7 @@ comment on column TY_BATCH_INFO.ACTIVE is
 /*==============================================================*/
 create table TY_BATCH_PRODUCT_REF  (
    BATCH_ID             NUMBER(15)                      not null,
+   BATCH_CODE           VARCHAR2(50 CHAR),
    PRODUCT_ID           NUMBER(15)                      not null,
    CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_BATCH_PRODUCT_REF primary key (BATCH_ID, PRODUCT_ID)
@@ -359,6 +360,9 @@ comment on table TY_BATCH_PRODUCT_REF is
 
 comment on column TY_BATCH_PRODUCT_REF.BATCH_ID is
 '批次ID';
+
+comment on column TY_BATCH_PRODUCT_REF.BATCH_CODE is
+'批次CODE';
 
 comment on column TY_BATCH_PRODUCT_REF.PRODUCT_ID is
 '产品ID';

@@ -1,12 +1,12 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.ChannelGroupAdapter;
-import com.ifhz.core.adapter.ModelInfoAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelGroup;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -25,8 +25,8 @@ import java.util.List;
 public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     @Resource(name = "productStatAdapter")
     private ProductStatAdapter productStatAdapter;
-    @Resource(name = "modelInfoAdapter")
-    private ModelInfoAdapter modelInfoAdapter;
+    @Resource(name = "modelInfoCacheService")
+    private ModelInfoCacheService modelInfoCacheService;
     @Resource(name = "channelGroupAdapter")
     private ChannelGroupAdapter channelGroupAdapter;
 
@@ -37,7 +37,7 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
             for (ProductStat productStat : productStatList) {
                 String ua = productStat.getUa();
                 if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = modelInfoAdapter.getByGroupIdAndUa(productStat.getGroupId(), ua);
+                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productStat.getGroupId());
                     if (modelInfo != null) {
                         productStat.setModelName(modelInfo.getModelName());
                     }

@@ -8,10 +8,19 @@ import java.util.Date;
  */
 public class BatchProductRef {
     private Long batchId;
+    private String batchCode;
     private Long productId;
     private Date createTime;
 
     private String productName;
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
 
     public String getProductName() {
         return productName;

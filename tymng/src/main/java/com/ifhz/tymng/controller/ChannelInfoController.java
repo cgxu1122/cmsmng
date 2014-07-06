@@ -51,7 +51,7 @@ public class ChannelInfoController extends BaseController {
         } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
             result.put("userType", "admin");
             //如果是地包渠道的负责人登录，则进行数据过滤
-            if (UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType()) {
+            if (CurrentUserUtil.isManager()) {
                 result.put("userType", "manager");
             }
             return new ModelAndView("channelInfo/indexDB", result);
@@ -92,7 +92,7 @@ public class ChannelInfoController extends BaseController {
         ci.setGroupId(Long.parseLong(groupId));
         ci.setParentId(parentId);
         //如果是地包渠道的负责人登录，则进行数据过滤
-        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType()) {
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
         List<ChannelInfo> list = channelInfoService.queryByVo(null, ci);
@@ -185,7 +185,7 @@ public class ChannelInfoController extends BaseController {
         }
         if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
         //如果是地包渠道的负责人登录，则进行数据过滤
-        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType()) {
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
@@ -253,7 +253,7 @@ public class ChannelInfoController extends BaseController {
             ci.setMngId(Long.parseLong(mngId));
         }
         //如果是负责人添加地包一级渠道，则mngId为当前登录人
-        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_TYPE_MANAGER == CurrentUserUtil.getType() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
         if (!StringUtils.isEmpty(parentId)) {//如果有父级数据则添加上parentId，并且更改父级机构叶子节点属性
