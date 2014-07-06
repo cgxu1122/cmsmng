@@ -15,6 +15,10 @@ public class ZipUtils {
     }
 
     public static void unZip(String path) {
+        if (!path.endsWith(".zip")) {
+            return;
+        }
+
         int count = -1;
         int index = -1;
 
@@ -22,9 +26,6 @@ public class ZipUtils {
         boolean flag = false;
 
         savepath = path.substring(0, path.lastIndexOf("\\")) + "\\";
-        if (!savepath.endsWith(".zip")) {
-            return;
-        }
 
         try {
             BufferedOutputStream bos = null;
@@ -46,8 +47,13 @@ public class ZipUtils {
 
                 FileOutputStream fos = new FileOutputStream(f);
                 bos = new BufferedOutputStream(fos, buffer);
+                System.out.println(buffer);
 
                 while ((count = zis.read(data, 0, buffer)) != -1) {
+                    System.out.println("======");
+                    System.out.println(data);
+                    System.out.println(count);
+                    System.out.println("======");
                     bos.write(data, 0, count);
                 }
                 bos.flush();

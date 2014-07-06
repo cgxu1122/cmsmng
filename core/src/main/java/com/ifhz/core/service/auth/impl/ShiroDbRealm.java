@@ -133,7 +133,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
                     role = roleService.findById(userRoleRef.getRoleId());
                 }
 
-                ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName());
+                ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName(), role.getType());
                 return new SimpleAuthenticationInfo(shiroUser, user.getPassword(), getName());
             } else {
                 throw new UserNamePasswordErrorException("用户名密码错误");
@@ -166,13 +166,15 @@ public class ShiroDbRealm extends AuthorizingRealm {
         public String realName;
         public Long roleId;
         public String roleName;
+        public Long type;
 
-        public ShiroUser(Long userId, String loginName, String realName, Long roleId, String roleName) {
+        public ShiroUser(Long userId, String loginName, String realName, Long roleId, String roleName, Long type) {
             this.userId = userId;
             this.loginName = loginName;
             this.realName = realName;
             this.roleName = roleName;
             this.roleId = roleId;
+            this.type = type;
         }
 
         public String getLoginName() {
