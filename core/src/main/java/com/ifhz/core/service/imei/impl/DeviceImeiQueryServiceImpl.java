@@ -138,7 +138,7 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
 
         @Override
         public List<String> call() throws Exception {
-            return null;
+            return dataLogAdapter.getLogImeiList(params);
         }
     }
 
@@ -153,7 +153,7 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
 
         @Override
         public List<String> call() throws Exception {
-            return null;
+            return dataLogAdapter.getProductImeiList(params);
         }
     }
 
