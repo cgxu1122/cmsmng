@@ -89,7 +89,6 @@ public class DeviceApiController {
 
     private DataLog translateDataLog(String[] data) {
         //手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-
         DataLog result = null;
         if (data != null && data.length == 6) {
             try {
@@ -120,53 +119,4 @@ public class DeviceApiController {
 
         return result;
     }
-
-
-
-    /*private static String root_path = GlobalConstants.GLOBAL_CONFIG.get("root.path");
-    private static String temp_path = GlobalConstants.GLOBAL_CONFIG.get("temp.path");
-
-    @RequestMapping(value = "/processFile.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    public
-    @ResponseBody
-    JSONObject processFile(@RequestParam(value = "dataFile", required = true) File dataFile,
-                           HttpServletRequest request) {
-        LOGGER.info("receive encode dataFile={}", dataFile.getName());
-        JSONObject result = null;
-        try {
-            File root = new File(root_path);
-            if (!root.exists()) {
-                root.mkdirs();
-            }
-            File temp = new File(temp_path);
-            if (!temp.exists()) {
-                temp.mkdirs();
-            }
-
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            factory.setSizeThreshold(4096);
-            factory.setRepository(temp);
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            upload.setSizeMax(100 * 1024 * 1024);
-            List<FileItem> items = upload.parseRequest(request);// 得到所有的文件
-            Iterator<FileItem> iterator = items.iterator();
-            while (iterator.hasNext()) {
-                FileItem fi = iterator.next();
-                String fileName = fi.getName();
-                if (fileName != null) {
-                    File fullFile = new File(fi.getName());
-                    File savedFile = new File(root, fullFile.getName());
-                    fi.write(savedFile);
-                }
-            }
-            System.out.print("upload succeed");
-        } catch (Exception e) {
-            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-            LOGGER.error("processLog error ", e);
-        } finally {
-            LOGGER.info("processLog:returnObj={}", result);
-        }
-
-        return result;
-    }*/
 }

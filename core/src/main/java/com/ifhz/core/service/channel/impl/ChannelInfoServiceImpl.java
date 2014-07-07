@@ -37,6 +37,11 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     }
 
     @Override
+    public ChannelInfo getByUserId(Long userId) {
+        return channelInfoAdapter.getByUserId(userId);
+    }
+
+    @Override
     public List<ChannelInfo> queryByVo(Pagination page, ChannelInfo record) {
         return channelInfoAdapter.queryByVo(page, record);
     }

@@ -1,15 +1,12 @@
 package com.ifhz.hzfmng.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.ifhz.core.base.commons.MapConfig;
-import com.ifhz.core.base.commons.excel.ExcelHandle;
 import com.ifhz.core.constants.GlobalConstants;
-import com.ifhz.core.service.imei.ImeiQueryService;
-import com.ifhz.core.service.imei.bean.DataLogResult;
+import com.ifhz.core.service.channel.ChannelInfoService;
+import com.ifhz.core.service.imei.ImeiUploadService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +21,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 类描述
@@ -33,29 +29,31 @@ import java.util.List;
  * Time: 14:47
  */
 @Controller
-@RequestMapping("/hzfmng/imeiQuery")
-public class ImeiQueryController {
+@RequestMapping("/hzfmng/zipUpload")
+public class ZipUploadController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImeiQueryController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZipUploadController.class);
 
-    @Resource(name = "imeiQueryService")
-    private ImeiQueryService imeiQueryService;
+    @Resource(name = "imeiUploadService")
+    private ImeiUploadService imeiUploadService;
+    @Resource(name = "channelInfoService")
+    private ChannelInfoService channelInfoService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
-        return new ModelAndView("imeiQuery/index");
+        return new ModelAndView("imeiUpload/index");
     }
 
-
-    @RequestMapping(value = "/list.do", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/uploadZip.do", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject list(@RequestParam(value = "excelFile", required = false) MultipartFile file,
-                    HttpServletRequest request) {
+    JSONObject uploadZip(@RequestParam(value = "zipFile", required = true) MultipartFile file,
+                         @RequestParam(value = "channelId", required = true) Long channelId,
+                         HttpServletRequest request) {
         JSONObject result = new JSONObject();
         if (file == null || file.isEmpty()) {
-            result.put("ret", true);
-            result.put("rows", Lists.newArrayList());
+            result.put("ret", false);
+            result.put("errorMsg", "非法请求，请选择需要上传的文件");
             return result;
         }
         String originFileName = file.getOriginalFilename();
@@ -64,9 +62,8 @@ public class ImeiQueryController {
             result.put("errorMsg", "非法文件类型，只允许上传Excel文件");
             return result;
         }
-
         try {
-            LOGGER.info("用户上传imei查询文件fileName={} ----------开始处理", originFileName);
+            LOGGER.info("用户上传ZIP文件fileName={} ----------开始处理", originFileName);
             StringBuffer buffer = new StringBuffer();
             buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
             buffer.append(File.separator);
@@ -80,16 +77,15 @@ public class ImeiQueryController {
             buffer.append(originFileName);
             File localFile = new File(buffer.toString());
             ByteStreams.copy(file.getInputStream(), Files.newOutputStreamSupplier(localFile));
-            LOGGER.info("用户上传imei查询文件fileName={},保存到本地成功,路径为{}", localFile.getAbsolutePath());
-            List<String> imeiList = ExcelHandle.readImeiListFromExcel(localFile);
-            LOGGER.info("用户上传imei查询文件fileName={},从Excel解析ImeiList={}", JSON.toJSONString(imeiList));
-            List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiList);
-
-            result.put("ret", true);
-            result.put("rows", dataLogResultList);
+            LOGGER.info("用户上传ZIP文件fileName={},保存到本地成功,路径为{}", localFile.getAbsolutePath());
+            boolean ret = imeiUploadService.processCsvData(localFile);
+            result.put("ret", ret);
+            if (!ret) {
+                result.put("errorMsg", "处理上传文件失败，请检查文件格式是否正确或者重新操作");
+            }
         } catch (Exception e) {
             result.put("ret", false);
-            result.put("errorMsg", "查询任务失败，请重新操作");
+            result.put("errorMsg", "处理上传文件失败，请重新操作");
             LOGGER.error("list error ", e);
         } finally {
             LOGGER.info("list:returnObj={}", result);
@@ -98,11 +94,9 @@ public class ImeiQueryController {
         return result;
     }
 
+
     public boolean checkFileType(String fileName) {
-        if (StringUtils.endsWithIgnoreCase(fileName, ".xls")) {
-            return true;
-        }
-        if (StringUtils.endsWithIgnoreCase(fileName, ".xlsx")) {
+        if (StringUtils.endsWithIgnoreCase(fileName, ".zip")) {
             return true;
         }
 

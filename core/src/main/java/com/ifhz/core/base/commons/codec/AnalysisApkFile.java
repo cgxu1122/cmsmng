@@ -25,9 +25,6 @@ public final class AnalysisApkFile {
     public static final String OS;
     public static final File WorkDir;
     public static final boolean isLinux;
-    //launchable-activity: name='com.tencent.mobileqq.activity.SplashActivity'  label='QQ' icon=''
-    //launchable-activity: name='cn.gm.jumping.MainActivity'  label='跳跃忍者' icon=''
-//    public static final Pattern PATTERN = Pattern.compile("launchable-activity: name=\\'(\\d+).*\\'  label=(\\d+).*");
 
     static {
         String workDirPath = MapConfig.getString("aapt.work.dir", GlobalConstants.GLOBAL_CONFIG, "");

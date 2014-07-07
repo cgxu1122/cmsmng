@@ -15,6 +15,8 @@ public interface ChannelInfoMapper {
 
     public ChannelInfo getById(Long id);
 
+    public ChannelInfo getByUserId(Long id);
+
     public List<ChannelInfo> queryByVo(Pagination page, @Param(value = "record") ChannelInfo record);
 
     public int insert(ChannelInfo record);

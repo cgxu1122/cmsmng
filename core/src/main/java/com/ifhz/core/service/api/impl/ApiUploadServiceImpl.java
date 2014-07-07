@@ -106,7 +106,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         LOGGER.info("执行DataLog保存操作 --- 开始");
         if (po != null) {
             //验证非法数据
-            if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null || StringUtils.isBlank(po.getBatchCode())) {
+            if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null) {
                 LOGGER.info("非法数据，校验不通过 , {}", JSON.toJSONString(po));
                 DeviceCommonLog.info("{}", JSON.toJSONString(po));
                 return;
@@ -120,11 +120,16 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 if (channelInfo != null) {
                     Long groupId = channelInfo.getGroupId();
                     po.setGroupId(groupId);
-//                    po.setModelName(getModelName(groupId, po.getUa()));
                     if (StringUtils.isBlank(po.getUa())) {
                         po.setUa(GlobalConstants.DEFAULT_UA);
                     } else {
                         po.setUa(ModelHandler.translateUa(po.getUa()));
+                    }
+                    if (po.getBatchCode() == null) {
+                        po.setBatchCode("");
+                    }
+                    if (StringUtils.isBlank(po.getDeviceCode())) {
+                        po.setDeviceCode("未知");
                     }
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");

@@ -14,6 +14,8 @@ public interface ChannelInfoAdapter {
 
     public ChannelInfo getById(Long id);
 
+    public ChannelInfo getByUserId(Long id);
+
     public List<ChannelInfo> queryByVo(Pagination page, ChannelInfo record);
 
     public int insert(ChannelInfo record);

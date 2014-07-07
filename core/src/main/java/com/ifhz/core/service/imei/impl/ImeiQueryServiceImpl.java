@@ -47,12 +47,13 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DataLogResult> queryListByImeiList(List<String> imeiList) {
         Date now = new Date();
+        List<String> tableNameList = splitTableService.getTableNameList(now);
         imeiQueryAdapter.insertBatch(imeiList);
         LOGGER.info("queryImeiList = {}", JSON.toJSONString(imeiQueryAdapter.queryImeiList()));
-//        List<DataLogResult> dataLogResultList = asyncDataLogResultList(now);
-        List<DataLogResult> dataLogResultList = getDataLogResultList(now);
-        if (CollectionUtils.isNotEmpty(dataLogResultList)) {
-            for (DataLogResult dataLogResult : dataLogResultList) {
+        List<DataLogResult> result = getDataLogResultList(tableNameList);
+        LOGGER.info("DataLogResult={}", result);
+        if (CollectionUtils.isNotEmpty(result)) {
+            for (DataLogResult dataLogResult : result) {
                 if (StringUtils.isNotBlank(dataLogResult.getUa()) && dataLogResult.getGroupId() != null) {
                     ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(dataLogResult.getUa(), dataLogResult.getGroupId());
                     if (modelInfo != null && StringUtils.isNotBlank(modelInfo.getModelName())) {
@@ -65,19 +66,20 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                 }
             }
             //重新排序
-            dataLogResultList = Ordering.from(new DataLogResultByProcessTime()).sortedCopy(dataLogResultList);
+            result = Ordering.from(new DataLogResultByProcessTime()).sortedCopy(result);
         }
-
-        return dataLogResultList == null ? Lists.<DataLogResult>newArrayList() : dataLogResultList;
+        LOGGER.info("DataLogResult={}", result);
+        return result == null ? Lists.<DataLogResult>newArrayList() : result;
     }
 
-    private List<DataLogResult> getDataLogResultList(Date date) {
+    private List<DataLogResult> getDataLogResultList(List<String> tableNameList) {
         List<DataLogResult> result = Lists.newArrayList();
-        List<String> tableNameList = splitTableService.getTableNameList(date);
-        if (CollectionUtils.isNotEmpty(result)) {
+        if (CollectionUtils.isNotEmpty(tableNameList)) {
+            LOGGER.info("tableNameList = {}", JSON.toJSONString(tableNameList));
             for (String tableName : tableNameList) {
                 List<DataLogResult> dataLogResultList = imeiQueryAdapter.queryListByImeiList(tableName);
                 if (CollectionUtils.isNotEmpty(dataLogResultList)) {
+                    LOGGER.info("dataLogResultList = {}", JSON.toJSONString(dataLogResultList));
                     result.addAll(dataLogResultList);
                 }
             }

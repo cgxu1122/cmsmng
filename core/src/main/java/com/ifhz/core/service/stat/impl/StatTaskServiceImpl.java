@@ -110,7 +110,11 @@ public class StatTaskServiceImpl implements StatTaskService {
                                         //重新放入容器中
                                         productStatHashMap.put(md5KeyForProductStat, productStat);
                                     }
+                                } else {
+                                    LOGGER.info("批次号BatchCode={},数据库中没有相应产品数据，忽略此数据");
                                 }
+                            } else {
+                                LOGGER.info("批次号BatchCode为空，忽略此数据");
                             }
                         }
                     }

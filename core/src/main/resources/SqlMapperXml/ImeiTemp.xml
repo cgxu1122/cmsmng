@@ -3,7 +3,7 @@
 <mapper namespace="com.ifhz.core.mapper.ImeiTempMapper">
 
     <resultMap id="DataLogResultMap" type="com.ifhz.core.service.imei.bean.DataLogResult">
-    <result column="IMEI" property="imei" jdbcType="VARCHAR"/>
+        <result column="IMEI" property="imei" jdbcType="VARCHAR"/>
         <result column="UA" property="modelName" jdbcType="VARCHAR"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
@@ -13,7 +13,7 @@
 
 
     <insert id="insertBatch" parameterType="java.lang.String">
-    insert into TY_IMEI_TEMP
+        insert into TY_IMEI_TEMP
         <foreach collection="list" item="item" index="index" separator="union all">
             (select #{item,jdbcType=VARCHAR} from dual )
         </foreach>
@@ -22,14 +22,14 @@
 
     <select id="queryListByImeiList" resultMap="DataLogResultMap">
         select
-        a.IMEI as IMEI,
-        a.UA as UA,
-        a.CHANNEL_ID as CHANNEL_ID,
-        a.GROUP_ID as GROUP_ID,
-        a.PROCESS_TIME as PROCESS_TIME,
-        a.ACTIVE as ACTIVE
-        from ${tableName} a
-        inner join TY_IMEI_TEMP b on a.imei = b.imei
+        log.IMEI as IMEI,
+        log.UA as UA,
+        log.CHANNEL_ID as CHANNEL_ID,
+        log.GROUP_ID as GROUP_ID,
+        log.PROCESS_TIME as PROCESS_TIME,
+        log.ACTIVE as ACTIVE
+        from ${tableName} log
+        where exists (select tmp.IMEI from TY_IMEI_TEMP tmp where tmp.IMEI = log.IMEI)
     </select>
 
     <select id="queryImeiList" resultType="java.lang.String">

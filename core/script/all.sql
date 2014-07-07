@@ -1,10 +1,12 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/7/6 23:28:49                            */
+/* Created on:     2014/7/7 18:09:59                            */
 /*==============================================================*/
 
 
 drop index "Index_5";
+
+drop index "Index_24";
 
 drop index "Index_17";
 
@@ -393,7 +395,7 @@ create table TY_CHANNEL_INFO  (
    PARENT_ID            NUMBER(15),
    GROUP_ID             NUMBER(15),
    MNG_ID               NUMBER(15),
-   USER_ID              NUMBER(15),
+   USER_ID              NUMBER(15)                      not null,
    CHANNEL_NAME         VARCHAR(200 CHAR),
    "DESC"               VARCHAR(500 CHAR),
    LEAF                 VARCHAR2(2 CHAR)               default 'Y',
@@ -450,6 +452,13 @@ comment on column TY_CHANNEL_INFO.CREATE_TIME is
 
 comment on column TY_CHANNEL_INFO.UPDATE_TIME is
 '修改时间';
+
+/*==============================================================*/
+/* Index: "Index_24"                                            */
+/*==============================================================*/
+create unique index "Index_24" on TY_CHANNEL_INFO (
+   USER_ID ASC
+);
 
 /*==============================================================*/
 /* Table: TY_COUNTER_TEMP_LOG                                   */
