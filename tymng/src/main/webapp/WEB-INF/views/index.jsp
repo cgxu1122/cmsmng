@@ -293,7 +293,7 @@
 --%>
 <div title="发布管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/\/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>APK管理</span>
         </a>

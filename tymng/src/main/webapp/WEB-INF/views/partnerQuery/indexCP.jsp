@@ -31,8 +31,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/partnerQuery/listProductStat',
@@ -64,10 +63,11 @@
             });
         }
         function showProductDialog() {
-            $('#productdlg').dialog('open').dialog('setTitle', '选择 产品');
+            $('#productdlg').dialog('open').dialog('setTitle', '选择产品');
             $('#productdg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/productInfo/list',
@@ -135,7 +135,7 @@
     </div>
 </div>
 <div id="dg"></div>
-<div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="productdlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#productdlg-buttons">
     <div>

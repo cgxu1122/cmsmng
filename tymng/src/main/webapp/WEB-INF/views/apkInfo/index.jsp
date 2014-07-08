@@ -91,8 +91,7 @@
 
         function initPage() {
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/apkInfo/list',

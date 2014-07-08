@@ -5,6 +5,7 @@ import com.ifhz.core.adapter.PubChlModRefAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.PubChlModRef;
+import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.model.ModelInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -28,7 +29,8 @@ public class ModelInfoServiceImpl implements ModelInfoService {
     private ModelInfoAdapter modelInfoAdapter;
     @Resource(name = "pubChlModRefAdapter")
     private PubChlModRefAdapter pubChlModRefAdapter;
-
+    @Resource(name = "modelInfoCacheService")
+    private ModelInfoCacheService modelInfoCacheService;
 
     @Override
     public ModelInfo getById(Long id) {
@@ -60,7 +62,7 @@ public class ModelInfoServiceImpl implements ModelInfoService {
             ref.setUpdateTime(new Date());
             pubChlModRefAdapter.updateByGroupIdAndGroupId(ref);
         }
-
+        modelInfoCacheService.remove(record.getUa(), record.getGroupId());
         return ret;
     }
 

@@ -30,8 +30,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/partnerQuery/listLogStat',
@@ -69,6 +68,7 @@
             $('#modeldg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/modelInfo/list',
@@ -137,7 +137,7 @@
     </div>
 </div>
 <div id="dg"></div>
-<div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>

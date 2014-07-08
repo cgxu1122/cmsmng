@@ -110,8 +110,7 @@ function searchEvt() {
 
 function initPage() {
     $('#dg').datagrid({
-        width: 'auto',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/deviceInfo/list',
@@ -159,6 +158,7 @@ function showChannelDialog(type, upChannelId) {
     $('#channeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/listAll',
@@ -322,7 +322,7 @@ function selectChannel(channelId, channelName, type) {
        onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
 </div>
 
-<div id="channeldlg" class="easyui-dialog" style="width:800px;height:400px;padding:10px 20px"
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px"
      data-options="iconCls:'icon-save',resizable:true"
      closed="true"
      buttons="#channeldlg-buttons">

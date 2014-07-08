@@ -11,6 +11,9 @@ import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
+import com.ifhz.core.service.imei.StatImeiQueryService;
+import com.ifhz.core.service.imei.bean.ImeiQueryType;
+import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
@@ -26,9 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yangjian
@@ -43,6 +44,9 @@ public class PartnerQueryController extends BaseController {
     private LogStatQueryService logStatQueryService;
     @Autowired
     private ProductStatQueryService productStatQueryService;
+    @Autowired
+    private StatImeiQueryService statImeiQueryService;
+
 
     @RequestMapping("/indexTY")
     public ModelAndView indexTY(HttpServletRequest request) {
@@ -236,4 +240,50 @@ public class PartnerQueryController extends BaseController {
         super.exportXLSData(request, response, exportModel);
     }
 
+    @RequestMapping(value = "/listImei", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listImei(HttpServletRequest request) {
+        //查询条件
+        String processDate = request.getParameter("processDate");
+        String channelId = request.getParameter("channelId");
+        String ua = request.getParameter("ua");
+        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+        statImeiRequest.setChannelId(Long.parseLong(channelId));
+        statImeiRequest.setUa(ua);
+        //List<String> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+        List list = new ArrayList();
+        for (int i = 0; i < 100; i++) {
+            Map<String, Integer> map = new HashMap<String, Integer>();
+            map.put("imei", 1000 + i);
+            list.add(map);
+        }
+        JSONObject result = new JSONObject();
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/exportImei")
+    @ResponseBody
+    public void exportImei(HttpServletRequest request, HttpServletResponse response) {
+        //查询条件
+        String processDate = request.getParameter("processDate");
+        String channelId = request.getParameter("channelId");
+        String ua = request.getParameter("ua");
+        String modelName = request.getParameter("modelName");
+        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+        statImeiRequest.setChannelId(Long.parseLong(channelId));
+        statImeiRequest.setUa(ua);
+        //statImeiRequest.setModelName(modelName);
+        List<String> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+        BaseExportModel exportModel = new BaseExportModel();
+        Map<String, String> titleMap = new LinkedHashMap<String, String>();
+        titleMap.put("processDate", "日期");
+        titleMap.put("modelName", "机型名称");
+        titleMap.put("imei", "IMEI号");
+        exportModel.setTitleMap(titleMap);
+        exportModel.setDataList(list);
+        super.exportXLSData(request, response, exportModel);
+    }
 }

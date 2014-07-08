@@ -38,8 +38,6 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/reportCount/listLogStat',
@@ -49,6 +47,7 @@
                 pageSize: 100,
                 pageList: [50, 100, 200],
                 rownumbers: true,
+                fitColumns: true,
                 columns: [
                     [
                         {field: 'processDate', title: '日期', align: 'center', width: 200,
@@ -106,6 +105,7 @@
             $('#modeldg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/modelInfo/list',
@@ -143,6 +143,7 @@
             $('#channeldg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/channelInfo/listAll',
@@ -150,6 +151,7 @@
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
+                fit: true,
                 columns: [
                     [
                         {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
@@ -181,6 +183,7 @@
             var channelId = $('#channelId').val();
             window.location.href = "<%=basePath%>/tymng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
         }
+
     </script>
 </head>
 <body>
@@ -219,7 +222,7 @@
     </div>
 </div>
 <div id="dg"></div>
-<div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
@@ -244,7 +247,7 @@
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
 </div>
-<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#channeldlg-buttons">
     <div>

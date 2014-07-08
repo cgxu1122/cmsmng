@@ -40,8 +40,7 @@ function initPage() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     $('#dg').datagrid({
-        width: 'auto',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/reportCount/listLogStat',
@@ -103,6 +102,7 @@ function showDeviceDialog() {
     $('#devicedg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/deviceInfo/list',
@@ -138,6 +138,7 @@ function showModelDialog() {
     $('#modeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/modelInfo/list',
@@ -175,6 +176,7 @@ function showChannelDialog() {
     $('#channeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/listAll',
@@ -256,7 +258,7 @@ function exportData() {
     </div>
 </div>
 <div id="dg"></div>
-<div id="devicedlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="devicedlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#devicedlg-buttons">
     <div>
@@ -281,7 +283,7 @@ function exportData() {
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#devicedlg').dialog('close')">关闭</a>
 </div>
-<div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
@@ -306,7 +308,7 @@ function exportData() {
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
 </div>
-<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#channeldlg-buttons">
     <div>

@@ -139,8 +139,7 @@ function searchEvt() {
 
 function initPage() {
     $('#dg').datagrid({
-        width: 'auto',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/packageInfo/list',
@@ -197,6 +196,7 @@ function showApkDialog(type) {
     $('#apkdg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/apkInfo/list',
@@ -403,7 +403,7 @@ function selectApk(apkId, apkName, apkType, type) {
 </div>
 
 
-<div id="apkdlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
+<div id="apkdlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#apkdlg-buttons">
     <div>

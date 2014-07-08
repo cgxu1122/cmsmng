@@ -92,8 +92,7 @@
         function initPage() {
             reloadTree();
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/channelInfo/list',

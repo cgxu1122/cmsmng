@@ -105,7 +105,7 @@ function initPage() {
     reloadTree();
     $('#dg').datagrid({
         width: '1001px',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/list',
@@ -160,6 +160,7 @@ function showLaowuDialog(type, upLaowuId) {
     $('#laowudg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/list',
@@ -209,6 +210,7 @@ function showMngDialog(type, upMngId) {
     $('#mngdg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/listMng',
@@ -392,7 +394,7 @@ function selectMng(mngId, mngName, type) {
        onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
 </div>
 
-<div id="laowudlg" class="easyui-dialog" style="width:600px;height:430px;padding:10px 20px" closed="true"
+<div id="laowudlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#laowudlg-buttons">
     <div>
@@ -417,7 +419,7 @@ function selectMng(mngId, mngName, type) {
        onclick="javascript:$('#laowudlg').dialog('close')">关闭</a>
 </div>
 
-<div id="mngdlg" class="easyui-dialog" style="width:600px;height:430px;padding:10px 20px" closed="true"
+<div id="mngdlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#mngdlg-buttons">
     <div>

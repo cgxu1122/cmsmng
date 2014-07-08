@@ -25,4 +25,13 @@
         text-align: center !important;
     }
 </style>
+<script>
+    $(document).ready(function () {
+        var height = $(window).height() - 35;
+        $('#dg').panel({
+            width: 'auto',
+            height: height
+        });
+    });
+</script>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
