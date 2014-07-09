@@ -18,6 +18,7 @@ public class StatImeiResult implements Serializable {
     private Date processDate;
     private String deviceCode;
     private String imei;
+    private String modelName;
 
     public String getChannelName() {
         return channelName;
@@ -65,5 +66,13 @@ public class StatImeiResult implements Serializable {
 
     public void setImei(String imei) {
         this.imei = imei;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 }

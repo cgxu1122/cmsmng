@@ -58,6 +58,8 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
                 result.setProcessDate(request.getProcessDate());
                 result.setGroupName(request.getGroupName());
                 result.setProductName(request.getProductName());
+                result.setModelName(request.getModelName());
+
                 result.setImei(imei);
                 resultList.add(result);
             }
@@ -94,6 +96,8 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
                 result.setProcessDate(request.getProcessDate());
                 result.setGroupName(request.getGroupName());
                 result.setProductName(request.getProductName());
+                result.setModelName(request.getModelName());
+
                 result.setImei(imei);
                 resultList.add(result);
             }
