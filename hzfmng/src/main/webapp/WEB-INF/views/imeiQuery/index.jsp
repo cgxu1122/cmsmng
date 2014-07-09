@@ -8,22 +8,22 @@
     <title>Demo</title>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#startDate").datebox({
-                value: getCurrrentDateStr()
-            });
-            $("#endDate").datebox({
-                value: getCurrrentDateStr()
-            });
-            initPage();
         });
-        function searchEvt() {
-            var startDate = $('#startDate').datebox('getValue');
-            var endDate = $('#endDate').datebox('getValue');
-            var ua = $('#ua').val();
-            var channelId = $('#channelId').val();
-            $('#dg').datagrid({
-                url: "<%=basePath%>/hzfmng/imeiQuery/list.do",
-                queryParams: {startDate: startDate, endDate: endDate, ua: ua, channelId: channelId}
+
+        function importImei() {
+            $('#fm').form('submit', {
+                url: '<%=basePath%>/hzfmng/imeiQuery/exportImei.do',
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        initPage();
+                    }
+                }
             });
         }
 
@@ -57,87 +57,8 @@
                 ]
             });
         }
-        function showModelDialog() {
-            $('#modeldlg').dialog('open').dialog('setTitle', '选择机型');
-            $('#modeldg').datagrid({
-                width: 'auto',
-                height: 'auto',
-                fitColumns: true,
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/hzfmng/modelInfo/list',
-                queryParams: {},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'modelName', title: '机型名称', align: 'center', width: 150},
-                        {field: 'ua', title: 'UA', align: 'center', width: 150},
-                        {field: 'action', title: '操作', align: 'center', width: 100,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectModel('" + row.ua + "','" + row.modelName + "')>选择</a>";
-                            }
-                        }
-                    ]
-                ]
-            });
-        }
-        function searchModelEvt() {
-            var value = $('#searchModelValue').val();
-            $('#modeldg').datagrid({
-                url: "<%=basePath%>/hzfmng/modelInfo/list",
-                queryParams: {modelNameCondition: value}
-            });
-        }
-        function selectModel(ua, modelName) {
-            $("#modelName").val(modelName);
-            $("#ua").val(ua);
-            $('#modeldlg').dialog('close');
-        }
-        function showChannelDialog() {
-            $('#channeldlg').dialog('open').dialog('setTitle', '选择渠道商');
-            $('#channeldg').datagrid({
-                width: 'auto',
-                height: 'auto',
-                fitColumns: true,
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/hzfmng/channelInfo/listAll',
-                queryParams: {},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'channelName', title: '渠道商名称', align: 'center', width: 150},
-                        {field: 'action', title: '操作', align: 'center', width: 100,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectChannel('" + row.channelId + "','" + row.channelName + "')>选择</a>";
-                            }
-                        }
-                    ]
-                ]
-            });
-        }
-        function searchChannelEvt() {
-            var value = $('#searchChannelValue').val();
-            $('#channeldg').datagrid({
-                url: "<%=basePath%>/hzfmng/channelInfo/listAll",
-                queryParams: {channelNameCondition: value}
-            });
-        }
-        function selectChannel(channelId, channelName) {
-            $("#channelName").val(channelName);
-            $("#channelId").val(channelId);
-            $('#channeldlg').dialog('close');
-        }
         function exportData() {
-            var startDate = $('#startDate').datebox('getValue');
-            var endDate = $('#endDate').datebox('getValue');
-            var ua = $('#ua').val();
-            var channelId = $('#channelId').val();
-            window.location.href = "<%=basePath%>/hzfmng/imeiQuery/exportData.do?startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
+            window.location.href = "<%=basePath%>/hzfmng/imeiQuery/exportData.do";
         }
     </script>
 </head>
@@ -147,24 +68,13 @@
         <table>
             <tr>
                 <td>
-                    <input type="text" name="modelName" id="modelName" placeholder="选择机型" readonly="readonly"
-                           onclick="showModelDialog()"/>
-                    <input type="hidden" name="ua" id="ua"/>
-                </td>
-                <td>
-                    <input type="text" name="channelName" id="channelName" placeholder="选择渠道商" readonly="readonly"
-                           onclick="showChannelDialog()"/>
-                    <input type="hidden" name="channelId" id="channelId"/>
-                </td>
-                <td>
-                    <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
-                </td>
-                <td>
-                    <input type="text" name="endDate" id="endDate" placeholder="结束时间"/>
+                    <form id="fm" method="post" enctype="multipart/form-data" novalidate>
+                        <input type="file" name="excelFile"/>
+                    </form>
                 </td>
                 <td align="center">
-                    <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
-                       onclick="searchEvt()">查询</a>
+                    <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
+                       onclick="importImei()">导入imei</a>
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>
@@ -174,56 +84,6 @@
     </div>
 </div>
 <div id="dg"></div>
-<div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
-     data-options="iconCls:'icon-save',resizable:true"
-     buttons="#modeldlg-buttons">
-    <div>
-        <div>
-            <table>
-                <tr>
-                    <td>
-                        <input type="text" name="searchModelValue" id="searchModelValue" placeholder="机型名称"/>
-                    </td>
-                    <td align="center">
-                        <a id="searchModelBtn" href="javascript:void(0)" class="easyui-linkbutton"
-                           iconCls="icon-search"
-                           onclick="searchModelEvt()">查询</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="modeldg"></div>
-</div>
-<div id="modeldlg-buttons" style="text-align: center;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
-</div>
 
-<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
-     data-options="iconCls:'icon-save',resizable:true"
-     buttons="#channeldlg-buttons">
-    <div>
-        <div>
-            <table>
-                <tr>
-                    <td>
-                        <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="渠道商名称"/>
-                    </td>
-                    <td align="center">
-                        <a id="searchChannelBtn" href="javascript:void(0)" class="easyui-linkbutton"
-                           iconCls="icon-search"
-                           onclick="searchChannelEvt()">查询</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="channeldg"></div>
-</div>
-<div id="channeldlg-buttons" style="text-align: center;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
-</div>
 </body>
 </html>
