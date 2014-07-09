@@ -20,8 +20,7 @@
                     if (result.errorMsg) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
-                        $('#dlg').dialog('close');
-                        $('#dg').datagrid('reload');
+                        $.messager.alert('提示', "导入成功！");
                     }
                 }
             });
