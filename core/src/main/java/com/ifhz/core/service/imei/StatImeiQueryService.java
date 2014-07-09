@@ -1,6 +1,7 @@
 package com.ifhz.core.service.imei;
 
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
+import com.ifhz.core.service.imei.bean.StatImeiResult;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface StatImeiQueryService {
 
-    public List<String> queryImeiListFromLog(StatImeiRequest request);
+    public List<StatImeiResult> queryImeiListFromLog(StatImeiRequest request);
 
-    public List<String> queryImeiListFromProduct(StatImeiRequest request);
+    public List<StatImeiResult> queryImeiListFromProduct(StatImeiRequest request);
 }

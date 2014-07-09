@@ -13,5 +13,6 @@
     <entry key="stat.pageSize">10000</entry>
     <entry key="wdj.query.url">http://115.29.46.109/interface/export?upload_dt=</entry>
     <entry key="local.store.dir">D:\\store</entry>
+    <entry key="device.logFile.dir">D:\\device\\logFile</entry>
     <entry key="aapt.work.dir">D:\bin\adt-bundle-windows-x86_64-20140624\sdk\build-tools\android-4.4W</entry>
 </properties>

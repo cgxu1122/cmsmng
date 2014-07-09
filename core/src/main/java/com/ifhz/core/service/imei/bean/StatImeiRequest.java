@@ -21,6 +21,9 @@ public class StatImeiRequest implements Serializable {
     private Date processDate;
     private String deviceCode;
     private QueryActive active;
+    private String channelName;
+    private String groupName;
+    private String productName;
 
     public StatImeiRequest(@Nonnull ImeiQueryType type) {
         this.type = type;
@@ -84,5 +87,29 @@ public class StatImeiRequest implements Serializable {
 
     public void setActive(QueryActive active) {
         this.active = active;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

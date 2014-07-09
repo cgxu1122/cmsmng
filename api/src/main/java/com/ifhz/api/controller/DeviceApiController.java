@@ -3,10 +3,14 @@ package com.ifhz.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
+import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
+import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import org.apache.commons.collections.CollectionUtils;
@@ -18,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +84,52 @@ public class DeviceApiController {
         } catch (Exception e) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             result.put("id", id);
+            LOGGER.error("processLog error ", e);
+        } finally {
+            LOGGER.info("processLog:returnObj={}", result);
+        }
+
+        return result;
+    }
+
+
+    @RequestMapping(value = "/processFile.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject processFile(@RequestParam(value = "dataFile", required = true) MultipartFile dataFile) {
+        LOGGER.info("receive request dataFile={}", JSON.toJSONString(dataFile));
+        JSONObject result = null;
+        if (dataFile == null) {
+            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            return result;
+        } else if (dataFile.isEmpty()) {
+            result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+            return result;
+        }
+        String originFileName = dataFile.getOriginalFilename();
+        try {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
+            buffer.append(File.separator);
+            buffer.append(new Date().getTime());
+            String localDirPath = buffer.toString();
+            File localDir = new File(localDirPath);
+            if (!localDir.exists()) {
+                localDir.mkdirs();
+            }
+            buffer.append(File.separator);
+            buffer.append(originFileName);
+            File localFile = new File(buffer.toString());
+            ByteStreams.copy(dataFile.getInputStream(), Files.newOutputStreamSupplier(localFile));
+            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", localFile.getAbsolutePath());
+
+            //TODO
+
+            if (result == null) {
+                result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            }
+        } catch (Exception e) {
+            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             LOGGER.error("processLog error ", e);
         } finally {
             LOGGER.info("processLog:returnObj={}", result);
