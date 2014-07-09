@@ -48,7 +48,7 @@ public class DeviceUpgradeController {
             if (StringUtils.isBlank(code) || StringUtils.isBlank(version)) {
                 return ApiJsonHandler.genJsonRet(ResultType.Fail);
             }
-            DeviceInfo info = deviceInfoService.queryByDeviceCode(code);
+            DeviceInfo info = deviceInfoService.queryByDeviceCode(code.toUpperCase());
             if (info != null) {
                 DeviceSystem newestDeviceSytem = deviceSystemService.queryNewestVersion(new Date());
                 if (newestDeviceSytem != null) {
@@ -57,6 +57,7 @@ public class DeviceUpgradeController {
                     } else {
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
                         result.put("path", newestDeviceSytem.getFtpPath());
+                        result.put("md5value", newestDeviceSytem.getMd5Value());
                     }
                 }
                 result.put("cid", info.getChannelId().toString());

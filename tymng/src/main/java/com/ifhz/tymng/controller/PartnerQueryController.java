@@ -14,6 +14,7 @@ import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.imei.StatImeiQueryService;
 import com.ifhz.core.service.imei.bean.ImeiQueryType;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
+import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
@@ -276,7 +277,7 @@ public class PartnerQueryController extends BaseController {
         statImeiRequest.setChannelId(Long.parseLong(channelId));
         statImeiRequest.setUa(ua);
         //statImeiRequest.setModelName(modelName);
-        List<String> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+        List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
         BaseExportModel exportModel = new BaseExportModel();
         Map<String, String> titleMap = new LinkedHashMap<String, String>();
         titleMap.put("processDate", "日期");

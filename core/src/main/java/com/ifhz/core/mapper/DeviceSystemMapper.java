@@ -16,7 +16,7 @@ public interface DeviceSystemMapper {
 
     public DeviceSystem getById(Long id);
 
-    public DeviceSystem queryNewestVersion(@Param("currentTime") Date currentTime);
+    public List<DeviceSystem> queryNewestVersion(@Param("currentTime") Date currentTime);
 
     public List<DeviceSystem> queryByVo(Pagination page, @Param(value = "record") DeviceSystem record);
 

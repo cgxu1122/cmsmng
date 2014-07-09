@@ -51,7 +51,7 @@ public class DeviceSystemAdapterImpl implements DeviceSystemAdapter {
     }
 
     @Override
-    public DeviceSystem queryNewestVersion(Date currentTime) {
+    public List<DeviceSystem> queryNewestVersion(Date currentTime) {
         return deviceSystemMapper.queryNewestVersion(currentTime);
     }
 }
