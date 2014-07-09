@@ -64,11 +64,11 @@ public class DataLogAdapterImpl implements DataLogAdapter {
 
     @Override
     public List<String> getLogImeiList(Map<String, Object> params) {
-        return null;
+        return dataLogMapper.getLogImeiList(params);
     }
 
     @Override
     public List<String> getProductImeiList(Map<String, Object> params) {
-        return null;
+        return dataLogMapper.getProductImeiList(params);
     }
 }
