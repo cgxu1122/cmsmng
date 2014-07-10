@@ -9,6 +9,8 @@ import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.device.DeviceSystemService;
 import com.ifhz.core.util.MD5keyUtil;
+import com.ifhz.core.utils.HostsHandle;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -55,6 +57,13 @@ public class DeviceSystemController extends BaseController {
         DeviceSystem ds = new DeviceSystem();
         ds.setVersionCondition(versionCondition);
         List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (DeviceSystem deviceSystem : list) {
+                if (StringUtils.isNotBlank(deviceSystem.getDownloadUrl())) {
+                    deviceSystem.setDownloadUrl(HostsHandle.getHostPrefix() + deviceSystem.getDownloadUrl());
+                }
+            }
+        }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);
@@ -115,7 +124,7 @@ public class DeviceSystemController extends BaseController {
         ds.setVersion(version.trim());
         ds.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
         ds.setFtpPath(dir + softName);
-        ds.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+        ds.setDownloadUrl(dir + softName);
         ds.setMd5Value(md5Value);
         deviceSystemService.insert(ds);
         result.put("msg", "添加成功!");
@@ -181,7 +190,7 @@ public class DeviceSystemController extends BaseController {
                         fileName
                 );
                 deviceSystem.setFtpPath(dir + fileName);
-                deviceSystem.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + fileName);
+                deviceSystem.setDownloadUrl(dir + fileName);
                 if (!MD5keyUtil.getMD5(file.getInputStream()).equals(deviceSystem.getMd5Value())) {
                     deviceSystem.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
                     deviceSystem.setUpdateTime(new Date());

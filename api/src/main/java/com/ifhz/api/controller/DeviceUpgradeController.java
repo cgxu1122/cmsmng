@@ -7,6 +7,7 @@ import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.device.DeviceInfoService;
 import com.ifhz.core.service.device.DeviceSystemService;
+import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ public class DeviceUpgradeController {
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
                     } else {
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
-                        result.put("path", newestDeviceSytem.getFtpPath());
+                        result.put("path", HostsHandle.getHostPrefix() + newestDeviceSytem.getDownloadUrl());
                         result.put("md5value", newestDeviceSytem.getMd5Value());
                     }
                 }

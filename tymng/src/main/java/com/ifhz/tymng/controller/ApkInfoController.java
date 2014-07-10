@@ -13,6 +13,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
+import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
@@ -61,6 +62,13 @@ public class ApkInfoController extends BaseController {
         bi.setActive(JcywConstants.ACTIVE_Y);
         bi.setApkNameCondition(apkNameCondition);
         List<ApkInfo> list = apkInfoService.queryByVo(page, bi);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (ApkInfo apkInfo : list) {
+                if (StringUtils.isNotBlank(apkInfo.getDownloadUrl())) {
+                    apkInfo.setDownloadUrl(HostsHandle.getHostPrefix() + apkInfo.getDownloadUrl());
+                }
+            }
+        }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);
@@ -136,7 +144,7 @@ public class ApkInfoController extends BaseController {
             po.setSoftName(softName);
             po.setActive(JcywConstants.ACTIVE_Y);
             po.setFtpPath(dir + softName);
-            po.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+            po.setDownloadUrl(dir + softName);
             po.setMd5Value(md5Value);
             po.setType(type);
             apkInfoService.insert(po);
@@ -235,7 +243,7 @@ public class ApkInfoController extends BaseController {
             }
             apkInfo.setSoftName(softName);
             apkInfo.setFtpPath(dir + softName);
-            apkInfo.setDownloadUrl(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DOWNLOADURL) + dir + softName);
+            apkInfo.setDownloadUrl(dir + softName);
             apkInfo.setApkName(apkName.trim());
             apkInfo.setType(type);
             apkInfoService.update(apkInfo);

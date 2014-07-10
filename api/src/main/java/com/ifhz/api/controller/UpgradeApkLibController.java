@@ -7,6 +7,7 @@ import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.device.DeviceInfoService;
 import com.ifhz.core.service.pkgmng.PackageUpgradeService;
+import com.ifhz.core.utils.HostsHandle;
 import com.ifhz.core.vo.ApkVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +31,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/nzyw/api")
 public class UpgradeApkLibController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UpgradeApkLibController.class);
 
     @Resource(name = "packageUpgradeService")
@@ -67,6 +67,11 @@ public class UpgradeApkLibController {
                     result.put("version", String.valueOf(startTime.getTime()));
                 } else {
                     result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
+                    for (ApkVo apkVo : apkVoList) {
+                        if (StringUtils.isNotBlank(apkVo.getPath())) {
+                            apkVo.setPath(HostsHandle.getHostPrefix() + apkVo.getPath());
+                        }
+                    }
                     result.put("apkList", apkVoList);
                     result.put("version", String.valueOf(startTime.getTime()));
                 }
