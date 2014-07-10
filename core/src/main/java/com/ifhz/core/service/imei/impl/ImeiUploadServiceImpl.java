@@ -32,11 +32,11 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
 
-    public boolean processCsvData(File csvFile) {
-        LOGGER.info("解析CSV文件--------------------开始");
+    public boolean processCsvData(String filePath) {
+        LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(csvFile));
+            reader = new BufferedReader(new FileReader(new File(filePath)));
             String line = "";
             while ((line = reader.readLine()) != null) {
                 LOGGER.info("解析CSV文件 line={}", line);
@@ -59,14 +59,14 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
             return false;
         } finally {
             IOUtils.closeQuietly(reader);
-            LOGGER.info("解析CSV文件--------------------结束");
+            LOGGER.info("解析CSV文件:{}--------------------结束", filePath);
         }
 
         return true;
     }
 
     @Override
-    public boolean processZipData(File zipFile) {
+    public boolean processZipData(String filePath) {
         return false;
     }
 

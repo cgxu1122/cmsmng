@@ -90,10 +90,7 @@ public class DeviceSystemController extends BaseController {
         try {
             version = readInputStreamData(params.get("version").getInputStream());
             effectiveTime = readInputStreamData(params.get("effectiveTime").getInputStream());
-            FtpUtils.ftpUpload(file.getInputStream(),
-                    dir,
-                    softName
-            );
+            FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
             md5Value = MD5keyUtil.getMD5(file.getInputStream());
         } catch (Exception e) {
             errorMsg = "上传文件出错，请重新上传或者联系管理员！";

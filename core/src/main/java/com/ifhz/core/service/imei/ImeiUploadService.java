@@ -1,7 +1,5 @@
 package com.ifhz.core.service.imei;
 
-import java.io.File;
-
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -10,8 +8,8 @@ import java.io.File;
  */
 public interface ImeiUploadService {
 
-    public boolean processCsvData(File csvFile);
+    public boolean processCsvData(String filePath);
 
 
-    public boolean processZipData(File zipFile);
+    public boolean processZipData(String filePath);
 }

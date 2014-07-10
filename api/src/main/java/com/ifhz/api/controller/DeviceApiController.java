@@ -3,16 +3,14 @@ package com.ifhz.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
-import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
-import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
+import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.utils.FileHandle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -25,9 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 类描述
@@ -42,6 +40,8 @@ public class DeviceApiController {
 
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
+    @Resource(name = "localDirCacheService")
+    private LocalDirCacheService localDirCacheService;
 
     @RequestMapping(value = "/processLog.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
@@ -107,21 +107,12 @@ public class DeviceApiController {
             return result;
         }
         String originFileName = dataFile.getOriginalFilename();
+        LOGGER.info("originFileName = {}", originFileName);
         try {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
-            buffer.append(File.separator);
-            buffer.append(new Date().getTime());
-            String localDirPath = buffer.toString();
-            File localDir = new File(localDirPath);
-            if (!localDir.exists()) {
-                localDir.mkdirs();
-            }
-            buffer.append(File.separator);
-            buffer.append(originFileName);
-            File localFile = new File(buffer.toString());
-            ByteStreams.copy(dataFile.getInputStream(), Files.newOutputStreamSupplier(localFile));
-            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", localFile.getAbsolutePath());
+            String fileExt = FileHandle.getFileExt(originFileName);
+            String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
+            String toFilePath = localDirCacheService.storeFile(dataFile.getInputStream(), newFileName);
+            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
 
             //TODO
 

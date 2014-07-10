@@ -1,13 +1,11 @@
 package com.ifhz.hzfmng.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
-import com.ifhz.core.base.commons.MapConfig;
-import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.progress.ProgressModel;
+import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
+import com.ifhz.core.utils.FileHandle;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.util.UUID;
 
 /**
  * 类描述
@@ -41,6 +38,8 @@ public class ImeiUploadController {
     private ImeiUploadService imeiUploadService;
     @Resource(name = "channelInfoService")
     private ChannelInfoService channelInfoService;
+    @Resource(name = "localDirCacheService")
+    private LocalDirCacheService localDirCacheService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -66,21 +65,14 @@ public class ImeiUploadController {
         }
         try {
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
-            buffer.append(File.separator);
-            buffer.append(new Date().getTime());
-            String localDirPath = buffer.toString();
-            File localDir = new File(localDirPath);
-            if (!localDir.exists()) {
-                localDir.mkdirs();
+            String fileExt = FileHandle.getFileExt(originFileName);
+            String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
+            String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
+            if (StringUtils.isBlank(toFilePath)) {
+                throw new Exception("文件保存到本地失败！！！");
             }
-            buffer.append(File.separator);
-            buffer.append(originFileName);
-            File localFile = new File(buffer.toString());
-            ByteStreams.copy(file.getInputStream(), Files.newOutputStreamSupplier(localFile));
-            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", localFile.getAbsolutePath());
-            boolean ret = imeiUploadService.processCsvData(localFile);
+            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
+            boolean ret = imeiUploadService.processCsvData(toFilePath);
             result.put("ret", ret);
             if (!ret) {
                 result.put("errorMsg", "处理上传文件失败，请检查文件格式是否正确或者重新操作");

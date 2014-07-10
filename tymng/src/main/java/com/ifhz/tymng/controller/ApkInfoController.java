@@ -1,10 +1,7 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import com.ifhz.core.base.BaseController;
-import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.codec.AnalysisApkFile;
 import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.constants.JcywConstants;
@@ -12,7 +9,9 @@ import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
+import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
+import com.ifhz.core.utils.FileHandle;
 import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
@@ -25,12 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yangjian
@@ -41,6 +38,8 @@ public class ApkInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApkInfoController.class);
     @Autowired
     private ApkInfoService apkInfoService;
+    @Resource(name = "localDirCacheService")
+    private LocalDirCacheService localDirCacheService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -103,8 +102,8 @@ public class ApkInfoController extends BaseController {
         File localFile = null;
         String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
-            localFile = storeLocalFile(params, softName);
-            md5Value = DesencryptUtils.md5File(localFile);
+            String storeLocalFilePath = storeLocalFile(params, softName);
+            md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
             apkName = readInputStreamData(params.get("apkName").getInputStream());
             type = readInputStreamData(params.get("type").getInputStream());
             if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
@@ -202,6 +201,7 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
         }
+        String originFtpPath = apkInfo.getFtpPath();
         LOGGER.info("update ApkInfo  process step 2--------------------------");
         File localFile = null;
         String md5Value = null;
@@ -216,9 +216,9 @@ public class ApkInfoController extends BaseController {
         String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         if (StringUtils.isNotEmpty(file.getName())) {
             try {
+                String storeLocalFilePath = storeLocalFile(params, softName);
+                md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
                 FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
-                localFile = storeLocalFile(params, softName);
-                md5Value = DesencryptUtils.md5File(localFile);
             } catch (Exception e) {
                 errorMsg = "上传文件出错，请重新上传或者联系管理员！";
                 result.put("errorMsg", errorMsg);
@@ -247,6 +247,13 @@ public class ApkInfoController extends BaseController {
             apkInfo.setApkName(apkName.trim());
             apkInfo.setType(type);
             apkInfoService.update(apkInfo);
+
+            if (StringUtils.isNotBlank(originFtpPath)) {
+                try {
+                    FtpUtils.ftpDelete(originFtpPath);
+                } catch (Exception e) {
+                }
+            }
             result.put("msg", "修改成功!");
         } catch (Exception e) {
             LOGGER.error("updateApkInfo error", e);
@@ -279,30 +286,28 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "数据已被其他人操作，请刷新!");
         } else {
             apkInfoService.delete(ai);
+            if (StringUtils.isNotBlank(ai.getFtpPath())) {
+                try {
+                    FtpUtils.ftpDelete(ai.getFtpPath());
+                } catch (Exception e) {
+                }
+            }
             result.put("msg", "删除成功!");
         }
         return result;
     }
 
 
-    private File storeLocalFile(Map<String, FileItem> params, String softName) throws Exception {
+    private String storeLocalFile(Map<String, FileItem> params, String originFileName) throws Exception {
         FileItem file = params.get("file");
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
-        buffer.append(File.separator);
-        buffer.append(new Date().getTime());
-        String localDirPath = buffer.toString();
-        File localDir = new File(localDirPath);
-        if (!localDir.exists()) {
-            localDir.mkdirs();
+        String fileExt = FileHandle.getFileExt(originFileName);
+        String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
+        String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
+        if (StringUtils.isBlank(toFilePath)) {
+            throw new Exception("文件保存到本地失败！！！");
         }
-        buffer.append(File.separator);
-        buffer.append(softName);
 
-        File localFile = new File(buffer.toString());
-        ByteStreams.copy(file.getInputStream(), Files.newOutputStreamSupplier(localFile));
-
-        return localFile;
+        return toFilePath;
     }
 
     private enum Type {
