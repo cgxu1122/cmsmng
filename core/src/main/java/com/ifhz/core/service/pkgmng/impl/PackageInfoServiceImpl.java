@@ -113,9 +113,4 @@ public class PackageInfoServiceImpl implements PackageInfoService {
         }
         return ret;
     }
-
-    @Override
-    public List<PackageInfo> queryList(Long channelId, Date startTime, Date endTime) {
-        return null;
-    }
 }
