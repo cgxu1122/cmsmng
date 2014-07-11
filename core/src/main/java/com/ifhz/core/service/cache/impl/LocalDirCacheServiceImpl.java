@@ -109,12 +109,12 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
 
     @Override
     public String storeTempFile(InputStream in, String localFileName) {
-        return null;
+        return preStore(in, localFileName, true);
     }
 
     @Override
     public String storeFile(InputStream in, String localFileName) {
-        return null;
+        return preStore(in, localFileName, false);
     }
 
 
