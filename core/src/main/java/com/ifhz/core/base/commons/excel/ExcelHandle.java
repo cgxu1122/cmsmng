@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
@@ -21,9 +20,9 @@ import java.util.List;
 public class ExcelHandle {
     private static final int MaxRowSize = 3000;
 
-    public static List<String> readImeiListFromExcel(File excelFile) throws Exception {
+    public static List<String> readImeiListFromExcel(String excelFilePath) throws Exception {
         List<String> result = Lists.newArrayList();
-        InputStream ins = new FileInputStream(excelFile);
+        InputStream ins = new FileInputStream(excelFilePath);
         Workbook wkbook = WorkbookFactory.create(ins);
         //获取第一个表格!
         Sheet sheet = wkbook.getSheetAt(0);
