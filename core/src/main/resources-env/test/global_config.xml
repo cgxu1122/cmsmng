@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>ordermon 全局配置,放在此xml中</comment>
-    <entry key="ftp.server.url">192.168.1.103</entry>
+    <entry key="ftp.server.url">127.0.0.1</entry>
     <entry key="ftp.server.port">21</entry>
     <entry key="ftp.server.username">ftp</entry>
     <entry key="ftp.server.password">ftp</entry>
