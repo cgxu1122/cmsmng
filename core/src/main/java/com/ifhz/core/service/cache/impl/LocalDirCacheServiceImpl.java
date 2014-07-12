@@ -19,7 +19,6 @@ import java.io.*;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,7 +46,7 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     private static final String PARENT_DIR_PATTERN = "yyyy-MM-dd";
 
 
-    public String preStore(final InputStream in, String localFileName, boolean isTempFile) {
+    public String preStore(final InputStream in, String localFileName, boolean isTempFile) throws Exception {
         LOGGER.info("localFileName = {},isTempFile={}", localFileName, isTempFile);
         String storePath;
         if (isTempFile) {
@@ -60,14 +59,9 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
             storePath = storePath + File.separator + parentDir;
         }
         final File storeFile = new File(storePath, localFileName);
-        try {
-            //确保目录存在
-            String key = storeFile.getParentFile().getAbsolutePath();
-            dirs.get(key, new DirCacheLoader(key));
-        } catch (ExecutionException e) {
-            LOGGER.error("Check parent dir of " + storeFile + " exist fail", e);
-            return null;
-        }
+        //确保目录存在
+        String key = storeFile.getParentFile().getAbsolutePath();
+        dirs.get(key, new DirCacheLoader(key));
         LOGGER.info("Begin write file to {}", storeFile);
         InputSupplier<InputStream> ins = new InputSupplier<InputStream>() {
             @Override
@@ -86,14 +80,10 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
                 return new BufferedOutputStream(fout);
             }
         };
-        try {
-            ByteStreams.copy(ins, ous);
-            LOGGER.info("Finish write file to {}", storeFile);
-            return storeFile.getAbsolutePath();
-        } catch (IOException e) {
-            LOGGER.error("Can't wirite to [" + storeFile + "].", e);
-        }
-        return null;
+        ByteStreams.copy(ins, ous);
+        LOGGER.info("Finish write file to {}", storeFile);
+
+        return storeFile.getAbsolutePath();
     }
 
     public String getParentDir() {
@@ -111,12 +101,12 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     }
 
     @Override
-    public String storeTempFile(InputStream in, String localFileName) {
+    public String storeTempFile(InputStream in, String localFileName) throws Exception {
         return preStore(in, localFileName, true);
     }
 
     @Override
-    public String storeFile(InputStream in, String localFileName) {
+    public String storeFile(InputStream in, String localFileName) throws Exception {
         return preStore(in, localFileName, false);
     }
 
@@ -128,21 +118,15 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     }
 
     @Override
-    public String getExcelTempPath() {
+    public String getExcelTempPath() throws Exception {
         String storePath = Store_Temp_Path;
         String parentDir = getParentDir();
         if (StringUtils.isNotBlank(parentDir)) {
             storePath = storePath + File.separator + parentDir;
         }
         final File storeFile = new File(storePath);
-        try {
-            //确保目录存在
-            String key = storeFile.getAbsolutePath();
-            dirs.get(key, new DirCacheLoader(key));
-        } catch (ExecutionException e) {
-            LOGGER.error("Check parent dir of " + storeFile + " exist fail", e);
-            return null;
-        }
+        String key = storeFile.getAbsolutePath();
+        dirs.get(key, new DirCacheLoader(key));
         String prefix = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
         return storePath + File.separator + prefix.toLowerCase() + ".xlsx";
     }

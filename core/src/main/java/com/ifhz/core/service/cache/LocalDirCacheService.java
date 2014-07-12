@@ -10,11 +10,11 @@ import java.io.InputStream;
  */
 public interface LocalDirCacheService {
 
-    public String storeTempFile(final InputStream in, String localFileName);
+    public String storeTempFile(final InputStream in, String localFileName) throws Exception;
 
-    public String storeFile(final InputStream in, String localFileName);
+    public String storeFile(final InputStream in, String localFileName) throws Exception;
 
     public String getLocalFileName(String originFileName);
 
-    public String getExcelTempPath();
+    public String getExcelTempPath() throws Exception;
 }
