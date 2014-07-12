@@ -239,45 +239,49 @@ public class PartnerQueryController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/exportProductData")
+    @RequestMapping(value = "/exportProductData", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public void exportProductData(HttpServletRequest request, HttpServletResponse response) {
-        PartnerInfo pi = new PartnerInfo();
-        pi.setUserId(CurrentUserUtil.getUserId());
-        pi.setActive(JcywConstants.ACTIVE_Y);
-        pi.setExportImeiSource(JcywConstants.BASE_CONSTANT_Y);
-        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
-        if (partnerInfo == null) {
-            return;
-        }
+    public JSONObject exportProductData(HttpServletRequest request, HttpServletResponse response) {
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
-        ProductStat productStat = new ProductStat();
-        productStat.setPartnerId(partnerInfo.getPartnerId());
-        if (StringUtils.isNotEmpty(productId)) {
-            productStat.setProductId(Long.parseLong(productId));
+        JSONObject result = new JSONObject();
+        try {
+            ProductStat productStat = new ProductStat();
+            if (StringUtils.isNotEmpty(productId)) {
+                productStat.setProductId(Long.parseLong(productId));
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            List<ProductStat> list = productStatQueryService.queryByVo(null, productStat);
+            if (CollectionUtils.isNotEmpty(list)) {
+                ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
+                list.add(countProductStat);
+            }
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("modelName", "机型名称");
+            titleMap.put("productPrsDayNum", "装机数量");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
         }
-        if (StringUtils.isNotEmpty(startDate)) {
-            productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        if (StringUtils.isNotEmpty(endDate)) {
-            productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        List<ProductStat> list = productStatQueryService.queryByVo(null, productStat);
-        if (CollectionUtils.isNotEmpty(list)) {
-            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
-            list.add(countProductStat);
-        }
-        BaseExportModel exportModel = new BaseExportModel();
-        Map<String, String> titleMap = new LinkedHashMap<String, String>();
-        titleMap.put("processDate", "日期");
-        titleMap.put("modelName", "机型名称");
-        titleMap.put("productPrsDayNum", "装机数量");
-        exportModel.setTitleMap(titleMap);
-        exportModel.setDataList(list);
-        super.exportXLSData(request, response, exportModel);
+
+        return result;
     }
 
     @RequestMapping(value = "/listImei", produces = {"application/json;charset=UTF-8"})
@@ -311,37 +315,49 @@ public class PartnerQueryController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/exportImei")
+    @RequestMapping(value = "/exportImei", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public void exportImei(HttpServletRequest request, HttpServletResponse response) {
-        //查询条件
-        String processDate = request.getParameter("processDate");
-        String channelId = request.getParameter("channelId");
-        String productId = request.getParameter("productId");
-        String ua = request.getParameter("ua");
-        String deviceCode = request.getParameter("deviceCode");
-        String modelName = request.getParameter("modelName");
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
-        if (StringUtils.isNotEmpty(processDate)) {
-            statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+    public JSONObject exportImei(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        try {
+            //查询条件
+            String processDate = request.getParameter("processDate");
+            String channelId = request.getParameter("channelId");
+            String productId = request.getParameter("productId");
+            String ua = request.getParameter("ua");
+            String deviceCode = request.getParameter("deviceCode");
+            String modelName = request.getParameter("modelName");
+            StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+            if (StringUtils.isNotEmpty(processDate)) {
+                statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+            }
+            if (StringUtils.isNotEmpty(channelId)) {
+                statImeiRequest.setChannelId(Long.parseLong(channelId));
+            }
+            if (StringUtils.isNotEmpty(channelId)) {
+                statImeiRequest.setChannelId(Long.parseLong(channelId));
+            }
+            statImeiRequest.setUa(ua);
+            statImeiRequest.setDeviceCode(deviceCode);
+            statImeiRequest.setModelName(modelName);
+            List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("modelName", "机型名称");
+            titleMap.put("imei", "IMEI号");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
         }
-        if (StringUtils.isNotEmpty(channelId)) {
-            statImeiRequest.setChannelId(Long.parseLong(channelId));
-        }
-        if (StringUtils.isNotEmpty(channelId)) {
-            statImeiRequest.setChannelId(Long.parseLong(channelId));
-        }
-        statImeiRequest.setUa(ua);
-        statImeiRequest.setDeviceCode(deviceCode);
-        statImeiRequest.setModelName(modelName);
-        List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-        BaseExportModel exportModel = new BaseExportModel();
-        Map<String, String> titleMap = new LinkedHashMap<String, String>();
-        titleMap.put("processDate", "日期");
-        titleMap.put("modelName", "机型名称");
-        titleMap.put("imei", "IMEI号");
-        exportModel.setTitleMap(titleMap);
-        exportModel.setDataList(list);
-        super.exportXLSData(request, response, exportModel);
+
+        return result;
     }
 }

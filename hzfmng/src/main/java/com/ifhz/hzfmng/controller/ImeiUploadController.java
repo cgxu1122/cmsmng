@@ -5,7 +5,6 @@ import com.ifhz.core.progress.ProgressModel;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
-import com.ifhz.core.utils.FileHandle;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
-import java.util.UUID;
 
 /**
  * 类描述
@@ -52,12 +50,12 @@ public class ImeiUploadController {
     JSONObject exportImei(@RequestParam(value = "excelFile", required = true) MultipartFile file,
                           HttpServletRequest request) {
         JSONObject result = new JSONObject();
-        if (file == null || file.isEmpty()) {
+        String originFileName = file.getOriginalFilename();
+        if (file.isEmpty() || StringUtils.isNotBlank(originFileName)) {
             result.put("ret", false);
-            result.put("errorMsg", "非法请求，请选择需要上传csv文件");
+            result.put("errorMsg", "非法请求，请选择需要上传Excel文件");
             return result;
         }
-        String originFileName = file.getOriginalFilename();
         if (!checkFileType(originFileName)) {
             result.put("ret", false);
             result.put("errorMsg", "非法文件类型，只允许上传Excel文件");
@@ -65,12 +63,8 @@ public class ImeiUploadController {
         }
         try {
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
-            String fileExt = FileHandle.getFileExt(originFileName);
-            String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
+            String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
-            if (StringUtils.isBlank(toFilePath)) {
-                throw new Exception("文件保存到本地失败！！！");
-            }
             LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
             boolean ret = imeiUploadService.processCsvData(toFilePath);
             result.put("ret", ret);
