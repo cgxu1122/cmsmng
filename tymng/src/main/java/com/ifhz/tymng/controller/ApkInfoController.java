@@ -161,7 +161,7 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         //产品名称唯一性校验
-        boolean isRepeat = isRepeat(Type.Insert, null, apkName);
+        boolean isRepeat = isRepeat(Type.Update, null, apkName);
         if (isRepeat) {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
