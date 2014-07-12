@@ -2,13 +2,13 @@ package com.ifhz.core.base.commons.excel;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -22,8 +22,12 @@ public class ExcelHandle {
 
     public static List<String> readImeiListFromExcel(String excelFilePath) throws Exception {
         List<String> result = Lists.newArrayList();
-        InputStream ins = new FileInputStream(excelFilePath);
-        Workbook wkbook = WorkbookFactory.create(ins);
+        Workbook wkbook = null;
+        try {
+            wkbook = new XSSFWorkbook(new FileInputStream(excelFilePath));
+        } catch (Exception ex) {
+            wkbook = new HSSFWorkbook(new FileInputStream(excelFilePath));
+        }
         //获取第一个表格!
         Sheet sheet = wkbook.getSheetAt(0);
         int maxRow = (MaxRowSize > sheet.getLastRowNum() ? sheet.getLastRowNum() : MaxRowSize);

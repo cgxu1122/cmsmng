@@ -123,7 +123,7 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     @Override
     public String getLocalFileName(String originFileName) {
         String fileExt = FileHandle.getFileExt(originFileName);
-        String prefix = StringUtils.replace(UUID.randomUUID().toString(), "_", "");
+        String prefix = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
         return prefix.toLowerCase() + "." + fileExt.toLowerCase();
     }
 
@@ -134,7 +134,16 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
         if (StringUtils.isNotBlank(parentDir)) {
             storePath = storePath + File.separator + parentDir;
         }
-        String prefix = StringUtils.replace(UUID.randomUUID().toString(), "_", "");
+        final File storeFile = new File(storePath);
+        try {
+            //确保目录存在
+            String key = storeFile.getAbsolutePath();
+            dirs.get(key, new DirCacheLoader(key));
+        } catch (ExecutionException e) {
+            LOGGER.error("Check parent dir of " + storeFile + " exist fail", e);
+            return null;
+        }
+        String prefix = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
         return storePath + File.separator + prefix.toLowerCase() + ".xlsx";
     }
 

@@ -6,8 +6,8 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -39,7 +39,7 @@ public class ExportDataUtil {
     }
 
     public static void writeXLSData(List<String[]> dataList, File file) {
-        Workbook wb = new HSSFWorkbook();
+        Workbook wb = new XSSFWorkbook();
         Sheet sheet = wb.createSheet("Sheet1");
         //设置CELL格式为文本格式
         CellStyle cellStyle = wb.createCellStyle();
