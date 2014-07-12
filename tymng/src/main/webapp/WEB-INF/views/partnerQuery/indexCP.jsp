@@ -134,13 +134,41 @@
             });
         }
         function exportImeiEvt() {
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur;
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
         }
         function exportData() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var productId = $('#productId').val();
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId;
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/tymng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
+        }
+        function resetEvt() {
+            $('#productId').val("");
+            $('#productName').val("");
         }
     </script>
 </head>
@@ -163,6 +191,9 @@
                 <td align="center">
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
+                </td>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetEvt()">重置</a>
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>

@@ -214,7 +214,19 @@ function exportData() {
     var ua = $('#ua').val();
     var channelId = $('#channelId').val();
     var deviceCode = $('#deviceCode').val();
-    window.location.href = "<%=basePath%>/tymng/reportCount/exportData?groupId=2&exportType=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&deviceCode=" + deviceCode;
+    $("body").showLoading();
+    $.ajax({
+        url: "<%=basePath%>/tymng/reportCount/exportData?groupId=2&exportType=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&deviceCode=" + deviceCode,
+        success: function (result) {
+            $("body").hideLoading();
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+            }
+        }
+    });
 }
 </script>
 </head>
@@ -332,6 +344,27 @@ function exportData() {
 <div id="channeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
+</div>
+<div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#imeidlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td align="center">
+                        <a id="exportImeiBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           onclick="exportImeiEvt()">导出</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="imeidg"></div>
+</div>
+<div id="imeidlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#imeidlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>

@@ -24,6 +24,12 @@
         where PARTNER_ID = #{partnerId}
     </select>
 
+    <select id="getPartnerInfoByUserId" parameterType="long" resultMap="PartnerInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where ACTIVE = 'Y' and USER_ID = #{userId}
+    </select>
+
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.PartnerInfo">
         <selectKey resultType="long" keyProperty="partnerId">
             SELECT SEQ_PARTNER_INFO.CURRVAL FROM DUAL

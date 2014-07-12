@@ -9,6 +9,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
+import com.ifhz.core.po.PartnerInfo;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
@@ -17,6 +18,7 @@ import com.ifhz.core.service.imei.StatImeiQueryService;
 import com.ifhz.core.service.imei.bean.ImeiQueryType;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
+import com.ifhz.core.service.partner.PartnerInfoService;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
@@ -33,10 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yangjian
@@ -47,6 +46,8 @@ public class PartnerQueryController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerQueryController.class);
     @Autowired
     private ChannelInfoService channelInfoService;
+    @Autowired
+    private PartnerInfoService partnerInfoService;
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
@@ -205,11 +206,19 @@ public class PartnerQueryController extends BaseController {
         Pagination page = new Pagination();
         if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+        if (partnerInfo == null) {
+            JSONObject result = new JSONObject();
+            result.put("total", 0);
+            result.put("rows", new ArrayList<ProductStat>());
+            return result;
+        }
         //查询条件
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         ProductStat productStat = new ProductStat();
+        productStat.setPartnerId(partnerInfo.getPartnerId());
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
         }
@@ -233,11 +242,20 @@ public class PartnerQueryController extends BaseController {
     @RequestMapping(value = "/exportProductData")
     @ResponseBody
     public void exportProductData(HttpServletRequest request, HttpServletResponse response) {
+        PartnerInfo pi = new PartnerInfo();
+        pi.setUserId(CurrentUserUtil.getUserId());
+        pi.setActive(JcywConstants.ACTIVE_Y);
+        pi.setExportImeiSource(JcywConstants.BASE_CONSTANT_Y);
+        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+        if (partnerInfo == null) {
+            return;
+        }
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
         ProductStat productStat = new ProductStat();
+        productStat.setPartnerId(partnerInfo.getPartnerId());
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
         }

@@ -39,7 +39,7 @@
     <select id="getByUserId" parameterType="long" resultMap="ChannelInfoResultMap">
         select * from
         <include refid="TABLE_NAME"/>
-        where USER_ID = #{userId}
+        where ACTIVE = 'Y' and USER_ID = #{userId}
     </select>
 
 

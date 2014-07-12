@@ -165,7 +165,19 @@
             var ua = $('#ua').val();
             var groupId = $('#groupId').combobox('getValue');
             var productId = $('#productId').val();
-            window.location.href = "<%=basePath%>/tymng/reportCount/exportProductData?groupId=" + groupId + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId;
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/tymng/reportCount/exportProductData?groupId=" + groupId + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -262,6 +274,27 @@
 <div id="productdlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#productdlg').dialog('close')">关闭</a>
+</div>
+<div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#imeidlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td align="center">
+                        <a id="exportImeiBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           onclick="exportImeiEvt()">导出</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="imeidg"></div>
+</div>
+<div id="imeidlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#imeidlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>

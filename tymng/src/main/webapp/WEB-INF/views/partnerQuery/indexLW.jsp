@@ -174,7 +174,19 @@
             });
         }
         function exportImeiEvt() {
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur;
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
         }
 
         function exportData() {
@@ -182,7 +194,25 @@
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
             var channelId = $('#channelId').val();
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportData?groupId=4&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/tymng/partnerQuery/exportData?groupId=4&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
+        }
+        function resetEvt() {
+            $('#ua').val("");
+            $('#modelName').val("");
+            $('#channelId').val("");
+            $('#channelName').val("");
         }
     </script>
 </head>
@@ -210,6 +240,9 @@
                 <td align="center">
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
+                </td>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetEvt()">重置</a>
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>
