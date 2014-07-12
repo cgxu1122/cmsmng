@@ -11,6 +11,11 @@ import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
+import com.ifhz.core.service.imei.StatImeiQueryService;
+import com.ifhz.core.service.imei.bean.ImeiQueryType;
+import com.ifhz.core.service.imei.bean.QueryActive;
+import com.ifhz.core.service.imei.bean.StatImeiRequest;
+import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +51,8 @@ public class ReportCountController extends BaseController {
     private ProductStatQueryService productStatQueryService;
     @Autowired
     private LocalDirCacheService localDirCacheService;
+    @Autowired
+    private StatImeiQueryService statImeiQueryService;
 
     @RequestMapping("/indexStore")
     public ModelAndView indexTY(HttpServletRequest request) {
@@ -287,4 +295,140 @@ public class ReportCountController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/listImei", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listImei(HttpServletRequest request) {
+        //查询条件
+        String processDate = request.getParameter("processDate");
+        String channelId = request.getParameter("channelId");
+        String channelName = request.getParameter("channelName");
+        String groupId = request.getParameter("groupId");
+        String groupName = request.getParameter("groupName");
+        String deviceCode = request.getParameter("deviceCode");
+        String modelName = request.getParameter("modelName");
+        String ua = request.getParameter("ua");
+        String productId = request.getParameter("productId");
+        String productName = request.getParameter("productName");
+        String queryType = request.getParameter("queryType");
+        StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType);
+        if (StringUtils.isNotEmpty(processDate)) {
+            statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+        }
+        if (StringUtils.isNotEmpty(channelId)) {
+            statImeiRequest.setChannelId(Long.parseLong(channelId));
+        }
+        if (StringUtils.isNotEmpty(productId)) {
+            statImeiRequest.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(groupId)) {
+            statImeiRequest.setGroupId(Long.parseLong(groupId));
+        }
+        statImeiRequest.setDeviceCode(deviceCode);
+        statImeiRequest.setChannelName(channelName);
+        statImeiRequest.setModelName(modelName);
+        statImeiRequest.setProductName(productName);
+        statImeiRequest.setGroupName(groupName);
+        statImeiRequest.setUa(ua);
+        List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+        JSONObject result = new JSONObject();
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/exportImei", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject exportImei(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        try {
+            //查询条件
+            String processDate = request.getParameter("processDate");
+            String channelId = request.getParameter("channelId");
+            String channelName = request.getParameter("channelName");
+            String groupId = request.getParameter("groupId");
+            String groupName = request.getParameter("groupName");
+            String deviceCode = request.getParameter("deviceCode");
+            String modelName = request.getParameter("modelName");
+            String ua = request.getParameter("ua");
+            String productId = request.getParameter("productId");
+            String productName = request.getParameter("productName");
+            String queryType = request.getParameter("queryType");
+            StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType);
+            if (StringUtils.isNotEmpty(processDate)) {
+                statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+            }
+            if (StringUtils.isNotEmpty(channelId)) {
+                statImeiRequest.setChannelId(Long.parseLong(channelId));
+            }
+            if (StringUtils.isNotEmpty(productId)) {
+                statImeiRequest.setProductId(Long.parseLong(productId));
+            }
+            if (StringUtils.isNotEmpty(groupId)) {
+                statImeiRequest.setGroupId(Long.parseLong(groupId));
+            }
+            statImeiRequest.setDeviceCode(deviceCode);
+            statImeiRequest.setChannelName(channelName);
+            statImeiRequest.setModelName(modelName);
+            statImeiRequest.setProductName(productName);
+            statImeiRequest.setGroupName(groupName);
+            statImeiRequest.setUa(ua);
+            List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            String exportType = request.getParameter("exportType");
+            if ("1".equals(exportType)) {
+                titleMap.put("processDate", "日期");
+                titleMap.put("modelName", "机型名称");
+                titleMap.put("channelName", "仓库名称");
+                titleMap.put("imei", "IMEI号");
+            } else if ("2".equals(exportType)) {
+                titleMap.put("processDate", "日期");
+                titleMap.put("modelName", "机型名称");
+                titleMap.put("channelName", "仓库名称");
+                titleMap.put("deviceCode", "设备编码");
+                titleMap.put("imei", "IMEI号");
+            } else if ("3".equals(exportType)) {
+                titleMap.put("processDate", "日期");
+                titleMap.put("modelName", "机型名称");
+                titleMap.put("productName", "产品名称");
+                titleMap.put("groupName", "渠道组织");
+                titleMap.put("imei", "IMEI号");
+            }
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
+        }
+        return result;
+    }
+
+    private StatImeiRequest getStatImeiRequestByQueryType(String queryType) {
+        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        if ("1".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        } else if ("2".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
+        } else if ("3".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest.setActive(QueryActive.Total);
+        } else if ("4".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest.setActive(QueryActive.Valid);
+        } else if ("5".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest.setActive(QueryActive.Invalid);
+        } else if ("6".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest.setActive(QueryActive.Replace);
+        } else if ("7".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest.setActive(QueryActive.Uninstall);
+        }
+        return statImeiRequest;
+    }
 }

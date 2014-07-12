@@ -3,183 +3,244 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ include file="/common/header.jsp" %>
-    <title>Demo</title>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#startDate").datebox({
-                value: getCurrrentDateStr()
-            });
-            $("#endDate").datebox({
-                value: getCurrrentDateStr()
-            });
-            var data = $('#groupId').combobox('getData');
-            $("#groupId").combobox('select', data[0].value);
-            initPage();
-        });
-        function searchEvt() {
-            var startDate = $('#startDate').datebox('getValue');
-            var endDate = $('#endDate').datebox('getValue');
-            var ua = $('#ua').val();
-            var groupId = $('#groupId').combobox('getValue');
-            var productId = $('#productId').val();
-            $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/reportCount/listProductStat",
-                queryParams: {groupId: groupId, startDate: startDate, endDate: endDate, ua: ua, productId: productId}
-            });
-        }
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@ include file="/common/header.jsp" %>
+<title>Demo</title>
+<script type="text/javascript">
+$(document).ready(function () {
+    $("#startDate").datebox({
+        value: getCurrrentDateStr()
+    });
+    $("#endDate").datebox({
+        value: getCurrrentDateStr()
+    });
+    var data = $('#groupId').combobox('getData');
+    $("#groupId").combobox('select', data[0].value);
+    initPage();
+});
+function searchEvt() {
+    var startDate = $('#startDate').datebox('getValue');
+    var endDate = $('#endDate').datebox('getValue');
+    var ua = $('#ua').val();
+    var groupId = $('#groupId').combobox('getValue');
+    var productId = $('#productId').val();
+    $('#dg').datagrid({
+        url: "<%=basePath%>/tymng/reportCount/listProductStat",
+        queryParams: {groupId: groupId, startDate: startDate, endDate: endDate, ua: ua, productId: productId}
+    });
+}
 
-        function resetEvt() {
-            $('#ua').val("");
-            $('#modelName').val("");
-            $('#productId').val("");
-            $('#productName').val("");
-            $("#groupId").combobox('select', "");
-        }
+function resetEvt() {
+    $('#ua').val("");
+    $('#modelName').val("");
+    $('#productId').val("");
+    $('#productName').val("");
+    $("#groupId").combobox('select', "");
+}
 
-        function initPage() {
-            var startDate = $('#startDate').datebox('getValue');
-            var endDate = $('#endDate').datebox('getValue');
-            $('#dg').datagrid({
-                fitColumns: true,
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/tymng/reportCount/listProductStat',
-                queryParams: {startDate: startDate, endDate: endDate},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                pageSize: 100,
-                pageList: [50, 100, 200],
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'processDate', title: '日期', align: 'center', width: 200,
-                            formatter: function (value) {
-                                if (value == null) {
-                                    return "合计"
-                                }
-                                return new Date(value).formate("yyyy-MM-dd");
-                            }
-                        },
-                        {field: 'modelName', title: '机型名称', align: 'center', width: 200},
-                        {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
-                        {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
-                        },
-                        {field: 'productUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
-                        },
-                        {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                //return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>"+value+"</a>";
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
-                            }
+function initPage() {
+    var startDate = $('#startDate').datebox('getValue');
+    var endDate = $('#endDate').datebox('getValue');
+    $('#dg').datagrid({
+        fitColumns: true,
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/tymng/reportCount/listProductStat',
+        queryParams: {startDate: startDate, endDate: endDate},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'processDate', title: '日期', align: 'center', width: 200,
+                    formatter: function (value) {
+                        if (value == null) {
+                            return "合计"
                         }
-                    ]
-                ]
-            });
-        }
-        function showModelDialog() {
-            $('#modeldlg').dialog('open').dialog('setTitle', '选择机型');
-            $('#modeldg').datagrid({
-                width: 'auto',
-                height: 'auto',
-                fitColumns: true,
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/tymng/modelInfo/list',
-                queryParams: {},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'modelName', title: '机型名称', align: 'center', width: 150},
-                        {field: 'ua', title: 'UA', align: 'center', width: 150},
-                        {field: 'action', title: '操作', align: 'center', width: 100,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectModel('" + row.ua + "','" + row.modelName + "')>选择</a>";
-                            }
-                        }
-                    ]
-                ]
-            });
-        }
-        function searchModelEvt() {
-            var value = $('#searchModelValue').val();
-            $('#modeldg').datagrid({
-                url: "<%=basePath%>/tymng/modelInfo/list",
-                queryParams: {modelNameCondition: value}
-            });
-        }
-        function selectModel(ua, modelName) {
-            $("#modelName").val(modelName);
-            $("#ua").val(ua);
-            $('#modeldlg').dialog('close');
-        }
-        function showProductDialog() {
-            $('#productdlg').dialog('open').dialog('setTitle', '选择产品');
-            $('#productdg').datagrid({
-                width: 'auto',
-                height: 'auto',
-                fitColumns: true,
-                striped: true,
-                singleSelect: true,
-                url: '<%=basePath%>/tymng/productInfo/list',
-                queryParams: {},
-                loadMsg: '数据加载中请稍后……',
-                pagination: true,
-                rownumbers: true,
-                columns: [
-                    [
-                        {field: 'productName', title: '仓库名称', align: 'center', width: 150},
-                        {field: 'action', title: '操作', align: 'center', width: 100,
-                            formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:selectProduct('" + row.productId + "','" + row.productName + "')>选择</a>";
-                            }
-                        }
-                    ]
-                ]
-            });
-        }
-        function searchProductEvt() {
-            var value = $('#searchProductValue').val();
-            $('#productdg').datagrid({
-                url: "<%=basePath%>/tymng/productInfo/list",
-                queryParams: {productNameCondition: value}
-            });
-        }
-        function selectProduct(productId, productName) {
-            $("#productName").val(productName);
-            $("#productId").val(productId);
-            $('#productdlg').dialog('close');
-        }
-        function exportData() {
-            var startDate = $('#startDate').datebox('getValue');
-            var endDate = $('#endDate').datebox('getValue');
-            var ua = $('#ua').val();
-            var groupId = $('#groupId').combobox('getValue');
-            var productId = $('#productId').val();
-            $("body").showLoading();
-            $.ajax({
-                url: "<%=basePath%>/tymng/reportCount/exportProductData?groupId=" + groupId + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId,
-                success: function (result) {
-                    $("body").hideLoading();
-                    var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
-                        $.messager.alert('错误', result.errorMsg);
-                    } else {
-                        window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+                        return new Date(value).formate("yyyy-MM-dd");
+                    }
+                },
+                {field: 'modelName', title: '机型名称', align: 'center', width: 200},
+                {field: 'productName', title: '产品名称', align: 'center', width: 200},
+                {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
+                {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',1)>" + value + "</a>";
+                    }
+                },
+                {field: 'productUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',2)>" + value + "</a>";
+                    }
+                },
+                {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
                     }
                 }
-            });
+            ]
+        ]
+    });
+}
+
+
+var processDateCur;
+var uaCur;
+var groupIdCur;
+var modelNameCur;
+var groupNameCur;
+var productIdCur;
+var productNameCur;
+var queryTypeCur;
+function showIMEIDialog(processDate, ua, groupId, modelName, groupName, productId, productName, queryType) {
+    processDateCur = processDate;
+    uaCur = ua;
+    groupIdCur = groupId;
+    modelNameCur = modelName;
+    groupNameCur = groupName;
+    productIdCur = productId;
+    productNameCur = productName;
+    queryTypeCur = queryType;
+    $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
+    $('#imeidg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        fitColumns: true,
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/tymng/reportCount/listImei',
+        queryParams: {processDate: processDate, ua: ua, groupId: groupId, modelName: modelName, groupName: groupName, productId: productId, productName: productName, queryType: queryType},
+        loadMsg: '数据加载中请稍后……',
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'processDate', title: '日期', align: 'center', width: 150,
+                    formatter: function (value) {
+                        return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
+                    }
+                },
+                {field: 'modelName', title: '机型名称', align: 'center', width: 150},
+                {field: 'groupName', title: '仓库名称', align: 'center', width: 150},
+                {field: 'productName', title: '产品名称', align: 'center', width: 150},
+                {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
+            ]
+        ]
+    });
+}
+function exportImeiEvt() {
+    $("body").showLoading();
+    $.ajax({
+        url: "<%=basePath%>/tymng/reportCount/exportImei?exportType=3&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&deviceCode=" + deviceCodeCur + "&queryType=" + queryTypeCur,
+        success: function (result) {
+            $("body").hideLoading();
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+            }
         }
-    </script>
+    });
+}
+
+function showModelDialog() {
+    $('#modeldlg').dialog('open').dialog('setTitle', '选择机型');
+    $('#modeldg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        fitColumns: true,
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/tymng/modelInfo/list',
+        queryParams: {},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'modelName', title: '机型名称', align: 'center', width: 150},
+                {field: 'ua', title: 'UA', align: 'center', width: 150},
+                {field: 'action', title: '操作', align: 'center', width: 100,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:selectModel('" + row.ua + "','" + row.modelName + "')>选择</a>";
+                    }
+                }
+            ]
+        ]
+    });
+}
+function searchModelEvt() {
+    var value = $('#searchModelValue').val();
+    $('#modeldg').datagrid({
+        url: "<%=basePath%>/tymng/modelInfo/list",
+        queryParams: {modelNameCondition: value}
+    });
+}
+function selectModel(ua, modelName) {
+    $("#modelName").val(modelName);
+    $("#ua").val(ua);
+    $('#modeldlg').dialog('close');
+}
+function showProductDialog() {
+    $('#productdlg').dialog('open').dialog('setTitle', '选择产品');
+    $('#productdg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        fitColumns: true,
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/tymng/productInfo/list',
+        queryParams: {},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'productName', title: '仓库名称', align: 'center', width: 150},
+                {field: 'action', title: '操作', align: 'center', width: 100,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:selectProduct('" + row.productId + "','" + row.productName + "')>选择</a>";
+                    }
+                }
+            ]
+        ]
+    });
+}
+function searchProductEvt() {
+    var value = $('#searchProductValue').val();
+    $('#productdg').datagrid({
+        url: "<%=basePath%>/tymng/productInfo/list",
+        queryParams: {productNameCondition: value}
+    });
+}
+function selectProduct(productId, productName) {
+    $("#productName").val(productName);
+    $("#productId").val(productId);
+    $('#productdlg').dialog('close');
+}
+function exportData() {
+    var startDate = $('#startDate').datebox('getValue');
+    var endDate = $('#endDate').datebox('getValue');
+    var ua = $('#ua').val();
+    var groupId = $('#groupId').combobox('getValue');
+    var productId = $('#productId').val();
+    $("body").showLoading();
+    $.ajax({
+        url: "<%=basePath%>/tymng/reportCount/exportProductData?groupId=" + groupId + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId,
+        success: function (result) {
+            $("body").hideLoading();
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+            }
+        }
+    });
+}
+</script>
 </head>
 <body>
 <div id="toolBar">
