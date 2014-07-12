@@ -9,6 +9,7 @@ import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.utils.FileHandle;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +48,7 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
 
 
     public String preStore(final InputStream in, String localFileName, boolean isTempFile) {
+        LOGGER.info("localFileName = {},isTempFile={}", localFileName, isTempFile);
         String storePath;
         if (isTempFile) {
             storePath = Store_Temp_Path;
@@ -115,6 +118,13 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     @Override
     public String storeFile(InputStream in, String localFileName) {
         return preStore(in, localFileName, false);
+    }
+
+    @Override
+    public String getLocalFileName(String originFileName) {
+        String fileExt = FileHandle.getFileExt(originFileName);
+        String prefix = StringUtils.replace(UUID.randomUUID().toString(), "_", "");
+        return prefix.toLowerCase() + "." + fileExt.toLowerCase();
     }
 
 

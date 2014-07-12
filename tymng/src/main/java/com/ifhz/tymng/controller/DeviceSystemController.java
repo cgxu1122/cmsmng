@@ -2,13 +2,15 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DeviceSystem;
+import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.device.DeviceSystemService;
-import com.ifhz.core.util.MD5keyUtil;
+import com.ifhz.core.utils.FileHandle;
 import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.fileupload.FileItem;
@@ -18,15 +20,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author yangjian
@@ -37,6 +39,8 @@ public class DeviceSystemController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeviceSystemController.class);
     @Autowired
     private DeviceSystemService deviceSystemService;
+    @Resource(name = "localDirCacheService")
+    private LocalDirCacheService localDirCacheService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -72,40 +76,33 @@ public class DeviceSystemController extends BaseController {
 
     @RequestMapping(value = "/insert", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject insert(HttpServletRequest request) {
-        Map<String, FileItem> params = paserMultiData(request);
-        String version = null;
-        String effectiveTime = null;
-        FileItem file = params.get("file");
-        String errorMsg = null;
+    public JSONObject insert(@RequestParam(value = "version") String version,
+                             @RequestParam(value = "effectiveTime") String effectiveTime,
+                             @RequestParam(value = "file") MultipartFile file,
+                             HttpServletRequest request) {
+        String originFileName = file.getOriginalFilename();
+        LOGGER.info("rev msg version={},effectiveTime={},originalFilename={}", version, effectiveTime, originFileName);
         JSONObject result = new JSONObject();
-        if (StringUtils.isEmpty(file.getName())) {
-            errorMsg = "请上传设备升级文件！";
-            result.put("errorMsg", errorMsg);
+        String md5Value = null;
+        if (StringUtils.isBlank(version) || version.length() > 50 || StringUtils.isBlank(effectiveTime) || StringUtils.isBlank(originFileName)) {
+            result.put("errorMsg", "表单参数填写有误,请重新填写并提交！");
             return result;
         }
-        String softName = file.getName();
-        String md5Value = null;
         String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
-            version = readInputStreamData(params.get("version").getInputStream());
-            effectiveTime = readInputStreamData(params.get("effectiveTime").getInputStream());
-            FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
-            md5Value = MD5keyUtil.getMD5(file.getInputStream());
+            String newFileName = localDirCacheService.getLocalFileName(originFileName);
+            String storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+            if (StringUtils.isBlank(storeLocalFilePath)) {
+                throw new Exception("上传文件保存出错，请重新操作");
+            }
+            md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+            FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
         } catch (Exception e) {
-            errorMsg = "上传文件出错，请重新上传或者联系管理员！";
-            result.put("errorMsg", errorMsg);
+            LOGGER.error("insert DeviceSystem error", e);
+            result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
             return result;
         }
-        if (StringUtils.isEmpty(version) || version.length() > 50) {
-            errorMsg = "请正确输入版本号！";
-        } else if (StringUtils.isEmpty(effectiveTime)) {
-            errorMsg = "请选择生效时间！";
-        }
-        if (!StringUtils.isEmpty(errorMsg)) {
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
+
         //版本号唯一性校验
         DeviceSystem ds = new DeviceSystem();
         ds.setVersion(version.trim());
@@ -114,50 +111,72 @@ public class DeviceSystemController extends BaseController {
         page.setPageSize(1);
         List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
         if (list != null && list.size() > 0) {
-            errorMsg = "版本号重复，请重新输入！";
-            result.put("errorMsg", errorMsg);
+            result.put("errorMsg", "版本号重复，请重新输入！");
             return result;
         }
         ds.setVersion(version.trim());
         ds.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
-        ds.setFtpPath(dir + softName);
-        ds.setDownloadUrl(dir + softName);
+        ds.setFtpPath(dir + originFileName);
+        ds.setDownloadUrl(dir + originFileName);
         ds.setMd5Value(md5Value);
         deviceSystemService.insert(ds);
         result.put("msg", "添加成功!");
+
         return result;
+    }
+
+    private String storeLocalFile(Map<String, FileItem> params, String originFileName) throws Exception {
+        FileItem file = params.get("file");
+        String fileExt = FileHandle.getFileExt(originFileName);
+        String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
+        String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
+        if (StringUtils.isBlank(toFilePath)) {
+            throw new Exception("文件保存到本地失败！！！");
+        }
+
+        return toFilePath;
     }
 
     @RequestMapping(value = "/update", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject update(HttpServletRequest request) {
-        Map<String, FileItem> params = paserMultiData(request);
-        String systemId = null;
-        String version = null;
-        String effectiveTime = null;
-        String errorMsg = null;
+    public JSONObject update(@RequestParam(value = "version") String version,
+                             @RequestParam(value = "effectiveTime") String effectiveTime,
+                             @RequestParam(value = "systemId") Long systemId,
+                             @RequestParam(value = "file", required = false) MultipartFile file,
+                             HttpServletRequest request) {
+        String originFileName = file.getOriginalFilename();
+        LOGGER.info("rev msg version={},effectiveTime={},originalFilename={},systemId={}", version, effectiveTime, originFileName, systemId);
         JSONObject result = new JSONObject();
-        try {
-            systemId = readInputStreamData(params.get("systemId").getInputStream());
-            version = readInputStreamData(params.get("version").getInputStream());
-            effectiveTime = readInputStreamData(params.get("effectiveTime").getInputStream());
-        } catch (IOException e) {
-            errorMsg = "数据读取错误，请联系管理员！";
-            result.put("errorMsg", errorMsg);
+        String md5Value = null;
+        if (StringUtils.isBlank(version) || StringUtils.isBlank(effectiveTime) || systemId == null) {
+            result.put("errorMsg", "表单参数填写有误,请重新填写并提交！");
             return result;
         }
-        if (StringUtils.isEmpty(systemId)) {
-            errorMsg = "系统错误，请联系管理员！";
-        } else if (StringUtils.isEmpty(version) || version.length() > 50) {
-            errorMsg = "请正确输入版本号！";
-        } else if (StringUtils.isEmpty(effectiveTime)) {
-            errorMsg = "请选择生效时间！";
-        }
-        if (!StringUtils.isEmpty(errorMsg)) {
-            result.put("errorMsg", errorMsg);
+        if (version.length() > 50) {
+            result.put("errorMsg", "请正确输入版本号！");
             return result;
         }
-        DeviceSystem deviceSystem = deviceSystemService.getById(Long.parseLong(systemId));
+        String storeLocalFilePath = null;
+        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        if (StringUtils.isNotBlank(originFileName)) {
+            try {
+                String newFileName = localDirCacheService.getLocalFileName(originFileName);
+                storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+                if (StringUtils.isBlank(storeLocalFilePath)) {
+                    throw new Exception("上传文件保存出错，请重新操作");
+                }
+                md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+                FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
+            } catch (Exception e) {
+                LOGGER.error("insert DeviceSystem error", e);
+                result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
+                return result;
+            }
+        }
+
+
+        DeviceSystem deviceSystem = deviceSystemService.getById(systemId);
+        String originFtpPath = deviceSystem.getFtpPath();
         if (deviceSystem == null) {
             result.put("errorMsg", "数据已被删除，请刷新!");
             return result;
@@ -167,7 +186,7 @@ public class DeviceSystemController extends BaseController {
         ds.setVersion(version.trim());
         Pagination page = new Pagination();
         page.setCurrentPage(1);
-        page.setPageSize(1);
+        page.setPageSize(2);
         List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
         if (list != null && list.size() > 0) {
             for (DeviceSystem repeatVersionDs : list) {
@@ -177,32 +196,25 @@ public class DeviceSystemController extends BaseController {
                 }
             }
         }
-        FileItem file = params.get("file");
-        if (StringUtils.isNotEmpty(file.getName())) {
-            try {
-                String fileName = file.getName();
-                String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-                FtpUtils.ftpUpload(file.getInputStream(),
-                        dir,
-                        fileName
-                );
-                deviceSystem.setFtpPath(dir + fileName);
-                deviceSystem.setDownloadUrl(dir + fileName);
-                if (!MD5keyUtil.getMD5(file.getInputStream()).equals(deviceSystem.getMd5Value())) {
-                    deviceSystem.setMd5Value(MD5keyUtil.getMD5(file.getInputStream()));
-                    deviceSystem.setUpdateTime(new Date());
-                }
-            } catch (Exception e) {
-                errorMsg = "上传文件出错，请重新上传或者联系管理员！";
-                result.put("errorMsg", errorMsg);
-                return result;
+        if (StringUtils.isNotBlank(originFileName)) {
+            if (!StringUtils.equalsIgnoreCase(md5Value, deviceSystem.getMd5Value())) {
+                deviceSystem.setMd5Value(md5Value);
+                deviceSystem.setFtpPath(dir + originFileName);
             }
         }
         deviceSystem.setVersion(version.trim());
         deviceSystem.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
+        deviceSystem.setUpdateTime(new Date());
 
         deviceSystemService.update(deviceSystem);
         result.put("msg", "修改成功!");
+        if (StringUtils.isNotBlank(originFtpPath)) {
+            try {
+                FtpUtils.ftpDelete(originFtpPath);
+            } catch (Exception e) {
+            }
+        }
+
         return result;
     }
 

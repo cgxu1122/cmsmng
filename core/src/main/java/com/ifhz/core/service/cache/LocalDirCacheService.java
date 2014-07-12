@@ -13,4 +13,6 @@ public interface LocalDirCacheService {
     public String storeTempFile(final InputStream in, String localFileName);
 
     public String storeFile(final InputStream in, String localFileName);
+
+    public String getLocalFileName(String originFileName);
 }

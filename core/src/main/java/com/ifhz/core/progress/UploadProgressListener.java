@@ -22,6 +22,9 @@ public class UploadProgressListener implements ProgressListener {
     @Override
     public void update(long bytesRead, long contentLength, int items) {
         ProgressModel model = (ProgressModel) session.getAttribute("upload_progress");
+        if (model == null) {
+            model = new ProgressModel();
+        }
         model.setBytesRead(bytesRead);
         model.setContentLength(contentLength);
         model.setItems(items);

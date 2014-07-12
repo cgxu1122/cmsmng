@@ -36,11 +36,14 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
 
     @Override
     public int insert(DeviceSystem record) {
+        record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
         return deviceSystemAdapter.insert(record);
     }
 
     @Override
     public int update(DeviceSystem record) {
+        record.setUpdateTime(new Date());
         return deviceSystemAdapter.update(record);
     }
 

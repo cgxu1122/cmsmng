@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/7/12 0:14:14                            */
+/* Created on:     2014/7/12 12:57:55                           */
 /*==============================================================*/
 
 
@@ -37,6 +37,8 @@ drop index "Index_3";
 drop index "Index_22";
 
 drop index "Index_13";
+
+drop index "Index_26";
 
 drop index "Index_14";
 
@@ -403,7 +405,7 @@ create table TY_CHANNEL_INFO  (
    PARENT_ID            NUMBER(15),
    GROUP_ID             NUMBER(15),
    MNG_ID               NUMBER(15),
-   USER_ID              NUMBER(15)                      not null,
+   USER_ID              NUMBER(15),
    CHANNEL_NAME         VARCHAR(200 CHAR),
    "DESC"               VARCHAR(500 CHAR),
    LEAF                 VARCHAR2(2 CHAR)               default 'Y',
@@ -658,6 +660,7 @@ create table TY_DEVICE_SYSTEM  (
    MD5VALUE             VARCHAR2(50 CHAR),
    EFFECTIVE_TIME       DATE,
    CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_DEVICE_SYSTEM primary key (SYSTEM_ID)
 );
 
@@ -684,6 +687,9 @@ comment on column TY_DEVICE_SYSTEM.EFFECTIVE_TIME is
 
 comment on column TY_DEVICE_SYSTEM.CREATE_TIME is
 '创建时间';
+
+comment on column TY_DEVICE_SYSTEM.UPDATE_TIME is
+'修改时间';
 
 /*==============================================================*/
 /* Table: TY_DICT_INFO                                          */
@@ -1098,6 +1104,13 @@ comment on column TY_PRODUCT_INFO.UPDATE_TIME is
 
 comment on column TY_PRODUCT_INFO.ACTIVE is
 '活动状态（Y:有效，D:删除）';
+
+/*==============================================================*/
+/* Index: "Index_26"                                            */
+/*==============================================================*/
+create index "Index_26" on TY_PRODUCT_INFO (
+   PARTNER_ID ASC
+);
 
 /*==============================================================*/
 /* Table: TY_PRODUCT_STAT                                       */

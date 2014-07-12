@@ -21,7 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -76,74 +78,57 @@ public class ApkInfoController extends BaseController {
 
     @RequestMapping(value = "/insert", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject insert(HttpServletRequest request) {
+    public JSONObject insert(@RequestParam(value = "file", required = true) MultipartFile file,
+                             @RequestParam(value = "apkName", required = true) String apkName,
+                             @RequestParam(value = "type", required = true) String type,
+                             HttpServletRequest request) {
         long start = System.currentTimeMillis();
-        Map<String, FileItem> params = paserMultiData(request);
-        String apkName = null;
-        String type = null;
-        FileItem file = params.get("file");
-        String errorMsg = null;
+        String originFileName = file.getOriginalFilename();
+        LOGGER.info("rev msg apkName={},type={},originalFilename={}", apkName, type, originFileName);
         JSONObject result = new JSONObject();
-
-
-        if (StringUtils.isEmpty(file.getName())) {
-            errorMsg = "请上传Apk文件！";
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
-        String softName = file.getName();
-        String extName = softName.substring(softName.lastIndexOf(".") + 1, softName.length());
-        if (!"apk".equals(extName)) {
-            errorMsg = "请上传后缀名为Apk的文件！";
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
         String md5Value = null;
-        File localFile = null;
-        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-        try {
-            String storeLocalFilePath = storeLocalFile(params, softName);
-            md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
-            apkName = readInputStreamData(params.get("apkName").getInputStream());
-            type = readInputStreamData(params.get("type").getInputStream());
-            if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
-                errorMsg = "请正确输入产品名称！";
-                result.put("errorMsg", errorMsg);
-                return result;
-            }
-            //产品名称唯一性校验
-            boolean isRepeat = isRepeat(Type.Insert, null, apkName);
-            if (isRepeat) {
-                result.put("errorMsg", "产品名称重复，请重新输入！");
-                return result;
-            }
-
-            FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
-        } catch (Exception e) {
-            errorMsg = "上传文件出错，请重新上传或者联系管理员！";
-            result.put("errorMsg", errorMsg);
-            LOGGER.error("insertApkInfo error", e);
+        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        if (StringUtils.isBlank(apkName) || apkName.length() > 50 || StringUtils.isBlank(type) || StringUtils.isBlank(originFileName)) {
+            result.put("errorMsg", "表单参数填写有误,请重新填写并提交！");
             return result;
         }
-        if (!StringUtils.isEmpty(errorMsg)) {
-            result.put("errorMsg", errorMsg);
+        if (!StringUtils.endsWithIgnoreCase(originFileName.trim(), ".apk")) {
+            result.put("errorMsg", "请上传后缀名为Apk的文件");
+            return result;
+        }
+        //产品名称唯一性校验
+        boolean isRepeat = isRepeat(Type.Insert, null, apkName);
+        if (isRepeat) {
+            result.put("errorMsg", "产品名称重复，请重新输入！");
+            return result;
+        }
+        String storeLocalFilePath = null;
+        try {
+            String newFileName = localDirCacheService.getLocalFileName(originFileName);
+            storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+            if (StringUtils.isBlank(storeLocalFilePath)) {
+                throw new Exception("上传文件保存出错，请重新操作");
+            }
+            md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+            FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
+        } catch (Exception e) {
+            LOGGER.error("insert DeviceSystem error", e);
+            result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
             return result;
         }
 
         try {
             ApkInfo po = new ApkInfo();
             po.setApkName(apkName.trim());
-            if (localFile != null) {
-                String packagePath = AnalysisApkFile.parseApk(localFile);
-                if (StringUtils.isNotBlank(packagePath)) {
-                    po.setPackagePath(packagePath);
-                }
+            String packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+            if (StringUtils.isNotBlank(packagePath)) {
+                po.setPackagePath(packagePath);
             }
             po.setApkName(apkName.trim());
-            po.setSoftName(softName);
+            po.setSoftName(originFileName.trim());
             po.setActive(JcywConstants.ACTIVE_Y);
-            po.setFtpPath(dir + softName);
-            po.setDownloadUrl(dir + softName);
+            po.setFtpPath(dir + originFileName.trim());
+            po.setDownloadUrl(dir + originFileName.trim());
             po.setMd5Value(md5Value);
             po.setType(type);
             apkInfoService.insert(po);
@@ -153,97 +138,75 @@ public class ApkInfoController extends BaseController {
         } finally {
             long end = System.currentTimeMillis();
             LOGGER.info("parseApkFile totalTime={}", end - start);
-            deleteLocalFile(localFile);
         }
-
 
         return result;
     }
 
     @RequestMapping(value = "/update", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject update(HttpServletRequest request) {
-        LOGGER.info("update ApkInfo  --------------------------start");
+    public JSONObject update(@RequestParam(value = "file", required = false) MultipartFile file,
+                             @RequestParam(value = "apkName", required = true) String apkName,
+                             @RequestParam(value = "type", required = true) String type,
+                             @RequestParam(value = "apkId", required = true) Long apkId,
+                             HttpServletRequest request) {
         long start = System.currentTimeMillis();
-        Map<String, FileItem> params = paserMultiData(request);
-        String apkId = null;
-        String apkName = null;
-        String type = null;
-        String errorMsg = null;
+        String originFileName = file.getOriginalFilename();
+        LOGGER.info("rev msg apkName={},type={},originalFilename={},apkId={}", apkName, type, originFileName, apkId);
         JSONObject result = new JSONObject();
-        try {
-            apkId = readInputStreamData(params.get("apkId").getInputStream());
-            apkName = readInputStreamData(params.get("apkName").getInputStream());
-            type = readInputStreamData(params.get("type").getInputStream());
-            LOGGER.info("update ApkInfo  process step 1--------------------------");
-        } catch (Exception e) {
-            errorMsg = "数据读取错误，请重新操作！";
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
-        if (StringUtils.isEmpty(apkId)) {
-            errorMsg = "系统错误，请重新操作！";
-        } else if (StringUtils.isEmpty(apkName) || apkName.length() > 50) {
-            errorMsg = "请正确输入产品名称！";
-        }
-        if (!StringUtils.isEmpty(errorMsg)) {
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
-        ApkInfo apkInfo = apkInfoService.getById(Long.parseLong(apkId));
-        if (apkInfo == null) {
-            result.put("errorMsg", "数据已被删除，请刷新!");
+        String md5Value = null;
+        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        if (StringUtils.isBlank(apkName) || apkName.length() > 50 || StringUtils.isBlank(type) || apkId == null) {
+            result.put("errorMsg", "表单参数填写有误,请重新填写并提交！");
             return result;
         }
         //产品名称唯一性校验
-        boolean isRepeat = isRepeat(Type.Update, apkInfo.getApkId(), apkName);
+        boolean isRepeat = isRepeat(Type.Insert, null, apkName);
         if (isRepeat) {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
         }
+        ApkInfo apkInfo = apkInfoService.getById(apkId);
         String originFtpPath = apkInfo.getFtpPath();
-        LOGGER.info("update ApkInfo  process step 2--------------------------");
-        File localFile = null;
-        String md5Value = null;
-        FileItem file = params.get("file");
-        String softName = file.getName();
-        String extName = softName.substring(softName.lastIndexOf(".") + 1, softName.length());
-        if (!"apk".equals(extName)) {
-            errorMsg = "请上传后缀名为Apk的文件！";
-            result.put("errorMsg", errorMsg);
+        if (apkInfo == null) {
+            result.put("errorMsg", "数据已被删除，请刷新!");
             return result;
         }
-        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_APKDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-        if (StringUtils.isNotEmpty(file.getName())) {
-            try {
-                String storeLocalFilePath = storeLocalFile(params, softName);
-                md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
-                FtpUtils.ftpUpload(file.getInputStream(), dir, softName);
-            } catch (Exception e) {
-                errorMsg = "上传文件出错，请重新上传或者联系管理员！";
-                result.put("errorMsg", errorMsg);
+        String storeLocalFilePath = null;
+        if (StringUtils.isNotBlank(originFileName)) {
+            if (!StringUtils.endsWithIgnoreCase(originFileName.trim(), ".apk")) {
+                result.put("errorMsg", "请上传后缀名为Apk的文件");
                 return result;
-            } finally {
-                long end = System.currentTimeMillis();
-                LOGGER.info("parseApkFile totalTime={}", end - start);
-                deleteLocalFile(localFile);
+            }
+            try {
+                String newFileName = localDirCacheService.getLocalFileName(originFileName);
+                storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+                if (StringUtils.isBlank(storeLocalFilePath)) {
+                    throw new Exception("上传文件保存出错，请重新操作");
+                }
+                md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+                FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
+            } catch (Exception e) {
+                LOGGER.error("insert DeviceSystem error", e);
+                result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
+                return result;
             }
         }
-        LOGGER.info("update ApkInfo  process step 3--------------------------");
+
         try {
             if (!StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
                 apkInfo.setMd5Value(md5Value);
                 apkInfo.setUpdateTime(new Date());
             }
-            if (localFile != null) {
-                String packagePath = AnalysisApkFile.parseApk(localFile);
+            if (StringUtils.isNotBlank(originFileName)) {
+                String packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
                 if (StringUtils.isNotBlank(packagePath)) {
                     apkInfo.setPackagePath(packagePath);
                 }
             }
-            apkInfo.setSoftName(softName);
-            apkInfo.setFtpPath(dir + softName);
-            apkInfo.setDownloadUrl(dir + softName);
+            apkInfo.setSoftName(originFileName);
+            apkInfo.setFtpPath(dir + originFileName);
+            apkInfo.setDownloadUrl(dir + originFileName);
             apkInfo.setApkName(apkName.trim());
             apkInfo.setType(type);
             apkInfoService.update(apkInfo);
@@ -261,8 +224,7 @@ public class ApkInfoController extends BaseController {
         } finally {
             LOGGER.info("update ApkInfo  process step 4--------------------------");
             long end = System.currentTimeMillis();
-            LOGGER.info("parseApkFile totalTime={}", end - start);
-            deleteLocalFile(localFile);
+            LOGGER.info("update ApkInfo totalTime={}", end - start);
         }
 
         return result;
@@ -320,7 +282,7 @@ public class ApkInfoController extends BaseController {
         temp.setApkName(apkName.trim());
         Pagination page = new Pagination();
         page.setCurrentPage(1);
-        page.setPageSize(1);
+        page.setPageSize(2);
         List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
         if (CollectionUtils.isNotEmpty(list)) {
             if (type == Type.Update) {
