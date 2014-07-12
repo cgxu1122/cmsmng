@@ -63,7 +63,7 @@ function editrow() {
                 var productHtml = "<tr>" +
                         "<input type='hidden' name='productId' value='" + productInfoList[i].productId + "'>" +
                         "<td><input type='text' name='productName' value='" + productInfoList[i].productName + "' readonly='readonly'></td>" +
-                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();'>删除</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateProductList.pop(" + productInfoList[i].productId + ");'>删除</a></td>" +
                         "</tr>";
                 $('#upProductList').append(productHtml);
             }

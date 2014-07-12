@@ -55,8 +55,7 @@
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                         {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                //return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>"+value+"</a>";
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
+                                return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
                             }
                         }
                     ]
@@ -101,6 +100,46 @@
             $("#ua").val(ua);
             $('#modeldlg').dialog('close');
         }
+
+        var processDateCur;
+        var uaCur;
+        var channelIdCur;
+        var modelNameCur;
+        var deviceCodeCur;
+        function showIMEIDialog(processDate, ua, channelId, modelName, deviceCode) {
+            processDateCur = processDate;
+            uaCur = ua;
+            channelIdCur = channelId;
+            modelNameCur = modelName;
+            deviceCodeCur = deviceCode;
+            $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
+            $('#imeidg').datagrid({
+                width: 'auto',
+                height: 'auto',
+                fitColumns: true,
+                striped: true,
+                singleSelect: true,
+                url: '<%=basePath%>/tymng/partnerQuery/listImei',
+                queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, deviceCode: deviceCode},
+                loadMsg: '数据加载中请稍后……',
+                rownumbers: true,
+                columns: [
+                    [
+                        {field: 'a', title: '日期', align: 'center', width: 150,
+                            formatter: function (value) {
+                                return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
+                            }
+                        },
+                        {field: 'modelName', title: '机型', align: 'center', width: 150},
+                        {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
+                    ]
+                ]
+            });
+        }
+        function exportImeiEvt() {
+            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur;
+        }
+
         function exportData() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
@@ -161,6 +200,28 @@
 <div id="modeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
+</div>
+
+<div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#imeidlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td align="center">
+                        <a id="exportImeiBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           onclick="exportImeiEvt()">导出</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="imeidg"></div>
+</div>
+<div id="imeidlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#imeidlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>

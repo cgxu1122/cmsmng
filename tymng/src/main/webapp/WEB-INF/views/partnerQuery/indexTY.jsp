@@ -55,7 +55,7 @@
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                         {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>" + value + "</a>";
+                                return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
                             }
                         }
                     ]
@@ -105,40 +105,40 @@
         var uaCur;
         var channelIdCur;
         var modelNameCur;
-        function showIMEIDialog(processDate, ua, channelId, modelName) {
+        var deviceCodeCur;
+        function showIMEIDialog(processDate, ua, channelId, modelName, deviceCode) {
             processDateCur = processDate;
             uaCur = ua;
             channelIdCur = channelId;
-            modelNameCur = modelName
+            modelNameCur = modelName;
+            deviceCodeCur = deviceCode;
             $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
             $('#imeidg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, channelId: channelId},
+                queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, deviceCode: deviceCode},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
                     [
                         {field: 'a', title: '日期', align: 'center', width: 150,
-                            formatter: function () {
-                                return new Date(parseInt(processDate)).formate("yyyy-MM-dd");
+                            formatter: function (value) {
+
+                                return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'b', title: '机型', align: 'center', width: 150,
-                            formatter: function () {
-                                return modelName;
-                            }
-                        },
+                        {field: 'modelName', title: '机型', align: 'center', width: 150},
                         {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
                     ]
                 ]
             });
         }
         function exportImeiEvt() {
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur;
+            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur;
         }
 
         function exportData() {

@@ -30,7 +30,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yangjian
@@ -247,18 +250,26 @@ public class PartnerQueryController extends BaseController {
         //查询条件
         String processDate = request.getParameter("processDate");
         String channelId = request.getParameter("channelId");
+        String productId = request.getParameter("productId");
+        String channelName = request.getParameter("channelName");
+        String deviceCode = request.getParameter("deviceCode");
+        String modelName = request.getParameter("modelName");
         String ua = request.getParameter("ua");
         StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
-        statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
-        statImeiRequest.setChannelId(Long.parseLong(channelId));
-        statImeiRequest.setUa(ua);
-        //List<String> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-        List list = new ArrayList();
-        for (int i = 0; i < 100; i++) {
-            Map<String, Integer> map = new HashMap<String, Integer>();
-            map.put("imei", 1000 + i);
-            list.add(map);
+        if (StringUtils.isNotEmpty(processDate)) {
+            statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
         }
+        if (StringUtils.isNotEmpty(channelId)) {
+            statImeiRequest.setChannelId(Long.parseLong(channelId));
+        }
+        if (StringUtils.isNotEmpty(productId)) {
+            statImeiRequest.setProductId(Long.parseLong(productId));
+        }
+        statImeiRequest.setDeviceCode(deviceCode);
+        statImeiRequest.setChannelName(channelName);
+        statImeiRequest.setModelName(modelName);
+        statImeiRequest.setUa(ua);
+        List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
         JSONObject result = new JSONObject();
         result.put("rows", list);
         return result;
@@ -270,13 +281,23 @@ public class PartnerQueryController extends BaseController {
         //查询条件
         String processDate = request.getParameter("processDate");
         String channelId = request.getParameter("channelId");
+        String productId = request.getParameter("productId");
         String ua = request.getParameter("ua");
+        String deviceCode = request.getParameter("deviceCode");
         String modelName = request.getParameter("modelName");
         StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
-        statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
-        statImeiRequest.setChannelId(Long.parseLong(channelId));
+        if (StringUtils.isNotEmpty(processDate)) {
+            statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
+        }
+        if (StringUtils.isNotEmpty(channelId)) {
+            statImeiRequest.setChannelId(Long.parseLong(channelId));
+        }
+        if (StringUtils.isNotEmpty(channelId)) {
+            statImeiRequest.setChannelId(Long.parseLong(channelId));
+        }
         statImeiRequest.setUa(ua);
-        //statImeiRequest.setModelName(modelName);
+        statImeiRequest.setDeviceCode(deviceCode);
+        statImeiRequest.setModelName(modelName);
         List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
         BaseExportModel exportModel = new BaseExportModel();
         Map<String, String> titleMap = new LinkedHashMap<String, String>();

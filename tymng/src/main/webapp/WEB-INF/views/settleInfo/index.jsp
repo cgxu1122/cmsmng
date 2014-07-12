@@ -182,7 +182,7 @@
         </div>
         <div class="fitem" style="margin-left:22px">
             <label><font color="red">*</font>备注:</label>
-            <input id="remark" name="remark" class="easyui-validatebox" required="true" maxlength="20">
+            <textarea name="remark" cols="30" rows="4"></textarea>
         </div>
     </form>
 </div>
@@ -216,7 +216,7 @@
         </div>
         <div class="fitem" style="margin-left:22px">
             <label><font color="red">*</font>备注:</label>
-            <input id="upremark" name="remark" class="easyui-validatebox" required="true" maxlength="20">
+            <textarea name="remark" cols="30" rows="4"></textarea>
         </div>
     </form>
 </div>

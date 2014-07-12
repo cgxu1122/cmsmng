@@ -87,7 +87,7 @@ function editrow() {
                         "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
-                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();'>删除</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateApkList.pop(" + packageApkRefList[i].apkId + ");'>删除</a></td>" +
                         "</tr>";
                 $('#upApkList').append(apkHtml);
             }
@@ -209,6 +209,11 @@ function showApkDialog(type) {
                 {field: 'apkName', title: 'APK名称', align: 'center', width: 150},
                 {field: 'desktopIcon', title: '是否创建快捷方式', align: 'center', width: 120,
                     formatter: function (value, row, index) {
+                        if (row.type == 2) {
+                            return "<select id='desktopIcon" + row.apkId + "' name='desktopIcon' style='width:100px;'>"
+                                    + "<option value='Y' selected=selected>创建快捷</option>"
+                                    + "</select>";
+                        }
                         return "<select id='desktopIcon" + row.apkId + "' name='desktopIcon' style='width:100px;'>"
                                 + "<option value='N' selected=selected>不创建快捷</option>"
                                 + "<option value='Y'>创建快捷</option>"
@@ -217,6 +222,11 @@ function showApkDialog(type) {
                 },
                 {field: 'autoRun', title: '是否自动运行', align: 'center', width: 100,
                     formatter: function (value, row, index) {
+                        if (row.type == 2) {
+                            return "<select id='autoRun" + row.apkId + "' name='autoRun' style='width:80px;'>"
+                                    + "<option value='Y' selected=selected>自启动</option>"
+                                    + "</select>";
+                        }
                         return "<select id='autoRun" + row.apkId + "' name='autoRun' style='width:80px;'>"
                                 + "<option value='N' selected=selected>非自启动</option>"
                                 + "<option value='Y'>自启动</option>"
@@ -335,7 +345,7 @@ function selectApk(apkId, apkName, apkType, type) {
         </div>
         <div class="fitem" style="margin-left:48px">
             <label>备注:</label>
-            <input id="remark" name="remark" class="easyui-validatebox" maxlength="100">
+            <textarea name="remark" cols="30" rows="4"></textarea>
         </div>
         <div class="fitem" id="groupIdDiv" style="margin-left:1px">
             <label>通用包渠道组:</label>
@@ -377,7 +387,7 @@ function selectApk(apkId, apkName, apkType, type) {
         </div>
         <div class="fitem" style="margin-left:48px">
             <label>备注:</label>
-            <input name="remark" class="easyui-validatebox" maxlength="100" readonly="readonly">
+            <textarea name="remark" cols="30" rows="4"></textarea>
         </div>
         <div class="fitem" id="upGroupIdDiv">
             <label>通用包渠道组:</label>
