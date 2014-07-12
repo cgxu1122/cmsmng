@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.base.commons.util.ExportDataUtil;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.imei.StatImeiQueryService;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,6 +53,8 @@ public class PartnerQueryController extends BaseController {
     private ProductStatQueryService productStatQueryService;
     @Autowired
     private StatImeiQueryService statImeiQueryService;
+    @Autowired
+    private LocalDirCacheService localDirCacheService;
 
 
     @RequestMapping("/indexTY")
@@ -126,56 +131,69 @@ public class PartnerQueryController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/exportData")
+    @RequestMapping(value = "/exportData", produces = {"application/json;charset=UTF-8"})
+    public
     @ResponseBody
-    public void exportData(HttpServletRequest request, HttpServletResponse response) {
+    JSONObject exportData(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
         String ua = request.getParameter("ua");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
-        LogStat logStat = new LogStat();
-        if (StringUtils.isNotEmpty(groupId)) {
-            logStat.setGroupId(Long.parseLong(groupId));
-        }
-        if (StringUtils.isNotEmpty(ua)) {
-            logStat.setUa(ua.trim());
-        }
-        if (StringUtils.isNotEmpty(startDate)) {
-            logStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        if (StringUtils.isNotEmpty(endDate)) {
-            logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
-        if (channelInfo != null) {
-            logStat.setChannelId(channelInfo.getChannelId());
-        }
-        if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
-            //如果是劳务渠道合作方查询
-            String channelId = request.getParameter("channelId");
-            if (StringUtils.isNotEmpty(channelId)) {
-                logStat.setChannelId(Long.parseLong(channelId));
+        try {
+            LogStat logStat = new LogStat();
+            if (StringUtils.isNotEmpty(groupId)) {
+                logStat.setGroupId(Long.parseLong(groupId));
             }
+            if (StringUtils.isNotEmpty(ua)) {
+                logStat.setUa(ua.trim());
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                logStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
             if (channelInfo != null) {
-                logStat.setLaowuId(channelInfo.getChannelId());
+                logStat.setChannelId(channelInfo.getChannelId());
             }
-            logStat.setGroupId(null);
+            if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
+                //如果是劳务渠道合作方查询
+                String channelId = request.getParameter("channelId");
+                if (StringUtils.isNotEmpty(channelId)) {
+                    logStat.setChannelId(Long.parseLong(channelId));
+                }
+                if (channelInfo != null) {
+                    logStat.setLaowuId(channelInfo.getChannelId());
+                }
+                logStat.setGroupId(null);
+            }
+            List<LogStat> list = logStatQueryService.queryByVo(null, logStat);
+            if (CollectionUtils.isNotEmpty(list)) {
+                LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
+                list.add(countLogStat);
+            }
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("deviceCode", "设备编码");
+            titleMap.put("channelName", "仓库名称");
+            titleMap.put("modelName", "机型名称");
+            titleMap.put("devicePrsDayNum", "装机数量");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
         }
-        List<LogStat> list = logStatQueryService.queryByVo(null, logStat);
-        if (CollectionUtils.isNotEmpty(list)) {
-            LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
-            list.add(countLogStat);
-        }
-        BaseExportModel exportModel = new BaseExportModel();
-        Map<String, String> titleMap = new LinkedHashMap<String, String>();
-        titleMap.put("processDate", "日期");
-        titleMap.put("deviceCode", "设备编码");
-        titleMap.put("channelName", "仓库名称");
-        titleMap.put("modelName", "机型名称");
-        titleMap.put("devicePrsDayNum", "装机数量");
-        exportModel.setTitleMap(titleMap);
-        exportModel.setDataList(list);
-        super.exportXLSData(request, response, exportModel);
+
+        return result;
     }
 
     @RequestMapping(value = "/listProductStat", produces = {"application/json;charset=UTF-8"})

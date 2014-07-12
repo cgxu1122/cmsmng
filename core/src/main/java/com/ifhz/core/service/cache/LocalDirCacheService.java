@@ -15,4 +15,6 @@ public interface LocalDirCacheService {
     public String storeFile(final InputStream in, String localFileName);
 
     public String getLocalFileName(String originFileName);
+
+    public String getExcelTempPath();
 }

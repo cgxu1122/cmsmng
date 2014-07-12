@@ -127,6 +127,17 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
         return prefix.toLowerCase() + "." + fileExt.toLowerCase();
     }
 
+    @Override
+    public String getExcelTempPath() {
+        String storePath = Store_Temp_Path;
+        String parentDir = getParentDir();
+        if (StringUtils.isNotBlank(parentDir)) {
+            storePath = storePath + File.separator + parentDir;
+        }
+        String prefix = StringUtils.replace(UUID.randomUUID().toString(), "_", "");
+        return storePath + File.separator + prefix.toLowerCase() + ".xlsx";
+    }
+
 
     private static class DirCacheLoader implements Callable<Boolean> {
 
