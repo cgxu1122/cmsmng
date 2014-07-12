@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 10g                           */
-/* Created on:     2014/7/12 12:57:55                           */
+/* Created on:     2014/7/12 18:00:32                           */
 /*==============================================================*/
 
 
@@ -62,8 +62,6 @@ drop index "Index_8";
 
 drop index "Index_2";
 
-drop index "Index_25";
-
 drop index "Index_1";
 
 drop table TY_APK_INFO cascade constraints;
@@ -115,8 +113,6 @@ drop table TY_ROLE_RESOURCE_REF cascade constraints;
 drop table TY_SETTLE_INFO cascade constraints;
 
 drop table TY_USER cascade constraints;
-
-drop table TY_USER_FILE_INFO cascade constraints;
 
 drop table TY_USER_ROLE_REF cascade constraints;
 
@@ -176,8 +172,6 @@ drop sequence SEQ_SETTLE_INFO;
 
 drop sequence SEQ_USER;
 
-drop sequence SEQ_USER_FILE_INFO;
-
 drop sequence SEQ_USER_ROLE_REF;
 
 create sequence SEQ_APK_INFO;
@@ -235,8 +229,6 @@ create sequence SEQ_ROLE_RESOURCE_REF;
 create sequence SEQ_SETTLE_INFO;
 
 create sequence SEQ_USER;
-
-create sequence SEQ_USER_FILE_INFO;
 
 create sequence SEQ_USER_ROLE_REF;
 
@@ -1529,45 +1521,6 @@ comment on column TY_USER.UPDATE_TIME is
 /*==============================================================*/
 create unique index "Index_2" on TY_USER (
    LOGIN_NAME ASC
-);
-
-/*==============================================================*/
-/* Table: TY_USER_FILE_INFO                                     */
-/*==============================================================*/
-create table TY_USER_FILE_INFO  (
-   ID                   NUMBER(15)                      not null,
-   USER_ID              NUMBER(15),
-   TYPE                 NUMBER(5),
-   FILE_LOCAL_PATH      VARCHAR2(500),
-   CREATE_TIME          DATE                           default SYSDATE,
-   constraint PK_TY_USER_FILE_INFO primary key (ID)
-);
-
-comment on table TY_USER_FILE_INFO is
-'用户文件信息表';
-
-comment on column TY_USER_FILE_INFO.ID is
-'主键ID';
-
-comment on column TY_USER_FILE_INFO.USER_ID is
-'用户ID';
-
-comment on column TY_USER_FILE_INFO.TYPE is
-'类型';
-
-comment on column TY_USER_FILE_INFO.FILE_LOCAL_PATH is
-'文件本地路径';
-
-comment on column TY_USER_FILE_INFO.CREATE_TIME is
-'创建时间';
-
-/*==============================================================*/
-/* Index: "Index_25"                                            */
-/*==============================================================*/
-create index "Index_25" on TY_USER_FILE_INFO (
-   USER_ID ASC,
-   TYPE ASC,
-   CREATE_TIME ASC
 );
 
 /*==============================================================*/
