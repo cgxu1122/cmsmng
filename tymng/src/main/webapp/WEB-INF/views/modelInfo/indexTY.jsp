@@ -1,3 +1,4 @@
+index.jsp
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,16 +13,15 @@
             initPage();
         });
 
+
         function addrow() {
             $('#dlg').dialog('open').dialog('setTitle', '新增');
             $('#fm').form('clear');
-            $("input[name=file]").val("");
-            var data = $('#type').combobox('getData');
-            $("#type").combobox('select', data[0].value);
         }
         function saverow() {
+            $("#groupId").val("${groupId}");
             $('#fm').form('submit', {
-                url: '<%=basePath%>/tymng/apkInfo/insert',
+                url: '<%=basePath%>/tymng/modelInfo/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -43,12 +43,11 @@
                 $('#updatedlg').dialog('open').dialog('setTitle', '修改');
                 $('#upfm').form('clear');
                 $('#upfm').form('load', row);
-                $("input[name=file]").val("");
             }
         }
         function saveUpdate() {
             $('#upfm').form('submit', {
-                url: '<%=basePath%>/tymng/apkInfo/update',
+                url: '<%=basePath%>/tymng/modelInfo/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -67,9 +66,9 @@
         function delrow() {
             var row = $('#dg').datagrid('getSelected');
             if (row) {
-                $.messager.confirm('提示', '确定要删除[' + row.apkName + ']?', function (r) {
+                $.messager.confirm('提示', '确定要删除[' + row.modelName + ']?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/tymng/apkInfo/delete', {apkId: row.apkId}, function (result) {
+                        $.post('<%=basePath%>/tymng/modelInfo/delete', {modelId: row.modelId}, function (result) {
                             if (result.errorMsg) {
                                 $.messager.alert('错误', result.errorMsg);
                             } else {
@@ -84,8 +83,8 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/apkInfo/list",
-                queryParams: {apkNameCondition: value}
+                url: "<%=basePath%>/tymng/modelInfo/list",
+                queryParams: {groupId: '${groupId}', modelNameCondition: value}
             });
         }
 
@@ -94,8 +93,8 @@
                 fitColumns: true,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/apkInfo/list',
-                queryParams: {},
+                url: '<%=basePath%>/tymng/modelInfo/list',
+                queryParams: {groupId: '${groupId}'},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -103,19 +102,12 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'apkName', title: '产品名称', align: 'center', width: 150},
-                        {field: 'softName', title: '软件名称', align: 'center', width: 200},
-                        {field: 'downloadUrl', title: '下载路径', align: 'center', width: 400},
-                        {field: 'type', title: '是否计数器', align: 'center', width: 80,
-                            formatter: function (value) {
-                                if ("2" == value) {
-                                    return "是";
-                                } else if ("1" == value) {
-                                    return "否";
-                                }
-                                return "";
-                            }
-                        },
+                        {field: 'modelId', title: '机型id', align: 'center', width: 100},
+                        {field: 'ua', title: 'UA', align: 'center', width: 200},
+                        {field: 'modelName', title: '机型全名', align: 'center', width: 200},
+                        {field: 'groupName', title: '渠道组织', align: 'center', width: 100},
+                        {field: 'tagNum', title: '标签数量（个）', align: 'center', width: 120},
+                        {field: 'tagPrice', title: '标签单价（元）', align: 'center', width: 120},
                         {field: 'createTime', title: '创建日期', align: 'center', width: 140,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
@@ -130,7 +122,10 @@
                 ]
             });
         }
-
+        /* function exportData() {
+         var value = $('#searchValue').val();
+         window.location.href = "<%=basePath%>/tymng/modelInfo/export?groupId=${groupId}&modelNameCondition=" + value;
+         }*/
     </script>
 </head>
 <body>
@@ -139,23 +134,23 @@
         <table>
             <tr>
                 <td>
-                    <input type="text" name="searchValue" id="searchValue" placeholder="产品名称"/>
+                    <input type="text" name="searchValue" id="searchValue" placeholder="机型全名"/>
                 </td>
                 <td align="center">
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
                 </td>
-                <shiro:hasPermission name="publish_apk_add">
+                <shiro:hasPermission name="modle_ty_add">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
                     </td>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="publish_apk_update">
+                <shiro:hasPermission name="modle_ty_update">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
                     </td>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="publish_apk_delete">
+                <shiro:hasPermission name="modle_ty_delete">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
                     </td>
@@ -168,24 +163,27 @@
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
-    <div class="ftitle">apk</div>
+    <div class="ftitle">机型</div>
     <br/>
 
-    <form id="fm" method="post" enctype="multipart/form-data" novalidate>
-        <div class="fitem" style="margin-left:3px">
-            <label><font color="red">*</font>产品名称:</label>
-            <input id="apkName" name="apkName" class="easyui-validatebox" required="true" maxlength="50">
+    <form id="fm" method="post" novalidate>
+        <input type="hidden" id="groupId" name="groupId"/>
+
+        <div class="fitem">
+            <label><font color="red">*</font>机型全名:</label>
+            <input id="modelName" name="modelName" class="easyui-validatebox" required="true" maxlength="50">
         </div>
-        <div class="fitem" style="margin-left:3px">
-            <label><font color="red">*</font>上传文件:</label>
-            <input type="file" name="file"/>
+        <div class="fitem" style="margin-left:35px">
+            <label><font color="red">*</font>UA:</label>
+            <input id="ua" name="ua" class="easyui-validatebox" required="true" maxlength="50">
         </div>
         <div class="fitem">
-            <label>是否计数器:</label>
-            <select class="easyui-combobox" name="type" id="type" style="width:150px;">
-                <option value="1">否</option>
-                <option value="2">是</option>
-            </select>
+            <label><font color="red">*</font>标签数量:</label>
+            <input id="tagNum" name="tagNum" class="easyui-validatebox" required="true" maxlength="20">
+        </div>
+        <div class="fitem">
+            <label><font color="red">*</font>标签单价:</label>
+            <input id="tagPrice" name="tagPrice" class="easyui-validatebox" required="true" maxlength="20">
         </div>
     </form>
 </div>
@@ -198,27 +196,29 @@
 <div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
-    <form id="upfm" method="post" enctype="multipart/form-data" novalidate>
-        <input type="hidden" id="apkId" name="apkId"/>
+    <form id="upfm" method="post" novalidate>
+        <input type="hidden" id="modelId" name="modelId"/>
 
-        <div class="fitem" style="margin-left:3px">
-            <label><font color="red">*</font>产品名称:</label>
-            <input type="text" name="apkName" class="easyui-validatebox" required="true"
-                    >
+        <div class="fitem">
+            <label><font color="red">*</font>机型全名:</label>
+            <input type="text" name="modelName" class="easyui-validatebox" required="true"
+                   maxlength="50">
         </div>
-        <div class="fitem" style="margin-left:3px">
-            <label><font color="red">*</font>上传文件:</label>
-            <input type="file" name="file"/>
+        <div class="fitem" style="margin-left:35px">
+            <label><font color="red">*</font>UA:</label>
+            <input type="text" name="ua" class="easyui-validatebox" required="true" maxlength="50">
         </div>
         <div class="fitem">
-            <label>是否计数器:</label>
-            <select class="easyui-combobox" name="type" id="upType" style="width:150px;">
-                <option value="1">否</option>
-                <option value="2">是</option>
-            </select>
+            <label><font color="red">*</font>标签数量:</label>
+            <input type="text" name="tagNum" class="easyui-validatebox"
+                   required="true" maxlength="20">
         </div>
-</div>
-</form>
+        <div class="fitem">
+            <label><font color="red">*</font>标签单价:</label>
+            <input type="text" name="tagPrice" class="easyui-validatebox"
+                   required="true" maxlength="20">
+        </div>
+    </form>
 </div>
 <div id="update-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdate()">确定</a>

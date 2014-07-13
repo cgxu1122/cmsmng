@@ -310,15 +310,21 @@ function selectApk(apkId, apkName, apkType, type) {
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
                 </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
-                </td>
+                <shiro:hasPermission name="publish_common_pkg_add">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="publish_common_pkg_update">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="publish_common_pkg_delete">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
+                    </td>
+                </shiro:hasPermission>
             </tr>
         </table>
     </div>
@@ -331,7 +337,7 @@ function selectApk(apkId, apkName, apkType, type) {
     <br/>
 
     <form id="fm" method="post" novalidate>
-    <input type="hidden" id="type" name="type" value="${type}"/>
+        <input type="hidden" id="type" name="type" value="${type}"/>
 
         <div class="fitem" style="margin-left:7px">
             <label><font color="red">*</font>安装包名称:</label>
@@ -375,7 +381,7 @@ function selectApk(apkId, apkName, apkType, type) {
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
-    <input type="hidden" id="packageId" name="packageId"/>
+        <input type="hidden" id="packageId" name="packageId"/>
 
         <div class="fitem" style="margin-left:8px">
             <label><font color="red">*</font>安装包名称:</label>
