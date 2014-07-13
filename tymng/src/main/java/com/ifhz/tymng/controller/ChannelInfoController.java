@@ -246,7 +246,7 @@ public class ChannelInfoController extends BaseController {
         }
         String mngId = request.getParameter("mngId");
         //如果是系统管理员添加地包一级渠道，则mngId为必选项
-        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && UserConstants.USER_ROLE_ADMIN == CurrentUserUtil.getRoleId() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && !CurrentUserUtil.isManager() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
             if (StringUtils.isEmpty(mngId)) {
                 errorMsg = "请选择负责人！";
                 result.put("errorMsg", errorMsg);

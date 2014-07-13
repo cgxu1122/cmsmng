@@ -61,7 +61,13 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
             user.setCellphone(record.getPhone());
             user.setStatus(UserConstants.USER_STATUS_ENABLE);
             user.setType(UserConstants.USER_TYPE_NORMAL);
-            userService.insertUser(user, UserConstants.USER_ROLE_NORMAL);
+            if (JcywConstants.CHANNEL_GROUP_TY_ID_1.equals(record.getGroupId())) {
+                userService.insertUser(user, UserConstants.TY_QUERY);
+            } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(record.getGroupId())) {
+                userService.insertUser(user, UserConstants.DB_QUERY);
+            } else if (JcywConstants.CHANNEL_GROUP_LW_ID_4.equals(record.getGroupId())) {
+                userService.insertUser(user, UserConstants.LW_QUERY);
+            }
             record.setUserId(user.getUserId());
         }
         return channelInfoAdapter.insert(record);

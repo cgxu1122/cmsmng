@@ -47,7 +47,7 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
             user.setPassword(record.getPassword());
             user.setStatus(UserConstants.USER_STATUS_ENABLE);
             user.setType(UserConstants.USER_TYPE_NORMAL);
-            userService.insertUser(user, UserConstants.USER_ROLE_NORMAL);
+            userService.insertUser(user, UserConstants.CP_QUERY);
             record.setUserId(user.getUserId());
         }
         return partnerInfoAdapter.insert(record);
