@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.regex.Pattern;
 
 /**
  * 类描述
@@ -50,13 +49,11 @@ public final class AnalysisApkFile {
         try {
             if (StringUtils.isNotBlank(toFilePath)) {
                 if (isLinux) {
-                    String winCmd = getLinuxCmd(toFilePath);
-                    String ret = execLinux(winCmd, WorkDir);
-                    result = parseActivtyPath(ret);
+                    String linuxCmd = getLinuxCmd(toFilePath);
+                    result = execLinux(linuxCmd, WorkDir);
                 } else {
                     String winCmd = getWinCmd(toFilePath);
-                    String ret = execWin(winCmd, WorkDir);
-                    result = parseActivtyPath(ret);
+                    result = execWin(winCmd, WorkDir);
                 }
             }
         } catch (Exception e) {
@@ -81,14 +78,26 @@ public final class AnalysisApkFile {
 
     public static String execLinux(String cmd, File workDir) {
         BufferedReader br = null;
+        String pkgNameTemp = "";
+        String activtyNameTemp = "";
         try {
             Runtime runtime = Runtime.getRuntime();
             Process process = runtime.exec(cmd, null, workDir);
             br = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String temp;
             while ((temp = br.readLine()) != null) {
-                if (StringUtils.containsIgnoreCase(temp, "launchable-activity")) {
-                    return temp;
+                if (StringUtils.startsWith(temp, "launchable-activity:")) {
+                    activtyNameTemp = temp;
+                }
+                if (StringUtils.startsWith(temp, "package:")) {
+                    pkgNameTemp = temp;
+                }
+            }
+            if (StringUtils.isNotBlank(pkgNameTemp) && StringUtils.isNotBlank(activtyNameTemp)) {
+                String pkgName = parseActivtyPath(pkgNameTemp);
+                String activityName = parseActivtyPath(activtyNameTemp);
+                if (StringUtils.isNotBlank(pkgName) && StringUtils.isNotBlank(activityName)) {
+                    return pkgName + "/" + activityName;
                 }
             }
         } catch (IOException e) {
@@ -119,13 +128,25 @@ public final class AnalysisApkFile {
     public static String execWin(String cmd, File workDir) {
         BufferedReader br = null;
         try {
+            String pkgNameTemp = "";
+            String activtyNameTemp = "";
             Runtime runtime = Runtime.getRuntime();
             Process process = runtime.exec(cmd, null, workDir);
             br = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String temp;
             while ((temp = br.readLine()) != null) {
-                if (StringUtils.containsIgnoreCase(temp, "launchable-activity")) {
-                    return temp;
+                if (StringUtils.startsWith(temp, "launchable-activity:")) {
+                    activtyNameTemp = temp;
+                }
+                if (StringUtils.startsWith(temp, "package:")) {
+                    pkgNameTemp = temp;
+                }
+            }
+            if (StringUtils.isNotBlank(pkgNameTemp) && StringUtils.isNotBlank(activtyNameTemp)) {
+                String pkgName = parseActivtyPath(pkgNameTemp);
+                String activityName = parseActivtyPath(activtyNameTemp);
+                if (StringUtils.isNotBlank(pkgName) && StringUtils.isNotBlank(activityName)) {
+                    return pkgName + "/" + activityName;
                 }
             }
         } catch (IOException e) {
@@ -139,14 +160,20 @@ public final class AnalysisApkFile {
 
 
     public static void main(String[] args) throws Exception {
-        String path = "D:\\qq.apk";
-        String cmd = getWinCmd(path);
-        String ret = execWin(cmd, WorkDir);
-        System.out.println(ret);
-        Pattern p = Pattern.compile("^launchable-activity\\sname='(\\d+)'  label=$");
-        String temp = ret.substring(ret.indexOf("\'") + 1);
-        String tt = temp.substring(0, temp.indexOf("\'"));
-        System.out.println(tt);
+        String path = "D:\\1.apk";
+        String t = parseApk(path);
+        System.out.println(t);
+        path = "D:\\2.apk";
+        t = parseApk(path);
+        System.out.println(t);
+        path = "D:\\3.apk";
+        t = parseApk(path);
+        System.out.println(t);
+
+        path = "D:\\qq.apk";
+        t = parseApk(path);
+        System.out.println(t);
+
 
     }
 
