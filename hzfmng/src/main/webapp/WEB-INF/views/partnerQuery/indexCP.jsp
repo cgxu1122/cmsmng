@@ -55,7 +55,13 @@
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
                         {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "')>" + value + "</a>";
+                                if (row.processDate == null) {
+                                    return value;
+                                } else if (row.queryImeiSource == 'N') {
+                                    return value;
+                                } else {
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "','" + row.groupId + "')>" + value + "</a>";
+                                }
                             }
                         }
                     ]
@@ -104,7 +110,8 @@
         var uaCur;
         var productIdCur;
         var modelNameCur;
-        function showIMEIDialog(processDate, ua, productId, modelName) {
+        var groupIdCur;
+        function showIMEIDialog(processDate, ua, productId, modelName, groupId) {
             processDateCur = processDate;
             uaCur = ua;
             productIdCur = productId;
@@ -117,7 +124,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName},
+                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName, groupId: groupId},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -136,7 +143,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&groupId=" + groupIdCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

@@ -6,8 +6,11 @@ import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.po.PartnerInfo;
 import com.ifhz.core.po.ProductInfo;
+import com.ifhz.core.service.partner.PartnerInfoService;
 import com.ifhz.core.service.product.ProductInfoService;
+import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,8 @@ public class ProductInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductInfoController.class);
     @Autowired
     private ProductInfoService productInfoService;
+    @Autowired
+    private PartnerInfoService partnerInfoService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -47,6 +52,10 @@ public class ProductInfoController extends BaseController {
         //查询条件
         String productNameCondition = request.getParameter("productNameCondition");
         ProductInfo pi = new ProductInfo();
+        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+        if (partnerInfo != null) {
+            pi.setProductId(partnerInfo.getPartnerId());
+        }
         pi.setActive(JcywConstants.ACTIVE_Y);
         pi.setProductNameCondition(productNameCondition);
         List<ProductInfo> list = productInfoService.queryByVo(page, pi);

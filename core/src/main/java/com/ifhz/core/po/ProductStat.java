@@ -56,6 +56,15 @@ public class ProductStat implements Serializable {
     private String groupName;
     private String productName;
     private Long partnerId;
+    private String queryImeiSource;
+
+    public String getQueryImeiSource() {
+        return queryImeiSource;
+    }
+
+    public void setQueryImeiSource(String queryImeiSource) {
+        this.queryImeiSource = queryImeiSource;
+    }
 
     public Long getPartnerId() {
         return partnerId;
