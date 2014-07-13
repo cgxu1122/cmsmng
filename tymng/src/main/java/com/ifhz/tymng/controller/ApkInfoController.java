@@ -206,8 +206,9 @@ public class ApkInfoController extends BaseController {
                 apkInfo.setSoftName(originFileName);
                 apkInfo.setFtpPath(dir + originFileName);
                 apkInfo.setDownloadUrl(dir + originFileName);
-                apkInfo.setApkName(apkName.trim());
+
             }
+            apkInfo.setApkName(apkName.trim());
             apkInfo.setType(type);
             apkInfoService.update(apkInfo);
 

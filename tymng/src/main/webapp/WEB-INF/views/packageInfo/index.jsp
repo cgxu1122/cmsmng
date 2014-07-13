@@ -330,8 +330,8 @@ function selectApk(apkId, apkName, apkType, type) {
     <div class="ftitle">安装包管理</div>
     <br/>
 
-    <form id="fm" novalidate>
-        <input type="hidden" id="type" name="type" value="${type}"/>
+    <form id="fm" method="post" novalidate>
+    <input type="hidden" id="type" name="type" value="${type}"/>
 
         <div class="fitem" style="margin-left:7px">
             <label><font color="red">*</font>安装包名称:</label>
@@ -374,8 +374,8 @@ function selectApk(apkId, apkName, apkType, type) {
 <div id="updatedlg" class="easyui-dialog" style="width:700px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
-    <form id="upfm" novalidate>
-        <input type="hidden" id="packageId" name="packageId"/>
+    <form id="upfm" method="post" novalidate>
+    <input type="hidden" id="packageId" name="packageId"/>
 
         <div class="fitem" style="margin-left:8px">
             <label><font color="red">*</font>安装包名称:</label>

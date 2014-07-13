@@ -359,8 +359,8 @@ function selectChannel(channelId, channelName) {
     <div class="ftitle"> 发布任务管理</div>
     <br/>
 
-    <form id="fm" novalidate>
-        <div class="fitem">
+    <form id="fm" method="post" novalidate>
+    <div class="fitem">
             <label><font color="red">*</font>选择安装包:</label>
             <input id="packageName" name="packageName" readonly="readonly">
             <input id="packageId" name="packageId" readonly="readonly" type="hidden">
@@ -407,8 +407,8 @@ function selectChannel(channelId, channelName) {
 <div id="updatedlg" class="easyui-dialog" style="width:700px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
-    <form id="upfm" novalidate>
-        <div class="fitem">
+    <form id="upfm" method="post" novalidate>
+    <div class="fitem">
             <label>安装包名称:</label>
             <input id="upPackageName" name="packageName" readonly="readonly">
         </div>
