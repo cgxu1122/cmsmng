@@ -3,6 +3,7 @@ package com.ifhz.core.service.product.impl;
 import com.ifhz.core.adapter.ProductInfoAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductInfo;
+import com.ifhz.core.service.cache.ProductInfoCacheService;
 import com.ifhz.core.service.product.ProductInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Resource(name = "productInfoAdapter")
     private ProductInfoAdapter productInfoAdapter;
+    @Resource(name = "productInfoCacheService")
+    private ProductInfoCacheService productInfoCacheService;
 
 
     @Override
@@ -44,6 +47,10 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Override
     public int delete(ProductInfo record) {
-        return productInfoAdapter.delete(record);
+        int ret = productInfoAdapter.delete(record);
+        if (ret == 1) {
+            productInfoCacheService.remove(record.getProductId());
+        }
+        return ret;
     }
 }

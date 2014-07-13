@@ -1,7 +1,10 @@
 package com.ifhz.core.service.pkgmng.handle;
 
 import com.google.common.collect.Lists;
-import com.ifhz.core.constants.*;
+import com.ifhz.core.constants.Active;
+import com.ifhz.core.constants.ApiEnums;
+import com.ifhz.core.constants.AutoRun;
+import com.ifhz.core.constants.DesktopIcon;
 import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.po.PackageApkRef;
 import com.ifhz.core.po.PackageInfo;
@@ -58,7 +61,6 @@ public final class PoToVoHandler {
             vo.setApkId(ref.getApkId());
             vo.setIcon(DesktopIcon.getByDbValue(ref.getDesktopIcon()).infValue);
             vo.setRun(AutoRun.getByDbValue(ref.getAutoRun()).infValue);
-            vo.setCounter(ApkType.getByDbValue(ref.getApkType()).infValue);
             vo.setSort(ref.getSort());
         }
 
