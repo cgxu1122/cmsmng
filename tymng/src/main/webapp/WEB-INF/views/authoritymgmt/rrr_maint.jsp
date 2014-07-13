@@ -16,8 +16,5 @@
     </frameset>
 </frameset>
 <noframes>
-
-    <body>
-    </body>
 </noframes>
 </html>
