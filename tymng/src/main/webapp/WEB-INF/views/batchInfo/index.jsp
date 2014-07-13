@@ -63,7 +63,7 @@ function editrow() {
                 var productHtml = "<tr>" +
                         "<input type='hidden' name='productId' value='" + productInfoList[i].productId + "'>" +
                         "<td><input type='text' name='productName' value='" + productInfoList[i].productName + "' readonly='readonly'></td>" +
-                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();'>删除</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateProductList.pop(" + productInfoList[i].productId + ");'>删除</a></td>" +
                         "</tr>";
                 $('#upProductList').append(productHtml);
             }
@@ -116,8 +116,7 @@ function searchEvt() {
 
 function initPage() {
     $('#dg').datagrid({
-        width: 'auto',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/batchInfo/list',
@@ -158,6 +157,7 @@ function showProductDialog(type) {
     $('#productdg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/productInfo/list',
@@ -348,7 +348,7 @@ function importTemplateBatch(type) {
        onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
 </div>
 
-<div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="productdlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#productdlg-buttons">
     <div>

@@ -89,8 +89,7 @@
 
         function initPage() {
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/channelInfo/list',
@@ -178,7 +177,7 @@
        onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 </div>
 
-<div id="updatedlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
+<div id="updatedlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>

@@ -4,6 +4,7 @@ import com.ifhz.core.adapter.DeviceSystemAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.device.DeviceSystemService;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,11 +36,14 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
 
     @Override
     public int insert(DeviceSystem record) {
+        record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
         return deviceSystemAdapter.insert(record);
     }
 
     @Override
     public int update(DeviceSystem record) {
+        record.setUpdateTime(new Date());
         return deviceSystemAdapter.update(record);
     }
 
@@ -50,6 +54,10 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
 
     @Override
     public DeviceSystem queryNewestVersion(Date currentTime) {
-        return deviceSystemAdapter.queryNewestVersion(currentTime);
+        List<DeviceSystem> result = deviceSystemAdapter.queryNewestVersion(currentTime);
+        if (CollectionUtils.isNotEmpty(result)) {
+            return result.get(0);
+        }
+        return null;
     }
 }

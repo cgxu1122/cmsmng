@@ -47,14 +47,29 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
-    public void scanCounterTempLog(Date startTime, Date endTime) {
-        LOGGER.info("scanCounterTempLog startTime={},endTime={}------------------------start");
+    public void scanCounterTempLogFoUnDo(Date startTime, Date endTime) {
+        LOGGER.info("scanCounterTempLogFoUnDo startTime={},endTime={}------------------------start");
         try {
-            counterTempLogService.scanCounterTempLog(startTime, endTime);
+            Date stime = DateHandler.getStartTime(startTime);
+            Date etime = DateHandler.getEndTime(endTime);
+            counterTempLogService.scanCounterTempLogFoUnDo(stime, etime);
         } catch (Exception e) {
-            LOGGER.error("scanCounterTempLog error", e);
+            LOGGER.error("scanCounterTempLogFoUnDo error", e);
         }
-        LOGGER.info("scanCounterTempLog startTime={},endTime={}--------------------------end");
+        LOGGER.info("scanCounterTempLogFoUnDo startTime={},endTime={}--------------------------end");
+    }
+
+    @Override
+    public void scanCounterTempLogFoUnStat(Date startTime, Date endTime) {
+        LOGGER.info("scanCounterTempLogFoUnStat startTime={},endTime={}------------------------start");
+        try {
+            Date stime = DateHandler.getStartTime(startTime);
+            Date etime = DateHandler.getEndTime(endTime);
+            counterTempLogService.scanCounterTempLogFoUnStat(stime, etime);
+        } catch (Exception e) {
+            LOGGER.error("scanCounterTempLogFoUnStat error", e);
+        }
+        LOGGER.info("scanCounterTempLogFoUnStat startTime={},endTime={}--------------------------end");
     }
 
     @Override
@@ -84,5 +99,10 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
             LOGGER.error("fetchWdjData error", e);
         }
         LOGGER.info("fetch Wdj Data date={}--------------------------end");
+    }
+
+    @Override
+    public void resetStat(Date date) {
+
     }
 }

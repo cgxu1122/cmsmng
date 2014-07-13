@@ -11,6 +11,8 @@
 <script type="text/javascript" src="<%=basePath %>/common/js/validateExtends.js"></script>
 <script type="text/javascript" src="<%=basePath %>/common/js/dateCommon.js"></script>
 <script type="text/javascript" src="<%=basePath %>/common/js/utilExtentds.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>/plug/showloading/jquery.showLoading.css">
+<script type="text/javascript" src="<%=basePath %>/plug/showloading/jquery.showLoading.js"></script>
 <style>
     .datagrid .datagrid-pager {
         position: relative;
@@ -25,4 +27,13 @@
         text-align: center !important;
     }
 </style>
+<script>
+    $(document).ready(function () {
+        var height = $(window).height() - 35;
+        $('#dg').panel({
+            width: 'auto',
+            height: height
+        });
+    });
+</script>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>

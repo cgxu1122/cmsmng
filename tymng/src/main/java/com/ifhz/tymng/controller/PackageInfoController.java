@@ -151,6 +151,7 @@ public class PackageInfoController extends BaseController {
     @ResponseBody
     public JSONObject update(HttpServletRequest request) {
         String packageId = request.getParameter("packageId");
+        String remark = request.getParameter("remark");
         String errorMsg = null;
         if (StringUtils.isEmpty(packageId)) {
             errorMsg = "系统错误，请联系管理员！";
@@ -165,6 +166,7 @@ public class PackageInfoController extends BaseController {
             result.put("errorMsg", "数据已被删除，请刷新!");
             return result;
         }
+        packageInfo.setRemark(remark);
         String[] apkIdList = request.getParameterValues("apkId");
         String[] apkNameList = request.getParameterValues("apkName");
         String[] apkTypeList = request.getParameterValues("apkType");

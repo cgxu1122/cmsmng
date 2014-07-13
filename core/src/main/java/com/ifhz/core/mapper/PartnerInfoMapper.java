@@ -22,4 +22,6 @@ public interface PartnerInfoMapper {
     public int update(PartnerInfo record);
 
     public int delete(PartnerInfo record);
+
+    public PartnerInfo getPartnerInfoByUserId(Long userId);
 }

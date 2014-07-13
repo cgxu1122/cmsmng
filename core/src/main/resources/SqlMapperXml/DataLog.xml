@@ -15,8 +15,6 @@
         <result column="DEVICE_UPLOAD_TIME" property="deviceUploadTime" jdbcType="TIMESTAMP"/>
         <result column="ACTIVE" property="active" jdbcType="INTEGER"/>
         <result column="COUNTER_UPLOAD_TIME" property="counterUploadTime" jdbcType="TIMESTAMP"/>
-        <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
-        <result column="P_MD5_KEY" property="pmd5Key" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="CommonFieldSql">
@@ -30,9 +28,7 @@
         PROCESS_TIME,
         DEVICE_UPLOAD_TIME,
         ACTIVE,
-        COUNTER_UPLOAD_TIME,
-        MD5_KEY,
-        P_MD5_KEY
+        COUNTER_UPLOAD_TIME
     </sql>
 
     <insert id="insertDeviceData" parameterType="com.ifhz.core.po.DataLog">
@@ -55,9 +51,7 @@
         #{processTime,jdbcType=DATE},
         #{deviceUploadTime,jdbcType=TIMESTAMP},
         #{active,jdbcType=INTEGER},
-        #{counterUploadTime,jdbcType=TIMESTAMP},
-        #{md5Key,jdbcType=VARCHAR},
-        #{pmd5Key,jdbcType=VARCHAR}
+        #{counterUploadTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
@@ -72,65 +66,48 @@
     <update id="updateCounterData" parameterType="com.ifhz.core.po.DataLog">
         update ${tableName}
         set ACTIVE = #{active},
-        COUNTER_UPLOAD_TIME = #{counterUploadTime},
-        P_MD5_KEY = #{pmd5Key}
-
+        COUNTER_UPLOAD_TIME = #{counterUploadTime}
         where ID = #{id}
     </update>
-
-    <select id="queryTotalCountForDevice" resultType="long"
+    <!-- logStat        级别索引顺序      IDX_UA_CID_DCODE -->
+    <!-- productStat    级别索引顺序      IDX_UA_GID_BCODE -->
+    <select id="queryDeviceUpdDayNum" resultType="long"
             parameterType="com.ifhz.core.service.stat.bean.DataLogRequest">
         select
         count(0)
         from ${tableName}
-        where DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
-        <if test="!statSwitch">
-            <choose>
-                <when test="productSwitch">
-                    and P_MD5_KEY = #{md5Key}
-                </when>
-                <otherwise>
-                    and MD5_KEY = #{md5Key}
-                </otherwise>
-            </choose>
-        </if>
+        where DEVICE_UPLOAD_TIME between #{uploadStartTime} and #{uploadEndTime}
+        and UA = #{ua}
+        and CHANNEL_ID = #{channelId}
+        and DEVICE_CODE = #{deviceCode}
     </select>
 
-    <select id="queryTotalCountForCounter" resultType="long">
-        select count(0)
-        from ${dataLogRequest.tableName}
-        where P_MD5_KEY = #{dataLogRequest.md5Key}
-        and COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
-        <if test="dataLogRequest.active != null">
-            and ACTIVE = #{dataLogRequest.active}
-        </if>
+    <select id="queryProductUpdDayNum" resultType="long"
+            parameterType="com.ifhz.core.service.stat.bean.DataLogRequest">
+        select
+        count(0)
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.DEVICE_UPLOAD_TIME between #{uploadStartTime} and #{uploadEndTime}
+        and log.UA = #{ua}
+        and log.GROUP_ID = #{groupId}
     </select>
 
-    <select id="queryPageForDevice" resultMap="DataLogResultMap">
+    <select id="queryTotalCountForStat" resultType="long"
+            parameterType="com.ifhz.core.service.stat.bean.DataLogRequest">
+        select
+        count(0)
+        from ${tableName}
+        where DEVICE_UPLOAD_TIME between #{uploadStartTime} and #{uploadEndTime}
+    </select>
+
+    <select id="queryPageForStat" resultMap="DataLogResultMap">
         select
         <include refid="CommonFieldSql"/>
         from ${dataLogRequest.tableName}
-        where DEVICE_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
+        where DEVICE_UPLOAD_TIME between #{dataLogRequest.uploadStartTime} and #{dataLogRequest.uploadEndTime}
     </select>
-
-    <select id="queryPageForCounter" resultMap="DataLogResultMap">
-        select
-        <include refid="CommonFieldSql"/>
-        from ${dataLogRequest.tableName}
-        where COUNTER_UPLOAD_TIME between #{dataLogRequest.startTime} and #{dataLogRequest.endTime}
-        <choose>
-            <when test="dataLogRequest.productSwitch">
-                and P_MD5_KEY = #{dataLogRequest.md5Key}
-            </when>
-            <otherwise>
-                and MD5_KEY = #{dataLogRequest.md5Key}
-            </otherwise>
-        </choose>
-        <if test="dataLogRequest.active != null">
-            and ACTIVE = #{dataLogRequest.active}
-        </if>
-    </select>
-
 
     <select id="getLogImeiList" resultType="java.lang.String">
         select IMEI
@@ -182,9 +159,8 @@
     <select id="getProductImeiList" resultType="java.lang.String">
         select log.IMEI
         from ${tableName} log
-        inner join TY_BATCH_PRODUCT_REF ref
-        on log.BATCH_CODE = ref.BATCH_CODE
-        where ref.PRODUCT_ID = #{productId}
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
         and log.UA = #{ua}
         and log.GROUP_ID = #{groupId}
         <choose>

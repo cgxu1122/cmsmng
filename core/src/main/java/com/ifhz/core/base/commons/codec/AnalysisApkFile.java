@@ -1,7 +1,5 @@
 package com.ifhz.core.base.commons.codec;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.constants.GlobalConstants;
 import org.apache.commons.io.IOUtils;
@@ -9,8 +7,10 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 /**
@@ -25,9 +25,6 @@ public final class AnalysisApkFile {
     public static final String OS;
     public static final File WorkDir;
     public static final boolean isLinux;
-    //launchable-activity: name='com.tencent.mobileqq.activity.SplashActivity'  label='QQ' icon=''
-    //launchable-activity: name='cn.gm.jumping.MainActivity'  label='跳跃忍者' icon=''
-//    public static final Pattern PATTERN = Pattern.compile("launchable-activity: name=\\'(\\d+).*\\'  label=(\\d+).*");
 
     static {
         String workDirPath = MapConfig.getString("aapt.work.dir", GlobalConstants.GLOBAL_CONFIG, "");
@@ -47,63 +44,25 @@ public final class AnalysisApkFile {
         }
     }
 
-    public static String paserApk(InputStream inputStream) {
-        long start = System.currentTimeMillis();
-        String result = null;
-        File toFile = null;
-        try {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(MapConfig.getString(GlobalConstants.KEY_LOCAL_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app"));
-            buffer.append(File.separator);
-            buffer.append(new Date().getTime());
-            buffer.append(".apk");
-            toFile = new File(buffer.toString());
-            ByteStreams.copy(inputStream, Files.newOutputStreamSupplier(toFile));
-            String apkPath = toFile.getAbsolutePath();
-            if (isLinux) {
-                String winCmd = getLinuxCmd(apkPath);
-                String ret = execLinux(winCmd, WorkDir);
-                result = paserActivtyPath(ret);
-            } else {
-                String winCmd = getWinCmd(apkPath);
-                String ret = execWin(winCmd, WorkDir);
-                result = paserActivtyPath(ret);
-            }
-        } catch (Exception e) {
-            LOGGER.error("paserApk error", e);
-        } finally {
-            long end = System.currentTimeMillis();
-            LOGGER.info("parseApkFile totalTime={}", end - start);
-        }
-
-        return result;
-    }
-
-    public static String parseApk(File toFile) {
+    public static String parseApk(String toFilePath) {
         long start = System.currentTimeMillis();
         String result = null;
         try {
-            String apkPath = toFile.getAbsolutePath();
-            if (isLinux) {
-                String winCmd = getLinuxCmd(apkPath);
-                String ret = execLinux(winCmd, WorkDir);
-                result = paserActivtyPath(ret);
-            } else {
-                String winCmd = getWinCmd(apkPath);
-                String ret = execWin(winCmd, WorkDir);
-                result = paserActivtyPath(ret);
-            }
-        } catch (Exception e) {
-            LOGGER.error("paserApk error", e);
-        } finally {
-            long end = System.currentTimeMillis();
-            if (toFile != null) {
-                try {
-                    toFile.deleteOnExit();
-                    toFile.delete();
-                } catch (Exception e) {
+            if (StringUtils.isNotBlank(toFilePath)) {
+                if (isLinux) {
+                    String winCmd = getLinuxCmd(toFilePath);
+                    String ret = execLinux(winCmd, WorkDir);
+                    result = parseActivtyPath(ret);
+                } else {
+                    String winCmd = getWinCmd(toFilePath);
+                    String ret = execWin(winCmd, WorkDir);
+                    result = parseActivtyPath(ret);
                 }
             }
+        } catch (Exception e) {
+            LOGGER.error("paserApk error", e);
+        } finally {
+            long end = System.currentTimeMillis();
             LOGGER.info("parseApkFile totalTime={}", end - start);
         }
 
@@ -111,7 +70,7 @@ public final class AnalysisApkFile {
     }
 
 
-    private static String paserActivtyPath(String input) {
+    private static String parseActivtyPath(String input) {
         if (StringUtils.isNotBlank(input)) {
             String temp = input.substring(input.indexOf("\'") + 1);
             return temp.substring(0, temp.indexOf("\'"));

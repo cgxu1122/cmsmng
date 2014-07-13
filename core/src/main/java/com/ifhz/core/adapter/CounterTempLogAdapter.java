@@ -20,9 +20,9 @@ public interface CounterTempLogAdapter {
 
     public CounterTempLog queryByImei(String imei);
 
-    public long queryTotalCount(Date startTime, Date endTime);
+    public long queryTotalCount(Date startTime, Date endTime, Integer type);
 
-    public List<CounterTempLog> queryPage(Pagination page, Date startTime, Date endTime);
+    public List<CounterTempLog> queryPage(Pagination page, Date startTime, Date endTime, Integer type);
 
     public void batchDelete(Date startTime, Date endTime);
 }

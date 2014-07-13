@@ -13,6 +13,8 @@ import java.util.List;
 public interface ChannelInfoService {
     public ChannelInfo getById(Long id);
 
+    public ChannelInfo getByUserId(Long userId);
+
     public List<ChannelInfo> queryByVo(Pagination page, ChannelInfo record);
 
     public int insert(ChannelInfo record);

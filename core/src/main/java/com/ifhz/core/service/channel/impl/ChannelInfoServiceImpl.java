@@ -7,6 +7,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,10 +31,18 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     @Resource(name = "userService")
     private UserService userService;
 
+    @Resource(name = "channelInfoCacheService")
+    private ChannelInfoCacheService channelInfoCacheService;
+
 
     @Override
     public ChannelInfo getById(Long id) {
         return channelInfoAdapter.getById(id);
+    }
+
+    @Override
+    public ChannelInfo getByUserId(Long userId) {
+        return channelInfoAdapter.getByUserId(userId);
     }
 
     @Override
@@ -70,7 +79,9 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
                 userService.updateUser(user);
             }
         }
-        return channelInfoAdapter.update(record);
+        int result = channelInfoAdapter.update(record);
+        channelInfoCacheService.remove(record.getChannelId());
+        return result;
     }
 
     @Override

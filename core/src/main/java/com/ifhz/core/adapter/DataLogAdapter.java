@@ -21,13 +21,13 @@ public interface DataLogAdapter {
 
     public DataLog getByImei(String tableName, String imei);
 
-    public List<DataLog> queryPageForDevice(Pagination page, DataLogRequest dataLogRequest);
+    public List<DataLog> queryPageForStat(Pagination page, DataLogRequest dataLogRequest);
 
-    public List<DataLog> queryPageForCounter(Pagination page, DataLogRequest dataLogRequest);
+    public long queryDeviceUpdDayNum(DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForDevice(DataLogRequest dataLogRequest);
+    public long queryProductUpdDayNum(DataLogRequest dataLogRequest);
 
-    public long queryTotalCountForCounter(DataLogRequest dataLogRequest);
+    public long queryTotalCountForStat(DataLogRequest dataLogRequest);
 
     public List<String> getLogImeiList(Map<String, Object> params);
 

@@ -23,5 +23,5 @@ public interface DeviceSystemAdapter {
 
     public int delete(DeviceSystem record);
 
-    public DeviceSystem queryNewestVersion(Date currentTime);
+    public List<DeviceSystem> queryNewestVersion(Date currentTime);
 }

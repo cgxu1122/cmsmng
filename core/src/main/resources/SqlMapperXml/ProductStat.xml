@@ -7,7 +7,6 @@
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR"/>
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
-        <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
 
@@ -18,7 +17,6 @@
         <result column="PRS_ACTIVE_INVALID_NUM" property="prsActiveInvalidNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_REPLACE_NUM" property="prsInvalidReplaceNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
-        <result column="COUNTER_PRODUCT_DAY_NUM" property="counterProductDayNum" jdbcType="BIGINT"/>
 
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
         <result column="VERSION" property="version" jdbcType="BIGINT"/>
@@ -43,7 +41,6 @@
         PRS_ACTIVE_INVALID_NUM,
         PRS_INVALID_REPLACE_NUM,
         PRS_INVALID_UNINSTALL_NUM,
-        COUNTER_PRODUCT_DAY_NUM,
         MD5_KEY,
         VERSION
         ) values (
@@ -59,7 +56,6 @@
         #{prsActiveInvalidNum,jdbcType=BIGINT},
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
-        #{counterProductDayNum,jdbcType=BIGINT},
         #{md5Key,jdbcType=VARCHAR},
         #{version,jdbcType=BIGINT}
         )
@@ -93,9 +89,6 @@
             <if test="prsInvalidUninstallNum != null and prsInvalidUninstallNum != 0">
                 PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
             </if>
-            <if test="counterProductDayNum != null and counterProductDayNum != 0">
-                COUNTER_PRODUCT_DAY_NUM = #{counterProductDayNum},
-            </if>
         </set>
         where ID = #{id}
         and VERSION = #{version}
@@ -103,42 +96,47 @@
 
     <select id="queryByVo" resultMap="ProductStatResultMap">
         select
-        *
-        from
-        <include refid="TABLE_NAME"/>
+        stat.*
+        from TY_PRODUCT_STAT stat
         where 1=1
+        <if test="record.partnerId != null and record.partnerId != ''">
+            and exists (select info.PRODUCT_ID from TY_PRODUCT_INFO info where PARTNER_ID = #{record.partnerId} and
+            info.QUERY_DATA_SOURCE= 'Y' and info.PRODUCT_ID = stat.PRODUCT_ID)
+        </if>
         <if test="record.groupId != null and record.groupId != ''">
-            and GROUP_ID = #{record.groupId}
+            and stat.GROUP_ID = #{record.groupId}
         </if>
         <if test="record.productId != null and record.productId != ''">
-            and PRODUCT_ID = #{record.productId}
+            and stat.PRODUCT_ID = #{record.productId}
         </if>
         <if test="record.ua != null and record.ua != ''">
-            and UA = #{record.ua}
+            and stat.UA = #{record.ua}
         </if>
         <if test="record.startDate != null">
-            and PROCESS_DATE >= #{record.startDate}
+            and stat.PROCESS_DATE >= #{record.startDate}
         </if>
         <if test="record.endDate != null">
             <![CDATA[
-            and PROCESS_DATE <= #{record.endDate}
+            and stat.PROCESS_DATE <= #{record.endDate}
             ]]>
         </if>
     </select>
 
     <select id="queryCountByVO" parameterType="com.ifhz.core.po.ProductStat" resultMap="ProductStatResultMap">
         select
-        sum(PRODUCT_PRS_DAY_NUM) as PRODUCT_PRS_DAY_NUM,
-        sum(PRODUCT_UPD_DAY_NUM) as PRODUCT_UPD_DAY_NUM,
-        sum(PRS_ACTIVE_TOTAL_NUM) as PRS_ACTIVE_TOTAL_NUM,
-        sum(PRS_ACTIVE_VALID_NUM) as PRS_ACTIVE_VALID_NUM,
-        sum(PRS_ACTIVE_INVALID_NUM) as PRS_ACTIVE_INVALID_NUM,
-        sum(PRS_INVALID_REPLACE_NUM) as PRS_INVALID_REPLACE_NUM,
-        sum(PRS_INVALID_UNINSTALL_NUM) as PRS_INVALID_UNINSTALL_NUM,
-        sum(COUNTER_PRODUCT_DAY_NUM) as COUNTER_PRODUCT_DAY_NUM
-        from
-        <include refid="TABLE_NAME"/>
+        sum(stat.PRODUCT_PRS_DAY_NUM) as PRODUCT_PRS_DAY_NUM,
+        sum(stat.PRODUCT_UPD_DAY_NUM) as PRODUCT_UPD_DAY_NUM,
+        sum(stat.PRS_ACTIVE_TOTAL_NUM) as PRS_ACTIVE_TOTAL_NUM,
+        sum(stat.PRS_ACTIVE_VALID_NUM) as PRS_ACTIVE_VALID_NUM,
+        sum(stat.PRS_ACTIVE_INVALID_NUM) as PRS_ACTIVE_INVALID_NUM,
+        sum(stat.PRS_INVALID_REPLACE_NUM) as PRS_INVALID_REPLACE_NUM,
+        sum(stat.PRS_INVALID_UNINSTALL_NUM) as PRS_INVALID_UNINSTALL_NUM
+        from TY_PRODUCT_STAT stat
         where 1=1
+        <if test="partnerId != null and partnerId != ''">
+            and exists (select info.PRODUCT_ID from TY_PRODUCT_INFO info where PARTNER_ID = #{partnerId} and
+            info.QUERY_DATA_SOURCE= 'Y' and info.PRODUCT_ID = stat.PRODUCT_ID)
+        </if>
         <if test="groupId != null and groupId != ''">
             and GROUP_ID = #{groupId}
         </if>
@@ -170,10 +168,4 @@
         where MD5_KEY = #{md5Key}
     </select>
 
-    <select id="queryListByQueryKey" resultMap="ProductStatResultMap">
-        select * from
-        <include refid="TABLE_NAME"/>
-        where QUERY_KEY like #{queryKey}
-        and STAT_DATE between #{startTime} and #{endTime}
-    </select>
 </mapper>

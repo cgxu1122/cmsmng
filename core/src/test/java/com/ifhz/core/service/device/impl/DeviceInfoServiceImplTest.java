@@ -1,11 +1,14 @@
 package com.ifhz.core.service.device.impl;
 
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.device.DeviceInfoService;
 import com.test.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Random;
 
 public class DeviceInfoServiceImplTest extends BaseTest {
 
@@ -17,13 +20,13 @@ public class DeviceInfoServiceImplTest extends BaseTest {
     @Test
     public void testGetById() throws Exception {
         log(deviceInfoService.getById(2L));
-        /*long[] channels = new long[30];
-        for(int i = 0; i <30 ; i++){
-            channels[i] = i+21L;
+        long[] channels = new long[30];
+        for (int i = 0; i < 30; i++) {
+            channels[i] = i + 2L;
         }
         String str = "Device";
         Random random = new Random();
-        for(int i = 0; i < 101; i++) {
+        for (int i = 0; i < 101; i++) {
             String d = str + i;
             long channelId = channels[random.nextInt(30)];
             ChannelInfo channelInfo = channelInfoService.getById(channelId);
@@ -33,7 +36,7 @@ public class DeviceInfoServiceImplTest extends BaseTest {
             info.setGroupId(channelInfo.getGroupId());
 
             deviceInfoService.insert(info);
-        }*/
+        }
 
     }
 

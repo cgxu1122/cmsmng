@@ -46,7 +46,6 @@
     <span class="linkTip">系统报错：</span>
 </div>
 
-
 <div class="fraudTip indent2">
     ${errorMsg}
 </div>

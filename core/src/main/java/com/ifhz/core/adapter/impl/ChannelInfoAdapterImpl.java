@@ -29,6 +29,11 @@ public class ChannelInfoAdapterImpl implements ChannelInfoAdapter {
     }
 
     @Override
+    public ChannelInfo getByUserId(Long id) {
+        return channelInfoMapper.getByUserId(id);
+    }
+
+    @Override
     public List<ChannelInfo> queryByVo(Pagination page, ChannelInfo record) {
         List<ChannelInfo> result = channelInfoMapper.queryByVo(page, record);
         return result == null ? Lists.<ChannelInfo>newArrayList() : result;

@@ -49,17 +49,61 @@ public class ScheduleBakController {
     }
 
 
-    @RequestMapping(value = "/scanCounterTempLog.do", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/scanCounterTempLogFoUnDo.do", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject scanCounterTempLog(@RequestParam(value = "startTime", required = true) String startTime,
-                                  @RequestParam(value = "endTime", required = true) String endTime) {
+    JSONObject scanCounterTempLogFoUnDo(@RequestParam(value = "startTime", required = true) String startTime,
+                                        @RequestParam(value = "endTime", required = true) String endTime) {
         LOGGER.info("receive msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
             Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
             Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
-            scheduleBakService.scanCounterTempLog(startDate, endDate);
+            scheduleBakService.scanCounterTempLogFoUnDo(startDate, endDate);
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("scanCounterTempLog error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/scanCounterTempLogFoUnStat.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject scanCounterTempLogFoUnStat(@RequestParam(value = "startTime", required = true) String startTime,
+                                          @RequestParam(value = "endTime", required = true) String endTime) {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
+            Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.scanCounterTempLogFoUnStat(startDate, endDate);
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("scanCounterTempLog error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/resetStat.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject resetStat(@RequestParam(value = "startTime", required = true) String startTime,
+                         @RequestParam(value = "endTime", required = true) String endTime) {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
+            Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.scanCounterTempLogFoUnStat(startDate, endDate);
             result.put("ret", true);
         } catch (Exception e) {
             result.put("ret", false);

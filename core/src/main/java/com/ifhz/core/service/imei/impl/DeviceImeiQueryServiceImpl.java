@@ -1,5 +1,6 @@
 package com.ifhz.core.service.imei.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.DataLogAdapter;
@@ -7,6 +8,7 @@ import com.ifhz.core.service.imei.DeviceImeiQueryService;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.stat.handle.DateHandler;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -129,7 +131,6 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
 
 
     private class LogImeiTask implements Callable<List<String>> {
-
         private final Map<String, Object> params;
 
         private LogImeiTask(Map<String, Object> params) {
@@ -138,13 +139,17 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
 
         @Override
         public List<String> call() throws Exception {
-            return null;
+            LOGGER.info("params={}", JSON.toJSONString(params));
+            List<String> result = null;
+            if (MapUtils.isNotEmpty(params)) {
+                result = dataLogAdapter.getLogImeiList(params);
+            }
+            return result == null ? Lists.<String>newArrayList() : result;
         }
     }
 
 
     private class ProductImeiTask implements Callable<List<String>> {
-
         private final Map<String, Object> params;
 
         private ProductImeiTask(Map<String, Object> params) {
@@ -153,8 +158,12 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
 
         @Override
         public List<String> call() throws Exception {
-            return null;
+            LOGGER.info("params={}", JSON.toJSONString(params));
+            List<String> result = null;
+            if (MapUtils.isNotEmpty(params)) {
+                result = dataLogAdapter.getProductImeiList(params);
+            }
+            return result == null ? Lists.<String>newArrayList() : result;
         }
     }
-
 }

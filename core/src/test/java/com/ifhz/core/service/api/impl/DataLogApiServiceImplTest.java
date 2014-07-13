@@ -48,7 +48,8 @@ public class DataLogApiServiceImplTest extends BaseTest {
 
     @Test
     public void testInsertDeviceData() throws Exception {
-        String filePath = "D:\\imei.xls";
+//        String filePath = "D:\\imei.xls";
+        String filePath = "D:\\imei - 副本.xls";
         File file = new File(filePath);
         List<DataLog> dataLogList = readExcel(file);
 
@@ -107,12 +108,29 @@ public class DataLogApiServiceImplTest extends BaseTest {
         return content;
     }
 
+    private static List<Date> dateList = Lists.newArrayList();
+
+    static {
+        Date now = new Date();
+        dateList.add(now);
+        dateList.add(DateFormatUtils.addDay(now, -1));
+        dateList.add(DateFormatUtils.addDay(now, -2));
+        dateList.add(DateFormatUtils.addDay(now, -3));
+        dateList.add(DateFormatUtils.addDay(now, -4));
+        dateList.add(DateFormatUtils.addDay(now, -5));
+        dateList.add(DateFormatUtils.addDay(now, -6));
+    }
+
+    private Date getProcessTime(int i) {
+        return dateList.get(i);
+    }
 
     private DataLog translate(String pTime, String modelName, String channelName, String imei) {
         DataLog dataLog = null;
         Date processTime = new Date();
         if (StringUtils.isNotBlank(pTime)) {
-            processTime = DateFormatUtils.parse(pTime, "yyyy-MM-dd");
+//            processTime = DateFormatUtils.parse(pTime, "yyyy-MM-dd");
+            processTime = getProcessTime(new Random().nextInt(7));
         }
         ChannelInfo channelInfo = null;
         if (StringUtils.isNotBlank(channelName)) {

@@ -22,17 +22,37 @@ public class LogStat implements Serializable {
     private Date processDate;
     private Long laowuId;
 
+    /**
+     * 设备当天安装数量
+     */
     private Long devicePrsDayNum = 0L;
+    /**
+     * 设备当天上传数量
+     */
     private Long deviceUpdDayNum = 0L;
+    /**
+     * 设备当天安装数量中已到达总数
+     */
     private Long prsActiveTotalNum = 0L;
+    /**
+     * 设备当天安装数量已到达-有效总数
+     */
     private Long prsActiveValidNum = 0L;
+    /**
+     * 设备当天安装数量已到达-无效总数
+     */
     private Long prsActiveInvalidNum = 0L;
+    /**
+     * 设备当天安装数量已到达-替换总数
+     */
     private Long prsInvalidReplaceNum = 0L;
+    /**
+     * 设备当天安装数量已到达-卸载总数
+     */
     private Long prsInvalidUninstallNum = 0L;
-    private Long counterUpdDayNum = 0L;
+
 
     private String md5Key;
-    private String dataLogMd5Key;
     private Integer version;
 
     public Integer getVersion() {
@@ -41,14 +61,6 @@ public class LogStat implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public String getDataLogMd5Key() {
-        return dataLogMd5Key;
-    }
-
-    public void setDataLogMd5Key(String dataLogMd5Key) {
-        this.dataLogMd5Key = dataLogMd5Key;
     }
 
     //查询条件
@@ -224,13 +236,5 @@ public class LogStat implements Serializable {
 
     public void setPrsInvalidUninstallNum(Long prsInvalidUninstallNum) {
         this.prsInvalidUninstallNum = prsInvalidUninstallNum;
-    }
-
-    public Long getCounterUpdDayNum() {
-        return counterUpdDayNum;
-    }
-
-    public void setCounterUpdDayNum(Long counterUpdDayNum) {
-        this.counterUpdDayNum = counterUpdDayNum;
     }
 }

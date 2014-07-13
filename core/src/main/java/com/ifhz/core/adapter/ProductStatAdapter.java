@@ -3,7 +3,6 @@ package com.ifhz.core.adapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductStat;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,8 +20,6 @@ public interface ProductStatAdapter {
     public ProductStat getById(Long id);
 
     public ProductStat getByMd5Key(String md5Key);
-
-    public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
 
     public List<ProductStat> queryByVo(Pagination page, ProductStat record);
 

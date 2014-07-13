@@ -9,6 +9,8 @@ import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
+import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.utils.FileHandle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 类描述
@@ -36,6 +40,8 @@ public class DeviceApiController {
 
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
+    @Resource(name = "localDirCacheService")
+    private LocalDirCacheService localDirCacheService;
 
     @RequestMapping(value = "/processLog.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
@@ -87,9 +93,45 @@ public class DeviceApiController {
     }
 
 
+    @RequestMapping(value = "/processFile.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject processFile(@RequestParam(value = "dataFile", required = true) MultipartFile dataFile) {
+        LOGGER.info("receive request dataFile={}", JSON.toJSONString(dataFile));
+        JSONObject result = null;
+        if (dataFile == null) {
+            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            return result;
+        } else if (dataFile.isEmpty()) {
+            result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+            return result;
+        }
+        String originFileName = dataFile.getOriginalFilename();
+        LOGGER.info("originFileName = {}", originFileName);
+        try {
+            String fileExt = FileHandle.getFileExt(originFileName);
+            String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
+            String toFilePath = localDirCacheService.storeFile(dataFile.getInputStream(), newFileName);
+            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
+
+            //TODO
+
+            if (result == null) {
+                result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            }
+        } catch (Exception e) {
+            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            LOGGER.error("processLog error ", e);
+        } finally {
+            LOGGER.info("processLog:returnObj={}", result);
+        }
+
+        return result;
+    }
+
+
     private DataLog translateDataLog(String[] data) {
         //手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-
         DataLog result = null;
         if (data != null && data.length == 6) {
             try {
@@ -120,53 +162,4 @@ public class DeviceApiController {
 
         return result;
     }
-
-
-
-    /*private static String root_path = GlobalConstants.GLOBAL_CONFIG.get("root.path");
-    private static String temp_path = GlobalConstants.GLOBAL_CONFIG.get("temp.path");
-
-    @RequestMapping(value = "/processFile.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    public
-    @ResponseBody
-    JSONObject processFile(@RequestParam(value = "dataFile", required = true) File dataFile,
-                           HttpServletRequest request) {
-        LOGGER.info("receive encode dataFile={}", dataFile.getName());
-        JSONObject result = null;
-        try {
-            File root = new File(root_path);
-            if (!root.exists()) {
-                root.mkdirs();
-            }
-            File temp = new File(temp_path);
-            if (!temp.exists()) {
-                temp.mkdirs();
-            }
-
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            factory.setSizeThreshold(4096);
-            factory.setRepository(temp);
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            upload.setSizeMax(100 * 1024 * 1024);
-            List<FileItem> items = upload.parseRequest(request);// 得到所有的文件
-            Iterator<FileItem> iterator = items.iterator();
-            while (iterator.hasNext()) {
-                FileItem fi = iterator.next();
-                String fileName = fi.getName();
-                if (fileName != null) {
-                    File fullFile = new File(fi.getName());
-                    File savedFile = new File(root, fullFile.getName());
-                    fi.write(savedFile);
-                }
-            }
-            System.out.print("upload succeed");
-        } catch (Exception e) {
-            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-            LOGGER.error("processLog error ", e);
-        } finally {
-            LOGGER.info("processLog:returnObj={}", result);
-        }
-
-        return result;
-    }*/
 }

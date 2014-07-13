@@ -41,14 +41,14 @@ public final class FtpUtils {
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             ftpClient.storeFile(fileName, is);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ftp error", e);
             throw new RuntimeException("FTP客户端出错！", e);
         } finally {
             IOUtils.closeQuietly(is);
             try {
                 ftpClient.disconnect();
             } catch (Exception e) {
-                LOGGER.error("ftpUpload error", e);
+                LOGGER.error("ftp error", e);
                 throw new RuntimeException("关闭FTP连接发生异常！", e);
             }
         }
@@ -72,17 +72,64 @@ public final class FtpUtils {
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             ftpClient.retrieveFile(remoteFileName, fos);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("ftp error", e);
             throw new RuntimeException("FTP客户端出错！", e);
         } finally {
             IOUtils.closeQuietly(fos);
             try {
                 ftpClient.disconnect();
             } catch (Exception e) {
-                LOGGER.error("ftpDownload error", e);
+                LOGGER.error("ftp error", e);
                 throw new RuntimeException("关闭FTP连接发生异常！", e);
             }
         }
+    }
+
+    /**
+     * FTP下载单个文件测试
+     */
+    public static void ftpDelete(String remoteFilePath) {
+        FTPClient ftpClient = new FTPClient();
+        String parentDirPath = getParentDirPath(remoteFilePath);
+        try {
+            String hosts = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_URL);
+            int port = MapConfig.getInt(GlobalConstants.FTP_SERVER_PORT, GlobalConstants.GLOBAL_CONFIG, 21);
+            String username = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_USERNAME);
+            String password = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_PASSWORD);
+            ftpClient.connect(hosts, port);
+            ftpClient.login(username, password);
+            ftpClient.setBufferSize(1024);
+            //设置文件类型（二进制）
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+            ftpClient.deleteFile(remoteFilePath);
+            if (StringUtils.isNotBlank(parentDirPath)) {
+                ftpClient.removeDirectory(parentDirPath);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Ftp error", e);
+            throw new RuntimeException("FTP客户端出错！", e);
+        } finally {
+            try {
+                ftpClient.disconnect();
+            } catch (Exception e) {
+                LOGGER.error("ftp error", e);
+                throw new RuntimeException("关闭FTP连接发生异常！", e);
+            }
+        }
+    }
+
+
+    private static String getParentDirPath(String remoteFilePath) {
+        if (StringUtils.isNotBlank(remoteFilePath)) {
+            return StringUtils.substring(remoteFilePath, 0, remoteFilePath.lastIndexOf("/"));
+        }
+        return null;
+    }
+
+    public static void main(String[] args) throws Exception {
+        String str = "/data/apk/1404531957414/1 (37).apk";
+        String t = getParentDirPath(str);
+        System.out.println(t);
     }
 
     /**

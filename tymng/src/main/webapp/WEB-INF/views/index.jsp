@@ -293,7 +293,7 @@
 --%>
 <div title="发布管理" style="overflow: auto;">
     <div class="nav-item">
-        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/\/index','menu_icon_datadeal')">
+        <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
             <span>APK管理</span>
         </a>
@@ -405,6 +405,27 @@
         <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/rrr/index','menu_icon_wjldgl')">
             <span class="menu_icon_wjldgl"></span>
             <span>授权管理</span>
+        </a>
+    </div>
+    <%--</shiro:hasPermission>--%>
+</div>
+<div title="辅助功能" style="overflow: auto;">
+    <div class="nav-item">
+        <a href="javascript:addTab('查询Imei','<%=basePath%>/tymng/imeiQuery/index','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>查询Imei</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('上传Imei','<%=basePath%>/tymng/imeiUpload/index','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>上传Imei</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('上传Zip文件','<%=basePath%>/tymng/zipUpload/index','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>上传Zip文件</span>
         </a>
     </div>
     <%--</shiro:hasPermission>--%>

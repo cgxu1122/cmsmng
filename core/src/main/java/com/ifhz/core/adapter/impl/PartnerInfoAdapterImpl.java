@@ -52,4 +52,9 @@ public class PartnerInfoAdapterImpl implements PartnerInfoAdapter {
         record.setUpdateTime(new Date());
         return partnerInfoMapper.update(record);
     }
+
+    @Override
+    public PartnerInfo getPartnerInfoByUserId(Long userId) {
+        return partnerInfoMapper.getPartnerInfoByUserId(userId);
+    }
 }

@@ -39,13 +39,13 @@ public class CounterTempLogAdapterImpl implements CounterTempLogAdapter {
     }
 
     @Override
-    public long queryTotalCount(Date startTime, Date endTime) {
-        return counterTempLogMapper.queryTotalCount(startTime, endTime);
+    public long queryTotalCount(Date startTime, Date endTime, Integer type) {
+        return counterTempLogMapper.queryTotalCount(startTime, endTime, type);
     }
 
     @Override
-    public List<CounterTempLog> queryPage(Pagination page, Date startTime, Date endTime) {
-        List<CounterTempLog> result = counterTempLogMapper.queryPage(page, startTime, endTime);
+    public List<CounterTempLog> queryPage(Pagination page, Date startTime, Date endTime, Integer type) {
+        List<CounterTempLog> result = counterTempLogMapper.queryPage(page, startTime, endTime, type);
         return result == null ? Lists.<CounterTempLog>newArrayList() : result;
     }
 

@@ -1,6 +1,5 @@
 package com.ifhz.core.adapter.impl;
 
-import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.ProductStatMapper;
@@ -8,7 +7,6 @@ import com.ifhz.core.po.ProductStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,12 +39,6 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
     @Override
     public ProductStat getByMd5Key(String md5Key) {
         return productStatMapper.getByMd5Key(md5Key);
-    }
-
-    @Override
-    public List<ProductStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime) {
-        List<ProductStat> list = productStatMapper.queryListByQueryKey(queryKey, startTime, endTime);
-        return list == null ? Lists.<ProductStat>newArrayList() : list;
     }
 
     @Override

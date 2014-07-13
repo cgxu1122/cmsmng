@@ -10,9 +10,13 @@ import java.util.Date;
  */
 public interface ScheduleBakService {
 
-    public void scanCounterTempLog(Date startTime, Date endTime);
+    public void scanCounterTempLogFoUnDo(Date startTime, Date endTime);
+
+    public void scanCounterTempLogFoUnStat(Date startTime, Date endTime);
 
     public void statisticsData(Date startTime, Date endTime);
 
     public void fetchWdjData(Date date);
+
+    public void resetStat(Date date);
 }

@@ -43,7 +43,6 @@
                 /hzfmng/vc/* = anon
                 /hzfmng/common/** = anon
                 /hzfmng/plug/** = anon
-                /hzfmng/schedule/** = anon
                 /hzfmng/** = authc
             </value>
         </property>

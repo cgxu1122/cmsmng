@@ -50,6 +50,8 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(ApkInfo record) {
+        record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
         return apkInfoAdapter.insert(record);
     }
 

@@ -6,16 +6,23 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.*;
 
 public class ExportDataUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExportDataUtil.class);
+
     public static void writeData(List<String[]> dataList, File file) {
         if (!CollectionUtils.isEmpty(dataList)) {
             try {
@@ -26,13 +33,13 @@ public class ExportDataUtil {
                     writer.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("writeData error", e);
             }
         }
     }
 
     public static void writeXLSData(List<String[]> dataList, File file) {
-        Workbook wb = new HSSFWorkbook();
+        Workbook wb = new XSSFWorkbook();
         Sheet sheet = wb.createSheet("Sheet1");
         //设置CELL格式为文本格式
         CellStyle cellStyle = wb.createCellStyle();
@@ -53,14 +60,13 @@ public class ExportDataUtil {
                     }
                 }
             }
+
             FileOutputStream out = null;
             try {
                 out = new FileOutputStream(file);
                 wb.write(out);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                LOGGER.error("writeData error", e);
             } finally {
                 if (out != null) {
                     try {
@@ -112,10 +118,8 @@ public class ExportDataUtil {
                                     }
                                 }
                                 j++;
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            } catch (NoSuchFieldException e) {
-                                e.printStackTrace();
+                            } catch (Exception e) {
+                                LOGGER.error("", e);
                             }
                         }
                         //添加内容数据
@@ -134,25 +138,4 @@ public class ExportDataUtil {
             }
         }
     }
-
-
-    /*public static void main(String args[]){
-        BaseExportModel exportModel = new BaseExportModel();
-        List<Object> dataList = new ArrayList<Object>();
-        for(int i=0;i<10000;i++){
-            Te te = new Te();
-            te.setName("name"+i);
-            te.setSex("sex"+i);
-            dataList.add(te);
-        }
-        exportModel.setDataList(dataList);
-        Map<String,String> titleMap = new HashMap<String, String>();
-        titleMap.put("name","姓名");
-        titleMap.put("sex","性别");
-        exportModel.setTitleMap(titleMap);
-        Long startTime = Calendar.getInstance().getTimeInMillis();
-        writeData(exportModel, new File("D:\\\\b.xls"));
-        Long endTime = Calendar.getInstance().getTimeInMillis();
-        System.out.println(endTime-startTime);
-    }*/
 }

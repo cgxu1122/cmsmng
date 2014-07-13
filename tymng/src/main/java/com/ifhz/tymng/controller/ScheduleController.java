@@ -44,18 +44,37 @@ public class ScheduleController {
     }
 
 
-    @RequestMapping(value = "/scanCounterTempLog.do", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/scanCounterTempLogFoUnDo.do", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject scanCounterTempLog() {
+    JSONObject scanCounterTempLogFoUnDo() {
         LOGGER.info("receive msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
-            scheduleService.scanCounterTempLog();
+            scheduleService.scanCounterTempLogFoUnDo();
             result.put("ret", true);
         } catch (Exception e) {
             result.put("ret", false);
-            LOGGER.error("scanCounterTempLog error ", e);
+            LOGGER.error("scanCounterTempLogFoUnDo error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/scanCounterTempLogFoUnStat.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject scanCounterTempLogFoUnStat() {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            scheduleService.scanCounterTempLogFoUnStat();
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("scanCounterTempLogFoUnStat error ", e);
         } finally {
             LOGGER.info("returnObj={}", result);
         }

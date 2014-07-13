@@ -90,8 +90,7 @@
 
         function initPage() {
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/productInfo/list',
@@ -135,6 +134,7 @@
             $('#partnerdg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/partnerInfo/list',
@@ -284,7 +284,7 @@
        onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
 </div>
 
-<div id="partnerdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="partnerdlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#partnerdlg-buttons">
     <div>

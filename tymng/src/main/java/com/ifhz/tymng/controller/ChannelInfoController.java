@@ -128,6 +128,10 @@ public class ChannelInfoController extends BaseController {
         ci.setActive(JcywConstants.ACTIVE_Y);
         ci.setGroupId(Long.parseLong(groupId));
         if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
+        //如果是地包渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());

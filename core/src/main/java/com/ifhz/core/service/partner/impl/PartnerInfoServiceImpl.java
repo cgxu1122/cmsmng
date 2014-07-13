@@ -69,4 +69,10 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
     public int delete(PartnerInfo record) {
         return partnerInfoAdapter.delete(record);
     }
+
+    @Override
+    public PartnerInfo getPartnerInfoByUserId(Long userId) {
+        if (userId == null) return null;
+        return partnerInfoAdapter.getPartnerInfoByUserId(userId);
+    }
 }

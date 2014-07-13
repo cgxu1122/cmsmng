@@ -8,7 +8,9 @@ package com.ifhz.core.service.schedule;
  */
 public interface ScheduleService {
 
-    public void scanCounterTempLog();
+    public void scanCounterTempLogFoUnDo();
+
+    public void scanCounterTempLogFoUnStat();
 
     public void statisticsData();
 

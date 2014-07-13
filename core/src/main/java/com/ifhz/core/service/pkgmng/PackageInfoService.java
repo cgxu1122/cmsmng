@@ -3,7 +3,6 @@ package com.ifhz.core.service.pkgmng;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PackageInfo;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +21,4 @@ public interface PackageInfoService {
     public int update(PackageInfo record);
 
     public int delete(PackageInfo record);
-
-    public List<PackageInfo> queryList(Long channelId, Date startTime, Date endTime);
 }

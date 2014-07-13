@@ -40,8 +40,7 @@ function initPage() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     $('#dg').datagrid({
-        width: 'auto',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/reportCount/listLogStat',
@@ -66,43 +65,102 @@ function initPage() {
                 {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
                 {field: 'deviceUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)'>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',2)>" + value + "</a>";
                     }
                 },
                 {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)'>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',3)>" + value + "</a>";
                     }
                 },
                 {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)'>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',4)>" + value + "</a>";
                     }
                 },
                 {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)'>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',5)>" + value + "</a>";
                     }
                 },
                 {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)'>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',6)>" + value + "</a>";
                     }
                 },
                 {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)'>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',7)>" + value + "</a>";
                     }
                 }
             ]
         ]
     });
 }
+
+var processDateCur;
+var uaCur;
+var channelIdCur;
+var modelNameCur;
+var channelNameCur;
+var deviceCodeCur;
+var queryTypeCur;
+function showIMEIDialog(processDate, ua, channelId, modelName, channelName, deviceCode, queryType) {
+    processDateCur = processDate;
+    uaCur = ua;
+    channelIdCur = channelId;
+    modelNameCur = modelName;
+    channelNameCur = channelName;
+    deviceCodeCur = deviceCode;
+    queryTypeCur = queryType;
+    $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
+    $('#imeidg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        fitColumns: true,
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/tymng/reportCount/listImei',
+        queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, channelName: channelName, deviceCode: deviceCode, queryType: queryType},
+        loadMsg: '数据加载中请稍后……',
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'processDate', title: '日期', align: 'center', width: 150,
+                    formatter: function (value) {
+                        return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
+                    }
+                },
+                {field: 'modelName', title: '机型名称', align: 'center', width: 150},
+                {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
+                {field: 'deviceCode', title: '设备编码', align: 'center', width: 150},
+                {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
+            ]
+        ]
+    });
+}
+function exportImeiEvt() {
+    $("body").showLoading();
+    $.ajax({
+        url: "<%=basePath%>/tymng/reportCount/exportImei?exportType=2&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&deviceCode=" + deviceCodeCur + "&queryType=" + queryTypeCur,
+        success: function (result) {
+            $("body").hideLoading();
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+            }
+        }
+    });
+}
+
 function showDeviceDialog() {
     $('#devicedlg').dialog('open').dialog('setTitle', '选择设备');
     $('#devicedg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/deviceInfo/list',
@@ -138,6 +196,7 @@ function showModelDialog() {
     $('#modeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/modelInfo/list',
@@ -175,6 +234,7 @@ function showChannelDialog() {
     $('#channeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/listAll',
@@ -212,7 +272,19 @@ function exportData() {
     var ua = $('#ua').val();
     var channelId = $('#channelId').val();
     var deviceCode = $('#deviceCode').val();
-    window.location.href = "<%=basePath%>/tymng/reportCount/exportData?groupId=2&exportType=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&deviceCode=" + deviceCode;
+    $("body").showLoading();
+    $.ajax({
+        url: "<%=basePath%>/tymng/reportCount/exportData?groupId=2&exportType=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&deviceCode=" + deviceCode,
+        success: function (result) {
+            $("body").hideLoading();
+            var result = eval('(' + result + ')');
+            if (result.errorMsg) {
+                $.messager.alert('错误', result.errorMsg);
+            } else {
+                window.location.href = "<%=basePath%>/tymng/downloadFile/downloadFile?path=" + result.path;
+            }
+        }
+    });
 }
 </script>
 </head>
@@ -256,7 +328,7 @@ function exportData() {
     </div>
 </div>
 <div id="dg"></div>
-<div id="devicedlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="devicedlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#devicedlg-buttons">
     <div>
@@ -281,7 +353,7 @@ function exportData() {
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#devicedlg').dialog('close')">关闭</a>
 </div>
-<div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
@@ -306,7 +378,7 @@ function exportData() {
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#modeldlg').dialog('close')">关闭</a>
 </div>
-<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#channeldlg-buttons">
     <div>
@@ -330,6 +402,27 @@ function exportData() {
 <div id="channeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
+</div>
+<div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#imeidlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td align="center">
+                        <a id="exportImeiBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           onclick="exportImeiEvt()">导出</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="imeidg"></div>
+</div>
+<div id="imeidlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#imeidlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>

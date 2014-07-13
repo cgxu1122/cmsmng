@@ -196,6 +196,24 @@
                     <span>按仓库查询</span>
                 </a>
             </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('查询Imei','<%=basePath%>/hzfmng/imeiQuery/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>查询Imei</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('上传Imei','<%=basePath%>/hzfmng/imeiUpload/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>上传Imei</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/hzfmng/zipUpload/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>上传Zip文件</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>

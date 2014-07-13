@@ -135,8 +135,7 @@ function searchEvt() {
 
 function initPage() {
     $('#dg').datagrid({
-        width: 'auto',
-        height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/publishTask/list',
@@ -175,6 +174,7 @@ function showPackageDialog() {
     $('#packagedg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/packageInfo/list',
@@ -238,6 +238,7 @@ function showModelDialog() {
     $('#modeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/modelInfo/list',
@@ -283,6 +284,7 @@ function showChannelDialog() {
     $('#channeldg').datagrid({
         width: 'auto',
         height: 'auto',
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/listAll',
@@ -351,7 +353,7 @@ function selectChannel(channelId, channelName) {
     </div>
 </div>
 <div id="dg"></div>
-<div id="dlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
+<div id="dlg" class="easyui-dialog" style="width:700px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#dlg-buttons">
     <div class="ftitle"> 发布任务管理</div>
@@ -402,7 +404,7 @@ function selectChannel(channelId, channelName) {
        onclick="javascript:$('#dlg').dialog('close')">关闭</a>
 </div>
 
-<div id="updatedlg" class="easyui-dialog" style="width:600px;height:450px;padding:10px 20px" closed="true"
+<div id="updatedlg" class="easyui-dialog" style="width:700px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" novalidate>
@@ -439,7 +441,7 @@ function selectChannel(channelId, channelName) {
 </div>
 
 
-<div id="packagedlg" class="easyui-dialog" style="width:600px;height:500px;padding:10px 20px" closed="true"
+<div id="packagedlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#packagedlg-buttons">
     <div>
@@ -466,7 +468,7 @@ function selectChannel(channelId, channelName) {
 </div>
 
 
-<div id="modeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
     <div>
@@ -493,7 +495,7 @@ function selectChannel(channelId, channelName) {
 </div>
 
 
-<div id="channeldlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px"
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px"
      data-options="iconCls:'icon-save',resizable:true"
      closed="true"
      buttons="#channeldlg-buttons">

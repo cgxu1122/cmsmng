@@ -25,7 +25,6 @@ public final class GlobalConstants {
     public static final String FTP_SERVER_DEVICEDIR = "ftp.server.deviceDir";
     public static final String FTP_SERVER_APKDIR = "ftp.server.apkDir";
     public static final String EXPORT_NUM_MAX = "export.num.max";
-    public static final String FTP_SERVER_DOWNLOADURL = "ftp.server.downloadUrl";
 
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -37,7 +36,8 @@ public final class GlobalConstants {
      * 系统初始化时间Key
      */
     public static final String KEY_SYS_INIT_DATE = "system_init_date";
-    public static final String KEY_LOCAL_STORE_DIR = "local.store.dir";
+    public static final String KEY_STORE_TEMP_DIR = "store.temp.dir";
+    public static final String KEY_STORE_DIR = "store.dir";
     public static final String KEY_STAT_INTERVAL_MINUTE = "stat.interval.minute";
 
     /**
@@ -45,6 +45,10 @@ public final class GlobalConstants {
      */
     public static int PAGE_SIZE = MapConfig.getInt("stat.pageSize", GlobalConstants.GLOBAL_CONFIG, 10000);
 
+    /**
+     * UA 为空时的默认值NaN
+     */
+    public static final String DEFAULT_UA = "NaN";
 
     private GlobalConstants() {
     }

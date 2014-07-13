@@ -7,7 +7,7 @@ package com.ifhz.core.service.stat.constants;
  * Time: 17:22
  */
 public enum CounterActive {
-
+    None(0, "无意义"),
     Valid(1, "有效到达"),
     Invalid_Replace(2, "无效到达-替换"),
     Invalid_Uninstall(3, "无效到达-卸载"),
