@@ -11,10 +11,8 @@ import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
-import com.ifhz.core.utils.FileHandle;
 import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangjian
@@ -105,7 +105,7 @@ public class ApkInfoController extends BaseController {
         String storeLocalFilePath = null;
         try {
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
-            storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+            storeLocalFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             if (StringUtils.isBlank(storeLocalFilePath)) {
                 throw new Exception("上传文件保存出错，请重新操作");
             }
@@ -180,7 +180,7 @@ public class ApkInfoController extends BaseController {
             }
             try {
                 String newFileName = localDirCacheService.getLocalFileName(originFileName);
-                storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+                storeLocalFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
                 if (StringUtils.isBlank(storeLocalFilePath)) {
                     throw new Exception("上传文件保存出错，请重新操作");
                 }
@@ -260,7 +260,7 @@ public class ApkInfoController extends BaseController {
         return result;
     }
 
-
+/*
     private String storeLocalFile(Map<String, FileItem> params, String originFileName) throws Exception {
         FileItem file = params.get("file");
         String fileExt = FileHandle.getFileExt(originFileName);
@@ -271,7 +271,7 @@ public class ApkInfoController extends BaseController {
         }
 
         return toFilePath;
-    }
+    }*/
 
     private enum Type {
         Insert, Update;

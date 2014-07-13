@@ -240,15 +240,21 @@ function selectChannel(channelId, channelName, type) {
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
                 </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
-                </td>
+                <shiro:hasPermission name="device_add">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="device_update">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="device_delete">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
+                    </td>
+                </shiro:hasPermission>
             </tr>
         </table>
     </div>
