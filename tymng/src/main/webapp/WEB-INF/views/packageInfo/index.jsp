@@ -401,11 +401,9 @@ function selectApk(apkId, apkName, apkType, type) {
             <table id="upApkList" style="border: solid thin">
             </table>
         </div>
-</div>
-</form>
+    </form>
 </div>
 
-</div>
 <div id="update-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdate()">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
