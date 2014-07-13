@@ -36,11 +36,11 @@ public class ModelInfoController extends BaseController {
         String groupId = request.getParameter("groupId");
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("groupId", groupId);
-        if (JcywConstants.CHANNEL_GROUP_TY_ID_1.equals(groupId)) {
+        if (JcywConstants.CHANNEL_GROUP_TY_ID_1.toString().equals(groupId)) {
             return new ModelAndView("modelInfo/indexTY", result);
-        } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(groupId)) {
+        } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
             return new ModelAndView("modelInfo/indexDB", result);
-        } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.equals(groupId)) {
+        } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
             return new ModelAndView("modelInfo/indexQT", result);
         }
         return null;
