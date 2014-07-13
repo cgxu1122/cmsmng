@@ -60,7 +60,7 @@
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "','" + row.groupId + "')>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "')>" + value + "</a>";
                                 }
                             }
                         }
@@ -129,7 +129,7 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'a', title: '日期', align: 'center', width: 150,
+                        {field: 'processDate', title: '日期', align: 'center', width: 150,
                             formatter: function (value) {
                                 return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
                             }
