@@ -21,7 +21,7 @@
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/partnerQuery/listLogStat",
+                url: "<%=basePath%>/hzfmng/partnerQuery/listLogStat",
                 queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
@@ -34,7 +34,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/partnerQuery/listLogStat',
+                url: '<%=basePath%>/hzfmng/partnerQuery/listLogStat',
                 queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -71,7 +71,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/modelInfo/list',
+                url: '<%=basePath%>/hzfmng/modelInfo/list',
                 queryParams: {groupId: 2},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -92,7 +92,7 @@
         function searchModelEvt() {
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
-                url: "<%=basePath%>/tymng/modelInfo/list",
+                url: "<%=basePath%>/hzfmng/modelInfo/list",
                 queryParams: {modelNameCondition: value, groupId: 1}
             });
         }
@@ -105,7 +105,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
+            window.location.href = "<%=basePath%>/hzfmng/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua;
         }
     </script>
 </head>

@@ -22,7 +22,7 @@
             var ua = $('#ua').val();
             var channelId = $('#channelId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/reportCount/listLogStat",
+                url: "<%=basePath%>/hzfmng/reportCount/listLogStat",
                 queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId}
             });
         }
@@ -46,7 +46,7 @@
                 fitColumns: true,
                 scrollbarSize: 20,
                 fit: true,
-                url: '<%=basePath%>/tymng/reportCount/listLogStat',
+                url: '<%=basePath%>/hzfmng/reportCount/listLogStat',
                 queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -112,7 +112,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/modelInfo/list',
+                url: '<%=basePath%>/hzfmng/modelInfo/list',
                 queryParams: {groupId: 1},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -133,7 +133,7 @@
         function searchModelEvt() {
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
-                url: "<%=basePath%>/tymng/modelInfo/list",
+                url: "<%=basePath%>/hzfmng/modelInfo/list",
                 queryParams: {modelNameCondition: value, groupId: 1}
             });
         }
@@ -149,7 +149,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/channelInfo/listAll',
+                url: '<%=basePath%>/hzfmng/channelInfo/listAll',
                 queryParams: {groupId: 1},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -169,7 +169,7 @@
         function searchChannelEvt() {
             var value = $('#searchChannelValue').val();
             $('#channeldg').datagrid({
-                url: "<%=basePath%>/tymng/channelInfo/listAll",
+                url: "<%=basePath%>/hzfmng/channelInfo/listAll",
                 queryParams: {channelNameCondition: value, groupId: 1}
             });
         }
@@ -183,7 +183,7 @@
             var endDate = $('#endDate').datebox('getValue');
             var ua = $('#ua').val();
             var channelId = $('#channelId').val();
-            window.location.href = "<%=basePath%>/tymng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
+            window.location.href = "<%=basePath%>/hzfmng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId;
         }
     </script>
 </head>

@@ -22,7 +22,7 @@
             var endDate = $('#endDate').datebox('getValue');
             var productId = $('#productId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/partnerQuery/listProductStat",
+                url: "<%=basePath%>/hzfmng/partnerQuery/listProductStat",
                 queryParams: {productId: productId, startDate: startDate, endDate: endDate}
             });
         }
@@ -35,7 +35,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/partnerQuery/listProductStat',
+                url: '<%=basePath%>/hzfmng/partnerQuery/listProductStat',
                 queryParams: {startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -70,7 +70,7 @@
                 height: 'auto',
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/productInfo/list',
+                url: '<%=basePath%>/hzfmng/productInfo/list',
                 queryParams: {groupId: 1},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -90,7 +90,7 @@
         function searchProductEvt() {
             var value = $('#searchProductValue').val();
             $('#productdg').datagrid({
-                url: "<%=basePath%>/tymng/productInfo/list",
+                url: "<%=basePath%>/hzfmng/productInfo/list",
                 queryParams: {productNameCondition: value}
             });
         }
@@ -103,7 +103,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var productId = $('#productId').val();
-            window.location.href = "<%=basePath%>/tymng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId;
+            window.location.href = "<%=basePath%>/hzfmng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId;
         }
     </script>
 </head>
