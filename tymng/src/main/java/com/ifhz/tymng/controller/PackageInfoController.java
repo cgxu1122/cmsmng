@@ -38,7 +38,12 @@ public class PackageInfoController extends BaseController {
         String type = request.getParameter("type");
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("type", type);
-        return new ModelAndView("packageInfo/index", result);
+        if (JcywConstants.BASE_CONSTANT_N.equals(type)) {
+            return new ModelAndView("packageInfo/indexNM", result);
+        } else if (JcywConstants.BASE_CONSTANT_Y.equals(type)) {
+            return new ModelAndView("packageInfo/indexCM", result);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/list", produces = {"application/json;charset=UTF-8"})
