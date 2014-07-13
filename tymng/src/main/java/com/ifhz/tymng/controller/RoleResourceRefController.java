@@ -124,7 +124,6 @@ public class RoleResourceRefController {
         }
 
 
-        //传当前用户的角色
         String dhtmlXTreeXmlString = roleResourceRefService.findAllRoleResourceXmlString(roleId, adminflag, noResFlag);
         try {
             response.getWriter().print(dhtmlXTreeXmlString);
