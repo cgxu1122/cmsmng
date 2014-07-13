@@ -113,7 +113,9 @@
         select IMEI
         from ${tableName}
         where UA = #{ua}
-        and CHANNEL_ID = #{channelId}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
         <if test="deviceCode != null and deviceCode != ''">
             and DEVICE_CODE = #{deviceCode}
         </if>
