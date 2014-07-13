@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ include file="/common/header.jsp" %>
-    <title>Demo</title>
+    <title>地包渠道结算条款</title>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -143,15 +143,21 @@
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
                 </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
-                </td>
+                <shiro:hasPermission name="settle_add">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="settle_update">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="settle_delete">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
+                    </td>
+                </shiro:hasPermission>
             </tr>
         </table>
     </div>

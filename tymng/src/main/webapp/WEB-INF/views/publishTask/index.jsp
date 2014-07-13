@@ -339,12 +339,16 @@ function selectChannel(channelId, channelName) {
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
                 </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
-                </td>
-                <td align="center">
-                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
-                </td>
+                <shiro:hasPermission name="publish_task_add">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="publish_task_delete">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
+                    </td>
+                </shiro:hasPermission>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">查看详细</a>
                 </td>
@@ -360,7 +364,7 @@ function selectChannel(channelId, channelName) {
     <br/>
 
     <form id="fm" method="post" novalidate>
-    <div class="fitem">
+        <div class="fitem">
             <label><font color="red">*</font>选择安装包:</label>
             <input id="packageName" name="packageName" readonly="readonly">
             <input id="packageId" name="packageId" readonly="readonly" type="hidden">
@@ -408,7 +412,7 @@ function selectChannel(channelId, channelName) {
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#update-buttons">
     <form id="upfm" method="post" novalidate>
-    <div class="fitem">
+        <div class="fitem">
             <label>安装包名称:</label>
             <input id="upPackageName" name="packageName" readonly="readonly">
         </div>

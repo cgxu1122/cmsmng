@@ -6,11 +6,11 @@ import com.google.common.collect.Lists;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
+import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
-import com.ifhz.core.utils.FileHandle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 类描述
@@ -43,7 +43,7 @@ public class DeviceApiController {
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
 
-    @RequestMapping(value = "/processLog.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/processLog111.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
     JSONObject processLog(@RequestParam(value = "id", required = true) String id,
@@ -93,37 +93,37 @@ public class DeviceApiController {
     }
 
 
-    @RequestMapping(value = "/processFile.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/processLog.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject processFile(@RequestParam(value = "dataFile", required = true) MultipartFile dataFile) {
-        LOGGER.info("receive request dataFile={}", JSON.toJSONString(dataFile));
+    JSONObject processFile(@RequestParam(value = "file", required = true) MultipartFile file,
+                           @RequestParam(value = "md5Value", required = true) String md5Value
+    ) {
+        String originalFilename = file.getOriginalFilename();
         JSONObject result = null;
-        if (dataFile == null) {
-            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-            return result;
-        } else if (dataFile.isEmpty()) {
-            result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
-            return result;
+        LOGGER.info("receive request md5Value={},originFileName", md5Value, originalFilename);
+        if (StringUtils.isBlank(md5Value) || file == null || StringUtils.isBlank(originalFilename)) {
+            return ApiJsonHandler.genJsonRet(ResultType.Fail);
         }
-        String originFileName = dataFile.getOriginalFilename();
-        LOGGER.info("originFileName = {}", originFileName);
+        String storeLocalFilePath = null;
         try {
-            String fileExt = FileHandle.getFileExt(originFileName);
-            String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
-            String toFilePath = localDirCacheService.storeFile(dataFile.getInputStream(), newFileName);
-            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
-
-            //TODO
-
-            if (result == null) {
-                result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+            LOGGER.info("设备上传数据文件开始处理,originFileName={}", originalFilename);
+            String newFileName = localDirCacheService.getLocalFileName(originalFilename);
+            LOGGER.info("originalFilename = {},newFileName={}", originalFilename, newFileName);
+            storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+            LOGGER.info("设备上传数据文件开始处理originFileName={},保存到本地成功,路径为{}", originalFilename, storeLocalFilePath);
+            String md5 = DesencryptUtils.md5File(new File(storeLocalFilePath));
+            if (StringUtils.endsWithIgnoreCase(md5, md5Value)) {
+                result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
             }
         } catch (Exception e) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             LOGGER.error("processLog error ", e);
         } finally {
             LOGGER.info("processLog:returnObj={}", result);
+        }
+        if (result == null) {
+            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
         }
 
         return result;
