@@ -123,7 +123,7 @@ public interface UserMapper {
                                             @Param("userId") long userId);
 
 
-    List<UserVo> queryAllUser(Pagination pape, @Param("searchValue") String searchValue);
+    List<UserVo> queryAllUser(@Param("searchValue") String searchValue);
 
     Long queryUserVoCount(Pagination pape, @Param("searchValue") String searchValue);
 

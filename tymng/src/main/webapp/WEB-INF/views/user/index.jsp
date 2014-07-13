@@ -200,6 +200,8 @@ function initPage() {
         url: '<%=basePath%>/tymng/user/getAll',
         loadMsg: '数据加载中请稍后……',
         pagination: true,
+        pageSize: 100,
+        pageList: [50, 100, 200],
         fitColumns: true,
         rownumbers: true,
         fit: true,
