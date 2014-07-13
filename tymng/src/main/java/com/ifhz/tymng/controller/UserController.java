@@ -175,9 +175,12 @@ public class UserController extends BaseController {
     @RequestMapping("/delete")
     @ResponseBody()
     public String delete(HttpServletRequest request) {
+        Result result = new Result();
+        result.setCode(1);
+        result.setMessage("删除成功");
         String id = request.getParameter("id");
         userService.deleteUser(Integer.parseInt(id));
-        return "";
+        return JSON.toJSONString(result);
     }
 
     /**

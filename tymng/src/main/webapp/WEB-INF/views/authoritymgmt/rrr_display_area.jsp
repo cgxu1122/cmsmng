@@ -53,7 +53,9 @@
 <div id="msg"></div>
 <div id="dlg1-buttons">
     <input type="hidden" id="roleId" name="roleId" value="${id}"/>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="authorization()">授权</a>
+    <shiro:hasPermission name="system_auth_btn">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="authorization()">授权</a>
+    </shiro:hasPermission>
 </div>
 </body>
 </html>

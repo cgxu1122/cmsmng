@@ -62,30 +62,7 @@
                     ]
                 ],
                 pagination: true,
-                toolbar: [
-                    {
-                        text: '新增',
-                        iconCls: 'icon-add',
-                        handler: function () {
-                            addrow();
-                        }
-                    },
-                    '-',
-                    {
-                        text: '修改',
-                        handler: function () {
-                            editrow(this);
-                        }
-                    },
-                    '-',
-                    {
-                        text: '删除',
-                        iconCls: 'icon-remove',
-                        handler: function () {
-                            deleterow();
-                        }
-                    }
-                ]
+                toolbar: '#toolbar'
             });
         }
 
@@ -170,6 +147,29 @@
 </head>
 <body>
 <div id="dg"></div>
+<div id="toolbar">
+    <div>
+        <table>
+            <tr>
+                <th>
+                    <shiro:hasPermission name="system_role_add">
+                        <a href="#" class="easyui-linkbutton" id="add" onclick="addrow()">新建</a>
+                    </shiro:hasPermission>
+                </th>
+                <th>
+                    <shiro:hasPermission name="system_role_update">
+                        <a href="#" class="easyui-linkbutton" id="update" onclick="editrow(this)">修改</a>
+                    </shiro:hasPermission>
+                </th>
+                <th>
+                    <shiro:hasPermission name="system_role_delete">
+                        <a href="#" class="easyui-linkbutton" id="delete" onclick="deleterow()">删除</a>
+                    </shiro:hasPermission>
+                </th>
+            </tr>
+        </table>
+    </div>
+</div>
 <div id="dlg" class="easyui-dialog"
      style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
     <div class="ftitle">新建角色</div>

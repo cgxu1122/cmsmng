@@ -142,10 +142,11 @@ function updaterow() {
 function deleterow() {
     var row = $('#dgg').datagrid('getSelected');
     if (row) {
-        $.messager.confirm('提示', '确定要删除[' + row.name + ']?', function (r) {
+        $.messager.confirm('提示', '确定要删除[' + row.roleName + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/tymng/auth/delete', {id: row.id}, function (result) {
-                    if (result.success) {
+                $.post('<%=basePath%>/tymng/user/delete', {id: row.userId}, function (result) {
+                    var result = eval("(" + result + ")");
+                    if (result.code == 1) {
                         $('#dgg').datagrid('reload');
                     } else {
                         $.messager.alert('错误', result.errorMsg);
@@ -266,6 +267,11 @@ function search() {
                 <shiro:hasPermission name="system_user_update">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改用户信息</a>
+                    </td>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="system_user_delete">
+                    <td align="center">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="deleterow()">删除用户信息</a>
                     </td>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="system_user_update_pw">
