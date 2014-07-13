@@ -23,9 +23,9 @@ Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS
 
 
 
-Insert into TY_ROLE (ROLE_ID,ROLE_NAME,PARENT_ID,FULL_PATH,LEVELS,CREATE_TIME) values (1,'user',-1,'1',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into TY_ROLE (ROLE_ID,ROLE_NAME,PARENT_ID,FULL_PATH,LEVELS,CREATE_TIME) values (2,'manager',-1,'1',1,to_date('2014-06-28', 'YYYY-mm-dd'));
-Insert into TY_ROLE (ROLE_ID,ROLE_NAME,PARENT_ID,FULL_PATH,LEVELS,CREATE_TIME) values (3,'admin',-1,'1',1,to_date('2014-06-28', 'YYYY-mm-dd'));
+Insert into TY_ROLE (ROLE_ID,ROLE_NAME,PARENT_ID,FULL_PATH,LEVELS,CREATE_TIME,"type","del_disable") values (3,'user',-1,'1',1,to_date('2014-06-28', 'YYYY-mm-dd'),3,0);
+Insert into TY_ROLE (ROLE_ID,ROLE_NAME,PARENT_ID,FULL_PATH,LEVELS,CREATE_TIME,"type","del_disable") values (2,'manager',-1,'1',1,to_date('2014-06-28', 'YYYY-mm-dd'),2,0);
+Insert into TY_ROLE (ROLE_ID,ROLE_NAME,PARENT_ID,FULL_PATH,LEVELS,CREATE_TIME,"type","del_disable") values (1,'admin',-1,'1',1,to_date('2014-06-28', 'YYYY-mm-dd'),1,0);
 
 
 Insert into TY_ROLE_RESOURCE_REF (ID,ROLE_ID,RESOURCE_ID,ACCES,CREATE_TIME) values (1,1,1,1,to_date('2014-06-28', 'YYYY-mm-dd'));
