@@ -356,42 +356,6 @@
         </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="partnerquery_menu">
-    <div title="合作方查询后台" style="overflow: auto;">
-        <shiro:hasPermission name="partnerquery_ty">
-            <div class="nav-item">
-                <a href="javascript:addTab('天音渠道查询','<%=basePath%>/tymng/partnerQuery/indexTY','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>天音渠道</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="partnerquery_db">
-            <div class="nav-item">
-                <a href="javascript:addTab('地包渠道查询','<%=basePath%>/tymng/partnerQuery/indexDB','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>地包渠道</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="partnerquery_cphzf">
-            <div class="nav-item">
-                <a href="javascript:addTab('cp合作方查询','<%=basePath%>/tymng/partnerQuery/indexCP','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>cp合作方</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="partnerquery_lw">
-            <div class="nav-item">
-                <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/tymng/partnerQuery/indexLW','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>劳务渠道</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-    </div>
-</shiro:hasPermission>
 <shiro:hasPermission name="report_menu">
     <div title="报表统计" style="overflow: auto;">
         <shiro:hasPermission name="report_store">
@@ -451,34 +415,6 @@
                 <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/rrr/index','menu_icon_wjldgl')">
                     <span class="menu_icon_wjldgl"></span>
                     <span>授权管理</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-    </div>
-</shiro:hasPermission>
-<shiro:hasPermission name="help_menu">
-    <div title="辅助功能" style="overflow: auto;">
-        <shiro:hasPermission name="help_queryimei">
-            <div class="nav-item">
-                <a href="javascript:addTab('查询Imei','<%=basePath%>/tymng/imeiQuery/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>查询Imei</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="help_uploadimei">
-            <div class="nav-item">
-                <a href="javascript:addTab('上传Imei','<%=basePath%>/tymng/imeiUpload/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>上传Imei</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="help_uploadzip">
-            <div class="nav-item">
-                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/tymng/zipUpload/index','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>上传Zip文件</span>
                 </a>
             </div>
         </shiro:hasPermission>

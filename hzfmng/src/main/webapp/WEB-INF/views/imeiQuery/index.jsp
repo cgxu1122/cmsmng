@@ -8,11 +8,13 @@
     <title>Demo</title>
     <script type="text/javascript">
         $(document).ready(function () {
+            initPage(null);
         });
 
+        var imeiPath;
         function importImei() {
             $('#fm').form('submit', {
-                url: '<%=basePath%>/hzfmng/imeiQuery/exportImei.do',
+                url: '<%=basePath%>/hzfmng/imeiQuery/list.do',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -21,21 +23,19 @@
                     if (result.errorMsg) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
-                        initPage();
+                        imeiPath = result.imeiPath;
+                        initPage(result.rows);
                     }
                 }
             });
         }
 
-        function initPage() {
-            var startDate = $('#startDate').datebox('getValue');
-            var endDate = $('#endDate').datebox('getValue');
+        function initPage(rows) {
             $('#dg').datagrid({
                 fitColumns: true,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/hzfmng/imeiQuery/list.do',
-                queryParams: {startDate: startDate, endDate: endDate},
+                data: rows,
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -43,12 +43,7 @@
                         {field: 'imei', title: 'imei', align: 'center', width: 200},
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                         {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
-                        {field: 'processDate', title: '安装日期', align: 'center', width: 200,
-                            formatter: function (value) {
-                                return new Date(value).formate("yyyy-MM-dd");
-                            }
-                        },
-                        {field: 'uploadDate', title: '上传日期', align: 'center', width: 200,
+                        {field: 'processTime', title: '安装日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
@@ -58,7 +53,19 @@
             });
         }
         function exportData() {
-            window.location.href = "<%=basePath%>/hzfmng/imeiQuery/exportData.do";
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/hzfmng/imeiQuery/exportData.do?imeiPath=" + imeiPath,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -74,7 +81,7 @@
                 </td>
                 <td align="center">
                     <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
-                       onclick="importImei()">导入imei</a>
+                       onclick="importImei()">根据imei文件查询</a>
                 </td>
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>

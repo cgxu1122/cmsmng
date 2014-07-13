@@ -21,9 +21,10 @@ function searchEvt() {
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
     var channelId = $('#channelId').val();
+    var deviceCode = $('#deviceCode').val();
     $('#dg').datagrid({
         url: "<%=basePath%>/hzfmng/reportCount/listLogStat",
-        queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId}
+        queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId, deviceCode: deviceCode}
     });
 }
 
@@ -32,22 +33,23 @@ function resetEvt() {
     $('#modelName').val("");
     $('#channelId').val("");
     $('#channelName').val("");
+    $('#deviceCode').val("");
 }
 
 function initPage() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     $('#dg').datagrid({
+        fitColumns: true,
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/hzfmng/reportCount/listLogStat',
-        queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
+        queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         pageSize: 100,
         pageList: [50, 100, 200],
         rownumbers: true,
-        fitColumns: true,
         columns: [
             [
                 {field: 'processDate', title: '日期', align: 'center', width: 200,
@@ -58,41 +60,12 @@ function initPage() {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'modelName', title: '机型名称', align: 'center', width: 200},
-                {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
+                {field: 'channelName', title: '渠道商名称', align: 'center', width: 200},
+                {field: 'modelName', title: '机型全称', align: 'center', width: 200},
+                {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
                 {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',1)>" + value + "</a>";
-                    }
-                },
-                {field: 'deviceUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',2)>" + value + "</a>";
-                    }
-                },
-                {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',3)>" + value + "</a>";
-                    }
-                },
-                {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',4)>" + value + "</a>";
-                    }
-                },
-                {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',5)>" + value + "</a>";
-                    }
-                },
-                {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',6)>" + value + "</a>";
-                    }
-                },
-                {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',7)>" + value + "</a>";
+                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',1)>" + value + "</a>";
                     }
                 }
             ]
@@ -104,13 +77,15 @@ var uaCur;
 var channelIdCur;
 var modelNameCur;
 var channelNameCur;
+var deviceCodeCur;
 var queryTypeCur;
-function showIMEIDialog(processDate, ua, channelId, modelName, channelName, queryType) {
+function showIMEIDialog(processDate, ua, channelId, modelName, channelName, deviceCode, queryType) {
     processDateCur = processDate;
     uaCur = ua;
     channelIdCur = channelId;
     modelNameCur = modelName;
     channelNameCur = channelName;
+    deviceCodeCur = deviceCode;
     queryTypeCur = queryType;
     $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
     $('#imeidg').datagrid({
@@ -120,7 +95,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, channelName, quer
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/hzfmng/reportCount/listImei',
-        queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, channelName: channelName, queryType: queryType},
+        queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, channelName: channelName, deviceCode: deviceCode, queryType: queryType},
         loadMsg: '数据加载中请稍后……',
         rownumbers: true,
         columns: [
@@ -132,6 +107,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, channelName, quer
                 },
                 {field: 'modelName', title: '机型名称', align: 'center', width: 150},
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
+                {field: 'deviceCode', title: '设备编码', align: 'center', width: 150},
                 {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
             ]
         ]
@@ -140,7 +116,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, channelName, quer
 function exportImeiEvt() {
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/hzfmng/reportCount/exportImei?exportType=1&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&queryType=" + queryTypeCur,
+        url: "<%=basePath%>/hzfmng/reportCount/exportImei?exportType=2&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&deviceCode=" + deviceCodeCur + "&queryType=" + queryTypeCur,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -152,6 +128,43 @@ function exportImeiEvt() {
         }
     });
 }
+
+function showDeviceDialog() {
+    $('#devicedlg').dialog('open').dialog('setTitle', '选择设备');
+    $('#devicedg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        fitColumns: true,
+        striped: true,
+        singleSelect: true,
+        url: '<%=basePath%>/hzfmng/deviceInfo/list',
+        queryParams: {groupId: 2},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        columns: [
+            [
+                {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
+                {field: 'action', title: '操作', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        return "<a href='javascript:void(0)' onclick=javascript:selectDevice('" + row.deviceCode + "')>选择</a>";
+                    }
+                }
+            ]
+        ]
+    });
+}
+function searchDeviceEvt() {
+    var value = $('#searchDeviceValue').val();
+    $('#devicedg').datagrid({
+        url: "<%=basePath%>/hzfmng/deviceInfo/list",
+        queryParams: {deviceCodeCondition: value, groupId: 2}
+    });
+}
+function selectDevice(deviceCode) {
+    $("#deviceCode").val(deviceCode);
+    $('#devicedlg').dialog('close');
+}
 function showModelDialog() {
     $('#modeldlg').dialog('open').dialog('setTitle', '选择机型');
     $('#modeldg').datagrid({
@@ -161,7 +174,7 @@ function showModelDialog() {
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/hzfmng/modelInfo/list',
-        queryParams: {groupId: 1},
+        queryParams: {groupId: 2},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         rownumbers: true,
@@ -182,7 +195,7 @@ function searchModelEvt() {
     var value = $('#searchModelValue').val();
     $('#modeldg').datagrid({
         url: "<%=basePath%>/hzfmng/modelInfo/list",
-        queryParams: {modelNameCondition: value, groupId: 1}
+        queryParams: {modelNameCondition: value, groupId: 2}
     });
 }
 function selectModel(ua, modelName) {
@@ -199,11 +212,10 @@ function showChannelDialog() {
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/hzfmng/channelInfo/listAll',
-        queryParams: {groupId: 1},
+        queryParams: {groupId: 2},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         rownumbers: true,
-        fit: true,
         columns: [
             [
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
@@ -219,8 +231,8 @@ function showChannelDialog() {
 function searchChannelEvt() {
     var value = $('#searchChannelValue').val();
     $('#channeldg').datagrid({
-        url: "<%=basePath%>/hzfmng/channelInfo/listAll",
-        queryParams: {channelNameCondition: value, groupId: 1}
+        url: "<%=basePath%>/hzfmng/channelInfo/listChannelByLW",
+        queryParams: {channelNameCondition: value, groupId: 2}
     });
 }
 function selectChannel(channelId, channelName) {
@@ -228,15 +240,15 @@ function selectChannel(channelId, channelName) {
     $("#channelId").val(channelId);
     $('#channeldlg').dialog('close');
 }
-
 function exportData() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
     var channelId = $('#channelId').val();
+    var deviceCode = $('#deviceCode').val();
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/hzfmng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId,
+        url: "<%=basePath%>/hzfmng/reportCount/exportData?groupId=2&exportType=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&deviceCode=" + deviceCode,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -255,6 +267,10 @@ function exportData() {
     <div>
         <table>
             <tr>
+                <td>
+                    <input type="text" name="deviceCode" id="deviceCode" placeholder="选择设备" readonly="readonly"
+                           onclick="showDeviceDialog()"/>
+                </td>
                 <td>
                     <input type="text" name="modelName" id="modelName" placeholder="选择机型" readonly="readonly"
                            onclick="showModelDialog()"/>
@@ -286,6 +302,31 @@ function exportData() {
     </div>
 </div>
 <div id="dg"></div>
+<div id="devicedlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#devicedlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="searchDeviceValue" id="searchDeviceValue" placeholder="设备编码"/>
+                    </td>
+                    <td align="center">
+                        <a id="searchDeviceBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           iconCls="icon-search"
+                           onclick="searchDeviceEvt()">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="devicedg"></div>
+</div>
+<div id="devicedlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#devicedlg').dialog('close')">关闭</a>
+</div>
 <div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">
@@ -336,7 +377,6 @@ function exportData() {
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
 </div>
-
 <div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#imeidlg-buttons">

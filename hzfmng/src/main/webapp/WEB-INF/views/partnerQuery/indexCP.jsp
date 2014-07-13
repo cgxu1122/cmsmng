@@ -31,8 +31,7 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             $('#dg').datagrid({
-                width: 'auto',
-                height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listProductStat',
@@ -44,7 +43,7 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'processDate', title: '日期', align: 'center', width: 300,
+                        {field: 'processDate', title: '日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 if (value == null) {
                                     return "合计"
@@ -52,11 +51,11 @@
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'modelName', title: '机型名称', align: 'center', width: 400},
+                        {field: 'modelName', title: '机型名称', align: 'center', width: 300},
+                        {field: 'productName', title: '产品名称', align: 'center', width: 300},
                         {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                //return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>"+value+"</a>";
-                                return "<a href='javascript:void(0)'>" + value + "</a>";
+                                return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "')>" + value + "</a>";
                             }
                         }
                     ]
@@ -64,10 +63,11 @@
             });
         }
         function showProductDialog() {
-            $('#productdlg').dialog('open').dialog('setTitle', '选择 产品');
+            $('#productdlg').dialog('open').dialog('setTitle', '选择产品');
             $('#productdg').datagrid({
                 width: 'auto',
                 height: 'auto',
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/productInfo/list',
@@ -99,11 +99,76 @@
             $("#productId").val(productId);
             $('#productdlg').dialog('close');
         }
+
+        var processDateCur;
+        var uaCur;
+        var productIdCur;
+        var modelNameCur;
+        function showIMEIDialog(processDate, ua, productId, modelName) {
+            processDateCur = processDate;
+            uaCur = ua;
+            productIdCur = productId;
+            modelNameCur = modelName;
+            $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
+            $('#imeidg').datagrid({
+                width: 'auto',
+                height: 'auto',
+                fitColumns: true,
+                striped: true,
+                singleSelect: true,
+                url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
+                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName},
+                loadMsg: '数据加载中请稍后……',
+                rownumbers: true,
+                columns: [
+                    [
+                        {field: 'a', title: '日期', align: 'center', width: 150,
+                            formatter: function (value) {
+                                return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
+                            }
+                        },
+                        {field: 'modelName', title: '机型', align: 'center', width: 150},
+                        {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
+                    ]
+                ]
+            });
+        }
+        function exportImeiEvt() {
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
+        }
         function exportData() {
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             var productId = $('#productId').val();
-            window.location.href = "<%=basePath%>/hzfmng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId;
+            $("body").showLoading();
+            $.ajax({
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId,
+                success: function (result) {
+                    $("body").hideLoading();
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.alert('错误', result.errorMsg);
+                    } else {
+                        window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
+                    }
+                }
+            });
+        }
+        function resetEvt() {
+            $('#productId').val("");
+            $('#productName').val("");
         }
     </script>
 </head>
@@ -128,6 +193,9 @@
                        onclick="searchEvt()">查询</a>
                 </td>
                 <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetEvt()">重置</a>
+                </td>
+                <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="exportData()">导出</a>
                 </td>
             </tr>
@@ -135,7 +203,7 @@
     </div>
 </div>
 <div id="dg"></div>
-<div id="productdlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+<div id="productdlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#productdlg-buttons">
     <div>
@@ -159,6 +227,27 @@
 <div id="productdlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#productdlg').dialog('close')">关闭</a>
+</div>
+<div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#imeidlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td align="center">
+                        <a id="exportImeiBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           onclick="exportImeiEvt()">导出</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="imeidg"></div>
+</div>
+<div id="imeidlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#imeidlg').dialog('close')">关闭</a>
 </div>
 </body>
 </html>

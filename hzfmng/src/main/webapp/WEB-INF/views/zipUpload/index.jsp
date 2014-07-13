@@ -15,7 +15,7 @@
         function searchEvt() {
             var value = $('#searchValue').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/tymng/apkInfo/list",
+                url: "<%=basePath%>/hzfmng/apkInfo/list",
                 queryParams: {apkNameCondition: value}
             });
         }
