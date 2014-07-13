@@ -55,7 +55,11 @@
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                         {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
+                                if (row.processDate == null) {
+                                    return value;
+                                } else {
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
+                                }
                             }
                         }
                     ]

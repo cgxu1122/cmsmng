@@ -56,9 +56,15 @@ function initPage() {
                 {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                 {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else if (row.queryImeiSource == 'N') {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
+                        }
                     }
-                }
+                        }
             ]
         ]
     });
@@ -176,7 +182,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, deviceCode) {
 function exportImeiEvt() {
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur,
+        url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?userType=lw&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -184,8 +190,8 @@ function exportImeiEvt() {
                 $.messager.alert('错误', result.errorMsg);
             } else {
                 window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
-            }
-        }
+                    }
+                }
     });
 }
 
@@ -204,16 +210,16 @@ function exportData() {
                 $.messager.alert('错误', result.errorMsg);
             } else {
                 window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
-            }
-        }
+                    }
+                }
     });
-}
+        }
 function resetEvt() {
     $('#ua').val("");
     $('#modelName').val("");
     $('#channelId').val("");
     $('#channelName').val("");
-}
+        }
 </script>
 </head>
 <body>

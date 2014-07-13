@@ -69,6 +69,15 @@ public class LogStat implements Serializable {
     private Integer processType;
     //页面返回值
     private String channelName;
+    private String queryImeiSource;
+
+    public String getQueryImeiSource() {
+        return queryImeiSource;
+    }
+
+    public void setQueryImeiSource(String queryImeiSource) {
+        this.queryImeiSource = queryImeiSource;
+    }
 
     public String getChannelName() {
         return channelName;

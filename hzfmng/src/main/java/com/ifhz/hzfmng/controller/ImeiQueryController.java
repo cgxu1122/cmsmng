@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.ifhz.core.base.commons.excel.ExcelHandle;
+import com.ifhz.core.base.commons.util.ExportDataUtil;
 import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.imei.ImeiQueryService;
 import com.ifhz.core.service.imei.bean.DataLogResult;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -72,6 +77,7 @@ public class ImeiQueryController {
             List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiList);
 
             result.put("ret", true);
+            result.put("imeiPath", toFilePath);
             result.put("rows", dataLogResultList);
         } catch (Exception e) {
             result.put("ret", false);
@@ -83,6 +89,47 @@ public class ImeiQueryController {
 
         return result;
     }
+
+    @RequestMapping(value = "/exportData.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject exportData(@RequestParam(value = "imeiPath") String imeiPath,
+                          HttpServletRequest request) {
+        LOGGER.info("rev msg imeiPath={}", imeiPath);
+        JSONObject result = new JSONObject();
+        if (StringUtils.isBlank(imeiPath)) {
+            result.put("ret", false);
+            result.put("errorMsg", "请求错误，请先导入imei文件查询再导出");
+            return result;
+        }
+
+        try {
+            LOGGER.info("用户导出Imei文件 imeiPath={} ----------开始处理", imeiPath);
+            List<String> imeiList = ExcelHandle.readImeiListFromExcel(imeiPath);
+            LOGGER.info("用户上传imei查询文件fileName={},从Excel解析ImeiList={}", JSON.toJSONString(imeiList));
+            List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiList);
+
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("imei", "imei");
+            titleMap.put("modelName", "机型全称");
+            titleMap.put("channelName", "仓库名称");
+            titleMap.put("processTime", "安装日期");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(dataLogResultList);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
+        }
+
+        return result;
+    }
+
 
     public boolean checkFileType(String fileName) {
         if (StringUtils.endsWithIgnoreCase(fileName, ".xls")) {

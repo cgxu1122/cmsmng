@@ -151,7 +151,7 @@ public class PartnerInfoController extends BaseController {
         List<PartnerInfo> list = partnerInfoService.queryByVo(page, pi);
         if (list != null && list.size() > 0) {
             for (PartnerInfo repeatCodePi : list) {
-                if (repeatCodePi.getPartnerId() != partnerInfo.getPartnerId()) {
+                if (!repeatCodePi.getPartnerId().equals(partnerInfo.getPartnerId())) {
                     result.put("errorMsg", "合作方名称重复，请重新输入！");
                     return result;
                 }

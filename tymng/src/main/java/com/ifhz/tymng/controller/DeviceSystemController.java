@@ -190,7 +190,7 @@ public class DeviceSystemController extends BaseController {
         List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
         if (list != null && list.size() > 0) {
             for (DeviceSystem repeatVersionDs : list) {
-                if (repeatVersionDs.getSystemId() != deviceSystem.getSystemId()) {
+                if (!repeatVersionDs.getSystemId().equals(deviceSystem.getSystemId())) {
                     result.put("errorMsg", "版本号重复，请重新输入！");
                     return result;
                 }

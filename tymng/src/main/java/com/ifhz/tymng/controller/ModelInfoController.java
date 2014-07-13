@@ -224,7 +224,7 @@ public class ModelInfoController extends BaseController {
         List<ModelInfo> list = modelInfoService.queryByVo(page, mi);
         if (list != null && list.size() > 0) {
             for (ModelInfo repeatNameCi : list) {
-                if (repeatNameCi.getModelId() != modelInfo.getModelId()) {
+                if (!repeatNameCi.getModelId().equals(modelInfo.getModelId())) {
                     result.put("errorMsg", "机型全名重复，请重新输入！");
                     return result;
                 }
@@ -239,7 +239,7 @@ public class ModelInfoController extends BaseController {
         list = modelInfoService.queryByVo(page, mi);
         if (list != null && list.size() > 0) {
             for (ModelInfo repeatUaCi : list) {
-                if (repeatUaCi.getModelId() != modelInfo.getModelId()) {
+                if (!repeatUaCi.getModelId().equals(modelInfo.getModelId())) {
                     errorMsg = "UA重复，请重新输入！";
                     result.put("errorMsg", errorMsg);
                     return result;

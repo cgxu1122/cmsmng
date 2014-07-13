@@ -171,14 +171,12 @@ public class PackageVo implements Serializable {
         List<PackageApkVo> list = Lists.newArrayList();
         PackageApkVo vo1 = new PackageApkVo();
         vo1.setApkId(Math.abs(random.nextLong()));
-        vo1.setCounter(0);
         vo1.setIcon(random.nextInt(2));
         vo1.setRun(random.nextInt(2));
         vo1.setSort(1);
 
         PackageApkVo vo2 = new PackageApkVo();
         vo1.setApkId(Math.abs(random.nextLong()));
-        vo1.setCounter(0);
         vo1.setIcon(random.nextInt(2));
         vo1.setRun(random.nextInt(2));
         vo1.setSort(2);
@@ -186,21 +184,18 @@ public class PackageVo implements Serializable {
 
         PackageApkVo vo3 = new PackageApkVo();
         vo3.setApkId(Math.abs(random.nextLong()));
-        vo3.setCounter(1);
         vo3.setIcon(1);
         vo3.setRun(0);
         vo3.setSort(3);
 
         PackageApkVo vo4 = new PackageApkVo();
         vo4.setApkId(Math.abs(random.nextLong()));
-        vo4.setCounter(0);
         vo4.setIcon(random.nextInt(2));
         vo4.setRun(random.nextInt(2));
         vo4.setSort(4);
 
         PackageApkVo vo5 = new PackageApkVo();
         vo5.setApkId(10L);
-        vo5.setCounter(0);
         vo5.setIcon(0);
         vo5.setRun(1);
         vo5.setSort(5);

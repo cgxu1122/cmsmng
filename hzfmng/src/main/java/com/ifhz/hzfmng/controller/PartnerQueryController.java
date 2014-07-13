@@ -1,4 +1,4 @@
-package com.ifhz.tymng.controller;
+package com.ifhz.hzfmng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
@@ -35,13 +35,16 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yangjian
  */
 @Controller
-@RequestMapping("/tymng/partnerQuery")
+@RequestMapping("/hzfmng/partnerQuery")
 public class PartnerQueryController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerQueryController.class);
     @Autowired
@@ -124,6 +127,11 @@ public class PartnerQueryController extends BaseController {
         if (CollectionUtils.isNotEmpty(list)) {
             LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
             list.add(countLogStat);
+            if (channelInfo != null) {
+                for (LogStat logStat1 : list) {
+                    logStat1.setQueryImeiSource(channelInfo.getQueryImeiSource());
+                }
+            }
         }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -206,19 +214,15 @@ public class PartnerQueryController extends BaseController {
         Pagination page = new Pagination();
         if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
-        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
-        if (partnerInfo == null) {
-            JSONObject result = new JSONObject();
-            result.put("total", 0);
-            result.put("rows", new ArrayList<ProductStat>());
-            return result;
-        }
         //查询条件
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         ProductStat productStat = new ProductStat();
-        productStat.setPartnerId(partnerInfo.getPartnerId());
+        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+        if (partnerInfo != null) {
+            productStat.setPartnerId(partnerInfo.getPartnerId());
+        }
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
         }
@@ -232,6 +236,11 @@ public class PartnerQueryController extends BaseController {
         if (CollectionUtils.isNotEmpty(list)) {
             ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
             list.add(countProductStat);
+            if (partnerInfo != null) {
+                for (ProductStat productStat1 : list) {
+                    productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
+                }
+            }
         }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -249,6 +258,10 @@ public class PartnerQueryController extends BaseController {
         JSONObject result = new JSONObject();
         try {
             ProductStat productStat = new ProductStat();
+            PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+            if (partnerInfo != null) {
+                productStat.setPartnerId(partnerInfo.getPartnerId());
+            }
             if (StringUtils.isNotEmpty(productId)) {
                 productStat.setProductId(Long.parseLong(productId));
             }
@@ -287,10 +300,12 @@ public class PartnerQueryController extends BaseController {
     @RequestMapping(value = "/listImei", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject listImei(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
         //查询条件
         String processDate = request.getParameter("processDate");
         String channelId = request.getParameter("channelId");
         String productId = request.getParameter("productId");
+        String groupId = request.getParameter("groupId");
         String channelName = request.getParameter("channelName");
         String deviceCode = request.getParameter("deviceCode");
         String modelName = request.getParameter("modelName");
@@ -305,12 +320,14 @@ public class PartnerQueryController extends BaseController {
         if (StringUtils.isNotEmpty(productId)) {
             statImeiRequest.setProductId(Long.parseLong(productId));
         }
+        if (StringUtils.isNotEmpty(groupId)) {
+            statImeiRequest.setGroupId(Long.parseLong(groupId));
+        }
         statImeiRequest.setDeviceCode(deviceCode);
         statImeiRequest.setChannelName(channelName);
         statImeiRequest.setModelName(modelName);
         statImeiRequest.setUa(ua);
         List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-        JSONObject result = new JSONObject();
         result.put("rows", list);
         return result;
     }
@@ -324,9 +341,30 @@ public class PartnerQueryController extends BaseController {
             String processDate = request.getParameter("processDate");
             String channelId = request.getParameter("channelId");
             String productId = request.getParameter("productId");
+            String groupId = request.getParameter("groupId");
             String ua = request.getParameter("ua");
             String deviceCode = request.getParameter("deviceCode");
             String modelName = request.getParameter("modelName");
+            String userType = request.getParameter("userType");
+            if ("lw".equals(userType)) {
+                ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+                if (JcywConstants.BASE_CONSTANT_N.equals(channelInfo.getQueryImeiSource())) {
+                    result.put("ret", false);
+                    result.put("errorMsg", "对不起，你没有导出此imei的权限！");
+                    return result;
+                }
+            } else if ("cp".equals(userType)) {
+                PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+                if (JcywConstants.BASE_CONSTANT_N.equals(partnerInfo.getExportImeiSource())) {
+                    result.put("ret", false);
+                    result.put("errorMsg", "对不起，你没有导出此imei的权限！");
+                    return result;
+                }
+            } else {
+                result.put("ret", false);
+                result.put("errorMsg", "对不起，你没有导出此imei的权限！");
+                return result;
+            }
             StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
             if (StringUtils.isNotEmpty(processDate)) {
                 statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
@@ -334,8 +372,11 @@ public class PartnerQueryController extends BaseController {
             if (StringUtils.isNotEmpty(channelId)) {
                 statImeiRequest.setChannelId(Long.parseLong(channelId));
             }
-            if (StringUtils.isNotEmpty(channelId)) {
-                statImeiRequest.setChannelId(Long.parseLong(channelId));
+            if (StringUtils.isNotEmpty(productId)) {
+                statImeiRequest.setProductId(Long.parseLong(productId));
+            }
+            if (StringUtils.isNotEmpty(groupId)) {
+                statImeiRequest.setGroupId(Long.parseLong(groupId));
             }
             statImeiRequest.setUa(ua);
             statImeiRequest.setDeviceCode(deviceCode);
