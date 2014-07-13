@@ -50,8 +50,11 @@ public class StatConvertHandler {
     public static String getMd5KeyForLogStat(DataLog dataLog) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(dataLog.getUa());
+        buffer.append(",");
         buffer.append(dataLog.getChannelId());
+        buffer.append(",");
         buffer.append(dataLog.getDeviceCode());
+        buffer.append(",");
         buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
 
         return DesencryptUtils.md5Str(buffer.toString());
@@ -69,8 +72,11 @@ public class StatConvertHandler {
     public static String getMd5KeyForProductStat(DataLog dataLog, Long productId) {
         StringBuffer buffer = new StringBuffer();
         buffer.append(dataLog.getUa());
+        buffer.append(",");
         buffer.append(dataLog.getGroupId());
+        buffer.append(",");
         buffer.append(productId);
+        buffer.append(",");
         buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
 
         return DesencryptUtils.md5Str(buffer.toString());

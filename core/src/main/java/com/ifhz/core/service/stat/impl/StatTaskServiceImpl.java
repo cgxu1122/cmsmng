@@ -67,8 +67,6 @@ public class StatTaskServiceImpl implements StatTaskService {
      */
     public void scanDataLog(Date startTime, Date endTime) {
         LOGGER.info("统计程序开始执行{},{}", DateFormatUtils.formatDate(startTime, "yyyy-MM-dd HH:mm:ss:sss"), DateFormatUtils.formatDate(endTime, "yyyy-MM-dd HH:mm:ss:sss"));
-        Map<String, LogStat> logStatHashMap = Maps.newHashMap();
-        Map<String, ProductStat> productStatHashMap = Maps.newHashMap();
         String tableName = splitTableService.getCurrentTableName(startTime);
         DataLogRequest dataLogRequest = new DataLogRequest();
         dataLogRequest.setTableName(tableName);
@@ -82,6 +80,8 @@ public class StatTaskServiceImpl implements StatTaskService {
             long pageNum = StatConvertHandler.getPageNum(totalCount, GlobalConstants.PAGE_SIZE);
             LOGGER.info("数据总量为{},分页值为{}", totalCount, pageNum);
             for (int i = 0; i < pageNum; i++) {
+                Map<String, LogStat> logStatHashMap = Maps.newConcurrentMap();
+                Map<String, ProductStat> productStatHashMap = Maps.newConcurrentMap();
                 Pagination page = new Pagination();
                 page.setPageSize(GlobalConstants.PAGE_SIZE);
                 page.setCurrentPage(i + 1);
