@@ -108,7 +108,7 @@
         on u.user_id = urr.user_id
         join ty_role r
         on urr.role_id = r.role_id
-        where 1=1
+        where r.role_id != 1
         <if test="searchValue != null">
             and ( u.login_name like concat(concat('%',#{searchValue}),'%' ) or r.role_name like
             concat(concat('%',#{searchValue}),'%' ) )
