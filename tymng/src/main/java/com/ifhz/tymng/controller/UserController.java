@@ -14,7 +14,6 @@ import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.auth.impl.ShiroDbRealm;
-import com.ifhz.core.util.MD5keyUtil;
 import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
@@ -159,7 +158,7 @@ public class UserController extends BaseController {
             return JSON.toJSONString(result);
         }
 
-        String newPassword = MD5keyUtil.getMD5Str(password);
+        String newPassword = password.trim();
         result = userService.updateUserPassword(Long.parseLong(userId), newPassword);
 
         return JSON.toJSONString(result);
