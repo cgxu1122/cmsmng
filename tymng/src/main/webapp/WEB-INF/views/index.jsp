@@ -204,7 +204,6 @@
 </shiro:hasPermission>
 <shiro:hasPermission name="model_menu">
     <div title="机型管理" style="overflow: auto;">
-
         <shiro:hasPermission name="model_ty">
             <div class="nav-item">
                 <a href="javascript:addTab('天音渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=1','menu_icon_datadeal')">

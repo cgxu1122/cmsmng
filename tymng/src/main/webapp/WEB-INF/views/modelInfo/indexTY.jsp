@@ -139,17 +139,17 @@
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
                 </td>
-                <shiro:hasPermission name="modle_ty_add">
+                <shiro:hasPermission name="model_ty_add">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
                     </td>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="modle_ty_update">
+                <shiro:hasPermission name="model_ty_update">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
                     </td>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="modle_ty_delete">
+                <shiro:hasPermission name="model_ty_delete">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="delrow()">删除</a>
                     </td>
