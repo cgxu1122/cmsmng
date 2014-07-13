@@ -1,6 +1,7 @@
 package com.ifhz.hzfmng.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ifhz.core.progress.ProgressModel;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 /**
@@ -94,6 +97,40 @@ public class ZipUploadController {
         }
 
         return false;
+    }
+
+
+    /**
+     * 前端每隔固定毫秒数请求后台得到session当中保存的上传进度
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/getProgress", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject getProgress(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        try {
+            ProgressModel ps = (ProgressModel) request.getSession().getAttribute("upload_progress");
+            Double percent = 0d;
+            if (ps.getContentLength() != 0L) {
+                percent = (double) ps.getBytesRead() / (double) ps.getContentLength();  //百分比
+                if (percent != 0d) {
+                    DecimalFormat df = new DecimalFormat("0.0");
+                    percent = Double.parseDouble(df.format(percent));
+                }
+            }
+            result.put("ret", true);
+            result.put("percent", percent);
+        } catch (NumberFormatException e) {
+            result.put("ret", false);
+            LOGGER.error("getProgress error", e);
+        } finally {
+            LOGGER.info("returnObj={}", result.toJSONString());
+        }
+
+        return result;
     }
 
 }
