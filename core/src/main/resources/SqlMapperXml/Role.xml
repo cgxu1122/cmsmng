@@ -183,8 +183,8 @@
         create_time as createTime,
         parent_id as parentId,
         levels,
-        type as type,
-        del_disable as delDisable,
+        "type" as type,
+        "del_disable" as delDisable,
         full_path as fullPath
         from
         ty_role
