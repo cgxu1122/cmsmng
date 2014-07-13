@@ -7,6 +7,7 @@ package com.ifhz.core.service.auth;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.vo.RoleVo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -155,4 +156,6 @@ public interface RoleService {
     String findRoleTreeXmlStringByRoleId(long roleId);
 
     List<Role> findAllRoleSon(long roleId);
+
+    RoleVo findRootRole() throws InvocationTargetException, IllegalAccessException;
 }

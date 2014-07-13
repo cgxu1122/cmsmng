@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
@@ -82,11 +83,6 @@ public class UserController extends BaseController {
         if (StringUtils.isBlank(roleId)) {
             result.setCode(-1);
             result.setMessage("请选择角色");
-            return JSON.toJSONString(result);
-        }
-        if (!(user.getType() == UserConstants.USER_TYPE_MANAGER || user.getType() == UserConstants.USER_TYPE_NORMAL)) {
-            result.setCode(-1);
-            result.setMessage("请选择用户类型");
             return JSON.toJSONString(result);
         }
         if (!(user.getStatus() == UserConstants.USER_STATUS_DISABLE || user.getStatus() == UserConstants.USER_STATUS_ENABLE)) {
@@ -256,9 +252,21 @@ public class UserController extends BaseController {
     @RequestMapping("/getAllRole")
     @ResponseBody
     public JSONArray getAllRole() {
+        Result result = new Result();
+        result.setMessage("系统错误");
+        result.setCode(-1);
         ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
         long roleId = user.roleId;
-        List<Role> roleList = userService.findAllRoleSon(roleId);
+        List<Role> roleList = null;
+        try {
+            roleList = userService.findAllRoleSon(roleId);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            return JSON.parseArray(JSON.toJSONString(result));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return JSON.parseArray(JSON.toJSONString(result));
+        }
         return JSON.parseArray(JSON.toJSONString(roleList));
     }
 

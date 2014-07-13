@@ -4,7 +4,7 @@
     <!-- 插入角色记录 -->
     <insert id="insertRole" parameterType="com.ifhz.core.po.Role">
         insert into ty_role
-        (role_id,role_name,create_time,parent_id,levels,type,del_disable)
+        (role_id,role_name,create_time,parent_id,levels,"type","del_disable")
         values
         (SEQ_ROLE.nextval,#{roleName},sysdate,#{parentId},#{levels},#{type},#{delDisable})
         <selectKey resultType="long" keyProperty="role_id">
@@ -149,8 +149,8 @@
         parent.role_name as parentName,
         child.levels,
         child.full_path as fullPath,
-        child.type as type,
-        child.del_disable as delDisable
+        child."type" as type,
+        child."del_disable" as delDisable
         from
         ty_role child
         join

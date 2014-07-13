@@ -138,4 +138,12 @@ public class User implements java.io.Serializable {
         result = 31 * result + createTime.hashCode();
         return result;
     }
+
+    public boolean equalss(User dbUser) {
+        boolean flag = false;
+        if (this.getUserId() == dbUser.getUserId() && this.getCellphone().equals(dbUser.getCellphone()) && this.getAddress().equals(dbUser.getAddress())) {
+            return true;
+        }
+        return flag;
+    }
 }

@@ -73,6 +73,14 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.findAllRoleSon(roleId);
     }
 
+    @Override
+    public RoleVo findRootRole() throws InvocationTargetException, IllegalAccessException {
+        Role role = roleMapper.findRootRole();
+        RoleVo roleVo = new RoleVo();
+        BeanUtils.copyProperties(roleVo, role);
+        return roleVo;
+    }
+
     /**
      * 获取所有角色
      *

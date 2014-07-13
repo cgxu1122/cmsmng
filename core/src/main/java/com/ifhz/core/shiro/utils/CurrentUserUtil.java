@@ -59,8 +59,8 @@ public final class CurrentUserUtil {
 
     public static boolean isManager() {
         ShiroDbRealm.ShiroUser user = getShiroUser();
-        long type = user.type;
-        if (type == 2 || type == 3 || type == 4 || type == 5) {
+        long role = user.roleId;
+        if (role == 6) {
             return true;
         }
         return false;

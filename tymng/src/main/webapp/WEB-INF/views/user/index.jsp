@@ -21,7 +21,7 @@ function addrow() {
 
 
 function editrow(obj) {
-    var row = $('#dg').datagrid('getSelected');
+    var row = $('#dgg').datagrid('getSelected');
     if (row) {
         $('#dlg1').dialog('open').dialog('setTitle', '编辑用户');
         $('#fm1').form('load', row);
@@ -29,7 +29,7 @@ function editrow(obj) {
 }
 
 function updatePassword(obj) {
-    var row = $('#dg').datagrid('getSelected');
+    var row = $('#dgg').datagrid('getSelected');
     if (row) {
         $('#userIdUpPw').val(row.userId);
         $('#updatePassworddlg').dialog('open').dialog('setTitle', '修改用户密码');
@@ -58,6 +58,7 @@ function saverow() {
     }
 
     $('#fm').form('submit', {
+        method: "post",
         url: '<%=basePath%>/tymng/user/insert',
         onSubmit: function () {
             return $(this).form('validate');
@@ -70,7 +71,7 @@ function saverow() {
             } else {
                 $.messager.alert('成功', result.message);
                 $('#dlg').dialog('close');
-                $('#dg').datagrid('reload');
+                $('#dgg').datagrid('reload');
             }
         }
     });
@@ -84,6 +85,7 @@ function saveUpdatePassword() {
         return;
     }
     $('#upfm').form('submit', {
+        method: "post",
         url: '<%=basePath%>/tymng/user/updatePassowrd',
         onSubmit: function () {
             return $(this).form('validate');
@@ -97,7 +99,7 @@ function saveUpdatePassword() {
             } else {
                 $.messager.alert('成功', result.message);
                 $('#updatePassworddlg').dialog('close');
-                $('#dg').datagrid('reload');
+                $('#dgg').datagrid('reload');
             }
         }
     });
@@ -119,6 +121,7 @@ function updaterow() {
 
 
     $('#fm1').form('submit', {
+        method: "post",
         url: '<%=basePath%>/tymng/user/update',
         onSubmit: function () {
             return $(this).form('validate');
@@ -131,19 +134,19 @@ function updaterow() {
             } else {
                 $.messager.alert('成功', result.message);
                 $('#dlg1').dialog('close');
-                $('#dg').datagrid('reload');
+                $('#dgg').datagrid('reload');
             }
         }
     });
 }
 function deleterow() {
-    var row = $('#dg').datagrid('getSelected');
+    var row = $('#dgg').datagrid('getSelected');
     if (row) {
         $.messager.confirm('提示', '确定要删除[' + row.name + ']?', function (r) {
             if (r) {
                 $.post('<%=basePath%>/tymng/auth/delete', {id: row.id}, function (result) {
                     if (result.success) {
-                        $('#dg').datagrid('reload');
+                        $('#dgg').datagrid('reload');
                     } else {
                         $.messager.alert('错误', result.errorMsg);
                     }
@@ -189,7 +192,7 @@ function initPage() {
     });
 
 
-    $('#dg').datagrid({
+    $('#dgg').datagrid({
         height: '522',
         striped: true,
         singleSelect: true,
@@ -204,18 +207,6 @@ function initPage() {
                 {field: 'loginName', title: '登录名', align: 'center', width: 100},
                 {field: 'realName', title: '姓名', align: 'center', width: 100},
                 {field: 'roleName', title: '角色', align: 'center', width: 100},
-                {field: 'type', title: '用户类型', align: 'center', width: 100, formatter: function (value) {
-                    if (value == 1) {
-                        return "普通用户";
-                    } else if (value == 2) {
-                        return "负责人";
-                    } else if (value == 3) {
-                        return "管理员";
-                    } else {
-                        return null;
-                    }
-                }
-                },
                 {field: 'cellphone', title: '手机', align: 'center', width: 200},
                 {field: 'address', title: '地址', align: 'center', width: 200},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 200},
@@ -246,7 +237,7 @@ function initPage() {
  */
 function search() {
     var value = $('#searchValue').val();
-    $('#dg').datagrid({
+    $('#dgg').datagrid({
         url: "<%=basePath%>/tymng/user/getAll",
         queryParams: { 'searchValue': value}
     });
@@ -285,7 +276,7 @@ function search() {
         </table>
     </div>
 </div>
-<div id="dg"></div>
+<div id="dgg"></div>
 <div id="dlg" class="easyui-dialog" style="width:400px;height:380px;padding:10px 20px" closed="true"
      buttons="#dlg-buttons">
     <div class="ftitle">用户</div>
@@ -326,11 +317,6 @@ function search() {
             <label><font color="red">*</font>状态:</label>
             <input type="radio" name="status" value="1" id="enable" checked="checked"/><span>启用</span>
             <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
-        </div>
-        <div class="fitem">
-            <label><font color="red">*</font>用户类型:</label>
-            <input type="radio" name="type" value="1" id="normal" checked="checked"/><span>普通用户</span>
-            <input type="radio" name="type" value="2" id="manager"/><span>负责人</span>
         </div>
     </form>
 </div>
@@ -388,11 +374,6 @@ function search() {
                 <label><font color="red">*</font>状态:</label>
                 <input type="radio" name="status" value="1"><span>启用</span>
                 <input type="radio" name="status" value="2"/><span>禁用</span>
-            </div>
-            <div class="fitem">
-                <label><font color="red">*</font>用户类型:</label>
-                <input type="radio" name="type" value="1" id="normal"/><span>普通用户</span>
-                <input type="radio" name="type" value="2" id="manager"/><span>负责人</span>
             </div>
         </form>
     </div>

@@ -9,6 +9,7 @@ import com.ifhz.core.po.User;
 import com.ifhz.core.util.Result;
 import com.ifhz.core.vo.UserVo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -101,5 +102,5 @@ public interface UserService {
 
     Long getUserVoCount(String searchValue);
 
-    List<Role> findAllRoleSon(long roleId);
+    List<Role> findAllRoleSon(long roleId) throws InvocationTargetException, IllegalAccessException;
 }

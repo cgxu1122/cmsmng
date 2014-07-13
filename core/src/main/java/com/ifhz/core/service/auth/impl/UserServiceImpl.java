@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class UserServiceImpl implements UserService {
         User dbUser = userMapper.findById(userId);
         UserRoleRef dbUserRoleRef = userRoleRefMapper.findRoleByUserId(userId);
         try {
-            if (user.equals(dbUser)) {
+            if (user.equalss(dbUser)) {
 
             } else {
                 dbUser.setAddress(user.getAddress());
@@ -238,8 +239,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Role> findAllRoleSon(long roleId) {
-        RoleVo role = roleService.findById(roleId);
+    public List<Role> findAllRoleSon(long roleId) throws InvocationTargetException, IllegalAccessException {
+        RoleVo role;
+        if (roleId == 1) {
+            role = roleService.findRootRole();
+        }
+        role = roleService.findById(roleId);
         if (role.getParentId() == -1) {
             return roleService.findAllRole();
         } else {
