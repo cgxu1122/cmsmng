@@ -18,7 +18,8 @@ public class UserConstants {
     public static final int USER_STATUS_DISABLE = 2; //禁用
 
     //用户角色
-    public static final int USER_ROLE_NORMAL = 3;//普通用户角色
-    public static final int USER_ROLE_MANAGER = 2; //负责人角色
-    public static final int USER_ROLE_ADMIN = 1; //管理员角色
+    public static final int LW_QUERY = 11;//普通用户角色
+    public static final int DB_QUERY = 9; //负责人角色
+    public static final int TY_QUERY = 8; //管理员角色
+    public static final int CP_QUERY = 10; //管理员角色
 }
