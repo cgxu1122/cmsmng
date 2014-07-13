@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserVo> findAllUser(String searchValue) {
-        return userMapper.queryAllUser(new Pagination(), searchValue);
+        return userMapper.queryAllUser(searchValue);
     }
 
     @Override

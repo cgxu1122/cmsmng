@@ -140,7 +140,7 @@ public class ProductInfoController extends BaseController {
         List<ProductInfo> list = productInfoService.queryByVo(page, pi);
         if (list != null && list.size() > 0) {
             for (ProductInfo repeatCodePi : list) {
-                if (repeatCodePi.getProductId() != productInfo.getProductId()) {
+                if (!repeatCodePi.getProductId().equals(productInfo.getProductId())) {
                     result.put("errorMsg", "产品名称重复，请重新输入！");
                     return result;
                 }

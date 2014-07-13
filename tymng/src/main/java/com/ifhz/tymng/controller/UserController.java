@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.Role;
 import com.ifhz.core.po.User;
 import com.ifhz.core.service.auth.UserService;
@@ -210,10 +211,11 @@ public class UserController extends BaseController {
     @ResponseBody
     public JSONObject getAllUser(HttpServletRequest request) {
         String searchValue = request.getParameter("searchValue");
-        if (StringUtils.isBlank(searchValue)) {
-            searchValue = null;
-        }
-
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!org.apache.commons.lang.StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!org.apache.commons.lang.StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         // 查询记录
         List<UserVo> userDtoList = userService.findAllUser(searchValue);
         // 记录数

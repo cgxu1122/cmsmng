@@ -132,7 +132,7 @@ public class DeviceInfoController extends BaseController {
         List<DeviceInfo> list = deviceInfoService.queryByVo(page, di);
         if (list != null && list.size() > 0) {
             for (DeviceInfo repeatCodeCi : list) {
-                if (repeatCodeCi.getDeviceId() != deviceInfo.getDeviceId()) {
+                if (!repeatCodeCi.getDeviceId().equals(deviceInfo.getDeviceId())) {
                     result.put("errorMsg", "设备编码重复，请重新输入！");
                     return result;
                 }

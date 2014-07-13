@@ -63,7 +63,7 @@ public class LoginController extends BaseController {
         if (exceptionClassName.equals(CaptchaException.class.getName())) {
             model.addAttribute("error", "验证码错误");
         } else if (exceptionClassName.equals(UserNamePasswordErrorException.class.getName())) {
-            model.addAttribute("error", "邮箱或密码错误");
+            model.addAttribute("error", "用户名密码错误");
         }
         return "login";
     }
@@ -114,9 +114,13 @@ public class LoginController extends BaseController {
         }
 
 
-        oldPassword = MD5keyUtil.getMD5Str(oldPassword.trim());
+        oldPassword = oldPassword.trim();
         if (u.getPassword().equals(oldPassword)) {
-            result = iStaffService.updateUserPassword(u.getUserId(), MD5keyUtil.getMD5Str(newPassword.trim()));
+            result = iStaffService.updateUserPassword(u.getUserId(), newPassword.trim());
+        } else {
+            result.setCode(-1);
+            result.setMessage("旧密码错误");
+            return JSON.toJSONString(result);
         }
 
         return JSON.toJSONString(result);
