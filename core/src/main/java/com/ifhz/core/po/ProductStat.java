@@ -54,6 +54,7 @@ public class ProductStat implements Serializable {
     private Date endDate;
 
     private String groupName;
+    private String productName;
     private Long partnerId;
 
     public Long getPartnerId() {
@@ -214,5 +215,13 @@ public class ProductStat implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }
