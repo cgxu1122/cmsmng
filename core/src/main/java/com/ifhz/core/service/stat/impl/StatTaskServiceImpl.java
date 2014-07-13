@@ -93,7 +93,7 @@ public class StatTaskServiceImpl implements StatTaskService {
                             String md5KeyForLogStat = StatConvertHandler.getMd5KeyForLogStat(dataLog);
                             LogStat logStat = getLogStatFromMap(logStatHashMap, md5KeyForLogStat, dataLog);
                             logStat.setMd5Key(md5KeyForLogStat);
-                            logStat.setDevicePrsDayNum(logStat.getDeviceUpdDayNum() + 1);
+                            logStat.setDevicePrsDayNum(logStat.getDevicePrsDayNum() + 1);
                             //重新放入容器中
                             logStatHashMap.put(md5KeyForLogStat, logStat);
                         }
