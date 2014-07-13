@@ -165,255 +165,323 @@
 </div>
 <div region="west" title="导航菜单" split="true" style="width: 150px;">
 <div class="easyui-accordion  i_accordion_menu" fit="true" border="false">
-<%--<shiro:hasPermission name="channel">--%>
-<div title="渠道管理" selected="true" style="overflow: auto;">
-    <%--<shiro:hasPermission name="channel_ty">--%>
-    <div class="nav-item">
-        <a href="javascript:addTab('天音渠道','<%=basePath%>/tymng/channelInfo/index?groupId=1','menu_icon_datadeal')">
-            <span class="menu_icon_datadeal"></span>
-            <span>天音渠道</span>
-        </a>
+<shiro:hasPermission name="channel_menu">
+    <div title="渠道管理" selected="true" style="overflow: auto;">
+        <shiro:hasPermission name="channel_ty">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道','<%=basePath%>/tymng/channelInfo/index?groupId=1','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="channel_db">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道','<%=basePath%>/tymng/channelInfo/index?groupId=2','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <!---->
+                    <span>地包渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="channel_qt">
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道','<%=basePath%>/tymng/channelInfo/index?groupId=3','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="channel_lw">
+            <div class="nav-item">
+                <a href="javascript:addTab('劳务渠道','<%=basePath%>/tymng/channelInfo/index?groupId=4','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>劳务渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
-    <%--</shiro:hasPermission>--%>
-    <div class="nav-item">
-        <a href="javascript:addTab('地包渠道','<%=basePath%>/tymng/channelInfo/index?groupId=2','menu_icon_datadeal')">
-            <span class="menu_icon_datadeal"></span>
-            <!---->
-            <span>地包渠道</span>
-        </a>
-    </div>
-    <div class="nav-item">
-        <a href="javascript:addTab('其他渠道','<%=basePath%>/tymng/channelInfo/index?groupId=3','menu_icon_datadeal')">
-            <span class="menu_icon_datadeal"></span>
-            <span>其他渠道</span>
-        </a>
-    </div>
-    <div class="nav-item">
-        <a href="javascript:addTab('劳务渠道','<%=basePath%>/tymng/channelInfo/index?groupId=4','menu_icon_datadeal')">
-            <span class="menu_icon_datadeal"></span>
-            <span>劳务渠道</span>
-        </a>
-    </div>
-</div>
-<%--</shiro:hasPermission>--%>
-<shiro:hasPermission name="model">
+</shiro:hasPermission>
+<shiro:hasPermission name="model_menu">
     <div title="机型管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('天音渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=1','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>天音渠道机型</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('地包渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=2','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>地包渠道机型</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('其他渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=3','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>其他渠道机型</span>
-            </a>
-        </div>
+
+        <shiro:hasPermission name="model_ty">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=1','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道机型</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="model_db">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=2','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道机型</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="model_qt">
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道机型','<%=basePath%>/tymng/modelInfo/index?groupId=3','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道机型</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="device">
+<shiro:hasPermission name="device_menu">
     <div title="工装管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('工装管理','<%=basePath%>/tymng/deviceInfo/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>工装管理</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="device">
+            <div class="nav-item">
+                <a href="javascript:addTab('工装管理','<%=basePath%>/tymng/deviceInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>工装管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="partner">
+<shiro:hasPermission name="partner_menu">
     <div title="合作方管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('合作方管理','<%=basePath%>/tymng/partnerInfo/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>合作方管理</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="partner">
+            <div class="nav-item">
+                <a href="javascript:addTab('合作方管理','<%=basePath%>/tymng/partnerInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>合作方管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="product">
+<shiro:hasPermission name="product_menu">
     <div title="产品管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('产品管理','<%=basePath%>/tymng/productInfo/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>产品管理</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="product">
+            <div class="nav-item">
+                <a href="javascript:addTab('产品管理','<%=basePath%>/tymng/productInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>产品管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="batch">
+<shiro:hasPermission name="batch_menu">
     <div title="批次管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('天音渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=1','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>天音渠道批次</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('地包渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=2','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>地包渠道批次</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('其他渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=3','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>其他渠道批次</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="batch_ty">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=1','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道批次</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="batch_db">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=2','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道批次</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="batch_qt">
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道批次','<%=basePath%>/tymng/batchInfo/index?groupId=3','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道批次</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="devSys">
+<shiro:hasPermission name="devicesystem_menu">
     <div title="设备系统管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('设备系统管理','<%=basePath%>/tymng/deviceSystem/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>设备系统管理</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="devicesystem">
+            <div class="nav-item">
+                <a href="javascript:addTab('设备系统管理','<%=basePath%>/tymng/deviceSystem/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>设备系统管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="publishTask">
+<shiro:hasPermission name="publish_menu">
     <div title="发布管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>APK管理</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('普通包管理','<%=basePath%>/tymng/packageInfo/index?type=N','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>普通包管理</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('通用包管理','<%=basePath%>/tymng/packageInfo/index?type=Y','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>通用包管理</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('发布任务管理','<%=basePath%>/tymng/publishTask/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>发布任务管理</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="publish_apk">
+            <div class="nav-item">
+                <a href="javascript:addTab('APK管理','<%=basePath%>/tymng/apkInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>APK管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="publish_normal_pkg">
+            <div class="nav-item">
+                <a href="javascript:addTab('普通包管理','<%=basePath%>/tymng/packageInfo/index?type=N','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>普通包管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="publish_common_pkg">
+            <div class="nav-item">
+                <a href="javascript:addTab('通用包管理','<%=basePath%>/tymng/packageInfo/index?type=Y','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>通用包管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="publish_task">
+            <div class="nav-item">
+                <a href="javascript:addTab('发布任务管理','<%=basePath%>/tymng/publishTask/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>发布任务管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<div title="地包渠道结算条款" style="overflow: auto;">
-    <div class="nav-item">
-        <a href="javascript:addTab('地包渠道结算条款','<%=basePath%>/tymng/settleInfo/index','menu_icon_datadeal')">
-            <span class="menu_icon_datadeal"></span>
-            <span>地包渠道结算条款</span>
-        </a>
+
+<shiro:hasPermission name="settle_menu">
+    <div title="地包渠道结算条款" style="overflow: auto;">
+        <shiro:hasPermission name="settle">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道结算条款','<%=basePath%>/tymng/settleInfo/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道结算条款</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
-</div>
-<shiro:hasPermission name="logCount">
+</shiro:hasPermission>
+<shiro:hasPermission name="partnerquery_menu">
     <div title="合作方查询后台" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('天音渠道查询','<%=basePath%>/tymng/partnerQuery/indexTY','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>天音渠道</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('地包渠道查询','<%=basePath%>/tymng/partnerQuery/indexDB','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>地包渠道</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('cp合作方查询','<%=basePath%>/tymng/partnerQuery/indexCP','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>cp合作方</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/tymng/partnerQuery/indexLW','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>劳务渠道</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="partnerquery_ty">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道查询','<%=basePath%>/tymng/partnerQuery/indexTY','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="partnerquery_db">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道查询','<%=basePath%>/tymng/partnerQuery/indexDB','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="partnerquery_cphzf">
+            <div class="nav-item">
+                <a href="javascript:addTab('cp合作方查询','<%=basePath%>/tymng/partnerQuery/indexCP','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>cp合作方</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="partnerquery_lw">
+            <div class="nav-item">
+                <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/tymng/partnerQuery/indexLW','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>劳务渠道</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="report">
+<shiro:hasPermission name="report_menu">
     <div title="报表统计" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>按仓库查询</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('按渠道加工数据','<%=basePath%>/tymng/reportCount/indexChannelProcess','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>按渠道加工数据</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('按渠道到达数据','<%=basePath%>/tymng/reportCount/indexChannelCounter','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>按渠道到达数据</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('按产品查询','<%=basePath%>/tymng/reportCount/indexProduct','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>按产品查询</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="report_store">
+            <div class="nav-item">
+                <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>按仓库查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_channel_device">
+            <div class="nav-item">
+                <a href="javascript:addTab('按渠道加工数据','<%=basePath%>/tymng/reportCount/indexChannelProcess','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>按渠道加工数据</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_channel_counter">
+            <div class="nav-item">
+                <a href="javascript:addTab('按渠道到达数据','<%=basePath%>/tymng/reportCount/indexChannelCounter','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>按渠道到达数据</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_porduct">
+            <div class="nav-item">
+                <a href="javascript:addTab('按产品查询','<%=basePath%>/tymng/reportCount/indexProduct','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>按产品查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="system">
+<shiro:hasPermission name="system_menu">
     <div title="系统用户管理" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('系统用户管理','<%=basePath%>/tymng/user/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>系统用户管理</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('角色管理','<%=basePath%>/tymng/role/index','menu_icon_wjldgl')">
-                <span class="menu_icon_wjldgl"></span>
-                <span>角色管理</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/rrr/index','menu_icon_wjldgl')">
-                <span class="menu_icon_wjldgl"></span>
-                <span>授权管理</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="system_user">
+            <div class="nav-item">
+                <a href="javascript:addTab('系统用户管理','<%=basePath%>/tymng/user/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>系统用户管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="system_role">
+            <div class="nav-item">
+                <a href="javascript:addTab('角色管理','<%=basePath%>/tymng/role/index','menu_icon_wjldgl')">
+                    <span class="menu_icon_wjldgl"></span>
+                    <span>角色管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="system_auth">
+            <div class="nav-item">
+                <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/rrr/index','menu_icon_wjldgl')">
+                    <span class="menu_icon_wjldgl"></span>
+                    <span>授权管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<shiro:hasPermission name="help">
+<shiro:hasPermission name="help_menu">
     <div title="辅助功能" style="overflow: auto;">
-        <div class="nav-item">
-            <a href="javascript:addTab('查询Imei','<%=basePath%>/tymng/imeiQuery/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>查询Imei</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('上传Imei','<%=basePath%>/tymng/imeiUpload/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>上传Imei</span>
-            </a>
-        </div>
-        <div class="nav-item">
-            <a href="javascript:addTab('上传Zip文件','<%=basePath%>/tymng/zipUpload/index','menu_icon_datadeal')">
-                <span class="menu_icon_datadeal"></span>
-                <span>上传Zip文件</span>
-            </a>
-        </div>
+        <shiro:hasPermission name="help_queryimei">
+            <div class="nav-item">
+                <a href="javascript:addTab('查询Imei','<%=basePath%>/tymng/imeiQuery/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>查询Imei</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="help_uploadimei">
+            <div class="nav-item">
+                <a href="javascript:addTab('上传Imei','<%=basePath%>/tymng/imeiUpload/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>上传Imei</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="help_uploadzip">
+            <div class="nav-item">
+                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/tymng/zipUpload/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>上传Zip文件</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
 </div>
