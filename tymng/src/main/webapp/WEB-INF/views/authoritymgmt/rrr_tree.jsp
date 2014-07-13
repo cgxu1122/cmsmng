@@ -20,18 +20,21 @@
     </tr>
 </table>
 <script type="text/javascript">
+    function redir() {
+        parent.frames['mainFrame'].location = "<%=basePath%>/tymng/rrr/showdetail/" + tree.getSelectedItemId();
+        $("body").hideLoading();
+    }
+
     tree = new dhtmlXTreeObject("treeboxbox_tree", "100%", "100%", 0);
     tree.setImagePath("<%=basePath%>/plug/dhtmlxTree/codebase/imgs/csh_bluebooks/");
     tree.loadXML("<%=basePath%>/tymng/rrr/loadrole", function () {
         $(".standartTreeRow").css({"text-align": "left"});
     });
-//    var  s = '{"id":0,"item":[{"id":1,"item":[{"id":2,"open":"1","text":"2-"},{"id":3,"item":[{"id":5,"item":[{"id":7,"open":"1","text":"7-"}],"open":"1","text":"5-"},{"id":6,"open":"1","text":"6-"}],"open":"1","text":"3-"},{"id":4,"open":"1","text":"4-"}],"open":"1","text":"1-"}]}';
-//    var result = eval('(' + s + ')');
-//    result = eval('(' + result + ')');
-//    tree.loadJSONObject({"id":0,"item":[{"id":1,"item":[{"id":2,"open":"1","text":"2-"},{"id":3,"item":[{"id":5,"item":[{"id":7,"open":"1","text":"7-"}],"open":"1","text":"5-"},{"id":6,"open":"1","text":"6-"}],"open":"1","text":"3-"},{"id":4,"open":"1","text":"4-"}],"open":"1","text":"1-"}]});
     tree.setOnClickHandler(function () {
-        parent.frames['mainFrame'].location = "<%=basePath%>/tymng/rrr/showdetail/" + tree.getSelectedItemId();
+        $("body").showLoading();
+        window.setTimeout(redir, 2000);
     });
+
 
 </script>
 </body>
