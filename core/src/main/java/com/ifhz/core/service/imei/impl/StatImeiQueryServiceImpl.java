@@ -39,7 +39,6 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
         Preconditions.checkArgument(request != null, "StatImeiRequest must be not null");
         Preconditions.checkArgument(StringUtils.isNotBlank(request.getUa()), "StatImeiRequest.UA must be not null");
         Preconditions.checkArgument(request.getProcessDate() != null, "StatImeiRequest.processDate must be not null");
-        Preconditions.checkArgument(request.getChannelId() != null, "StatImeiRequest.channelId must be not null");
         List<String> tableNameList = Lists.newArrayList();
         if (request.getType() == ImeiQueryType.Day_Device_Process) {
             tableNameList = splitTableService.getListFromDate2Now(request.getProcessDate());
