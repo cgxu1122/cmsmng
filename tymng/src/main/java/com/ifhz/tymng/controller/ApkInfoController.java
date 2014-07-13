@@ -288,7 +288,7 @@ public class ApkInfoController extends BaseController {
         if (CollectionUtils.isNotEmpty(list)) {
             if (type == Type.Update) {
                 for (ApkInfo repeatVersionAi : list) {
-                    if (repeatVersionAi.getApkId() != apkId) {
+                    if (!repeatVersionAi.getApkId().equals(apkId)) {
                         return true;
                     }
                 }
