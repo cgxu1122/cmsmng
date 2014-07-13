@@ -4,11 +4,15 @@
  */
 package com.ifhz.core.service.auth.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ifhz.core.mapper.RoleResourceRefMapper;
 import com.ifhz.core.po.RoleResourceRef;
 import com.ifhz.core.service.auth.ResourceService;
 import com.ifhz.core.service.auth.RoleResourceRefService;
 import com.ifhz.core.service.auth.RoleService;
+import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,8 @@ import java.util.*;
  */
 @Service
 public class RoleResourceRefServiceImpl implements RoleResourceRefService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoleResourceRefServiceImpl.class);
+
     @Autowired
     RoleService roleService;
 
@@ -108,6 +114,8 @@ public class RoleResourceRefServiceImpl implements RoleResourceRefService {
             roleResourceRefMapper.insert(rrr);
         }
 
+        ShiroDbRealm.ShiroUser staff = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
+        LOGGER.debug("RoleResourceRefServiceImpl==>method[authorization]==>line[54] 用户[" + staff.loginName + "]给角色[" + roleid + "]授于资源[" + JSON.toJSON(resIdList) + "]成功！");
     }
 
     /**
