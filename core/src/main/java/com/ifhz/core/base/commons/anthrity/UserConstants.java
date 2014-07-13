@@ -11,7 +11,7 @@ public class UserConstants {
 
     // 用户类型
     public static final int USER_TYPE_NORMAL = 1; //普通用户
-    public static final int USER_TYPE_MANAGER = 2; //负责人
+    public static final int USER_TYPE_MANAGER = 6; //负责人
 
     // 用户状态
     public static final int USER_STATUS_ENABLE = 1; //启用
