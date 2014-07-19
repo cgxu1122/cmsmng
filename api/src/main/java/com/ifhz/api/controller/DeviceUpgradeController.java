@@ -63,7 +63,7 @@ public class DeviceUpgradeController {
                     }
                 }
 
-                result.put("date", new Date().getTime());
+                result.put("date", (new Date().getTime() / 1000));
                 result.put("cid", info.getChannelId().toString());
             }
             if (result == null) {

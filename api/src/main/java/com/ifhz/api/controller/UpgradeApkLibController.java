@@ -50,7 +50,8 @@ public class UpgradeApkLibController {
         JSONObject result = null;
         try {
             if (StringUtils.isBlank(code) || StringUtils.isBlank(apkVersion)) {
-                return ApiJsonHandler.genJsonRet(ResultType.Fail);
+                result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+                return result;
             }
             DeviceInfo info = deviceInfoService.queryByDeviceCode(code.trim());
             if (info != null) {
@@ -73,7 +74,7 @@ public class UpgradeApkLibController {
                         }
                     }
                     result.put("apkList", apkVoList);
-                    result.put("version", String.valueOf(startTime.getTime()));
+                    result.put("version", String.valueOf(endTime.getTime()));
                 }
             }
             if (result == null) {
