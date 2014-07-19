@@ -7,9 +7,9 @@ package com.ifhz.api.constants;
  * Time: 23:32
  */
 public enum ResultType {
-    SuccNonUpgrade(0, "成功或者成功，不需要更新"),
+    SuccNonUpgrade(2, "成功或者成功，不需要更新"),
     Fail(1, "失败"),
-    SuccUpgrade(2, "成功且需要更新");
+    SuccUpgrade(0, "成功且需要更新");
 
     public final int VALUE;
     public final String DESC;
