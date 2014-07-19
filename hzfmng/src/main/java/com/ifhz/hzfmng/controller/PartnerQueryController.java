@@ -11,6 +11,7 @@ import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.PartnerInfo;
 import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.service.auth.UserService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
@@ -59,6 +60,8 @@ public class PartnerQueryController extends BaseController {
     private StatImeiQueryService statImeiQueryService;
     @Autowired
     private LocalDirCacheService localDirCacheService;
+    @Autowired
+    private UserService userService;
 
 
     @RequestMapping("/indexTY")
@@ -238,7 +241,11 @@ public class PartnerQueryController extends BaseController {
             list.add(countProductStat);
             if (partnerInfo != null) {
                 for (ProductStat productStat1 : list) {
-                    productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
+                    if (!userService.checkAdminMng(CurrentUserUtil.getUserId())) {
+                        productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
+                    } else {
+                        productStat1.setQueryImeiSource("Y");
+                    }
                 }
             }
         }
@@ -347,23 +354,30 @@ public class PartnerQueryController extends BaseController {
             String modelName = request.getParameter("modelName");
             String userType = request.getParameter("userType");
             if ("lw".equals(userType)) {
-                ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
-                if (JcywConstants.BASE_CONSTANT_N.equals(channelInfo.getQueryImeiSource())) {
-                    result.put("ret", false);
-                    result.put("errorMsg", "对不起，你没有导出此imei的权限！");
-                    return result;
+                if (!userService.checkAdminMng(CurrentUserUtil.getUserId())) {
+                    ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+                    if (JcywConstants.BASE_CONSTANT_N.equals(channelInfo.getQueryImeiSource())) {
+                        result.put("ret", false);
+                        result.put("errorMsg", "对不起，你没有导出此imei的权限！");
+                        return result;
+                    }
                 }
+
             } else if ("cp".equals(userType)) {
-                PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
-                if (JcywConstants.BASE_CONSTANT_N.equals(partnerInfo.getExportImeiSource())) {
-                    result.put("ret", false);
-                    result.put("errorMsg", "对不起，你没有导出此imei的权限！");
-                    return result;
+                if (!userService.checkAdminMng(CurrentUserUtil.getUserId())) {
+                    PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+                    if (JcywConstants.BASE_CONSTANT_N.equals(partnerInfo.getExportImeiSource())) {
+                        result.put("ret", false);
+                        result.put("errorMsg", "对不起，你没有导出此imei的权限！");
+                        return result;
+                    }
                 }
             } else {
-                result.put("ret", false);
-                result.put("errorMsg", "对不起，你没有导出此imei的权限！");
-                return result;
+                if (!userService.checkAdminMng(CurrentUserUtil.getUserId())) {
+                    result.put("ret", false);
+                    result.put("errorMsg", "对不起，你没有导出此imei的权限！");
+                    return result;
+                }
             }
             StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
             if (StringUtils.isNotEmpty(processDate)) {

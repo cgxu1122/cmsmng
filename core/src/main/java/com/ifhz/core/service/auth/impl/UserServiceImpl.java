@@ -253,6 +253,21 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public boolean checkAdminMng(long userId) {
+        if (userId <= 0) {
+            return false;
+        }
+        UserRoleRef ref = userRoleRefMapper.findRoleByUserId(userId);
+        if (ref != null) {
+            if (ref.getRoleId().intValue() == 1 || ref.getRoleId().intValue() == 2) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public List<UserVo> findUsersByType(int type, String searchValue) {
         return userMapper.queryAllUserByType(type, searchValue);

@@ -111,9 +111,12 @@ public class BatchInfoController extends BaseController {
                 }
             }
             bi.setProductInfoList(productInfoList);
+            batchInfoService.insert(bi);
+            result.put("msg", "添加成功!");
+        } else {
+            result.put("errorMsg", "产品列表不允许为空，请添加产品!");
         }
-        batchInfoService.insert(bi);
-        result.put("msg", "添加成功!");
+
         return result;
     }
 
@@ -152,9 +155,12 @@ public class BatchInfoController extends BaseController {
                 }
             }
             batchInfo.setProductInfoList(productInfoList);
+            batchInfoService.update(batchInfo);
+            result.put("msg", "修改成功!");
+        } else {
+            result.put("errorMsg", "产品列表不允许为空，请添加产品!");
         }
-        batchInfoService.update(batchInfo);
-        result.put("msg", "修改成功!");
+
         return result;
     }
 

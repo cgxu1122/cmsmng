@@ -146,9 +146,13 @@ public class PackageInfoController extends BaseController {
                 }
             }
             pi.setPackageApkRefList(packageApkRefList);
+
+            packageInfoService.insert(pi);
+            result.put("msg", "添加成功!");
+        } else {
+            result.put("errorMsg", "apk列表不允许为空，请添加apk!");
         }
-        packageInfoService.insert(pi);
-        result.put("msg", "添加成功!");
+
         return result;
     }
 
@@ -197,9 +201,12 @@ public class PackageInfoController extends BaseController {
                 }
             }
             packageInfo.setPackageApkRefList(packageApkRefList);
+            packageInfoService.update(packageInfo);
+            result.put("msg", "修改成功!");
+        } else {
+            result.put("errorMsg", "apk列表不允许为空，请添加apk!");
         }
-        packageInfoService.update(packageInfo);
-        result.put("msg", "修改成功!");
+
         return result;
     }
 

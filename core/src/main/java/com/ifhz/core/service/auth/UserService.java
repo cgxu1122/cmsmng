@@ -103,4 +103,6 @@ public interface UserService {
     Long getUserVoCount(String searchValue);
 
     List<Role> findAllRoleSon(long roleId) throws InvocationTargetException, IllegalAccessException;
+
+    boolean checkAdminMng(long userId);
 }
