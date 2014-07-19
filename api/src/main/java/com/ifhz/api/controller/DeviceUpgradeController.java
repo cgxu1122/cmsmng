@@ -59,8 +59,11 @@ public class DeviceUpgradeController {
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
                         result.put("path", HostsHandle.getHostPrefix() + newestDeviceSytem.getDownloadUrl());
                         result.put("md5value", newestDeviceSytem.getMd5Value());
+                        result.put("version", newestDeviceSytem.getVersion());
                     }
                 }
+
+                result.put("date", new Date().getTime());
                 result.put("cid", info.getChannelId().toString());
             }
             if (result == null) {
