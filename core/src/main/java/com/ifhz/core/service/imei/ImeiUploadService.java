@@ -12,4 +12,6 @@ public interface ImeiUploadService {
 
 
     public boolean processZipData(String filePath);
+
+    public void asyncProcessCsvData(String filePath);
 }

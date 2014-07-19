@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +32,8 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
 
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
+    @Resource(name = "taskExecutor")
+    private TaskExecutor taskExecutor;
 
     public boolean processCsvData(String filePath) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
@@ -38,10 +41,15 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         try {
             reader = new BufferedReader(new FileReader(new File(filePath)));
             String line = "";
+            int i = 1;
             while ((line = reader.readLine()) != null) {
                 LOGGER.info("解析CSV文件 line={}", line);
                 try {
                     if (StringUtils.isNotBlank(line)) {
+                        LOGGER.info("process encode [{}] line={}", (i++), line);
+                        //TODO 测试期间文件不加密
+//                        String source = CodecUtils.decode(line).trim();
+//                        LOGGER.info("process decode [{}] line={}", source);
                         String[] data = StringUtils.split(line, "\\|");
                         DataLog dataLog = translateDataLog(data);
                         if (dataLog != null) {
@@ -70,6 +78,13 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         return false;
     }
 
+    @Override
+    public void asyncProcessCsvData(String filePath) {
+        if (StringUtils.isNotBlank(filePath)) {
+            taskExecutor.execute(new AsyncPrcoessCsvTask(filePath));
+        }
+    }
+
     private DataLog translateDataLog(String[] data) {
         //手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
         DataLog result = null;
@@ -88,7 +103,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
 
                 String processTimeStamp = StringUtils.trimToEmpty(data[5]);
                 if (StringUtils.isNotBlank(processTimeStamp)) {
-                    result.setProcessTime(new Date(Long.parseLong(processTimeStamp)));
+                    result.setProcessTime(new Date(Long.parseLong(processTimeStamp) * 1000));
                 }
                 result.setDeviceUploadTime(new Date());
             } catch (Exception e) {
@@ -101,5 +116,25 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         }
 
         return result;
+    }
+
+
+    private class AsyncPrcoessCsvTask implements Runnable {
+
+        private String csvFilePath;
+
+        private AsyncPrcoessCsvTask(String csvFilePath) {
+            this.csvFilePath = csvFilePath;
+        }
+
+        @Override
+        public void run() {
+            boolean ret = processCsvData(csvFilePath);
+            if (ret) {
+                LOGGER.info("csvFilePath={} -----------------process success", csvFilePath);
+            } else {
+                LOGGER.info("csvFilePath={} -----------------process failure", csvFilePath);
+            }
+        }
     }
 }

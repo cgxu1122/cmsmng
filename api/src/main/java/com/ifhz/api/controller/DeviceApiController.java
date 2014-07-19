@@ -6,11 +6,11 @@ import com.google.common.collect.Lists;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
-import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.service.imei.ImeiUploadService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +41,8 @@ public class DeviceApiController {
     private ApiUploadService apiUploadService;
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
+    @Resource(name = "imeiUploadService")
+    private ImeiUploadService imeiUploadService;
 
     @RequestMapping(value = "/processLog111.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
@@ -96,31 +97,35 @@ public class DeviceApiController {
     @RequestMapping(value = "/processLog.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject processFile(@RequestParam(value = "file", required = true) MultipartFile file,
-                           @RequestParam(value = "md5Value", required = true) String md5Value
-    ) {
-        String originalFilename = file.getOriginalFilename();
+    JSONObject processFile(HttpServletRequest request) {
+        LOGGER.info("rev msg -------start");
+        long start = System.currentTimeMillis();
         JSONObject result = null;
-        LOGGER.info("receive request md5Value={},originFileName", md5Value, originalFilename);
-        if (StringUtils.isBlank(md5Value) || file == null || StringUtils.isBlank(originalFilename)) {
-            return ApiJsonHandler.genJsonRet(ResultType.Fail);
-        }
-        String storeLocalFilePath = null;
-        try {
-            LOGGER.info("设备上传数据文件开始处理,originFileName={}", originalFilename);
-            String newFileName = localDirCacheService.getLocalFileName(originalFilename);
-            LOGGER.info("originalFilename = {},newFileName={}", originalFilename, newFileName);
-            storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
-            LOGGER.info("设备上传数据文件开始处理originFileName={},保存到本地成功,路径为{}", originalFilename, storeLocalFilePath);
-            String md5 = DesencryptUtils.md5File(new File(storeLocalFilePath));
-            if (StringUtils.endsWithIgnoreCase(md5, md5Value)) {
-                result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+        if (StringUtils.equalsIgnoreCase("application/octet-stream", request.getContentType())) {
+            try {
+                String file = request.getParameter("file");
+                String md5Value = request.getParameter("md5Value");
+                LOGGER.info("file={},md5Value={}", file, md5Value);
+                if (StringUtils.isBlank(file) || StringUtils.isBlank(md5Value)) {
+                    result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+                    return result;
+                }
+                String localFileName = localDirCacheService.getLocalFileName(file);
+                LOGGER.info("localFileName={}", localFileName);
+                String localFilePath = localDirCacheService.storeFile(request.getInputStream(), localFileName);
+                LOGGER.info("localFilePath = {}", localFilePath);
+                if (StringUtils.isNotBlank(localFilePath)) {
+                    imeiUploadService.asyncProcessCsvData(localFilePath);
+                } else {
+                    LOGGER.info("processFile storeLocalFile failure!");
+                }
+                result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
+            } catch (Exception e) {
+                result = ApiJsonHandler.genJsonRet(ResultType.Fail);
+                LOGGER.error("processLog error ", e);
+            } finally {
+                LOGGER.info("processLog:returnObj={}", result);
             }
-        } catch (Exception e) {
-            result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-            LOGGER.error("processLog error ", e);
-        } finally {
-            LOGGER.info("processLog:returnObj={}", result);
         }
         if (result == null) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
