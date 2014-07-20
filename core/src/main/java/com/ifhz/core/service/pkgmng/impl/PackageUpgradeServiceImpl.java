@@ -1,5 +1,6 @@
 package com.ifhz.core.service.pkgmng.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -46,17 +47,27 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
 
     @Override
     public List<PackageVo> queryNormalPkgList(long groupId, long channelId, boolean isInitPkg, Date startTime, Date endTime) {
+        LOGGER.info("groupId={},channelId={},isInitPkg={},startTime={},endTime={}", groupId, channelId, isInitPkg, startTime, endTime);
         Map<Long, PackageVo> packageVoMap = Maps.newHashMap();
         String active = null;
         if (isInitPkg) {
             active = Active.Y.dbValue;
         }
         List<PubChlModRef> list = pubChlModRefAdapter.queryNormalPkgList(groupId, channelId, active, startTime, endTime);
+        LOGGER.info("List<PubChlModRef> list={}", JSON.toJSONString(list));
         if (CollectionUtils.isNotEmpty(list)) {
             for (PubChlModRef pubChlModRef : list) {
                 if (pubChlModRef != null) {
+                    if (Active.N == Active.getByDbValue(pubChlModRef.getActive())) {
+                        PackageVo packageVo = new PackageVo();
+                        packageVo.setType(ApiEnums.UpdateType.Delete.VALUE);
+                        packageVoMap.put(packageVo.getPackageId(), packageVo);
+
+                        continue;
+                    }
                     // 获取机型UA
                     ModelInfo modelInfo = modelInfoAdapter.getById(pubChlModRef.getModelId());
+                    LOGGER.info("modelInfo={}", JSON.toJSONString(modelInfo));
                     if (modelInfo == null) continue;
                     //获取安装包信息
                     PackageVo packageVo = packageVoMap.get(pubChlModRef.getPackageId());
@@ -97,13 +108,21 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
         PackageVo packageVo = null;
         List<PubChlModRef> list = pubChlModRefAdapter.queryCommonPkgList(groupId, startTime, endTime);
         if (CollectionUtils.isNotEmpty(list)) {
-            PubChlModRef pubChlModRef = list.get(0);
-            //获取安装包信息
-            PackageInfo packageInfo = packageInfoAdapter.getById(pubChlModRef.getPackageId());
-            //获取安装包与apk映射关系
-            List<PackageApkRef> packageApkRefList = packageApkRefAdapter.queryListByPackageId(packageInfo.getPackageId());
-            if (packageInfo != null && CollectionUtils.isNotEmpty(packageApkRefList)) {
-                packageVo = PoToVoHandler.translatePackageVo(packageInfo, packageApkRefList);
+            for (PubChlModRef pubChlModRef : list) {
+                if (Active.N == Active.getByDbValue(pubChlModRef.getActive())) {
+                    continue;
+                }
+                //获取安装包信息
+                PackageInfo packageInfo = packageInfoAdapter.getById(pubChlModRef.getPackageId());
+                //获取安装包与apk映射关系
+                List<PackageApkRef> packageApkRefList = packageApkRefAdapter.queryListByPackageId(packageInfo.getPackageId());
+                if (packageInfo != null && CollectionUtils.isNotEmpty(packageApkRefList)) {
+                    PackageVo vo = PoToVoHandler.translatePackageVo(packageInfo, packageApkRefList);
+                    if (vo.getType() != ApiEnums.UpdateType.Delete.VALUE) {
+                        packageVo = vo;
+                        break;
+                    }
+                }
             }
         }
 
