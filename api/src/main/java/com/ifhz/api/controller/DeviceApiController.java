@@ -104,9 +104,8 @@ public class DeviceApiController {
         if (StringUtils.equalsIgnoreCase("application/octet-stream", request.getContentType())) {
             try {
                 String file = request.getParameter("file");
-                String md5Value = request.getParameter("md5Value");
-                LOGGER.info("file={},md5Value={}", file, md5Value);
-                if (StringUtils.isBlank(file) || StringUtils.isBlank(md5Value)) {
+                LOGGER.info("file={}", file);
+                if (StringUtils.isBlank(file)) {
                     result = ApiJsonHandler.genJsonRet(ResultType.Fail);
                     return result;
                 }
