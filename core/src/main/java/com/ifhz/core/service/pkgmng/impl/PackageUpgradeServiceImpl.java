@@ -72,7 +72,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
                     if (modelInfo == null) continue;
                     //获取安装包信息
                     PackageVo packageVo = packageVoMap.get(pubChlModRef.getPackageId());
-                    if (packageVo == null) {
+                    if (packageVo == null || packageVo.getType() == ApiEnums.UpdateType.Delete.VALUE) {
                         PackageInfo packageInfo = packageInfoAdapter.getById(pubChlModRef.getPackageId());
                         //获取安装包与apk映射关系
                         List<PackageApkRef> packageApkRefList = packageApkRefAdapter.queryListByPackageId(packageInfo.getPackageId());
