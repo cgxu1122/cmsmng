@@ -74,7 +74,7 @@ public class ApkInfoServiceImpl implements ApkInfoService {
                         PubChlModRef ref = new PubChlModRef();
                         ref.setGroupId(packageApkRef.getPackageId());
                         ref.setUpdateTime(new Date());
-                        pubChlModRefAdapter.deleteByPackageId(ref);
+                        pubChlModRefAdapter.updateByPackageId(ref);
                     }
                 }
             }

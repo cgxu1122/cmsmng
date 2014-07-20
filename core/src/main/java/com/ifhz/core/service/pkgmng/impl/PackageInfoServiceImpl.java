@@ -8,7 +8,6 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PackageApkRef;
 import com.ifhz.core.po.PackageInfo;
 import com.ifhz.core.po.PubChlModRef;
-import com.ifhz.core.po.PublishTask;
 import com.ifhz.core.service.pkgmng.PackageInfoService;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -81,15 +80,11 @@ public class PackageInfoServiceImpl implements PackageInfoService {
         }
         int ret = packageInfoAdapter.update(record);
         if (ret != 0) {
-            //删除发布任务与渠道、机型关联表对应数据
+            //更新发布任务与渠道、机型关联表对应数据
             PubChlModRef pubChlModRef = new PubChlModRef();
             pubChlModRef.setPackageId(record.getPackageId());
             pubChlModRef.setUpdateTime(new Date());
             pubChlModRefAdapter.updateByPackageId(pubChlModRef);
-            //删除此打包信息关联的发布任务数据
-            PublishTask publishTask = new PublishTask();
-            publishTask.setPackageId(record.getPackageId());
-            publishTaskAdapter.delete(publishTask);
         }
 
         return ret;

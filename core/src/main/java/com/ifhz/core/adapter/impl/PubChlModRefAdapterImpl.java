@@ -58,7 +58,7 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     public int updateByPackageId(PubChlModRef record) {
         record.setUpdateTime(new Date());
         LOGGER.info("updateByPackageId record={}", JSON.toJSONString(record));
-        return pubChlModRefMapper.deleteByPackageId(record);
+        return pubChlModRefMapper.updateByPackageId(record);
     }
 
     @Override
