@@ -61,6 +61,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
                     if (Active.N == Active.getByDbValue(pubChlModRef.getActive())) {
                         PackageVo packageVo = new PackageVo();
                         packageVo.setType(ApiEnums.UpdateType.Delete.VALUE);
+                        packageVo.setPackageId(pubChlModRef.getPackageId());
                         packageVoMap.put(packageVo.getPackageId(), packageVo);
 
                         continue;
