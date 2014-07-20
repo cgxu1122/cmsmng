@@ -65,7 +65,7 @@ public class UpgradeApkLibController {
                 List<ApkVo> apkVoList = packageUpgradeService.queryApkList(info.getGroupId(), info.getChannelId(), startTime, endTime);
                 if (CollectionUtils.isEmpty(apkVoList)) {
                     result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
-                    result.put("version", String.valueOf(startTime.getTime()));
+                    result.put("version", String.valueOf(endTime.getTime()));
                 } else {
                     result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
                     for (ApkVo apkVo : apkVoList) {

@@ -85,10 +85,10 @@ public class UpgradePkgController {
                     //成功，无更新
                     if (commonPkg == null && CollectionUtils.isEmpty(normalPkgList)) {
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
-                        result.put("version", String.valueOf(date.getTime()));
+                        result.put("version", String.valueOf(endTime.getTime()));
                     } else {//成功，有更新
                         result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
-                        result.put("version", String.valueOf(date.getTime()));
+                        result.put("version", String.valueOf(endTime.getTime()));
                         result.put("pkgList", normalPkgList);
                         result.put("commonPkg", commonPkg);
                     }

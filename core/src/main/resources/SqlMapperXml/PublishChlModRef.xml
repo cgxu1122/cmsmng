@@ -148,8 +148,8 @@ create table TY_PUB_CHL_MOD_REF  (
         where GROUP_ID = #{groupId}
         and CHANNEL_ID = #{channelId}
         and PKG_TYPE = 'N'
-        <if test="active != null">
-            and ACTIVE = #{active}
+        <if test="active != null and active != ''">
+        and ACTIVE = #{active}
         </if>
         and UPDATE_TIME between #{startTime} and #{endTime}
         order by id
