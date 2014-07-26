@@ -61,6 +61,32 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     }
 
     @Override
+    public List<ProductStat> querySumByVo(Pagination page, ProductStat record) {
+        List<ProductStat> productStatList = productStatAdapter.querySumByVo(page, record);
+        if (CollectionUtils.isNotEmpty(productStatList)) {
+            for (ProductStat productStat : productStatList) {
+                String ua = productStat.getUa();
+                if (StringUtils.isNotEmpty(ua)) {
+                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productStat.getGroupId());
+                    if (modelInfo != null) {
+                        productStat.setModelName(modelInfo.getModelName());
+                    }
+                }
+                if (productStat.getGroupId() != null) {
+                    productStat.setGroupName(GroupEnums.fromByValue(productStat.getGroupId()).name);
+                }
+                if (productStat.getProductId() != null) {
+                    ProductInfo productInfo = productInfoCacheService.getById(productStat.getProductId());
+                    if (productInfo != null) {
+                        productStat.setProductName(productInfo.getProductName());
+                    }
+                }
+            }
+        }
+        return productStatList;
+    }
+
+    @Override
     public ProductStat queryCountByVo(ProductStat record) {
         return productStatAdapter.queryCountByVo(record);
     }

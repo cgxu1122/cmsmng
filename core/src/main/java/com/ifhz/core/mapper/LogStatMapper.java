@@ -27,5 +27,7 @@ public interface LogStatMapper {
 
     public List<LogStat> queryByVo(Pagination page, @Param(value = "record") LogStat record);
 
+    public List<LogStat> querySumByVo(Pagination page, @Param(value = "record") LogStat record);
+
     public LogStat queryCountByVO(LogStat record);
 }

@@ -1,5 +1,6 @@
 package com.ifhz.core.adapter.impl;
 
+import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.ProductStatMapper;
@@ -44,6 +45,12 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
     @Override
     public List<ProductStat> queryByVo(Pagination page, ProductStat record) {
         return productStatMapper.queryByVo(page, record);
+    }
+
+    @Override
+    public List<ProductStat> querySumByVo(Pagination page, ProductStat record) {
+        List<ProductStat> list = productStatMapper.querySumByVo(page, record);
+        return list == null ? Lists.<ProductStat>newArrayList() : list;
     }
 
     @Override

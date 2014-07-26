@@ -164,7 +164,9 @@
         where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
         ref.BATCH_CODE = log.BATCH_CODE)
         and log.UA = #{ua}
-        and log.GROUP_ID = #{groupId}
+        <if test="groupId != null">
+            and log.GROUP_ID = #{groupId}
+        </if>
         <choose>
             <when test="type == 1">
                 and log.PROCESS_TIME between #{startTime} and #{endTime}

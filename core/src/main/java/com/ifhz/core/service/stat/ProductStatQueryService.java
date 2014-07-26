@@ -14,5 +14,7 @@ import java.util.List;
 public interface ProductStatQueryService {
     public List<ProductStat> queryByVo(Pagination page, ProductStat record);
 
+    public List<ProductStat> querySumByVo(Pagination page, ProductStat record);
+
     public ProductStat queryCountByVo(ProductStat record);
 }

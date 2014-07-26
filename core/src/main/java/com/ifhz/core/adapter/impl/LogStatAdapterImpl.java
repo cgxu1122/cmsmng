@@ -49,6 +49,12 @@ public class LogStatAdapterImpl implements LogStatAdapter {
     }
 
     @Override
+    public List<LogStat> querySumByVO(Pagination page, LogStat record) {
+        List<LogStat> list = logStatMapper.querySumByVo(page, record);
+        return list == null ? Lists.<LogStat>newArrayList() : list;
+    }
+
+    @Override
     public LogStat queryCountByVO(LogStat record) {
         return logStatMapper.queryCountByVO(record);
     }

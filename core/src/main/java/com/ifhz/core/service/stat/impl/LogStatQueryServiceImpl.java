@@ -55,6 +55,36 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
                 }
             }
         }
+
+        return logStatList;
+    }
+
+    @Override
+    public List<LogStat> querySumByVo(Pagination page, LogStat record) {
+        List<LogStat> logStatList = logStatAdapter.querySumByVO(page, record);
+        if (CollectionUtils.isNotEmpty(logStatList)) {
+            for (LogStat logStat : logStatList) {
+                String ua = logStat.getUa();
+                if (StringUtils.isNotEmpty(ua)) {
+                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logStat.getGroupId());
+                    if (modelInfo != null) {
+                        logStat.setModelName(modelInfo.getModelName());
+                    } else {
+                        logStat.setModelName("未知");
+                    }
+                }
+                Long channelId = logStat.getChannelId();
+                if (channelId != null) {
+                    ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    if (channelInfo != null) {
+                        logStat.setChannelName(channelInfo.getChannelName());
+                    } else {
+                        logStat.setModelName("未知");
+                    }
+                }
+            }
+        }
+
         return logStatList;
     }
 

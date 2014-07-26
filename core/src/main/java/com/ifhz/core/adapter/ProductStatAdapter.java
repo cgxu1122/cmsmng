@@ -23,5 +23,7 @@ public interface ProductStatAdapter {
 
     public List<ProductStat> queryByVo(Pagination page, ProductStat record);
 
+    public List<ProductStat> querySumByVo(Pagination page, ProductStat record);
+
     public ProductStat queryCountByVo(ProductStat record);
 }

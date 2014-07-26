@@ -157,6 +157,49 @@
         </if>
     </select>
 
+
+    <select id="querySumByVo" resultMap="LogStatResultMap">
+        select
+        UA,
+        CHANNEL_ID,
+        PROCESS_DATE,
+        sum(DEVICE_PRS_DAY_NUM) DEVICE_PRS_DAY_NUM,
+        sum(DEVICE_UPD_DAY_NUM) DEVICE_UPD_DAY_NUM,
+        sum(PRS_ACTIVE_TOTAL_NUM) PRS_ACTIVE_TOTAL_NUM,
+        sum(PRS_ACTIVE_VALID_NUM) PRS_ACTIVE_TOTAL_NUM,
+        sum(PRS_ACTIVE_INVALID_NUM) PRS_ACTIVE_INVALID_NUM,
+        sum(PRS_INVALID_REPLACE_NUM) PRS_INVALID_REPLACE_NUM,
+        sum(PRS_INVALID_UNINSTALL_NUM) PRS_INVALID_UNINSTALL_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.deviceCode != null and record.deviceCode != ''">
+            and DEVICE_CODE = #{record.deviceCode}
+        </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and LAOWU_ID = #{record.laowuId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and PROCESS_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and PROCESS_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        group by UA,CHANNEL_ID,PROCESS_DATE
+    </select>
+
+
     <select id="queryCountByVO" parameterType="com.ifhz.core.po.LogStat" resultMap="LogStatResultMap">
         select
         sum(DEVICE_PRS_DAY_NUM) as DEVICE_PRS_DAY_NUM,
