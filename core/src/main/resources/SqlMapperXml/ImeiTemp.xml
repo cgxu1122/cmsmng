@@ -4,7 +4,7 @@
 
     <resultMap id="DataLogResultMap" type="com.ifhz.core.service.imei.bean.DataLogResult">
         <result column="IMEI" property="imei" jdbcType="VARCHAR"/>
-        <result column="UA" property="modelName" jdbcType="VARCHAR"/>
+        <result column="UA" property="ua" jdbcType="VARCHAR"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="PROCESS_TIME" property="processTime" jdbcType="DATE"/>
