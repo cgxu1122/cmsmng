@@ -125,6 +125,7 @@
     <select id="querySumByVo" resultMap="ProductStatResultMap">
         select
         stat.PRODUCT_ID,
+        stat.GROUP_ID,
         stat.UA,
         stat.PROCESS_DATE,
         sum(stat.PRODUCT_PRS_DAY_NUM) PRODUCT_PRS_DAY_NUM,
@@ -157,7 +158,7 @@
             and stat.PROCESS_DATE <= #{record.endDate}
             ]]>
         </if>
-        group by stat.PRODUCT_ID,stat.UA,stat.PROCESS_DATE
+        group by stat.PRODUCT_ID,stat.GROUP_ID,stat.UA,stat.PROCESS_DATE
 
     </select>
 

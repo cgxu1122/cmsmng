@@ -58,8 +58,9 @@ function initPage() {
                     formatter: function (value) {
                         if (value == null) {
                             return "合计"
+                        } else {
+                            return new Date(value).formate("yyyy-MM-dd");
                         }
-                        return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
                 {field: 'modelName', title: '机型名称', align: 'center', width: 200},
@@ -67,17 +68,29 @@ function initPage() {
                 {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
                 {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',1)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',1)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'productUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',2)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',2)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
+                        }
                     }
                 }
             ]
@@ -132,7 +145,7 @@ function showIMEIDialog(processDate, ua, groupId, modelName, groupName, productI
 function exportImeiEvt() {
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCount/exportImei?exportType=3&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&deviceCode=" + deviceCodeCur + "&queryType=" + queryTypeCur,
+        url: "<%=basePath%>/tymng/reportCount/exportImei?exportType=3&processDate=" + processDateCur + "&ua=" + uaCur + "&groupId=" + groupIdCur + "&modelName=" + modelNameCur + "&groupName=" + groupNameCur + "&productId=" + productIdCur + "&productName=" + productNameCur + "&queryType=" + queryTypeCur,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -160,6 +173,7 @@ function showModelDialog() {
         rownumbers: true,
         columns: [
             [
+                {field: 'groupName', title: '渠道组名称', align: 'center', width: 100},
                 {field: 'modelName', title: '机型名称', align: 'center', width: 150},
                 {field: 'ua', title: 'UA', align: 'center', width: 150},
                 {field: 'action', title: '操作', align: 'center', width: 100,
