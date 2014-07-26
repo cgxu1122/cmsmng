@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.ifhz.core.adapter.ImeiQueryAdapter;
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.ModelInfo;
+import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.imei.ImeiQueryService;
@@ -40,6 +42,8 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
     private SplitTableService splitTableService;
     @Resource(name = "modelInfoCacheService")
     private ModelInfoCacheService modelInfoCacheService;
+    @Resource(name = "channelInfoCacheService")
+    private ChannelInfoCacheService channelInfoCacheService;
 
     private static final ExecutorService THREADPOOL = Executors.newFixedThreadPool(128);
 
@@ -58,6 +62,17 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                     ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(dataLogResult.getUa(), dataLogResult.getGroupId());
                     if (modelInfo != null && StringUtils.isNotBlank(modelInfo.getModelName())) {
                         dataLogResult.setModelName(modelInfo.getModelName());
+                    } else {
+                        dataLogResult.setModelName("未知");
+                    }
+                } else {
+                    dataLogResult.setModelName("未知");
+                }
+                Long channelId = dataLogResult.getChannelId();
+                if (channelId != null) {
+                    ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    if (channelInfo != null) {
+                        dataLogResult.setChannelName(channelInfo.getChannelName());
                     } else {
                         dataLogResult.setModelName("未知");
                     }

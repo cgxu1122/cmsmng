@@ -64,9 +64,6 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
         } catch (ExecutionException e) {
             LOGGER.error("getByUaAndGrouId error", e);
         }
-        if (ret == null || ret.getModelId() == null) {
-            return null;
-        }
 
         return ret;
     }
@@ -114,9 +111,7 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
             } finally {
                 LOGGER.info("result={}", JSON.toJSONString(result));
             }
-            if (result == null) {
-                result = new ModelInfo();
-            }
+
             return result;
         }
     }

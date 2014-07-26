@@ -47,11 +47,7 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
             LOGGER.error("getByChannelId error", e);
         }
 
-        if (ret == null || ret.getChannelId() == null) {
-            return null;
-        } else {
-            return ret;
-        }
+        return ret;
     }
 
     @Override
@@ -99,9 +95,7 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
             } finally {
                 LOGGER.info("result={}", JSON.toJSONString(result));
             }
-            if (result == null) {
-                result = new ChannelInfo();
-            }
+
             return result;
         }
     }
