@@ -161,6 +161,7 @@
     <select id="querySumByVo" resultMap="LogStatResultMap">
         select
         UA,
+        GROUP_ID,
         CHANNEL_ID,
         PROCESS_DATE,
         sum(DEVICE_PRS_DAY_NUM) DEVICE_PRS_DAY_NUM,
@@ -196,7 +197,7 @@
             and PROCESS_DATE <= #{record.endDate}
             ]]>
         </if>
-        group by UA,CHANNEL_ID,PROCESS_DATE
+        group by UA,GROUP_ID,CHANNEL_ID,PROCESS_DATE
     </select>
 
 

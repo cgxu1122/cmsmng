@@ -116,6 +116,7 @@
             uaCur = ua;
             productIdCur = productId;
             modelNameCur = modelName;
+            groupIdCur = groupId;
             $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
             $('#imeidg').datagrid({
                 width: 'auto',

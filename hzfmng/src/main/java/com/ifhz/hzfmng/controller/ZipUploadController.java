@@ -43,14 +43,13 @@ public class ZipUploadController {
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
-        return new ModelAndView("imeiUpload/index");
+        return new ModelAndView("zipUpload/index");
     }
 
-    @RequestMapping(value = "/uploadZip.do", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/importZip.do", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
     JSONObject uploadZip(@RequestParam(value = "zipFile", required = true) MultipartFile file,
-                         @RequestParam(value = "channelId", required = true) Long channelId,
                          HttpServletRequest request) {
         JSONObject result = new JSONObject();
         if (file == null || file.isEmpty()) {

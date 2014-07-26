@@ -235,7 +235,7 @@ public class PartnerQueryController extends BaseController {
         if (StringUtils.isNotEmpty(endDate)) {
             productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
-        List<ProductStat> list = productStatQueryService.queryByVo(page, productStat);
+        List<ProductStat> list = productStatQueryService.querySumByVo(page, productStat);
         if (CollectionUtils.isNotEmpty(list)) {
             ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
             list.add(countProductStat);
@@ -278,7 +278,7 @@ public class PartnerQueryController extends BaseController {
             if (StringUtils.isNotEmpty(endDate)) {
                 productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
             }
-            List<ProductStat> list = productStatQueryService.queryByVo(null, productStat);
+            List<ProductStat> list = productStatQueryService.querySumByVo(null, productStat);
             if (CollectionUtils.isNotEmpty(list)) {
                 ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
                 list.add(countProductStat);
@@ -334,7 +334,12 @@ public class PartnerQueryController extends BaseController {
         statImeiRequest.setChannelName(channelName);
         statImeiRequest.setModelName(modelName);
         statImeiRequest.setUa(ua);
-        List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+        List<StatImeiResult> list;
+        if (StringUtils.isNotEmpty(productId)) {
+            list = statImeiQueryService.queryImeiListFromProduct(statImeiRequest);
+        } else {
+            list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+        }
         result.put("rows", list);
         return result;
     }
@@ -395,7 +400,12 @@ public class PartnerQueryController extends BaseController {
             statImeiRequest.setUa(ua);
             statImeiRequest.setDeviceCode(deviceCode);
             statImeiRequest.setModelName(modelName);
-            List<StatImeiResult> list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+            List<StatImeiResult> list;
+            if (StringUtils.isNotEmpty(productId)) {
+                list = statImeiQueryService.queryImeiListFromProduct(statImeiRequest);
+            } else {
+                list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
+            }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
             titleMap.put("processDate", "日期");

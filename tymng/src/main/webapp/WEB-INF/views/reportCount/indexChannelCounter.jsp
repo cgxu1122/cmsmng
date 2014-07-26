@@ -65,32 +65,56 @@ function initPage() {
                 {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
                 {field: 'deviceUpdDayNum', title: '装机到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',2)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',2)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',3)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',3)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',4)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',4)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',5)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',5)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',6)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',6)>" + value + "</a>";
+                        }
                     }
                 },
                 {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',7)>" + value + "</a>";
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',7)>" + value + "</a>";
+                        }
                     }
                 }
             ]
