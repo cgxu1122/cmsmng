@@ -1,6 +1,8 @@
 package com.ifhz.core.service.imei.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.ifhz.core.base.commons.codec.CodecUtils;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
@@ -47,9 +49,8 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                 try {
                     if (StringUtils.isNotBlank(line)) {
                         LOGGER.info("process encode [{}] line={}", (i++), line);
-                        //TODO 测试期间文件不加密
-//                        String source = CodecUtils.decode(line).trim();
-//                        LOGGER.info("process decode [{}] line={}", source);
+                        String source = CodecUtils.decode(line).trim();
+                        LOGGER.info("process decode [{}] line={}", source);
                         String[] data = StringUtils.split(line, "\\|");
                         DataLog dataLog = translateDataLog(data);
                         if (dataLog != null) {
@@ -103,7 +104,8 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
 
                 String processTimeStamp = StringUtils.trimToEmpty(data[5]);
                 if (StringUtils.isNotBlank(processTimeStamp)) {
-                    result.setProcessTime(new Date(Long.parseLong(processTimeStamp) * 1000));
+                    Date processTime = DateFormatUtils.parse(processTimeStamp, "yyyyMMdd");
+                    result.setProcessTime(processTime);
                 }
                 result.setDeviceUploadTime(new Date());
             } catch (Exception e) {
