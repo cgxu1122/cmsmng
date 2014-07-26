@@ -79,7 +79,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 }
             }
             CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
-            LOGGER.info("DataLog中没有找到对应数据，CounterTempLog查询数据为：{}", JSON.toJSONString(counterTempLog));
+            LOGGER.info("CounterTempLog中没有找到对应数据，CounterTempLog查询数据为：{}", JSON.toJSONString(counterTempLog));
             if (counterTempLog == null) {
                 CounterTempLog tempLog = new CounterTempLog();
                 tempLog.setImei(po.getImei());
@@ -95,7 +95,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
             if (type == TempLogType.UnStat) {
                 //异步统计到达数据
-                taskExecutor.execute(new StatRunnable(dataLog));
+                statCounterService.updateStat(dataLog);
             }
         }
     }

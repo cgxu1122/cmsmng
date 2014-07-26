@@ -92,7 +92,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                             int productStatNum = 1;
                             while (true) {
                                 productStatNum++;
-                                ProductStat productStat = productStatAdapter.getByMd5Key(md5Key);
+                                ProductStat productStat = productStatAdapter.getByMd5Key(productMd5Key);
                                 if (productStat == null) {
                                     LOGGER.info("ProductStat update failure ProductStat not found,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                                     break;
