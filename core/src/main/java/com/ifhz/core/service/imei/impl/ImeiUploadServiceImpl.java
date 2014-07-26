@@ -6,7 +6,9 @@ import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
+import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.imei.ImeiUploadService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,10 +17,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 
 /**
@@ -36,21 +35,26 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     private ApiUploadService apiUploadService;
     @Resource(name = "taskExecutor")
     private TaskExecutor taskExecutor;
+    @Resource(name = "localDirCacheService")
+    private LocalDirCacheService localDirCacheService;
 
     public boolean processCsvData(String filePath) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(new File(filePath)));
+            String newFilePath = decodeFile(filePath);
+            if (StringUtils.isBlank(newFilePath)) {
+                LOGGER.info("processCsvData translate decodeFile failure!!");
+                return false;
+            }
+            reader = new BufferedReader(new FileReader(new File(newFilePath)));
             String line = "";
             int i = 1;
             while ((line = reader.readLine()) != null) {
                 LOGGER.info("解析CSV文件 line={}", line);
                 try {
                     if (StringUtils.isNotBlank(line)) {
-                        LOGGER.info("process encode [{}] line={}", (i++), line);
-                        String source = CodecUtils.decode(line).trim();
-                        LOGGER.info("process decode [{}] line={}", source);
+                        LOGGER.info("process [{}] line={}", (i++), line);
                         String[] data = StringUtils.split(line, "\\|");
                         DataLog dataLog = translateDataLog(data);
                         if (dataLog != null) {
@@ -72,6 +76,26 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         }
 
         return true;
+    }
+
+
+    private String decodeFile(String filePath) {
+        String path = null;
+        try {
+            File file = new File(filePath);
+            String temp = FileUtils.readFileToString(file, "UTF-8");
+            LOGGER.info("decode msg={}", temp);
+            LOGGER.info("process encode msg={}", temp);
+            String source = CodecUtils.decode(temp).trim();
+            LOGGER.info("process decode msg={}", source);
+            String localFileName = localDirCacheService.getLocalFileName(file.getName());
+            InputStream inputStream = new ByteArrayInputStream(source.getBytes());
+            path = localDirCacheService.storeTempFile(inputStream, localFileName);
+        } catch (Exception e) {
+            LOGGER.error("decodeFile error", e);
+        }
+
+        return path;
     }
 
     @Override
