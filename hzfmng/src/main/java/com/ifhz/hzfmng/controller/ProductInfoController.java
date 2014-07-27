@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,9 @@ public class ProductInfoController extends BaseController {
         ProductInfo pi = new ProductInfo();
         PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
         if (partnerInfo != null) {
-            pi.setProductId(partnerInfo.getPartnerId());
+            pi.setPartnerId(partnerInfo.getPartnerId());
+            pi.setQueryDataSource(JcywConstants.ACTIVE_Y);
+            pi.setQueryStartTime(new Date());
         }
         pi.setActive(JcywConstants.ACTIVE_Y);
         pi.setProductNameCondition(productNameCondition);

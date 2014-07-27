@@ -208,4 +208,9 @@
         where MD5_KEY = #{md5Key}
     </select>
 
+    <select id="getMaxQueryDateByPartnerId" resultType="date">
+        select max(QUERY_START_TIME) from
+        TY_PRODUCT_INFO
+        where PARTNER_ID = #{partnerId}
+    </select>
 </mapper>

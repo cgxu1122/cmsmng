@@ -8,6 +8,7 @@ import com.ifhz.core.po.ProductStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,4 +58,11 @@ public class ProductStatAdapterImpl implements ProductStatAdapter {
     public ProductStat queryCountByVo(ProductStat record) {
         return productStatMapper.queryCountByVO(record);
     }
+
+    @Override
+    public Date getMaxQueryDateByPartnerId(Long partnerId) {
+        return productStatMapper.getMaxQueryDateByPartnerId(partnerId);
+    }
+
+
 }

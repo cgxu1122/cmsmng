@@ -3,6 +3,7 @@ package com.ifhz.core.adapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductStat;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public interface ProductStatAdapter {
     public List<ProductStat> querySumByVo(Pagination page, ProductStat record);
 
     public ProductStat queryCountByVo(ProductStat record);
+
+    public Date getMaxQueryDateByPartnerId(Long partnerId);
 }

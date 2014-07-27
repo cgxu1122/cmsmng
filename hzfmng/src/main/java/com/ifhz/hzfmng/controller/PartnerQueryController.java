@@ -222,10 +222,6 @@ public class PartnerQueryController extends BaseController {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         ProductStat productStat = new ProductStat();
-        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
-        if (partnerInfo != null) {
-            productStat.setPartnerId(partnerInfo.getPartnerId());
-        }
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
         }
@@ -234,6 +230,11 @@ public class PartnerQueryController extends BaseController {
         }
         if (StringUtils.isNotEmpty(endDate)) {
             productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+        if (partnerInfo != null) {
+            productStat.setPartnerId(partnerInfo.getPartnerId());
+            productStat.setStartDate(productStatQueryService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
         }
         List<ProductStat> list = productStatQueryService.querySumByVo(page, productStat);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -265,10 +266,6 @@ public class PartnerQueryController extends BaseController {
         JSONObject result = new JSONObject();
         try {
             ProductStat productStat = new ProductStat();
-            PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
-            if (partnerInfo != null) {
-                productStat.setPartnerId(partnerInfo.getPartnerId());
-            }
             if (StringUtils.isNotEmpty(productId)) {
                 productStat.setProductId(Long.parseLong(productId));
             }
@@ -277,6 +274,11 @@ public class PartnerQueryController extends BaseController {
             }
             if (StringUtils.isNotEmpty(endDate)) {
                 productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+            if (partnerInfo != null) {
+                productStat.setPartnerId(partnerInfo.getPartnerId());
+                productStat.setStartDate(productStatQueryService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
             }
             List<ProductStat> list = productStatQueryService.querySumByVo(null, productStat);
             if (CollectionUtils.isNotEmpty(list)) {

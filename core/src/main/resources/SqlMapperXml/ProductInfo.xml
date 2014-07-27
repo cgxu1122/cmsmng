@@ -87,6 +87,11 @@
         <if test="record.queryDataSource != null and record.queryDataSource != ''">
             and pi.QUERY_DATA_SOURCE = #{record.queryDataSource}
         </if>
+        <if test="record.queryStartTime != null and record.queryStartTime != ''">
+            <![CDATA[
+            and pi.QUERY_START_TIME <= #{record.queryStartTime}
+            ]]>
+        </if>
         <if test="record.active != null and record.active != ''">
             and pi.ACTIVE = #{record.active}
         </if>

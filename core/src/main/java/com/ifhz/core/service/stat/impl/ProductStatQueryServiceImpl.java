@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,6 +85,15 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
             }
         }
         return productStatList;
+    }
+
+    @Override
+    public Date getMaxQueryDateByPartnerId(Long partnerId) {
+        Date date = productStatAdapter.getMaxQueryDateByPartnerId(partnerId);
+        if (date == null) {
+            date = new Date();
+        }
+        return date;
     }
 
     @Override

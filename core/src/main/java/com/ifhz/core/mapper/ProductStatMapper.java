@@ -4,6 +4,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductStat;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public interface ProductStatMapper {
     public List<ProductStat> queryByVo(Pagination page, @Param(value = "record") ProductStat record);
 
     public List<ProductStat> querySumByVo(Pagination page, @Param(value = "record") ProductStat record);
+
+    public Date getMaxQueryDateByPartnerId(@Param(value = "partnerId") Long partnerId);
 
     public ProductStat queryCountByVO(ProductStat record);
 }
