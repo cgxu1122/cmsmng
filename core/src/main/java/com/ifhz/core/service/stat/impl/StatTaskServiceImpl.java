@@ -173,7 +173,9 @@ public class StatTaskServiceImpl implements StatTaskService {
                             //加工日期维度设备上传总数   日期过期后，数值固定
                             deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
                             LOGGER.info("{}  的加工设备累计上传数量为：{}", value.getMd5Key(), deviceUpdDayNum);
-                            entity.setDeviceUpdDayNum(deviceUpdDayNum);
+                            if (deviceUpdDayNum > 0) {
+                                entity.setDeviceUpdDayNum(deviceUpdDayNum);
+                            }
                         }
                         entity.setDevicePrsDayNum(entity.getDevicePrsDayNum() + value.getDevicePrsDayNum());
                         LOGGER.info("更新数据统计表数据：{}", JSON.toJSONString(entity));
@@ -189,7 +191,9 @@ public class StatTaskServiceImpl implements StatTaskService {
                         //加工日期维度设备上传总数   日期过期后，数值固定
                         deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
                         LOGGER.info("{} 的加工设备累计上传数量为：{}", value.getMd5Key(), deviceUpdDayNum);
-                        value.setDeviceUpdDayNum(deviceUpdDayNum);
+                        if (deviceUpdDayNum > 0) {
+                            value.setDeviceUpdDayNum(deviceUpdDayNum);
+                        }
                         LOGGER.info("插入数据统计表数据：{}", JSON.toJSONString(value));
                         logStatUpdateService.insert(value);
                     }
@@ -246,7 +250,9 @@ public class StatTaskServiceImpl implements StatTaskService {
                             DataLogRequest request = getDataLogRequestByProductStat(value);
                             productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
                             LOGGER.info("{} 的加工设备累计上传数量为{}", value.getMd5Key(), productUpdDayNum);
-                            entity.setProductUpdDayNum(productUpdDayNum);
+                            if (productUpdDayNum > 0) {
+                                entity.setProductUpdDayNum(productUpdDayNum);
+                            }
                         }
                         entity.setProductPrsDayNum(entity.getProductPrsDayNum() + value.getProductPrsDayNum());
 
@@ -255,9 +261,9 @@ public class StatTaskServiceImpl implements StatTaskService {
                         DataLogRequest request = getDataLogRequestByProductStat(value);
                         productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
                         LOGGER.info("{} 的加工设备累计上传数量为{}", value.getMd5Key(), productUpdDayNum);
-                        value.setProductUpdDayNum(productUpdDayNum);
-                        value.setProductUpdDayNum(productUpdDayNum);
-
+                        if (productUpdDayNum > 0) {
+                            value.setProductUpdDayNum(productUpdDayNum);
+                        }
                         productStatUpdateService.insert(value);
                     }
                 } catch (Exception e) {
