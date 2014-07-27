@@ -130,7 +130,11 @@ function initPage() {
             [
                 {field: 'batchCode', title: '批次', align: 'center', width: 100},
                 {field: 'groupName', title: '渠道组织', align: 'center', width: 150},
-                {field: 'batchProductName', title: '产品名称', align: 'center', width: 450},
+                {field: 'batchProductName', title: '产品名称', align: 'center', width: 150,
+                    formatter: function (value, row) {
+                        return  "<a href='javascript:void(0)' onclick=javascript:showProductNameDlg('" + row.batchProductName + "')>查看</a>";
+                    }
+                },
                 {field: 'startTime', title: '开始时间', align: 'center', width: 100,
                     formatter: function (value) {
                         return new Date(value).formate("yyyy-MM-dd");
@@ -151,7 +155,10 @@ function initPage() {
         ]
     });
 }
-
+function showProductNameDlg(batchProductName) {
+    $('#productNamedlg').dialog('open').dialog('setTitle', '查看产品名称');
+    $("#productNamedg").html(batchProductName);
+}
 function showProductDialog(type) {
     $('#productdlg').dialog('open').dialog('setTitle', '选择产品');
     $('#productdg').datagrid({
@@ -379,6 +386,14 @@ function importTemplateBatch(type) {
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#productdlg').dialog('close')">关闭</a>
 </div>
-
+<div id="productNamedlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#productNamedlg-buttons">
+    <div id="productNamedg"></div>
+</div>
+<div id="productNamedlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#productNamedlg').dialog('close')">关闭</a>
+</div>
 </body>
 </html>

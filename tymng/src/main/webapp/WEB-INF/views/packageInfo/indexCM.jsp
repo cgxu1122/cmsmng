@@ -209,11 +209,6 @@ function showApkDialog(type) {
                 {field: 'apkName', title: 'APK名称', align: 'center', width: 150},
                 {field: 'desktopIcon', title: '是否创建快捷方式', align: 'center', width: 120,
                     formatter: function (value, row, index) {
-                        if (row.type == 2) {
-                            return "<select id='desktopIcon" + row.apkId + "' name='desktopIcon' style='width:100px;'>"
-                                    + "<option value='Y' selected=selected>创建快捷</option>"
-                                    + "</select>";
-                        }
                         return "<select id='desktopIcon" + row.apkId + "' name='desktopIcon' style='width:100px;'>"
                                 + "<option value='N' selected=selected>不创建快捷</option>"
                                 + "<option value='Y'>创建快捷</option>"

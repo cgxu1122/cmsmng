@@ -150,8 +150,9 @@ public class ModelInfoController extends BaseController {
             return result;
         }
         //机型名称唯一性校验
+        modelName = modelName.trim().replaceAll("\\s+", "_");
         ModelInfo mi = new ModelInfo();
-        mi.setModelName(modelName.trim());
+        mi.setModelName(modelName);
         mi.setGroupId(Long.parseLong(groupId));
         mi.setActive(JcywConstants.ACTIVE_Y);
         Pagination page = new Pagination();
@@ -214,8 +215,9 @@ public class ModelInfoController extends BaseController {
             return result;
         }
         //机型名称唯一性校验
+        modelName = modelName.trim().replaceAll("\\s+", "_");
         ModelInfo mi = new ModelInfo();
-        mi.setModelName(modelName.trim());
+        mi.setModelName(modelName);
         mi.setGroupId(modelInfo.getGroupId());
         mi.setActive(JcywConstants.ACTIVE_Y);
         Pagination page = new Pagination();
