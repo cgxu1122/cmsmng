@@ -24,7 +24,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/nzyw.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/flightchangemon.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
@@ -48,7 +48,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/device.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/device.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
@@ -77,7 +77,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/error.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/error.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>

@@ -3,9 +3,9 @@
     <jmxConfigurator/>
     <property name="log.dir" value="logs/nzyw"/>
     <property name="encoding" value="UTF-8"/>
-    <property name="console-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L  %msg%n"/>
-    <property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger.%M:%L  %msg%n"/>
-    <!--<property name="file-pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n"/>-->
+    <property name="console-pattern" value="%d{yyyy-MM-dd.HH:mm:ss} %-5level [%thread] %logger.%M:%L  %msg%n"/>
+    <property name="file-pattern" value="%d{yyyy-MM-dd.HH:mm:ss} %-5level [%thread] %logger.%M:%L  %msg%n"/>
+    <property name="data-pattern" value="%d{yyyy-MM-dd.HH:mm:ss.SSS} %msg%n"/>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -14,7 +14,7 @@
         </encoder>
     </appender>
 
-    <appender name="rollingFile"
+    <appender name="fileDefault"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/nzyw.log</file>
         <prudent>false</prudent>
@@ -24,19 +24,10 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/flightchangemon.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/nzyw.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
-
-    <!-- project default level -->
-    <logger name="com.ifhz" level="INFO"/>
-
-    <!-- root -->
-    <root level="INFO">
-        <appender-ref ref="console"/>
-        <appender-ref ref="rollingFile"/>
-    </root>
 
     <appender name="DeviceCommonLog"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -48,7 +39,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/device.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/device.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
@@ -62,7 +53,7 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/counter.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/counter.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
@@ -77,8 +68,31 @@
             <charset>${encoding}</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/error.%d{yyyy-MM-dd}.log.gz
+            <fileNamePattern>logs/error.%d{yyyy-MM-dd-HH}.log.gz
             </fileNamePattern>
         </rollingPolicy>
     </appender>
+
+    <!-- project default level -->
+    <logger name="com.ifhz" level="INFO"/>
+
+    <logger name="com.ifhz.core.base.commons.log.DeviceCommonLog" level="INFO" additivity="false">
+        <appender-ref ref="DeviceCommonLog"/>
+    </logger>
+    <logger name="com.ifhz.core.base.commons.log.CounterCommonLog" level="INFO" additivity="false">
+        <appender-ref ref="CounterCommonLog"/>
+    </logger>
+    <logger name="com.ifhz.core.base.commons.log.ErrorLog" level="ERROR" additivity="false">
+        <appender-ref ref="ErrorLog"/>
+    </logger>
+    <!-- root -->
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="fileDefault"/>
+    </root>
+
+    <!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.apache" level="INFO"/>
 </configuration>
