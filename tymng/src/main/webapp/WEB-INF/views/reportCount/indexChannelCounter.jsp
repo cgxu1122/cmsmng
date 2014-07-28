@@ -20,20 +20,20 @@ function searchEvt() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var channelId = $('#channelId').val();
     var deviceCode = $('#deviceCode').val();
+    var channelIdCondition = $('#channelIdCondition').val();
     $('#dg').datagrid({
         url: "<%=basePath%>/tymng/reportCount/listLogStat",
-        queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId, deviceCode: deviceCode}
+        queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua, deviceCode: deviceCode, channelIdCondition: channelIdCondition}
     });
 }
 
 function resetEvt() {
     $('#ua').val("");
     $('#modelName').val("");
-    $('#channelId').val("");
     $('#channelName').val("");
     $('#deviceCode').val("");
+    $('#channelIdCondition').val("");
 }
 
 function initPage() {
@@ -260,20 +260,17 @@ function showChannelDialog() {
         height: 'auto',
         fitColumns: true,
         striped: true,
-        singleSelect: true,
         url: '<%=basePath%>/tymng/channelInfo/listAll',
         queryParams: {groupId: 2},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         rownumbers: true,
+        idField: 'channelId',
         columns: [
             [
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
-                {field: 'action', title: '操作', align: 'center', width: 100,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:selectChannel('" + row.channelId + "','" + row.channelName + "')>选择</a>";
-                    }
-                }
+                {field: 'channelId', hidden: 'true'},
+                {field: 'ck', checkbox: true}
             ]
         ]
     });
@@ -285,20 +282,27 @@ function searchChannelEvt() {
         queryParams: {channelNameCondition: value, groupId: 2}
     });
 }
-function selectChannel(channelId, channelName) {
-    $("#channelName").val(channelName);
-    $("#channelId").val(channelId);
-    $('#channeldlg').dialog('close');
+function selectChannel() {
+    var ids = [];
+    var names = [];
+    var rows = $('#channeldg').datagrid('getSelections');
+    for (var i = 0; i < rows.length; i++) {
+        ids.push(rows[i].channelId);
+        names.push(rows[i].channelName);
+    }
+    $("#channelName").val(names.join(','));
+    $("#channelIdCondition").val(ids.join(','));
+    $('#channeldlg').dialog('close')
 }
 function exportData() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var channelId = $('#channelId').val();
     var deviceCode = $('#deviceCode').val();
+    var channelIdCondition = $('#channelIdCondition').val();
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCount/exportData?groupId=2&exportType=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&deviceCode=" + deviceCode,
+        url: "<%=basePath%>/tymng/reportCount/exportData?groupId=2&exportType=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelIdCondition=" + channelIdCondition + "&deviceCode=" + deviceCode,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -329,7 +333,7 @@ function exportData() {
                 <td>
                     <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"
                            onclick="showChannelDialog()"/>
-                    <input type="hidden" name="channelId" id="channelId"/>
+                    <input type="hidden" name="channelIdCondition" id="channelIdCondition"/>
                 </td>
                 <td>
                     <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
@@ -424,6 +428,8 @@ function exportData() {
     <div id="channeldg"></div>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:selectChannel();">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
 </div>

@@ -155,6 +155,9 @@
             and PROCESS_DATE <= #{record.endDate}
             ]]>
         </if>
+        <if test="record.channelIdCondidtion != null">
+            and CHANNEL_ID in (${record.channelIdCondidtion})
+        </if>
     </select>
 
 
@@ -197,6 +200,9 @@
             and PROCESS_DATE <= #{record.endDate}
             ]]>
         </if>
+        <if test="record.channelIdCondidtion != null">
+            and CHANNEL_ID in (${record.channelIdCondidtion})
+        </if>
         group by UA,GROUP_ID,CHANNEL_ID,PROCESS_DATE
     </select>
 
@@ -235,6 +241,9 @@
             <![CDATA[
             and PROCESS_DATE <= #{endDate}
             ]]>
+        </if>
+        <if test="channelIdCondidtion != null">
+            and CHANNEL_ID in (${channelIdCondidtion})
         </if>
     </select>
 </mapper>

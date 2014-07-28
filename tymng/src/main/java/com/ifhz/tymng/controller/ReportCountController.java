@@ -84,6 +84,7 @@ public class ReportCountController extends BaseController {
         String ua = request.getParameter("ua");
         String deviceCode = request.getParameter("deviceCode");
         String channelId = request.getParameter("channelId");
+        String channelIdCondition = request.getParameter("channelIdCondition");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
@@ -105,6 +106,9 @@ public class ReportCountController extends BaseController {
         }
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(channelIdCondition)) {
+            logStat.setChannelIdCondidtion(channelIdCondition);
         }
         List<LogStat> list = logStatQueryService.querySumByVo(page, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -130,6 +134,7 @@ public class ReportCountController extends BaseController {
         String ua = request.getParameter("ua");
         String deviceCode = request.getParameter("deviceCode");
         String channelId = request.getParameter("channelId");
+        String channelIdCondition = request.getParameter("channelIdCondition");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String groupId = request.getParameter("groupId");
@@ -151,6 +156,9 @@ public class ReportCountController extends BaseController {
         }
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(channelIdCondition)) {
+            logStat.setChannelIdCondidtion(channelIdCondition);
         }
         List<LogStat> list = logStatQueryService.queryByVo(page, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -174,6 +182,7 @@ public class ReportCountController extends BaseController {
             String endDate = request.getParameter("endDate");
             String groupId = request.getParameter("groupId");
             String channelId = request.getParameter("channelId");
+            String channelIdCondition = request.getParameter("channelIdCondition");
             LogStat logStat = new LogStat();
             if (StringUtils.isNotEmpty(groupId)) {
                 logStat.setGroupId(Long.parseLong(groupId));
@@ -192,6 +201,9 @@ public class ReportCountController extends BaseController {
             }
             if (StringUtils.isNotEmpty(endDate)) {
                 logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(channelIdCondition)) {
+                logStat.setChannelIdCondidtion(channelIdCondition);
             }
             String exportType = request.getParameter("exportType");
             BaseExportModel exportModel = new BaseExportModel();
