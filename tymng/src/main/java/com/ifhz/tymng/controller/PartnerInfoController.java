@@ -5,8 +5,8 @@ import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PartnerInfo;
-import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.partner.PartnerInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -30,8 +30,8 @@ public class PartnerInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartnerInfoController.class);
     @Autowired
     private PartnerInfoService partnerInfoService;
-    @Resource(name = "userService")
-    private UserService userService;
+    @Resource(name = "sysUserService")
+    private SysUserService sysUserService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -80,7 +80,7 @@ public class PartnerInfoController extends BaseController {
             errorMsg = "请选择导出imei权限！";
         }
         //校验用户名唯一性
-        User user = userService.findUserByLoginName(username);
+        SysUser user = sysUserService.getByLoginName(username);
         if (user != null) {
             errorMsg = "用户名重复，请重新输入！";
         }

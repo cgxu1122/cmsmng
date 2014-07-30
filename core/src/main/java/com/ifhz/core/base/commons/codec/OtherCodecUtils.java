@@ -1,6 +1,9 @@
 package com.ifhz.core.base.commons.codec;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+
+import java.io.File;
 
 /**
  * 类描述
@@ -24,8 +27,9 @@ public final class OtherCodecUtils {
     }
 
     public static void main(String[] args) throws Exception {
-
-
+        String xml = FileUtils.readFileToString(new File("D://log.dat"));
+        String str = OtherCodecUtils.decode(xml);
+        System.out.println(str);
     }
 
     private OtherCodecUtils() {

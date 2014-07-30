@@ -3,9 +3,10 @@ package com.ifhz.core.service.partner.impl;
 import com.ifhz.core.adapter.PartnerInfoAdapter;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.Active;
 import com.ifhz.core.po.PartnerInfo;
-import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.partner.PartnerInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -24,8 +25,8 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
 
     @Resource(name = "partnerInfoAdapter")
     private PartnerInfoAdapter partnerInfoAdapter;
-    @Resource(name = "userService")
-    private UserService userService;
+    @Resource(name = "sysUserService")
+    private SysUserService sysUserService;
 
 
     @Override
@@ -41,13 +42,13 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
     @Override
     public int insert(PartnerInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
-            User user = new User();
+            SysUser user = new SysUser();
             user.setLoginName(record.getUsername());
             user.setRealName(record.getUsername());
             user.setPassword(record.getPassword());
-            user.setStatus(UserConstants.USER_STATUS_ENABLE);
-            user.setType(UserConstants.USER_TYPE_NORMAL);
-            userService.insertUser(user, UserConstants.CP_QUERY);
+            user.setActive(Active.Y.dbValue);
+            user.setRoleId(UserConstants.CP_QUERY);
+            sysUserService.insert(user);
             record.setUserId(user.getUserId());
         }
         return partnerInfoAdapter.insert(record);
@@ -56,10 +57,10 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
     @Override
     public int update(PartnerInfo record) {
         if (record.getUserId() != null) {
-            User user = userService.findById(record.getUserId());
+            SysUser user = sysUserService.getById(record.getUserId());
             if (user != null) {
                 user.setPassword(record.getPassword());
-                userService.updateUser(user);
+                sysUserService.updatePassword(user);
             }
         }
         return partnerInfoAdapter.update(record);

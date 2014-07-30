@@ -21,6 +21,7 @@ public class LogStat implements Serializable {
     private String deviceCode;
     private Date processDate;
     private Long laowuId;
+    private Date createTime;
 
     /**
      * 设备当天安装数量
@@ -50,6 +51,10 @@ public class LogStat implements Serializable {
      * 设备当天安装数量已到达-卸载总数
      */
     private Long prsInvalidUninstallNum = 0L;
+    /**
+     * 产品安装数量中已到达-无效卸载+替换总数
+     */
+    private Long prsInvalidUnAndReNum = 0L;
 
 
     private String md5Key;
@@ -254,5 +259,21 @@ public class LogStat implements Serializable {
 
     public void setPrsInvalidUninstallNum(Long prsInvalidUninstallNum) {
         this.prsInvalidUninstallNum = prsInvalidUninstallNum;
+    }
+
+    public Long getPrsInvalidUnAndReNum() {
+        return prsInvalidUnAndReNum;
+    }
+
+    public void setPrsInvalidUnAndReNum(Long prsInvalidUnAndReNum) {
+        this.prsInvalidUnAndReNum = prsInvalidUnAndReNum;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

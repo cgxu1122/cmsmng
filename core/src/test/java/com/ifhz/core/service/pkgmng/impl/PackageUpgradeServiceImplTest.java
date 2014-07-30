@@ -16,10 +16,12 @@ public class PackageUpgradeServiceImplTest extends BaseTest {
     @Test
     public void testQueryNormalPkgList() throws Exception {
         Long groupId = 1L;
-        Long channelId = 1L;
+        Long channelId = 46L;
         Calendar calendar = Calendar.getInstance();
-        Date startTime = calendar.getTime();
-        Date endTime = calendar.getTime();
+        Date startTime = new Date(1405820764343L);
+        Date endTime = new Date(1405820764343L);
+
+
         packageUpgradeService.queryNormalPkgList(groupId, channelId, true, startTime, endTime);
     }
 
