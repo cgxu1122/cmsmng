@@ -16,20 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.ifhz.core.service.auth.impl;
+package com.ifhz.core.service.auther.impl;
 
-import com.ifhz.core.base.commons.anthrity.AuthrityTreeConstants;
-import com.ifhz.core.enums.UserStatusEnum;
-import com.ifhz.core.po.User;
-import com.ifhz.core.po.UserRoleRef;
-import com.ifhz.core.service.auth.ResourceService;
-import com.ifhz.core.service.auth.RoleService;
-import com.ifhz.core.service.auth.UserRoleRefService;
-import com.ifhz.core.service.auth.UserService;
+import com.alibaba.fastjson.JSON;
+import com.ifhz.core.constants.Active;
+import com.ifhz.core.constants.AdminRoleType;
+import com.ifhz.core.po.auth.SysRole;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysAuthService;
+import com.ifhz.core.service.auther.SysRoleService;
+import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.shiro.exception.CaptchaException;
 import com.ifhz.core.shiro.exception.UserNamePasswordErrorException;
 import com.ifhz.core.shiro.token.UsernamePasswordCaptchaToken;
-import com.ifhz.core.vo.RoleVo;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -48,57 +48,43 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ShiroDbRealm extends AuthorizingRealm {
-    private static Logger logger = LoggerFactory.getLogger(ShiroDbRealm.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShiroDbRealm.class);
+    private SysUserService sysUserService;
+    private SysRoleService sysRoleService;
+    private SysAuthService sysAuthService;
 
-    private UserService userService;
-
-    private RoleService roleService;
-
-    private ResourceService resourceService;
-
-    private UserRoleRefService userRoleRefService;
-
-    public UserService getUserService() {
-        return userService;
+    public SysUserService getSysUserService() {
+        return sysUserService;
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setSysUserService(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
     }
 
-    public RoleService getRoleService() {
-        return roleService;
+    public SysRoleService getSysRoleService() {
+        return sysRoleService;
     }
 
-    public void setRoleService(RoleService roleService) {
-        this.roleService = roleService;
+    public void setSysRoleService(SysRoleService sysRoleService) {
+        this.sysRoleService = sysRoleService;
     }
 
-    public ResourceService getResourceService() {
-        return resourceService;
+    public SysAuthService getSysAuthService() {
+        return sysAuthService;
     }
 
-    public void setResourceService(ResourceService resourceService) {
-        this.resourceService = resourceService;
-    }
-
-    public UserRoleRefService getUserRoleRefService() {
-        return userRoleRefService;
-    }
-
-    public void setUserRoleRefService(UserRoleRefService userRoleRefService) {
-        this.userRoleRefService = userRoleRefService;
+    public void setSysAuthService(SysAuthService sysAuthService) {
+        this.sysAuthService = sysAuthService;
     }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo shiro = new SimpleAuthorizationInfo();
-        Long id = shiroUser.roleId;
-        //
-        List<String> resUtlList = resourceService.findResUrlByRoleId(id);
-        shiro.addStringPermissions(resUtlList);
+        List<String> resUrlList = sysAuthService.queryResUrlListByRoleId(shiroUser.roleId);
+        shiro.addStringPermissions(resUrlList);
         shiro.addRole(shiroUser.roleName);
+
         return shiro;
     }
 
@@ -119,33 +105,35 @@ public class ShiroDbRealm extends AuthorizingRealm {
                 throw new CaptchaException("验证码错误");
             }
             // 查询登陆用户
-            User user = userService.findUserByLoginName(loginName);
-            logger.info("login_user:{}", user);
+            SysUser user = sysUserService.getByLoginName(loginName);
+            LOGGER.info("login_user:{}", JSON.toJSONString(user));
             // 进行密码校验
-            if (user != null && user.getPassword().equals(password) && user.getStatus() == (UserStatusEnum.ENABLE.getStatusValue())) {
-                RoleVo role = null;
-
-                UserRoleRef userRoleRef = userRoleRefService.findRoleIdByUserId(user.getUserId());
+            if (user != null && user.getPassword().equals(password) && StringUtils.equalsIgnoreCase(user.getActive(), Active.Y.dbValue)) {
+                Long roleId = user.getRoleId();
+                SysRole role = sysRoleService.getById(roleId);
+                AdminRoleType type = AdminRoleType.User;
                 // 获取角色名称
-                if (AuthrityTreeConstants.ADMIN_ROLE_ID == userRoleRef.getRoleId().intValue()) {// 如果是超级管理员
-                    role = roleService.getAdminRole();
-                } else {// 普通角色
-                    role = roleService.findById(userRoleRef.getRoleId());
+                if (role.getRootId().longValue() == AdminRoleType.SuperAdmin.rootId) {// 超级管理员
+                    type = AdminRoleType.SuperAdmin;
+                } else if (role.getRootId().longValue() == AdminRoleType.Admin.rootId) {// 管理员角色
+                    type = AdminRoleType.Admin;
+                } else if (role.getRootId().longValue() == AdminRoleType.MngMan.rootId) {// 负责人
+                    type = AdminRoleType.Admin;
                 }
 
-                ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName(), role.getType());
+                ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName(), type);
                 return new SimpleAuthenticationInfo(shiroUser, user.getPassword(), getName());
             } else {
                 throw new UserNamePasswordErrorException("用户名密码错误");
             }
         } catch (CaptchaException e) {
-            e.printStackTrace();
+            LOGGER.error("CaptchaException error", e);
             throw e;
-        } catch (UserNamePasswordErrorException e1) {
-            e1.printStackTrace();
-            throw e1;
+        } catch (UserNamePasswordErrorException e) {
+            LOGGER.error("UserNamePasswordErrorException error", e);
+            throw e;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception error", e);
             throw new AuthenticationException();
         }
     }
@@ -166,9 +154,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
         public String realName;
         public Long roleId;
         public String roleName;
-        public Long type;
+        public AdminRoleType type;
 
-        public ShiroUser(Long userId, String loginName, String realName, Long roleId, String roleName, Long type) {
+        public ShiroUser(Long userId, String loginName, String realName, Long roleId, String roleName, AdminRoleType type) {
             this.userId = userId;
             this.loginName = loginName;
             this.realName = realName;

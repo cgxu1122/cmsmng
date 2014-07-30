@@ -68,8 +68,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                         logStat.setPrsInvalidUninstallNum(logStat.getPrsInvalidUninstallNum() + 1);
                     } else if (dataLog.getActive() == CounterActive.Invalid_Re_And_Un.value) {
                         logStat.setPrsActiveInvalidNum(logStat.getPrsActiveInvalidNum() + 1);
-                        logStat.setPrsInvalidReplaceNum(logStat.getPrsInvalidReplaceNum() + 1);
-                        logStat.setPrsInvalidUninstallNum(logStat.getPrsInvalidUninstallNum() + 1);
+                        logStat.setPrsInvalidUnAndReNum(logStat.getPrsInvalidUnAndReNum() + 1);
                     }
                     int num = logStatAdapter.update(logStat);
                     if (num == 1) {
@@ -108,8 +107,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                                     productStat.setPrsInvalidUninstallNum(productStat.getPrsInvalidUninstallNum() + 1);
                                 } else if (dataLog.getActive() == CounterActive.Invalid_Re_And_Un.value) {
                                     productStat.setPrsActiveInvalidNum(productStat.getPrsActiveInvalidNum() + 1);
-                                    productStat.setPrsInvalidReplaceNum(productStat.getPrsInvalidReplaceNum() + 1);
-                                    productStat.setPrsInvalidUninstallNum(productStat.getPrsInvalidUninstallNum() + 1);
+                                    productStat.setPrsInvalidUnAndReNum(productStat.getPrsInvalidUnAndReNum() + 1);
                                 }
                                 int num = productStatAdapter.update(productStat);
                                 if (num == 1) {

@@ -52,20 +52,24 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
         List<String> imeiList = deviceImeiQueryService.getLogImeiList(tableNameList, request);
         List<StatImeiResult> resultList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(imeiList)) {
-            for (String imei : imeiList) {
-                StatImeiResult result = new StatImeiResult();
-                result.setChannelName(request.getChannelName());
-                result.setDeviceCode(request.getDeviceCode());
-                result.setProcessDate(request.getProcessDate());
-                result.setGroupName(request.getGroupName());
-                result.setProductName(request.getProductName());
-                result.setModelName(request.getModelName());
+            int index = imeiList.size() > 1000 ? 1000 : imeiList.size();
+            if (index > 0) {
+                for (int i = 0; i < index; i++) {
+                    String imei = imeiList.get(i);
+                    StatImeiResult result = new StatImeiResult();
+                    result.setChannelName(request.getChannelName());
+                    result.setDeviceCode(request.getDeviceCode());
+                    result.setProcessDate(request.getProcessDate());
+                    result.setGroupName(request.getGroupName());
+                    result.setProductName(request.getProductName());
+                    result.setModelName(request.getModelName());
 
-                result.setImei(imei);
-                resultList.add(result);
+                    result.setImei(imei);
+                    resultList.add(result);
+                }
             }
         }
-        LOGGER.info("returnObj={}", JSON.toJSONString(resultList));
+        LOGGER.info("returnObj.size={}", JSON.toJSONString(resultList.size()));
         return resultList;
     }
 
@@ -90,17 +94,21 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
         List<String> imeiList = deviceImeiQueryService.getProductImeiList(tableNameList, request);
         List<StatImeiResult> resultList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(imeiList)) {
-            for (String imei : imeiList) {
-                StatImeiResult result = new StatImeiResult();
-                result.setChannelName(request.getChannelName());
-                result.setDeviceCode(request.getDeviceCode());
-                result.setProcessDate(request.getProcessDate());
-                result.setGroupName(request.getGroupName());
-                result.setProductName(request.getProductName());
-                result.setModelName(request.getModelName());
+            int index = imeiList.size() > 1000 ? 1000 : imeiList.size();
+            if (index > 0) {
+                for (int i = 0; i < index; i++) {
+                    String imei = imeiList.get(i);
+                    StatImeiResult result = new StatImeiResult();
+                    result.setChannelName(request.getChannelName());
+                    result.setDeviceCode(request.getDeviceCode());
+                    result.setProcessDate(request.getProcessDate());
+                    result.setGroupName(request.getGroupName());
+                    result.setProductName(request.getProductName());
+                    result.setModelName(request.getModelName());
 
-                result.setImei(imei);
-                resultList.add(result);
+                    result.setImei(imei);
+                    resultList.add(result);
+                }
             }
         }
         LOGGER.info("returnObj={}", JSON.toJSONString(resultList));

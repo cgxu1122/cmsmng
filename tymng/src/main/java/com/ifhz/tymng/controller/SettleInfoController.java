@@ -7,10 +7,9 @@ import com.ifhz.core.base.commons.util.JcywUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.SettleInfo;
-import com.ifhz.core.service.auth.impl.ShiroDbRealm;
 import com.ifhz.core.service.settle.SettleInfoService;
+import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class SettleInfoController extends BaseController {
         //查询条件
         String modelNameCondition = request.getParameter("modelNameCondition");
         SettleInfo si = new SettleInfo();
-        si.setCreateBy(((ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal()).userId.longValue());
+        si.setCreateBy(CurrentUserUtil.getUserId());
         si.setModelNameCondition(modelNameCondition);
         List<SettleInfo> list = settleInfoService.queryByVo(page, si);
         JSONObject result = new JSONObject();

@@ -7,6 +7,8 @@ import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
 
+import java.util.Date;
+
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -25,6 +27,7 @@ public class StatConvertHandler {
         logStat.setChannelId(dataLog.getChannelId());
         logStat.setProcessDate(dataLog.getProcessTime());
         logStat.setGroupId(dataLog.getGroupId());
+        logStat.setCreateTime(new Date());
 
         logStat.setDevicePrsDayNum(0L);
         logStat.setDevicePrsDayNum(0L);
@@ -33,6 +36,7 @@ public class StatConvertHandler {
         logStat.setPrsActiveInvalidNum(0L);
         logStat.setPrsInvalidReplaceNum(0L);
         logStat.setPrsInvalidUninstallNum(0L);
+        logStat.setPrsInvalidUnAndReNum(0L);
         logStat.setVersion(0);
 
         return logStat;
@@ -91,6 +95,7 @@ public class StatConvertHandler {
         productStat.setGroupId(dataLog.getGroupId());
         productStat.setProcessDate(dataLog.getProcessTime());
         productStat.setBatchCode(dataLog.getBatchCode());
+        productStat.setCreateTime(new Date());
 
 
         productStat.setProductPrsDayNum(0L);
@@ -100,6 +105,7 @@ public class StatConvertHandler {
         productStat.setPrsActiveInvalidNum(0L);
         productStat.setPrsInvalidReplaceNum(0L);
         productStat.setPrsInvalidUninstallNum(0L);
+        productStat.setPrsInvalidUnAndReNum(0L);
         productStat.setVersion(0);
 
         return productStat;

@@ -33,5 +33,17 @@ public class StatImeiQueryServiceImplTest extends BaseTest {
     @Test
     public void testQueryImeiListFromProduct() throws Exception {
 
+        StatImeiRequest request = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        request.setDeviceCode("Device24");
+        Date processDate = DateFormatUtils.parse("2014-07-13", "yyyy-MM-dd");
+        request.setProcessDate(processDate);
+        request.setGroupId(1L);
+        request.setProductId(39L);
+        request.setUa("S39h");
+
+        List<StatImeiResult> resultList = statImeiQueryService.queryImeiListFromProduct(request);
+        log(resultList);
+        log(resultList.size());
+
     }
 }
