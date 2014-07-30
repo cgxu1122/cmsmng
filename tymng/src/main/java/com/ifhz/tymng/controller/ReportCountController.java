@@ -220,6 +220,7 @@ public class ReportCountController extends BaseController {
                 titleMap.put("prsActiveInvalidNum", "无效到达数量");
                 titleMap.put("prsInvalidReplaceNum", "替换数量");
                 titleMap.put("prsInvalidUninstallNum", "卸载数量");
+                titleMap.put("prsInvalidUnAndReNum", "卸载并替换数量");
                 list = logStatQueryService.querySumByVo(null, logStat);
             } else if ("2".equals(exportType)) {//按渠道查询加工数据
                 titleMap.put("deviceCode", "设备编码");
@@ -233,6 +234,7 @@ public class ReportCountController extends BaseController {
                 titleMap.put("prsActiveInvalidNum", "无效到达数量");
                 titleMap.put("prsInvalidReplaceNum", "替换数量");
                 titleMap.put("prsInvalidUninstallNum", "卸载数量");
+                titleMap.put("prsInvalidUnAndReNum", "卸载并替换数量");
                 list = logStatQueryService.queryByVo(null, logStat);
             }
             if (CollectionUtils.isNotEmpty(list)) {
@@ -494,6 +496,9 @@ public class ReportCountController extends BaseController {
         } else if ("7".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
             statImeiRequest.setActive(QueryActive.Uninstall);
+        } else if ("8".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest.setActive(QueryActive.UnAndRe);
         }
         return statImeiRequest;
     }

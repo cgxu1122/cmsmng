@@ -12,15 +12,9 @@ public enum QueryActive {
     Valid(2, "有效到达"),
     Invalid(3, "无效到达"),
     Replace(4, "无效替换"),
-    Uninstall(5, "无效卸载");
+    Uninstall(5, "无效卸载"),
+    UnAndRe(6, "无效卸载+替换");
 
-
-    /*
-    Valid(1, "有效到达"),
-    Invalid_Replace(2, "无效到达-替换"),
-    Invalid_Uninstall(3, "无效到达-卸载"),
-    Invalid_Re_And_Un(4, "无效到达-替换-卸载");
-     */
     public final int value;
     public final String desc;
 

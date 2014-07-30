@@ -9,6 +9,7 @@
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="PROCESS_DATE" property="processDate" jdbcType="DATE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
         <result column="PRODUCT_PRS_DAY_NUM" property="productPrsDayNum" jdbcType="BIGINT"/>
         <result column="PRODUCT_UPD_DAY_NUM" property="productUpdDayNum" jdbcType="BIGINT"/>
@@ -17,6 +18,7 @@
         <result column="PRS_ACTIVE_INVALID_NUM" property="prsActiveInvalidNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_REPLACE_NUM" property="prsInvalidReplaceNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
+        <result column="PRS_INVALID_UN_RE_NUM" property="prsInvalidUnReNum" jdbcType="BIGINT"/>
 
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
         <result column="VERSION" property="version" jdbcType="BIGINT"/>
@@ -34,6 +36,7 @@
         UA,
         GROUP_ID,
         PROCESS_DATE,
+        CREATE_TIME,
         PRODUCT_PRS_DAY_NUM,
         PRODUCT_UPD_DAY_NUM,
         PRS_ACTIVE_TOTAL_NUM,
@@ -41,6 +44,7 @@
         PRS_ACTIVE_INVALID_NUM,
         PRS_INVALID_REPLACE_NUM,
         PRS_INVALID_UNINSTALL_NUM,
+        PRS_INVALID_UN_RE_NUM,
         MD5_KEY,
         VERSION
         ) values (
@@ -49,6 +53,7 @@
         #{ua,jdbcType=VARCHAR},
         #{groupId,jdbcType=BIGINT},
         #{processDate,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
         #{productPrsDayNum,jdbcType=BIGINT},
         #{productUpdDayNum,jdbcType=BIGINT},
         #{prsActiveTotalNum,jdbcType=BIGINT},
@@ -56,6 +61,7 @@
         #{prsActiveInvalidNum,jdbcType=BIGINT},
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
+        #{prsInvalidUnReNum,jdbcType=BIGINT},
         #{md5Key,jdbcType=VARCHAR},
         #{version,jdbcType=BIGINT}
         )
@@ -88,6 +94,9 @@
             </if>
             <if test="prsInvalidUninstallNum != null and prsInvalidUninstallNum != 0">
                 PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
+            </if>
+            <if test="prsInvalidUnReNum != null and prsInvalidUnReNum != 0">
+                PRS_INVALID_UN_RE_NUM = #{prsInvalidUnReNum},
             </if>
         </set>
         where ID = #{id}
@@ -134,7 +143,8 @@
         sum(stat.PRS_ACTIVE_VALID_NUM) PRS_ACTIVE_VALID_NUM,
         sum(stat.PRS_ACTIVE_INVALID_NUM) PRS_ACTIVE_INVALID_NUM,
         sum(stat.PRS_INVALID_REPLACE_NUM) PRS_INVALID_REPLACE_NUM,
-        sum(stat.PRS_INVALID_UNINSTALL_NUM) PRS_INVALID_UNINSTALL_NUM
+        sum(stat.PRS_INVALID_UNINSTALL_NUM) PRS_INVALID_UNINSTALL_NUM,
+        sum(stat.PRS_INVALID_UN_RE_NUM) PRS_INVALID_UN_RE_NUM
         from TY_PRODUCT_STAT stat
         where 1=1
         <if test="record.partnerId != null and record.partnerId != ''">
@@ -170,7 +180,8 @@
         sum(stat.PRS_ACTIVE_VALID_NUM) as PRS_ACTIVE_VALID_NUM,
         sum(stat.PRS_ACTIVE_INVALID_NUM) as PRS_ACTIVE_INVALID_NUM,
         sum(stat.PRS_INVALID_REPLACE_NUM) as PRS_INVALID_REPLACE_NUM,
-        sum(stat.PRS_INVALID_UNINSTALL_NUM) as PRS_INVALID_UNINSTALL_NUM
+        sum(stat.PRS_INVALID_UNINSTALL_NUM) as PRS_INVALID_UNINSTALL_NUM,
+        sum(stat.PRS_INVALID_UN_RE_NUM) PRS_INVALID_UN_RE_NUM
         from TY_PRODUCT_STAT stat
         where 1=1
         <if test="partnerId != null and partnerId != ''">

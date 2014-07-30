@@ -18,6 +18,7 @@ public class ProductStat implements Serializable {
     private String modelName;
     private Date processDate;
     private String batchCode;
+    private Date createTime;
 
     /**
      * 产品当天安装数量
@@ -47,6 +48,10 @@ public class ProductStat implements Serializable {
      * 产品安装数量中已到达-无效卸载总数
      */
     private Long prsInvalidUninstallNum = 0L;
+    /**
+     * 产品安装数量中已到达-无效卸载+替换总数
+     */
+    private Long prsInvalidUnAndReNum = 0L;
     private Integer version;
 
     private String md5Key;
@@ -232,5 +237,21 @@ public class ProductStat implements Serializable {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public Long getPrsInvalidUnAndReNum() {
+        return prsInvalidUnAndReNum;
+    }
+
+    public void setPrsInvalidUnAndReNum(Long prsInvalidUnAndReNum) {
+        this.prsInvalidUnAndReNum = prsInvalidUnAndReNum;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
