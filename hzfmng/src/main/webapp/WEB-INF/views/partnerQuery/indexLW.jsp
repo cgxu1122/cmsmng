@@ -64,7 +64,7 @@ function initPage() {
                             return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
                         }
                     }
-                        }
+                }
             ]
         ]
     });
@@ -155,7 +155,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, deviceCode) {
     channelIdCur = channelId;
     modelNameCur = modelName;
     deviceCodeCur = deviceCode;
-    $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
+    $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表,只显示前1000条，查看全部Imei请导出');
     $('#imeidg').datagrid({
         width: 'auto',
         height: 'auto',
@@ -190,8 +190,8 @@ function exportImeiEvt() {
                 $.messager.alert('错误', result.errorMsg);
             } else {
                 window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
-                    }
-                }
+            }
+        }
     });
 }
 
@@ -210,16 +210,16 @@ function exportData() {
                 $.messager.alert('错误', result.errorMsg);
             } else {
                 window.location.href = "<%=basePath%>/hzfmng/downloadFile/downloadFile?path=" + result.path;
-                    }
-                }
-    });
+            }
         }
+    });
+}
 function resetEvt() {
     $('#ua').val("");
     $('#modelName').val("");
     $('#channelId').val("");
     $('#channelName').val("");
-        }
+}
 </script>
 </head>
 <body>

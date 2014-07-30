@@ -116,7 +116,7 @@ function showIMEIDialog(processDate, ua, groupId, modelName, groupName, productI
     productIdCur = productId;
     productNameCur = productName;
     queryTypeCur = queryType;
-    $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表');
+    $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表,只显示前1000条，查看全部Imei请导出');
     $('#imeidg').datagrid({
         width: 'auto',
         height: 'auto',

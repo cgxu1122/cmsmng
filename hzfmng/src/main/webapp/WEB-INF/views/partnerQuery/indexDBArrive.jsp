@@ -22,7 +22,7 @@
             var ua = $('#ua').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/hzfmng/partnerQuery/listLogStat",
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua}
+                queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
 
@@ -30,16 +30,16 @@
             var startDate = $('#startDate').datebox('getValue');
             var endDate = $('#endDate').datebox('getValue');
             $('#dg').datagrid({
+                fitColumns: true,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listLogStat',
-                queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
+                queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
                 pageList: [50, 100, 200],
                 rownumbers: true,
-                fitColumns: true,
                 columns: [
                     [
                         {field: 'processDate', title: '日期', align: 'center', width: 200,
@@ -53,12 +53,12 @@
                         {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
                         {field: 'channelName', title: '仓库名称', align: 'center', width: 300},
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
-                        {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
+                        {field: 'prsActiveTotalNum', title: '到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 if (row.processDate == null) {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',3)>" + value + "</a>";
                                 }
                             }
                         }
@@ -75,7 +75,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/modelInfo/list',
-                queryParams: {groupId: 1},
+                queryParams: {groupId: 2},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -131,7 +131,6 @@
                     [
                         {field: 'a', title: '日期', align: 'center', width: 150,
                             formatter: function (value) {
-
                                 return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
                             }
                         },
@@ -163,7 +162,7 @@
             var ua = $('#ua').val();
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportData?groupId=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');
@@ -175,6 +174,7 @@
                 }
             });
         }
+
         function resetEvt() {
             $('#ua').val("");
             $('#modelName').val("");
@@ -211,9 +211,7 @@
         </table>
     </div>
 </div>
-<div id="dgPanel">
-    <div id="dg"></div>
-</div>
+<div id="dg"></div>
 <div id="modeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"
      buttons="#modeldlg-buttons">

@@ -395,7 +395,7 @@
     <div title="系统用户管理" style="overflow: auto;">
         <shiro:hasPermission name="system_user">
             <div class="nav-item">
-                <a href="javascript:addTab('系统用户管理','<%=basePath%>/tymng/user/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('系统用户管理','<%=basePath%>/tymng/auth/user/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>系统用户管理</span>
                 </a>
@@ -403,7 +403,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="system_role">
             <div class="nav-item">
-                <a href="javascript:addTab('角色管理','<%=basePath%>/tymng/role/index','menu_icon_wjldgl')">
+                <a href="javascript:addTab('角色管理','<%=basePath%>/tymng/auth/role/index','menu_icon_wjldgl')">
                     <span class="menu_icon_wjldgl"></span>
                     <span>角色管理</span>
                 </a>
@@ -411,9 +411,45 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="system_auth">
             <div class="nav-item">
-                <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/rrr/index','menu_icon_wjldgl')">
+                <a href="javascript:addTab('授权管理','<%=basePath%>/tymng/auth/sysauth/index','menu_icon_wjldgl')">
                     <span class="menu_icon_wjldgl"></span>
                     <span>授权管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="product_auth">
+            <div class="nav-item">
+                <a href="javascript:addTab('产品授权管理','<%=basePath%>/tymng/auth/productauth/index','menu_icon_wjldgl')">
+                    <span class="menu_icon_wjldgl"></span>
+                    <span>产品授权管理</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="tymng_help_menu">
+    <div title="辅助功能" style="overflow: auto;">
+        <shiro:hasPermission name="tymng_help_queryimei">
+            <div class="nav-item">
+                <a href="javascript:addTab('查询Imei','<%=basePath%>/hzfmng/imeiQuery/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>查询Imei</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="tymng_help_uploadimei">
+            <div class="nav-item">
+                <a href="javascript:addTab('上传Imei','<%=basePath%>/hzfmng/imeiUpload/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>上传Imei</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="tymng_help_uploadzip">
+            <div class="nav-item">
+                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/hzfmng/zipUpload/index','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>上传Zip文件</span>
                 </a>
             </div>
         </shiro:hasPermission>
