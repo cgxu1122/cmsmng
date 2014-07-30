@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ChannelGroupServiceImplTest extends BaseTest {
 
+
     @Autowired
     private ChannelGroupService channelGroupService;
 
