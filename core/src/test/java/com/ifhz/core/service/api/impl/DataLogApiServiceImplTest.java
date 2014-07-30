@@ -48,8 +48,8 @@ public class DataLogApiServiceImplTest extends BaseTest {
 
     @Test
     public void testInsertDeviceData() throws Exception {
-//        String filePath = "D:\\imei.xls";
-        String filePath = "D:\\imei - 副本.xls";
+        String filePath = "D:\\imei.xls";
+//        String filePath = "D:\\imei - 副本.xls";
         File file = new File(filePath);
         List<DataLog> dataLogList = readExcel(file);
 
@@ -168,20 +168,16 @@ public class DataLogApiServiceImplTest extends BaseTest {
     }
 
     private String getBatchCode() {
-        String[] bs = new String[]{"TY2", "TY3", "TY4"};
+        String[] bs = new String[]{"TY6", "TY7", "TY8", "QT4", "QT5", "QT6", "DB6", "DB7", "DB8"};
         Random random = new Random();
 
-        return bs[random.nextInt(3)];
+        return bs[random.nextInt(9)];
     }
 
     private String getDeviceCode() {
-        String str = "Device";
-        String dd = "C4:46:19:73:37:A7";
+        String str = "Device_";
         Random random = new Random();
-        int t = random.nextInt(101);
-        if (t == 100) {
-            return dd;
-        }
+        int t = random.nextInt(500);
 
         return str + t;
     }

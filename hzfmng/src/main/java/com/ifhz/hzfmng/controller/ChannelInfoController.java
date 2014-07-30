@@ -6,10 +6,10 @@ import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
-import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
-import com.ifhz.core.vo.UserVo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class ChannelInfoController extends BaseController {
     @Autowired
     private ChannelInfoService channelInfoService;
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
     @RequestMapping(value = "/listAll", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
@@ -131,7 +131,10 @@ public class ChannelInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String searchValue = request.getParameter("searchValue");
-        List<UserVo> list = userService.findUsersByType(UserConstants.USER_TYPE_MANAGER, searchValue);
+        SysUser user = new SysUser();
+        user.setRoleId(UserConstants.USER_TYPE_MANAGER);
+        user.setSearchValue(searchValue);
+        List<SysUser> list = sysUserService.queryByVo(page, user);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);

@@ -7,12 +7,12 @@ import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
-import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.channel.ChannelGroupService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
-import com.ifhz.core.vo.UserVo;
+import com.ifhz.core.utils.PatternUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class ChannelInfoController extends BaseController {
     @Autowired
     private ChannelInfoService channelInfoService;
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -219,7 +219,10 @@ public class ChannelInfoController extends BaseController {
             } else if (StringUtils.isEmpty(password) || password.length() > 50) {
                 errorMsg = "请正确输入用户密码！";
             }
-            User user = userService.findUserByLoginName(username);
+            if (!PatternUtils.verifyLoginName(username)) {
+                errorMsg = "用户名包含非法字符，请正确输入用户名";
+            }
+            SysUser user = sysUserService.getByLoginName(username);
             if (user != null) {
                 errorMsg = "用户名重复，请重新输入！";
             }
@@ -333,7 +336,7 @@ public class ChannelInfoController extends BaseController {
         ciCondition.setActive(JcywConstants.ACTIVE_Y);
         Pagination page = new Pagination();
         page.setCurrentPage(1);
-        page.setPageSize(1);
+        page.setPageSize(2);
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ciCondition);
         if (list != null && list.size() > 0) {
             for (ChannelInfo repeatNameCi : list) {
@@ -423,7 +426,10 @@ public class ChannelInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String searchValue = request.getParameter("searchValue");
-        List<UserVo> list = userService.findUsersByType(UserConstants.USER_TYPE_MANAGER, searchValue);
+        SysUser user = new SysUser();
+        user.setRoleId(UserConstants.USER_TYPE_MANAGER);
+        user.setSearchValue(searchValue);
+        List<SysUser> list = sysUserService.queryByVo(page, user);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);

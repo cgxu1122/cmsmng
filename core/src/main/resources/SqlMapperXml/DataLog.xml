@@ -140,10 +140,13 @@
                             and ACTIVE in (2,3,4)
                         </when>
                         <when test="activeType == 4">
-                            and ACTIVE in (2,4)
+                            and ACTIVE = 2
                         </when>
                         <when test="activeType == 5">
-                            and ACTIVE in (3,4)
+                            and ACTIVE = 3
+                        </when>
+                        <when test="activeType == 6">
+                            and ACTIVE = 4
                         </when>
                         <otherwise>
 
@@ -179,21 +182,25 @@
                 <if test="activeType != null">
                     <choose>
                         <when test="activeType == 1">
-                            and log.ACTIVE != 0
+                            and ACTIVE != 0
                         </when>
                         <when test="activeType == 2">
-                            and log.ACTIVE = 1
+                            and ACTIVE = 1
                         </when>
                         <when test="activeType == 3">
-                            and log.ACTIVE in (2,3,4)
+                            and ACTIVE in (2,3,4)
                         </when>
                         <when test="activeType == 4">
-                            and log.ACTIVE in (2,4)
+                            and ACTIVE = 2
                         </when>
                         <when test="activeType == 5">
-                            and log.ACTIVE in (3,4)
+                            and ACTIVE = 3
+                        </when>
+                        <when test="activeType == 6">
+                            and ACTIVE = 4
                         </when>
                         <otherwise>
+
                         </otherwise>
                     </choose>
                 </if>

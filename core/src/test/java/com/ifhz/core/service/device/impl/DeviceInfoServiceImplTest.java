@@ -20,15 +20,15 @@ public class DeviceInfoServiceImplTest extends BaseTest {
     @Test
     public void testGetById() throws Exception {
         log(deviceInfoService.getById(2L));
-        long[] channels = new long[30];
-        for (int i = 0; i < 30; i++) {
-            channels[i] = i + 2L;
+        long[] channels = new long[32];
+        for (int i = 0; i < 32; i++) {
+            channels[i] = i + 34L;
         }
-        String str = "Device";
+        String str = "Device_";
         Random random = new Random();
-        for (int i = 0; i < 101; i++) {
+        for (int i = 101; i < 500; i++) {
             String d = str + i;
-            long channelId = channels[random.nextInt(30)];
+            long channelId = channels[random.nextInt(32)];
             ChannelInfo channelInfo = channelInfoService.getById(channelId);
             DeviceInfo info = new DeviceInfo();
             info.setDeviceCode(d);

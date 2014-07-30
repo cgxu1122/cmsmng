@@ -1,6 +1,7 @@
 package com.ifhz.core.shiro.utils;
 
-import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import com.ifhz.core.constants.AdminRoleType;
+import com.ifhz.core.service.auther.impl.ShiroDbRealm;
 import org.apache.shiro.SecurityUtils;
 
 /**
@@ -57,10 +58,18 @@ public final class CurrentUserUtil {
         return null;
     }
 
-    public static boolean isManager() {
+    public static AdminRoleType getAdminRoleType() {
         ShiroDbRealm.ShiroUser user = getShiroUser();
-        long role = user.roleId;
-        if (role == 6) {
+        if (user != null) {
+            return user.type;
+        }
+
+        return null;
+    }
+
+    public static boolean isManager() {
+        AdminRoleType type = getAdminRoleType();
+        if (type == AdminRoleType.MngMan) {
             return true;
         }
         return false;

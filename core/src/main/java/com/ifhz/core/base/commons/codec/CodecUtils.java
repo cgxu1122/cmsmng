@@ -1,11 +1,6 @@
 package com.ifhz.core.base.commons.codec;
 
-import com.alibaba.fastjson.JSONArray;
-import com.ifhz.core.base.commons.date.DateFormatUtils;
-import com.ifhz.core.constants.GlobalConstants;
 import org.apache.commons.lang.StringUtils;
-
-import java.util.Date;
 
 /**
  * 类描述
@@ -29,7 +24,7 @@ public final class CodecUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        String dd = "2014-07-05 12:30:00";
+        /*String dd = "2014-07-05 12:30:00";
         Date date = DateFormatUtils.parse(dd, GlobalConstants.DEFAULT_DATE_FORMAT);
 
         String str = decode("864545023839806|MI MU|7|C4:46:19:73:37:A7|TY2|" + date.getTime());
@@ -38,6 +33,32 @@ public final class CodecUtils {
         System.out.println(array.toJSONString());
         System.out.println(decode("864545023839805|MI MU|7|C4:46:19:73:37:A7|TY2|" + new Date().getTime()));
         System.out.println(decode("*$&'&'\" !*!+*\"'n_[2_Gn%nQ&(&$(#+(%!(!%(S%nFK n#&\"&'!'%+%%$&"));
+
+*/
+        ////手机imei|手机ua|到达状态
+        String imei1 = "864545024785429|8729|1";
+        String imei2 = "864545024785767|8729|1";
+        String imei3 = "864545024785775|8729|2";
+        String imei4 = "864545024786591|8729|2";
+        String imei5 = "864545024837618|8729|3";
+        String imei6 = "864545024838335|8729|3";
+        String imei7 = "864545024838459|8729|4";
+        String imei8 = "864545024838608|8729|4";
+        String imei9 = "864545024839911|8729|4";
+        String imei10 = "864545024791237|8729|4";
+
+        System.out.println(decode(imei1));
+        System.out.println(decode(imei2));
+        System.out.println(decode(imei3));
+        System.out.println(decode(imei4));
+        System.out.println(decode(imei5));
+        System.out.println(decode(imei6));
+        System.out.println(decode(imei7));
+        System.out.println(decode(imei8));
+        System.out.println(decode(imei9));
+        System.out.println(decode(imei10));
+
+
     }
 
     private CodecUtils() {

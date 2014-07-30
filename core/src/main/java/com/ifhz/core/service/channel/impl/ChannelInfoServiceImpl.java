@@ -4,9 +4,10 @@ import com.ifhz.core.adapter.ChannelInfoAdapter;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.Active;
 import com.ifhz.core.po.ChannelInfo;
-import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.UserService;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,8 +29,8 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     @Resource(name = "channelInfoAdapter")
     private ChannelInfoAdapter channelInfoAdapter;
 
-    @Resource(name = "userService")
-    private UserService userService;
+    @Resource(name = "sysUserService")
+    private SysUserService sysUserService;
 
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
@@ -53,21 +54,22 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     @Override
     public int insert(ChannelInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
-            User user = new User();
+            SysUser user = new SysUser();
             user.setLoginName(record.getUsername());
             user.setPassword(record.getPassword());
             user.setAddress(record.getAddress());
             user.setRealName(record.getUsername());
-            user.setCellphone(record.getPhone());
-            user.setStatus(UserConstants.USER_STATUS_ENABLE);
-            user.setType(UserConstants.USER_TYPE_NORMAL);
+            user.setCellPhone(record.getPhone());
+            user.setActive(Active.Y.dbValue);
             if (JcywConstants.CHANNEL_GROUP_TY_ID_1.equals(record.getGroupId())) {
-                userService.insertUser(user, UserConstants.TY_QUERY);
+                user.setRoleId(UserConstants.TY_QUERY);
             } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(record.getGroupId())) {
-                userService.insertUser(user, UserConstants.DB_QUERY);
+                user.setRoleId(UserConstants.DB_QUERY);
             } else if (JcywConstants.CHANNEL_GROUP_LW_ID_4.equals(record.getGroupId())) {
-                userService.insertUser(user, UserConstants.LW_QUERY);
+                user.setRoleId(UserConstants.LW_QUERY);
             }
+
+            sysUserService.insert(user);
             record.setUserId(user.getUserId());
         }
         return channelInfoAdapter.insert(record);
@@ -76,13 +78,14 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     @Override
     public int update(ChannelInfo record) {
         if (record.getUserId() != null) {
-            User user = userService.findById(record.getUserId());
+            SysUser user = sysUserService.getById(record.getUserId());
             if (user != null && (record.getAddress() != null || record.getPhone() != null)) {
                 user.setPassword(record.getPassword());
                 user.setAddress(record.getAddress());
                 user.setRealName(record.getContact());
-                user.setCellphone(record.getPhone());
-                userService.updateUser(user);
+                user.setCellPhone(record.getPhone());
+
+                sysUserService.update(user);
             }
         }
         int result = channelInfoAdapter.update(record);

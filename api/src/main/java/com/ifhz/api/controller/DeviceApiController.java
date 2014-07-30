@@ -44,7 +44,7 @@ public class DeviceApiController {
     @Resource(name = "imeiUploadService")
     private ImeiUploadService imeiUploadService;
 
-    @RequestMapping(value = "/processLog111.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/processData.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
     JSONObject processLog(@RequestParam(value = "id", required = true) String id,
