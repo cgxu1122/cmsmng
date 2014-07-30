@@ -6,6 +6,8 @@ import org.apache.shiro.authc.AuthenticationException;
  * @author radishlee
  */
 public class UserNamePasswordErrorException extends AuthenticationException {
+    private static final long serialVersionUID = -5635819470100729850L;
+
     /**
      * Constructs a new exception with the specified detail message.  The
      * cause is not initialized, and may subsequently be initialized by
