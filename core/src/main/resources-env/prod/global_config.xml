@@ -2,10 +2,10 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>ordermon 全局配置,放在此xml中</comment>
-    <entry key="ftp.server.url">127.0.0.1</entry>
+    <entry key="ftp.server.url">ftp.dfstock4g.com</entry>
     <entry key="ftp.server.port">21</entry>
-    <entry key="ftp.server.username">ftp</entry>
-    <entry key="ftp.server.password">ftp</entry>
+    <entry key="ftp.server.username">kqmmup</entry>
+    <entry key="ftp.server.password">123465</entry>
     <entry key="ftp.server.deviceDir">/data/device/{0}/</entry>
     <entry key="ftp.server.apkDir">/data/apk/{0}/</entry>
     <entry key="export.num.max">50000</entry>
@@ -14,6 +14,6 @@
     <entry key="device.logFile.dir">/data/app/device</entry>
     <entry key="store.dir">/data/app/store</entry>
     <entry key="store.temp.dir">/data/app/temp</entry>
-    <entry key="aapt.work.dir">D:\bin\adt-bundle-windows-x86_64-20140624\sdk\build-tools\android-4.4W</entry>
-    <entry key="host.prefix">http://www.tymng.com</entry>
+    <entry key="aapt.work.dir">/sa/soft/adt-bundle-linux-x86_64-20140624/sdk/build-tools/android-4.4W</entry>
+    <entry key="host.prefix">http://download.dfstock4g.com</entry>
 </properties>

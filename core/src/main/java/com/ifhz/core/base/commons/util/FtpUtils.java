@@ -8,6 +8,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,9 +128,12 @@ public final class FtpUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        String str = "/data/apk/1404531957414/1 (37).apk";
+        /*String str = "/data/apk/1404531957414/1 (37).apk";
         String t = getParentDirPath(str);
-        System.out.println(t);
+        System.out.println(t);*/
+        String filePath = "D:\\work\\nginx.tar";
+        InputStream in = new FileInputStream(filePath);
+        FtpUtils.ftpUpload(in, "/data/device", "nginx.tar");
     }
 
     /**

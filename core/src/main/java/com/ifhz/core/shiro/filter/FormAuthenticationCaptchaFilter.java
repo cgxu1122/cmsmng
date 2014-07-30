@@ -21,9 +21,7 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
     private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 
     public String getCaptchaParam() {
-
         return captchaParam;
-
     }
 
     protected String getCaptcha(ServletRequest request) {
@@ -37,15 +35,10 @@ public class FormAuthenticationCaptchaFilter extends FormAuthenticationFilter {
             ServletRequest request, ServletResponse response) {
 
         String username = getUsername(request);
-
         String password = getPassword(request);
-
         String captcha = getCaptcha(request);
-
         boolean rememberMe = isRememberMe(request);
-
         String host = getHost(request);
-
         return new UsernamePasswordCaptchaToken(username,
                 password.toCharArray(), rememberMe, host, captcha);
 
