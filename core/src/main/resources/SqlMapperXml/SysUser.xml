@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.SysUserMapper">
+
+    <sql id="TABLE_NAME">TY_USER</sql>
+    <sql id="CommonFieldSql">
+        USER_ID,
+        LOGIN_NAME,
+        REAL_NAME,
+        PASSWORD,
+        CELLPHONE,
+        ADDRESS,
+        ACTIVE,
+        ROLE_ID,
+        CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <resultMap id="SysUserResultMap" type="com.ifhz.core.po.auth.SysUser">
+        <id column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR"/>
+        <result column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="CELLPHONE" property="cellPhone" jdbcType="VARCHAR"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.auth.SysUser">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_USER.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_USER.NEXTVAL,
+        #{loginName,jdbcType=VARCHAR},
+        #{realName,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR},
+        #{cellPhone,jdbcType=VARCHAR},
+        #{address,jdbcType=VARCHAR},
+        #{active,jdbcType=VARCHAR},
+        #{roleId,jdbcType=BIGINT},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="getById" resultMap="SysUserResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where USER_ID = #{userId}
+    </select>
+
+    <select id="getByLoginName" resultMap="SysUserResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where LOGIN_NAME = #{loginName}
+    </select>
+
+    <select id="queryListByRoleId" resultMap="SysUserResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+    </select>
+
+    <update id="update" parameterType="com.ifhz.core.po.auth.SysUser">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="realName != null and realName != ''">
+                REAL_NAME = ${realName},
+            </if>
+            <if test="cellPhone != null and cellPhone != ''">
+                CELLPHONE = #{cellPhone},
+            </if>
+            <if test="address != null and address != ''">
+                ADDRESS = #{address},
+            </if>
+            <if test="roleId != null and cellPhone != 0">
+                ROLE_ID = #{roleId},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="updatePassword" parameterType="com.ifhz.core.po.auth.SysUser">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = SYSDATE,
+        PASSWORD = #{password}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <select id="queryByVo" parameterType="com.ifhz.core.po.auth.SysUser" resultMap="SysUserResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.searchValue != null">
+            and LOGIN_NAME like concat(concat('%',#{record.searchValue}),'%' )
+        </if>
+        <if test="roleId != null">
+            and ROLE_ID = #{record.roleId}
+        </if>
+        order by UPDATE_TIME
+    </select>
+
+    <select id="queryListWithinRoleIdList" resultMap="SysUserResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID in
+        <foreach item="item" index="index" collection="roleIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="delete">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = SYSDATE,
+        ACTIVE='N'
+        WHERE USER_ID = #{userId}
+    </delete>
+</mapper>

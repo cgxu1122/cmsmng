@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.SysRoleResRefMapper">
+
+    <sql id="TABLE_NAME">TY_ROLE_RESOURCE_REF</sql>
+    <sql id="CommonFieldSql">
+        ID,
+        ROLE_ID,
+        RESOURCE_ID,
+        CREATE_TIME
+    </sql>
+
+    <resultMap id="SysRoleResRefResultMap" type="com.ifhz.core.po.auth.SysRoleResRef">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
+        <result column="RESOURCE_ID" property="resourceId" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.auth.SysRoleResRef">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_ROLE_RESOURCE_REF.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_ROLE_RESOURCE_REF.NEXTVAL,
+        #{roleId},
+        #{resourceId},
+        #{createTime}
+        )
+    </insert>
+
+    <select id="queryListByRoleId" parameterType="long" resultMap="SysRoleResRefResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+    </select>
+
+    <delete id="delete">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+    </delete>
+</mapper>

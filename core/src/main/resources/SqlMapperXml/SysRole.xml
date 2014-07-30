@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.SysRoleMapper">
+
+    <sql id="TABLE_NAME">TY_ROLE</sql>
+    <sql id="CommonFieldSql">
+        ROLE_ID,
+        ROLE_NAME,
+        PARENT_ID,
+        FULL_PATH,
+        LEVELS,
+        ROOT_ID,
+        CREATE_TIME,
+        UPDATE_TIME,
+        CAN_DEL
+    </sql>
+
+    <resultMap id="SysRoleResultMap" type="com.ifhz.core.po.auth.SysRole">
+        <id column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="BIGINT"/>
+        <result column="FULL_PATH" property="fullPath" jdbcType="VARCHAR"/>
+        <result column="LEVELS" property="levels" jdbcType="INTEGER"/>
+        <result column="ROOT_ID" property="rootId" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="CAN_DEL" property="canDel" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.auth.SysRole">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_ROLE.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_ROLE.NEXTVAL,
+        #{roleId,jdbcType=BIGINT},
+        #{roleName,jdbcType=VARCHAR},
+        #{parentId,jdbcType=BIGINT},
+        #{fullPath,jdbcType=VARCHAR},
+        #{levels,jdbcType=INTEGER},
+        #{rootId,jdbcType=BIGINT},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{canDel,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ifhz.core.po.auth.SysRole">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="roleName != null and roleName != ''">
+                ROLE_NAME = ${roleName},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        WHERE ROLE_ID = #{roleId}
+    </update>
+
+
+    <select id="getById" resultMap="SysRoleResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+    </select>
+
+    <select id="queryByVo" parameterType="com.ifhz.core.po.auth.SysRole" resultMap="SysRoleResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where 1 =1
+        <if test="record.parentId != null">
+            and PARENT_ID = #{record.parentId}
+        </if>
+        <if test="record.roleName != null">
+            and ROLE_NAME = #{record.roleName}
+        </if>
+        order by UPDATE_TIME
+    </select>
+
+    <select id="queryChildListByRoleId" resultMap="SysRoleResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where role_id != 1
+        START WITH ROLE_ID = #{roleId}
+        CONNECT BY prior ROLE_ID = PARENT_ID
+    </select>
+
+    <select id="queryParentListByRoleId" resultMap="SysRoleResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where role_id != 1
+        START WITH ROLE_ID = #{roleId}
+        CONNECT BY prior PARENT_ID = ROLE_ID
+    </select>
+
+    <select id="queryAllRoleList" resultMap="SysRoleResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where role_id != 1
+        START WITH PARENT_ID = -1
+        CONNECT BY prior ROLE_ID = PARENT_ID
+    </select>
+
+    <delete id="delete">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where ROLE_ID = #{roleId}
+    </delete>
+</mapper>
