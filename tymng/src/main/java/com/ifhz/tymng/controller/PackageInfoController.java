@@ -57,6 +57,7 @@ public class PackageInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String packageNameCondition = request.getParameter("packageNameCondition");
+        String groupIdCondition = request.getParameter("groupIdCondition");
         String groupId = request.getParameter("groupId");
         String type = request.getParameter("type");
         PackageInfo pi = new PackageInfo();
@@ -66,6 +67,9 @@ public class PackageInfoController extends BaseController {
             pi.setGroupId(Long.parseLong(groupId));
         }
         pi.setPackageNameCondition(packageNameCondition);
+        if (StringUtils.isNotEmpty(groupIdCondition)) {
+            pi.setGroupIdCondition(Long.parseLong(groupIdCondition));
+        }
         List<PackageInfo> list = packageInfoService.queryByVo(page, pi);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());

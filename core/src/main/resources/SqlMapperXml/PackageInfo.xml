@@ -81,6 +81,7 @@
         <include refid="TABLE_NAME"/>
         pi
         LEFT OUTER JOIN TY_CHANNEL_GROUP cg on pi.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_BATCH_INFO bi on pi.BATCH_ID = bi.BATCH_ID
         where 1=1
         <if test="record.packageName != null and record.packageName != ''">
             and pi.PACKAGE_NAME = #{record.packageName}
@@ -96,6 +97,9 @@
         </if>
         <if test="record.active != null and record.active != ''">
             and pi.ACTIVE = #{record.active}
+        </if>
+        <if test="record.groupIdCondition != null">
+            and bi.GROUP_ID = #{record.groupIdCondition}
         </if>
         ORDER BY pi.UPDATE_TIME DESC
     </select>

@@ -27,10 +27,19 @@ public class PackageInfo implements Serializable {
     private List<PackageApkRef> packageApkRefList;
 
     private String packageNameCondition;
+    private Long groupIdCondition;
     private String groupName;
 
     public List<PackageApkRef> getPackageApkRefList() {
         return packageApkRefList;
+    }
+
+    public Long getGroupIdCondition() {
+        return groupIdCondition;
+    }
+
+    public void setGroupIdCondition(Long groupIdCondition) {
+        this.groupIdCondition = groupIdCondition;
     }
 
     public void setPackageApkRefList(List<PackageApkRef> packageApkRefList) {

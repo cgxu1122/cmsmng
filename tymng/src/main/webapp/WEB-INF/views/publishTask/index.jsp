@@ -206,9 +206,10 @@ function showPackageDialog() {
 }
 function searchPackageEvt() {
     var value = $('#searchPackageValue').val();
+    var searchPackageGroupIdValue = $('#searchPackageGroupIdValue').combobox('getValue');
     $('#packagedg').datagrid({
         url: "<%=basePath%>/tymng/packageInfo/list",
-        queryParams: {packageNameCondition: value}
+        queryParams: {packageNameCondition: value, groupIdCondition: searchPackageGroupIdValue}
     });
 }
 function selectPackage(packageId, packageName, pkgType, groupId) {
@@ -452,6 +453,15 @@ function selectChannel(channelId, channelName) {
         <div>
             <table>
                 <tr>
+                    <td>
+                        <select class="easyui-combobox" name="searchPackageGroupIdValue" id="searchPackageGroupIdValue"
+                                style="width:150px;">
+                            <option value="">全部渠道组</option>
+                            <option value="1">天音渠道</option>
+                            <option value="2">地包渠道</option>
+                            <option value="3">其他渠道</option>
+                        </select>
+                    </td>
                     <td>
                         <input type="text" name="searchPackageValue" id="searchPackageValue" placeholder="安装包名称"/>
                     </td>

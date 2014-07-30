@@ -254,10 +254,30 @@ function selectMng(mngId, mngName, type) {
     }
     $('#mngdlg').dialog('close');
 }
+
+function collapseAll() {
+    $('#tt').tree('collapseAll');
+}
+function expandAll() {
+    $('#tt').tree({
+        url: "<%=basePath%>/tymng/channelInfo/listTreeAll?groupId=${groupId}",
+        onClick: function (node) {
+            $('#parentIdCondition').val(node.id);
+            searchEvt();
+        },
+        onBeforeExpand: function (node, param) {
+            $('#tt').tree('options').url = "<%=basePath%>/tymng/channelInfo/listTree?groupId=${groupId}&parentIdCondition=" + node.id;
+        }
+    });
+}
 </script>
 </head>
 <body class="easyui-layout">
 <div class="easyui-panel" region="west" style="padding:5px;width: 200px;">
+    <a id="collapsebtn" href="javascript:void(0)" class="easyui-linkbutton"
+       onclick="collapseAll()">关闭</a>
+    <a id="expandbtn" href="javascript:void(0)" class="easyui-linkbutton"
+       onclick="expandAll()">展开</a>
     <ul id="tt"></ul>
 </div>
 <div class="easyui-panel" region="center" style="padding:5px;">
