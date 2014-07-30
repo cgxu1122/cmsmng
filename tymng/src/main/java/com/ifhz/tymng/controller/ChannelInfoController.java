@@ -13,6 +13,7 @@ import com.ifhz.core.service.channel.ChannelGroupService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import com.ifhz.core.utils.PatternUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +111,60 @@ public class ChannelInfoController extends BaseController {
             }
         }
         return result;
+    }
+
+    @RequestMapping(value = "/listTreeAll", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONArray listTreeAll(HttpServletRequest request) {
+        //查询条件
+        String groupId = request.getParameter("groupId");
+        ChannelInfo ci = new ChannelInfo();
+        ci.setActive(JcywConstants.ACTIVE_Y);
+        ci.setGroupId(Long.parseLong(groupId));
+        ci.setParentId(JcywConstants.CHANNEL_ROOT_PARENT_ID);
+        //如果是地包渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        JSONObject jo = new JSONObject();
+        jo.put("id", JcywConstants.CHANNEL_ROOT_PARENT_ID);
+        if (JcywConstants.CHANNEL_GROUP_TY_ID_1.toString().equals(groupId)) {
+            jo.put("text", "天音渠道");
+        } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
+            jo.put("text", "地包渠道");
+        } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
+            jo.put("text", "其他渠道");
+        }
+        JSONArray subJa = new JSONArray();
+        loadAllTreeChannelInfo(subJa, ci);
+        if (CollectionUtils.isNotEmpty(subJa)) {
+            jo.put("children", subJa);
+        }
+        jo.put("state", "open");
+        JSONArray result = new JSONArray();
+        result.add(jo);
+        return result;
+    }
+
+    private void loadAllTreeChannelInfo(JSONArray ja, ChannelInfo channelInfoCondition) {
+        List<ChannelInfo> list = channelInfoService.queryByVo(null, channelInfoCondition);
+        if (list != null && list.size() > 0) {
+            for (ChannelInfo channelInfo : list) {
+                JSONObject jo = new JSONObject();
+                jo.put("id", channelInfo.getChannelId());
+                jo.put("text", channelInfo.getChannelName());
+                if (JcywConstants.BASE_CONSTANT_N.equals(channelInfo.getLeaf())) {
+                    jo.put("state", "open");
+                    JSONArray subJa = new JSONArray();
+                    jo.put("children", subJa);
+                    channelInfoCondition.setParentId(channelInfo.getChannelId());
+                    loadAllTreeChannelInfo(subJa, channelInfoCondition);
+                } else {
+                    jo.put("state", "open");
+                }
+                ja.add(jo);
+            }
+        }
     }
 
     @RequestMapping(value = "/listAll", produces = {"application/json;charset=UTF-8"})
