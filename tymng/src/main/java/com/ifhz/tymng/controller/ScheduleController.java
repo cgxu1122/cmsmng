@@ -28,7 +28,7 @@ public class ScheduleController {
     public
     @ResponseBody
     JSONObject fetchWdjData() {
-        LOGGER.info("receive msg --------------------start");
+        LOGGER.info("receive fetchWdjData msg --------------------start");
         JSONObject result = new JSONObject();
         try {
             scheduleService.fetchWdjData();
@@ -36,7 +36,7 @@ public class ScheduleController {
         } catch (Exception e) {
             LOGGER.error("arrivalData error ", e);
         } finally {
-            LOGGER.info("returnObj={}", result);
+            LOGGER.info("fetchWdjData returnObj={}", result);
             result.put("ret", false);
         }
 
@@ -48,7 +48,7 @@ public class ScheduleController {
     public
     @ResponseBody
     JSONObject scanCounterTempLogFoUnDo() {
-        LOGGER.info("receive msg -----------------------------start");
+        LOGGER.info("receive scanCounterTempLogFoUnDo msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
             scheduleService.scanCounterTempLogFoUnDo();
@@ -57,7 +57,7 @@ public class ScheduleController {
             result.put("ret", false);
             LOGGER.error("scanCounterTempLogFoUnDo error ", e);
         } finally {
-            LOGGER.info("returnObj={}", result);
+            LOGGER.info("scanCounterTempLogFoUnDo returnObj={}", result);
         }
 
         return result;
@@ -67,7 +67,7 @@ public class ScheduleController {
     public
     @ResponseBody
     JSONObject scanCounterTempLogFoUnStat() {
-        LOGGER.info("receive msg -----------------------------start");
+        LOGGER.info("receive scanCounterTempLogFoUnStat msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
             scheduleService.scanCounterTempLogFoUnStat();
@@ -76,7 +76,7 @@ public class ScheduleController {
             result.put("ret", false);
             LOGGER.error("scanCounterTempLogFoUnStat error ", e);
         } finally {
-            LOGGER.info("returnObj={}", result);
+            LOGGER.info("scanCounterTempLogFoUnStat returnObj={}", result);
         }
 
         return result;
@@ -86,7 +86,7 @@ public class ScheduleController {
     public
     @ResponseBody
     JSONObject statisticsData() {
-        LOGGER.info("receive msg -----------------------------start");
+        LOGGER.info("receive statisticsData msg -----------------------------start");
         JSONObject result = new JSONObject();
         try {
             scheduleService.statisticsData();
@@ -95,7 +95,7 @@ public class ScheduleController {
             result.put("ret", false);
             LOGGER.error("statisticsData error ", e);
         } finally {
-            LOGGER.info("returnObj={}", result);
+            LOGGER.info("statisticsData returnObj={}", result);
         }
 
         return result;

@@ -52,7 +52,7 @@ drop sequence SEQ_SETTLE_INFO;
 
 drop sequence SEQ_USER;
 
-drop sequence SEQ_USER_ROLE_REF;
+drop sequence SEQ_USER_PRODUCT_REF;
 
 create sequence SEQ_APK_INFO;
 
@@ -101,6 +101,8 @@ create sequence SEQ_PUB_CHL_MOD_REF;
 
 create sequence SEQ_SETTLE_INFO;
 
+create sequence SEQ_USER_PRODUCT_REF;
+
 create sequence SEQ_CHANNEL_GROUP start with 10000 increment by 1 cache 20;
 
 create sequence SEQ_ROLE start with 10000 increment by 1 cache 20;
@@ -108,5 +110,3 @@ create sequence SEQ_ROLE start with 10000 increment by 1 cache 20;
 create sequence SEQ_ROLE_RESOURCE_REF start with 10000 increment by 1 cache 20;
 
 create sequence SEQ_USER start with 10000 increment by 1 cache 20;
-
-create sequence SEQ_USER_ROLE_REF start with 10000 increment by 1 cache 20;
