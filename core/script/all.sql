@@ -3,67 +3,6 @@
 /* Created on:     2014/7/12 18:00:32                           */
 /*==============================================================*/
 
-
-drop index "Index_5";
-
-drop index "Index_24";
-
-drop index "Index_17";
-
-drop index "Index_19";
-
-drop index IDX_DUTIME;
-
-drop index IDX_PTIME;
-
-drop index IDX_UA_CID_DCODE;
-
-drop index IDX_UA_GID_BCODE;
-
-drop index UNIQ_IMEI;
-
-drop index "Index_7";
-
-drop index "Index_16";
-
-drop index "Index_18";
-
-drop index "Index_20";
-
-drop index "Index_21";
-
-drop index "Index_3";
-
-drop index "Index_22";
-
-drop index "Index_13";
-
-drop index "Index_26";
-
-drop index "Index_14";
-
-drop index "Index_15";
-
-drop index "Index_4";
-
-drop index "Index_6";
-
-drop index "Index_9";
-
-drop index "Index_10";
-
-drop index "Index_11";
-
-drop index "Index_12";
-
-drop index "Index_23";
-
-drop index "Index_8";
-
-drop index "Index_2";
-
-drop index "Index_1";
-
 drop table TY_APK_INFO cascade constraints;
 
 drop table TY_BATCH_INFO cascade constraints;
@@ -114,7 +53,7 @@ drop table TY_SETTLE_INFO cascade constraints;
 
 drop table TY_USER cascade constraints;
 
-drop table TY_USER_ROLE_REF cascade constraints;
+drop table TY_USER_PRODUCT_REF cascade constraints;
 
 
 /*==============================================================*/
@@ -243,14 +182,6 @@ comment on column TY_BATCH_PRODUCT_REF.PRODUCT_ID is
 comment on column TY_BATCH_PRODUCT_REF.CREATE_TIME is
 '创建时间';
 
-/*==============================================================*/
-/* Index: "Index_5"                                             */
-/*==============================================================*/
-create unique index "Index_5" on TY_BATCH_PRODUCT_REF (
-   PRODUCT_ID ASC,
-   BATCH_CODE ASC,
-   BATCH_ID ASC
-);
 
 /*==============================================================*/
 /* Table: TY_CHANNEL_GROUP                                      */
@@ -340,12 +271,6 @@ comment on column TY_CHANNEL_INFO.CREATE_TIME is
 comment on column TY_CHANNEL_INFO.UPDATE_TIME is
 '修改时间';
 
-/*==============================================================*/
-/* Index: "Index_24"                                            */
-/*==============================================================*/
-create unique index "Index_24" on TY_CHANNEL_INFO (
-   USER_ID ASC
-);
 
 /*==============================================================*/
 /* Table: TY_COUNTER_TEMP_LOG                                   */
@@ -380,20 +305,6 @@ comment on column TY_COUNTER_TEMP_LOG.ACTIVE is
 
 comment on column TY_COUNTER_TEMP_LOG.TYPE is
 '类型 0：未整合 1：未统计 2：已统计';
-
-/*==============================================================*/
-/* Index: "Index_17"                                            */
-/*==============================================================*/
-create unique index "Index_17" on TY_COUNTER_TEMP_LOG (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_19"                                            */
-/*==============================================================*/
-create index "Index_19" on TY_COUNTER_TEMP_LOG (
-   CREATE_TIME ASC
-);
 
 /*==============================================================*/
 /* Table: TY_DATA_LOG                                           */
@@ -449,44 +360,6 @@ comment on column TY_DATA_LOG.ACTIVE is
 comment on column TY_DATA_LOG.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI                                             */
-/*==============================================================*/
-create unique index UNIQ_IMEI on TY_DATA_LOG (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE                                      */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE on TY_DATA_LOG (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE                                      */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE on TY_DATA_LOG (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME                                             */
-/*==============================================================*/
-create index IDX_PTIME on TY_DATA_LOG (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME                                            */
-/*==============================================================*/
-create index IDX_DUTIME on TY_DATA_LOG (
-   DEVICE_UPLOAD_TIME ASC
-);
 
 /*==============================================================*/
 /* Table: TY_DEVICE_INFO                                        */
@@ -602,12 +475,6 @@ comment on column TY_DICT_INFO.CREATE_TIME is
 comment on column TY_DICT_INFO.UPDATE_TIME is
 '修改时间';
 
-/*==============================================================*/
-/* Index: "Index_7"                                             */
-/*==============================================================*/
-create unique index "Index_7" on TY_DICT_INFO (
-   KEY_CODE ASC
-);
 
 /*==============================================================*/
 /* Table: TY_LOG_STAT                                           */
@@ -624,9 +491,11 @@ create table TY_LOG_STAT  (
    DEVICE_UPD_DAY_NUM   NUMBER(15)                     default 0,
    PRS_ACTIVE_TOTAL_NUM NUMBER(15)                     default 0,
    PRS_ACTIVE_VALID_NUM NUMBER(15)                     default 0,
-   PRS_ACTIVE_INVALID_NUM NUMBER(15)                     default 0,
-   PRS_INVALID_REPLACE_NUM NUMBER(15)                     default 0,
-   PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
+   PRS_ACTIVE_INVALID_NUM NUMBER(15)                   default 0,
+   PRS_INVALID_REPLACE_NUM NUMBER(15)                  default 0,
+   PRS_INVALID_UNINSTALL_NUM NUMBER(15)                default 0,
+   PRS_INVALID_UN_RE_NUM NUMBER(15)                default 0,
+   CREATE_TIME          DATE                           default SYSDATE,
    MD5_KEY              VARCHAR2(50)                    not null,
    VERSION              NUMBER(15)                     default 0,
    constraint PK_TY_LOG_STAT primary key (ID)
@@ -683,40 +552,6 @@ comment on column TY_LOG_STAT.MD5_KEY is
 comment on column TY_LOG_STAT.VERSION is
 'VERSION';
 
-/*==============================================================*/
-/* Index: "Index_3"                                             */
-/*==============================================================*/
-create unique index "Index_3" on TY_LOG_STAT (
-   MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_16"                                            */
-/*==============================================================*/
-create index "Index_16" on TY_LOG_STAT (
-   UA ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_18"                                            */
-/*==============================================================*/
-create index "Index_18" on TY_LOG_STAT (
-   CHANNEL_ID ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_20"                                            */
-/*==============================================================*/
-create index "Index_20" on TY_LOG_STAT (
-   PROCESS_DATE ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_21"                                            */
-/*==============================================================*/
-create index "Index_21" on TY_LOG_STAT (
-   DEVICE_CODE ASC
-);
 
 /*==============================================================*/
 /* Table: TY_MODEL_CHANNEL_REF                                  */
@@ -742,14 +577,6 @@ comment on column TY_MODEL_CHANNEL_REF.GROUP_ID is
 
 comment on column TY_MODEL_CHANNEL_REF.CREATE_TIME is
 '创建时间';
-
-/*==============================================================*/
-/* Index: "Index_22"                                            */
-/*==============================================================*/
-create index "Index_22" on TY_MODEL_CHANNEL_REF (
-   MODEL_ID ASC,
-   CHANNEL_ID ASC
-);
 
 /*==============================================================*/
 /* Table: TY_MODEL_INFO                                         */
@@ -840,13 +667,6 @@ comment on column TY_PACKAGE_APK_REF.APK_TYPE is
 comment on column TY_PACKAGE_APK_REF.CREATE_TIME is
 '创建时间';
 
-/*==============================================================*/
-/* Index: "Index_13"                                            */
-/*==============================================================*/
-create index "Index_13" on TY_PACKAGE_APK_REF (
-   PACKAGE_ID ASC,
-   APK_ID ASC
-);
 
 /*==============================================================*/
 /* Table: TY_PACKAGE_INFO                                       */
@@ -983,13 +803,6 @@ comment on column TY_PRODUCT_INFO.ACTIVE is
 '活动状态（Y:有效，D:删除）';
 
 /*==============================================================*/
-/* Index: "Index_26"                                            */
-/*==============================================================*/
-create index "Index_26" on TY_PRODUCT_INFO (
-   PARTNER_ID ASC
-);
-
-/*==============================================================*/
 /* Table: TY_PRODUCT_STAT                                       */
 /*==============================================================*/
 create table TY_PRODUCT_STAT  (
@@ -1002,9 +815,11 @@ create table TY_PRODUCT_STAT  (
    PRODUCT_UPD_DAY_NUM  NUMBER(15)                     default 0,
    PRS_ACTIVE_TOTAL_NUM NUMBER(15)                     default 0,
    PRS_ACTIVE_VALID_NUM NUMBER(15)                     default 0,
-   PRS_ACTIVE_INVALID_NUM NUMBER(15)                     default 0,
-   PRS_INVALID_REPLACE_NUM NUMBER(15)                     default 0,
-   PRS_INVALID_UNINSTALL_NUM NUMBER(15)                     default 0,
+   PRS_ACTIVE_INVALID_NUM NUMBER(15)                   default 0,
+   PRS_INVALID_REPLACE_NUM NUMBER(15)                  default 0,
+   PRS_INVALID_UNINSTALL_NUM NUMBER(15)                default 0,
+   PRS_INVALID_UN_RE_NUM NUMBER(15)                   default 0,
+   CREATE_TIME          DATE                           default SYSDATE,
    MD5_KEY              VARCHAR2(50)                    not null,
    VERSION              NUMBER(15)                     default 0,
    constraint PK_TY_PRODUCT_STAT primary key (ID)
@@ -1056,34 +871,6 @@ comment on column TY_PRODUCT_STAT.VERSION is
 'VERSION';
 
 /*==============================================================*/
-/* Index: "Index_4"                                             */
-/*==============================================================*/
-create unique index "Index_4" on TY_PRODUCT_STAT (
-   MD5_KEY ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_6"                                             */
-/*==============================================================*/
-create index "Index_6" on TY_PRODUCT_STAT (
-   PRODUCT_ID ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_14"                                            */
-/*==============================================================*/
-create index "Index_14" on TY_PRODUCT_STAT (
-   UA ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_15"                                            */
-/*==============================================================*/
-create index "Index_15" on TY_PRODUCT_STAT (
-   PROCESS_DATE ASC
-);
-
-/*==============================================================*/
 /* Table: TY_PUBLISH_TASK                                       */
 /*==============================================================*/
 create table TY_PUBLISH_TASK  (
@@ -1125,12 +912,6 @@ comment on column TY_PUBLISH_TASK.ACTIVE is
 comment on column TY_PUBLISH_TASK.PKG_TYPE is
 '安装包类型 Y:通用包，N:普通包';
 
-/*==============================================================*/
-/* Index: "Index_9"                                             */
-/*==============================================================*/
-create index "Index_9" on TY_PUBLISH_TASK (
-   UPDATE_TIME ASC
-);
 
 /*==============================================================*/
 /* Table: TY_PUB_CHL_MOD_REF                                    */
@@ -1183,28 +964,6 @@ comment on column TY_PUB_CHL_MOD_REF.ACTIVE is
 ' 数据状态 Y:有效，N:无效';
 
 /*==============================================================*/
-/* Index: "Index_10"                                            */
-/*==============================================================*/
-create index "Index_10" on TY_PUB_CHL_MOD_REF (
-   UPDATE_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_11"                                            */
-/*==============================================================*/
-create index "Index_11" on TY_PUB_CHL_MOD_REF (
-   PUBLISH_ID ASC
-);
-
-/*==============================================================*/
-/* Index: "Index_12"                                            */
-/*==============================================================*/
-create index "Index_12" on TY_PUB_CHL_MOD_REF (
-   GROUP_ID ASC,
-   CHANNEL_ID ASC
-);
-
-/*==============================================================*/
 /* Table: TY_RESOURCE                                           */
 /*==============================================================*/
 create table TY_RESOURCE  (
@@ -1229,10 +988,11 @@ create table TY_ROLE  (
    ROLE_NAME            VARCHAR2(50)                    not null,
    PARENT_ID            NUMBER(15),
    FULL_PATH            VARCHAR2(500),
-   LEVELS               NUMBER(15),
+   LEVELS               NUMBER(5),
+   ROOT_ID              NUMBER(15),
    CREATE_TIME          DATE                           default SYSDATE,
-   "type"               NUMBER(15),
-   "del_disable"        NUMBER(15),
+   UPDATE_TIME          DATE,
+   CAN_DEL              NUMBER(2),
    constraint PK_TY_ROLE primary key (ROLE_ID)
 );
 
@@ -1251,14 +1011,18 @@ comment on column TY_ROLE.FULL_PATH is
 comment on column TY_ROLE.LEVELS is
 'level';
 
+comment on column TY_ROLE.ROOT_ID is
+'ROOT_ID';
+
 comment on column TY_ROLE.CREATE_TIME is
 '创建时间';
 
-comment on column TY_ROLE."type" is
-'角色类型';
+comment on column TY_ROLE.UPDATE_TIME is
+'修改时间';
 
-comment on column TY_ROLE."del_disable" is
+comment on column TY_ROLE.CAN_DEL is
 '能否删除';
+
 
 /*==============================================================*/
 /* Table: TY_ROLE_RESOURCE_REF                                  */
@@ -1267,7 +1031,6 @@ create table TY_ROLE_RESOURCE_REF  (
    ID                   NUMBER(15)                      not null,
    ROLE_ID              NUMBER(15),
    RESOURCE_ID          NUMBER(15),
-   ACCES                NUMBER(2),
    CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_ROLE_RESOURCE_REF primary key (ID)
 );
@@ -1284,19 +1047,8 @@ comment on column TY_ROLE_RESOURCE_REF.ROLE_ID is
 comment on column TY_ROLE_RESOURCE_REF.RESOURCE_ID is
 '资源ID';
 
-comment on column TY_ROLE_RESOURCE_REF.ACCES is
-'ACCES';
-
 comment on column TY_ROLE_RESOURCE_REF.CREATE_TIME is
 '创建时间';
-
-/*==============================================================*/
-/* Index: "Index_23"                                            */
-/*==============================================================*/
-create index "Index_23" on TY_ROLE_RESOURCE_REF (
-   ROLE_ID ASC,
-   RESOURCE_ID ASC
-);
 
 /*==============================================================*/
 /* Table: TY_SETTLE_INFO                                        */
@@ -1344,12 +1096,6 @@ comment on column TY_SETTLE_INFO.CREATE_TIME is
 comment on column TY_SETTLE_INFO.UPDATE_TIME is
 '修改时间';
 
-/*==============================================================*/
-/* Index: "Index_8"                                             */
-/*==============================================================*/
-create index "Index_8" on TY_SETTLE_INFO (
-   CREATE_BY ASC
-);
 
 /*==============================================================*/
 /* Table: TY_USER                                               */
@@ -1361,8 +1107,8 @@ create table TY_USER  (
    PASSWORD             VARCHAR2(50)                    not null,
    CELLPHONE            VARCHAR2(50),
    ADDRESS              VARCHAR2(500),
-   STATUS               NUMBER(2),
-   TYPE                 NUMBER(2),
+   ACTIVE               VARCHAR2(5)                    default 'Y',
+   ROLE_ID              NUMBER(15)                      not null,
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_USER primary key (USER_ID)
@@ -1389,11 +1135,11 @@ comment on column TY_USER.CELLPHONE is
 comment on column TY_USER.ADDRESS is
 '地址';
 
-comment on column TY_USER.STATUS is
+comment on column TY_USER.ACTIVE is
 '状态';
 
-comment on column TY_USER.TYPE is
-'类型';
+comment on column TY_USER.ROLE_ID is
+'角色ID';
 
 comment on column TY_USER.CREATE_TIME is
 '创建时间';
@@ -1401,32 +1147,34 @@ comment on column TY_USER.CREATE_TIME is
 comment on column TY_USER.UPDATE_TIME is
 '修改时间';
 
-/*==============================================================*/
-/* Index: "Index_2"                                             */
-/*==============================================================*/
-create unique index "Index_2" on TY_USER (
-   LOGIN_NAME ASC
-);
+
 
 /*==============================================================*/
-/* Table: TY_USER_ROLE_REF                                      */
+/* Table: TY_USER_PRODUCT_REF                                   */
 /*==============================================================*/
-create table TY_USER_ROLE_REF  (
+create table TY_USER_PRODUCT_REF  (
    ID                   NUMBER(15)                      not null,
-   USER_ID              NUMBER(15),
-   ROLE_ID              NUMBER(15),
+   USER_ID              NUMBER(15)                      not null,
+   PRODUCT_ID           NUMBER(15),
+   GROUP_ID             NUMBER(15),
    CREATE_TIME          DATE                           default SYSDATE,
-   constraint PK_TY_USER_ROLE_REF primary key (ID)
+   constraint PK_TY_USER_PRODUCT_REF primary key (ID)
 );
 
-comment on table TY_USER_ROLE_REF is
-'用户与角色映射表';
+comment on table TY_USER_PRODUCT_REF is
+'用户与产品权限映射表';
 
-/*==============================================================*/
-/* Index: "Index_1"                                             */
-/*==============================================================*/
-create index "Index_1" on TY_USER_ROLE_REF (
-   USER_ID ASC,
-   ROLE_ID ASC
-);
+comment on column TY_USER_PRODUCT_REF.ID is
+'主键ID';
 
+comment on column TY_USER_PRODUCT_REF.USER_ID is
+'用户ID';
+
+comment on column TY_USER_PRODUCT_REF.PRODUCT_ID is
+'产品ID';
+
+comment on column TY_USER_PRODUCT_REF.GROUP_ID is
+'渠道组ID';
+
+comment on column TY_USER_PRODUCT_REF.CREATE_TIME is
+'创建时间';

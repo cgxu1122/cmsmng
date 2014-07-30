@@ -12,6 +12,7 @@ import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.pkgmng.ApkInfoService;
 import com.ifhz.core.utils.HostsHandle;
+import com.ifhz.core.utils.PatternUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -96,6 +97,10 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "请上传后缀名为Apk的文件");
             return result;
         }
+        if (!PatternUtils.verifyApkSoftName(originFileName)) {
+            result.put("errorMsg", "Apk的文件名称不合法");
+            return result;
+        }
         //产品名称唯一性校验
         boolean isRepeat = isRepeat(Type.Insert, null, apkName);
         if (isRepeat) {
@@ -176,6 +181,10 @@ public class ApkInfoController extends BaseController {
         if (StringUtils.isNotBlank(originFileName)) {
             if (!StringUtils.endsWithIgnoreCase(originFileName.trim(), ".apk")) {
                 result.put("errorMsg", "请上传后缀名为Apk的文件");
+                return result;
+            }
+            if (!PatternUtils.verifyApkSoftName(originFileName)) {
+                result.put("errorMsg", "Apk的文件名称不合法");
                 return result;
             }
             try {

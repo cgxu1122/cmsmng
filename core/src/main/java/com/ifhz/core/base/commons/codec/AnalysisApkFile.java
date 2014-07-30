@@ -36,6 +36,7 @@ public final class AnalysisApkFile {
             }
         }
         OS = System.getProperty("os.name").toLowerCase();
+        LOGGER.info("os.name={}", OS);
         if (StringUtils.containsIgnoreCase(OS, "linux")) {
             isLinux = true;
         } else {

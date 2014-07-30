@@ -14,7 +14,7 @@ public interface ApiUploadService {
 
     public void saveCounterDataLog(DataLog po);
 
-    public void saveDeviceDataLog(DataLog po);
+    public boolean saveDeviceDataLog(DataLog po);
 
     public void batchSave(List<DataLog> processLogList);
 }

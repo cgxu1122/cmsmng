@@ -9,13 +9,13 @@ import com.ifhz.core.constants.TempLogType;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.CounterTempLog;
 import com.ifhz.core.po.DataLog;
-import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.StatCounterService;
+import com.ifhz.core.service.stat.StatDeviceService;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -49,6 +49,8 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     private ModelInfoCacheService modelInfoCacheService;
     @Resource(name = "statCounterService")
     private StatCounterService statCounterService;
+    @Resource(name = "statDeviceService")
+    private StatDeviceService statDeviceService;
     @Resource(name = "taskExecutor")
     private TaskExecutor taskExecutor;
 
@@ -102,14 +104,14 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public void saveDeviceDataLog(DataLog po) {
+    public boolean saveDeviceDataLog(DataLog po) {
         LOGGER.info("执行DataLog保存操作 --- 开始");
         if (po != null) {
             //验证非法数据
             if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null) {
                 LOGGER.info("非法数据，校验不通过 , {}", JSON.toJSONString(po));
                 DeviceCommonLog.info("{}", JSON.toJSONString(po));
-                return;
+                return false;
             }
             // 查询imei是否已经到达过
             DataLog dataLog = dataLogApiService.getByImei(po.getImei());
@@ -134,6 +136,9 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");
                     dataLogApiService.insertDeviceData(po);
+//                    taskExecutor.execute(new StatDeviceRunnable(dataLog));
+                    statDeviceService.updateStat(dataLog);
+                    return true;
                 } else {
                     LOGGER.info("渠道id[{}]--不在系统范围内", po.getChannelId());
                 }
@@ -142,21 +147,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
             }
         }
         LOGGER.info("执行DataLog插入操作 --- 结束");
-    }
-
-
-    private String getModelName(Long groupId, String ua) {
-        String result = "未知";
-        if (StringUtils.isNotBlank(ua) && groupId != null) {
-            //空格 或者多个连续空格 用下划线代替
-            String uaTemp = ModelHandler.translateUa(ua);
-            ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(uaTemp, groupId);
-            if (modelInfo != null) {
-                result = modelInfo.getModelName();
-            }
-        }
-
-        return result;
+        return false;
     }
 
     @Override
@@ -189,6 +180,25 @@ public class ApiUploadServiceImpl implements ApiUploadService {
             } catch (Exception e) {
                 LOGGER.error("updateStat error:{}", JSON.toJSONString(dataLog));
                 LOGGER.error("updateStat error", e);
+            }
+        }
+    }
+
+    private class StatDeviceRunnable implements Runnable {
+
+        private final DataLog dataLog;
+
+        private StatDeviceRunnable(DataLog dataLog) {
+            this.dataLog = dataLog;
+        }
+
+        @Override
+        public void run() {
+            try {
+                statDeviceService.updateStat(dataLog);
+            } catch (Exception e) {
+                LOGGER.error("statDeviceService updateStat error:{}", JSON.toJSONString(dataLog));
+                LOGGER.error("statDeviceService updateStat error", e);
             }
         }
     }
