@@ -42,12 +42,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
         BufferedReader reader = null;
         try {
-            String newFilePath = decodeFile(filePath);
-            if (StringUtils.isBlank(newFilePath)) {
-                LOGGER.info("processCsvData translate decodeFile failure!!");
-                return false;
-            }
-            reader = new BufferedReader(new FileReader(new File(newFilePath)));
+            reader = new BufferedReader(new FileReader(new File(filePath)));
             String line = "";
             int i = 1;
             while ((line = reader.readLine()) != null) {

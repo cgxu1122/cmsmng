@@ -4,16 +4,16 @@
  */
 package com.ifhz.hzfmng.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
-import com.ifhz.core.po.User;
-import com.ifhz.core.service.auth.UserService;
-import com.ifhz.core.service.auth.impl.ShiroDbRealm;
+import com.ifhz.core.constants.Active;
+import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.auther.SysUserService;
+import com.ifhz.core.service.auther.impl.ShiroDbRealm;
 import com.ifhz.core.shiro.exception.CaptchaException;
 import com.ifhz.core.shiro.exception.UserNamePasswordErrorException;
 import com.ifhz.core.util.MD5keyUtil;
-import com.ifhz.core.util.Result;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -37,7 +37,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController extends BaseController {
 
     @Autowired
-    private UserService iStaffService;
+    private SysUserService sysUserService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String initLogin() {
@@ -78,52 +78,56 @@ public class LoginController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/mpd", method = RequestMethod.POST)
+    @RequestMapping(value = "/mpd", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    public
     @ResponseBody
-    public String mpd(HttpServletRequest req) {
+    JSONObject mpd(HttpServletRequest req) {
         ShiroDbRealm.ShiroUser user = (ShiroDbRealm.ShiroUser) SecurityUtils.getSubject().getPrincipal();
-        User u = iStaffService.findById(user.userId.longValue());
-        Result result = new Result();
-        result.setCode(1);
-        result.setMessage("密码修改成功");
+        SysUser u = sysUserService.getById(user.userId.longValue());
+        JSONObject result = new JSONObject();
+        result.put("ret", 1);
+        result.put("message", "密码修改成功");
 
         String oldPassword = req.getParameter("oldPassword");
-        if (StringUtils.isBlank(oldPassword)) {
-            result.setCode(-1);
-            result.setMessage("请输入密码");
-            return JSON.toJSONString(result);
+        if (org.apache.commons.lang.StringUtils.isBlank(oldPassword)) {
+            result.put("ret", -1);
+            result.put("message", "请输入密码");
+            return result;
         }
 
         String newPassword = req.getParameter("newPassword");
-        if (StringUtils.isBlank(newPassword)) {
-            result.setCode(-1);
-            result.setMessage("请输入密码");
-            return JSON.toJSONString(result);
+        if (org.apache.commons.lang.StringUtils.isBlank(newPassword)) {
+            result.put("ret", -1);
+            result.put("message", "请输入密码");
+            return result;
         }
 
         String confirmPassword = req.getParameter("confirmPassword");
-        if (StringUtils.isBlank(confirmPassword)) {
-            result.setCode(-1);
-            result.setMessage("请输入密码");
-            return JSON.toJSONString(result);
+        if (org.apache.commons.lang.StringUtils.isBlank(confirmPassword)) {
+            result.put("ret", -1);
+            result.put("message", "请输入密码");
+            return result;
         }
         if (!newPassword.trim().equals(confirmPassword.trim())) {
-            result.setCode(-1);
-            result.setMessage("两次输入密码不一致");
-            return JSON.toJSONString(result);
+            result.put("ret", -1);
+            result.put("message", "两次输入密码不一致");
+            return result;
         }
 
 
         oldPassword = oldPassword.trim();
         if (u.getPassword().equals(oldPassword)) {
-            result = iStaffService.updateUserPassword(u.getUserId(), newPassword.trim());
+            SysUser sysUser = new SysUser();
+            sysUser.setUserId(u.getUserId());
+            sysUser.setPassword(newPassword.trim());
+            sysUserService.updatePassword(sysUser);
         } else {
-            result.setCode(-1);
-            result.setMessage("旧密码错误");
-            return JSON.toJSONString(result);
+            result.put("ret", -1);
+            result.put("message", "原密码错误");
+            return result;
         }
 
-        return JSON.toJSONString(result);
+        return result;
     }
 
 
@@ -140,22 +144,17 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/dologin", method = RequestMethod.POST)
     public String doLogin(HttpSession session, Model model, String username, String password) {
 
-        User staff = iStaffService.findUserByLoginName(username);
-
         String retPage = "login";
-
+        SysUser staff = sysUserService.getByLoginName(username);
         if (staff == null) {
             model.addAttribute("error", "用户不存在！");
-
         } else if (!staff.getPassword().equals(MD5keyUtil.getMD5Str(password))) {
             model.addAttribute("error", "密码错误");
-
-        } else if (staff.getStatus() != 2) {
+        } else if (!StringUtils.equalsIgnoreCase(staff.getActive(), Active.Y.dbValue)) {
             /**
-             * 用户状态 1.初始化 2.启用 3.禁用
+             * 用户状态  Y.启用 N.禁用
              */
             model.addAttribute("error", "此用户没被启用");
-
         } else {
             session.setAttribute("staffInfo", staff);
             retPage = "index";

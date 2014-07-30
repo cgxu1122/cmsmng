@@ -1,13 +1,3 @@
-drop index IDX_DUTIME_20142;
-
-drop index IDX_PTIME_20142;
-
-drop index IDX_UA_CID_DCODE_20142;
-
-drop index IDX_UA_GID_BCODE_20142;
-
-drop index UNIQ_IMEI_20142;
-
 drop table TY_DATA_LOG_20142 cascade constraints;
 
 /*==============================================================*/
@@ -63,55 +53,6 @@ comment on column TY_DATA_LOG_20142.ACTIVE is
 
 comment on column TY_DATA_LOG_20142.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20142                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20142 on TY_DATA_LOG_20142 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20142                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20142 on TY_DATA_LOG_20142 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20142                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20142 on TY_DATA_LOG_20142 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20142                                       */
-/*==============================================================*/
-create index IDX_PTIME_20142 on TY_DATA_LOG_20142 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20142                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20142 on TY_DATA_LOG_20142 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20143;
-
-drop index IDX_PTIME_20143;
-
-drop index IDX_UA_CID_DCODE_20143;
-
-drop index IDX_UA_GID_BCODE_20143;
-
-drop index UNIQ_IMEI_20143;
 
 drop table TY_DATA_LOG_20143 cascade constraints;
 
@@ -169,55 +110,6 @@ comment on column TY_DATA_LOG_20143.ACTIVE is
 comment on column TY_DATA_LOG_20143.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20143                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20143 on TY_DATA_LOG_20143 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20143                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20143 on TY_DATA_LOG_20143 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20143                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20143 on TY_DATA_LOG_20143 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20143                                       */
-/*==============================================================*/
-create index IDX_PTIME_20143 on TY_DATA_LOG_20143 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20143                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20143 on TY_DATA_LOG_20143 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20144;
-
-drop index IDX_PTIME_20144;
-
-drop index IDX_UA_CID_DCODE_20144;
-
-drop index IDX_UA_GID_BCODE_20144;
-
-drop index UNIQ_IMEI_20144;
-
 drop table TY_DATA_LOG_20144 cascade constraints;
 
 /*==============================================================*/
@@ -274,56 +166,6 @@ comment on column TY_DATA_LOG_20144.ACTIVE is
 comment on column TY_DATA_LOG_20144.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20144                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20144 on TY_DATA_LOG_20144 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20144                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20144 on TY_DATA_LOG_20144 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20144                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20144 on TY_DATA_LOG_20144 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20144                                       */
-/*==============================================================*/
-create index IDX_PTIME_20144 on TY_DATA_LOG_20144 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20144                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20144 on TY_DATA_LOG_20144 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-
-drop index IDX_DUTIME_20151;
-
-drop index IDX_PTIME_20151;
-
-drop index IDX_UA_CID_DCODE_20151;
-
-drop index IDX_UA_GID_BCODE_20151;
-
-drop index UNIQ_IMEI_20151;
 
 drop table TY_DATA_LOG_20151 cascade constraints;
 
@@ -381,55 +223,6 @@ comment on column TY_DATA_LOG_20151.ACTIVE is
 comment on column TY_DATA_LOG_20151.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20151                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20151 on TY_DATA_LOG_20151 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20151                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20151 on TY_DATA_LOG_20151 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20151                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20151 on TY_DATA_LOG_20151 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20151                                       */
-/*==============================================================*/
-create index IDX_PTIME_20151 on TY_DATA_LOG_20151 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20151                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20151 on TY_DATA_LOG_20151 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20152;
-
-drop index IDX_PTIME_20152;
-
-drop index IDX_UA_CID_DCODE_20152;
-
-drop index IDX_UA_GID_BCODE_20152;
-
-drop index UNIQ_IMEI_20152;
-
 drop table TY_DATA_LOG_20152 cascade constraints;
 
 /*==============================================================*/
@@ -485,56 +278,6 @@ comment on column TY_DATA_LOG_20152.ACTIVE is
 
 comment on column TY_DATA_LOG_20152.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20152                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20152 on TY_DATA_LOG_20152 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20152                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20152 on TY_DATA_LOG_20152 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20152                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20152 on TY_DATA_LOG_20152 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20152                                       */
-/*==============================================================*/
-create index IDX_PTIME_20152 on TY_DATA_LOG_20152 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20152                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20152 on TY_DATA_LOG_20152 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20153;
-
-drop index IDX_PTIME_20153;
-
-drop index IDX_UA_CID_DCODE_20153;
-
-drop index IDX_UA_GID_BCODE_20153;
-
-drop index UNIQ_IMEI_20153;
 
 drop table TY_DATA_LOG_20153 cascade constraints;
 
@@ -592,56 +335,6 @@ comment on column TY_DATA_LOG_20153.ACTIVE is
 comment on column TY_DATA_LOG_20153.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20153                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20153 on TY_DATA_LOG_20153 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20153                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20153 on TY_DATA_LOG_20153 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20153                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20153 on TY_DATA_LOG_20153 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20153                                       */
-/*==============================================================*/
-create index IDX_PTIME_20153 on TY_DATA_LOG_20153 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20153                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20153 on TY_DATA_LOG_20153 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20154;
-
-drop index IDX_PTIME_20154;
-
-drop index IDX_UA_CID_DCODE_20154;
-
-drop index IDX_UA_GID_BCODE_20154;
-
-drop index UNIQ_IMEI_20154;
-
 drop table TY_DATA_LOG_20154 cascade constraints;
 
 /*==============================================================*/
@@ -697,56 +390,6 @@ comment on column TY_DATA_LOG_20154.ACTIVE is
 
 comment on column TY_DATA_LOG_20154.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20154                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20154 on TY_DATA_LOG_20154 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20154                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20154 on TY_DATA_LOG_20154 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20154                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20154 on TY_DATA_LOG_20154 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20154                                       */
-/*==============================================================*/
-create index IDX_PTIME_20154 on TY_DATA_LOG_20154 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20154                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20154 on TY_DATA_LOG_20154 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20161;
-
-drop index IDX_PTIME_20161;
-
-drop index IDX_UA_CID_DCODE_20161;
-
-drop index IDX_UA_GID_BCODE_20161;
-
-drop index UNIQ_IMEI_20161;
 
 drop table TY_DATA_LOG_20161 cascade constraints;
 
@@ -804,56 +447,6 @@ comment on column TY_DATA_LOG_20161.ACTIVE is
 comment on column TY_DATA_LOG_20161.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20161                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20161 on TY_DATA_LOG_20161 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20161                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20161 on TY_DATA_LOG_20161 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20161                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20161 on TY_DATA_LOG_20161 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20161                                       */
-/*==============================================================*/
-create index IDX_PTIME_20161 on TY_DATA_LOG_20161 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20161                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20161 on TY_DATA_LOG_20161 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20162;
-
-drop index IDX_PTIME_20162;
-
-drop index IDX_UA_CID_DCODE_20162;
-
-drop index IDX_UA_GID_BCODE_20162;
-
-drop index UNIQ_IMEI_20162;
-
 drop table TY_DATA_LOG_20162 cascade constraints;
 
 /*==============================================================*/
@@ -909,56 +502,6 @@ comment on column TY_DATA_LOG_20162.ACTIVE is
 
 comment on column TY_DATA_LOG_20162.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20162                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20162 on TY_DATA_LOG_20162 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20162                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20162 on TY_DATA_LOG_20162 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20162                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20162 on TY_DATA_LOG_20162 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20162                                       */
-/*==============================================================*/
-create index IDX_PTIME_20162 on TY_DATA_LOG_20162 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20162                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20162 on TY_DATA_LOG_20162 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20163;
-
-drop index IDX_PTIME_20163;
-
-drop index IDX_UA_CID_DCODE_20163;
-
-drop index IDX_UA_GID_BCODE_20163;
-
-drop index UNIQ_IMEI_20163;
 
 drop table TY_DATA_LOG_20163 cascade constraints;
 
@@ -1016,56 +559,6 @@ comment on column TY_DATA_LOG_20163.ACTIVE is
 comment on column TY_DATA_LOG_20163.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20163                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20163 on TY_DATA_LOG_20163 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20163                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20163 on TY_DATA_LOG_20163 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20163                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20163 on TY_DATA_LOG_20163 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20163                                       */
-/*==============================================================*/
-create index IDX_PTIME_20163 on TY_DATA_LOG_20163 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20163                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20163 on TY_DATA_LOG_20163 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20164;
-
-drop index IDX_PTIME_20164;
-
-drop index IDX_UA_CID_DCODE_20164;
-
-drop index IDX_UA_GID_BCODE_20164;
-
-drop index UNIQ_IMEI_20164;
-
 drop table TY_DATA_LOG_20164 cascade constraints;
 
 /*==============================================================*/
@@ -1121,56 +614,6 @@ comment on column TY_DATA_LOG_20164.ACTIVE is
 
 comment on column TY_DATA_LOG_20164.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20164                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20164 on TY_DATA_LOG_20164 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20164                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20164 on TY_DATA_LOG_20164 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20164                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20164 on TY_DATA_LOG_20164 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20164                                       */
-/*==============================================================*/
-create index IDX_PTIME_20164 on TY_DATA_LOG_20164 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20164                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20164 on TY_DATA_LOG_20164 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20171;
-
-drop index IDX_PTIME_20171;
-
-drop index IDX_UA_CID_DCODE_20171;
-
-drop index IDX_UA_GID_BCODE_20171;
-
-drop index UNIQ_IMEI_20171;
 
 drop table TY_DATA_LOG_20171 cascade constraints;
 
@@ -1228,56 +671,6 @@ comment on column TY_DATA_LOG_20171.ACTIVE is
 comment on column TY_DATA_LOG_20171.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20171                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20171 on TY_DATA_LOG_20171 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20171                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20171 on TY_DATA_LOG_20171 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20171                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20171 on TY_DATA_LOG_20171 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20171                                       */
-/*==============================================================*/
-create index IDX_PTIME_20171 on TY_DATA_LOG_20171 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20171                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20171 on TY_DATA_LOG_20171 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20172;
-
-drop index IDX_PTIME_20172;
-
-drop index IDX_UA_CID_DCODE_20172;
-
-drop index IDX_UA_GID_BCODE_20172;
-
-drop index UNIQ_IMEI_20172;
-
 drop table TY_DATA_LOG_20172 cascade constraints;
 
 /*==============================================================*/
@@ -1333,55 +726,6 @@ comment on column TY_DATA_LOG_20172.ACTIVE is
 
 comment on column TY_DATA_LOG_20172.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20172                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20172 on TY_DATA_LOG_20172 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20172                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20172 on TY_DATA_LOG_20172 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20172                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20172 on TY_DATA_LOG_20172 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20172                                       */
-/*==============================================================*/
-create index IDX_PTIME_20172 on TY_DATA_LOG_20172 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20172                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20172 on TY_DATA_LOG_20172 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20173;
-
-drop index IDX_PTIME_20173;
-
-drop index IDX_UA_CID_DCODE_20173;
-
-drop index IDX_UA_GID_BCODE_20173;
-
-drop index UNIQ_IMEI_20173;
 
 drop table TY_DATA_LOG_20173 cascade constraints;
 
@@ -1439,56 +783,6 @@ comment on column TY_DATA_LOG_20173.ACTIVE is
 comment on column TY_DATA_LOG_20173.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20173                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20173 on TY_DATA_LOG_20173 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20173                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20173 on TY_DATA_LOG_20173 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20173                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20173 on TY_DATA_LOG_20173 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20173                                       */
-/*==============================================================*/
-create index IDX_PTIME_20173 on TY_DATA_LOG_20173 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20173                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20173 on TY_DATA_LOG_20173 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20174;
-
-drop index IDX_PTIME_20174;
-
-drop index IDX_UA_CID_DCODE_20174;
-
-drop index IDX_UA_GID_BCODE_20174;
-
-drop index UNIQ_IMEI_20174;
-
 drop table TY_DATA_LOG_20174 cascade constraints;
 
 /*==============================================================*/
@@ -1544,56 +838,6 @@ comment on column TY_DATA_LOG_20174.ACTIVE is
 
 comment on column TY_DATA_LOG_20174.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20174                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20174 on TY_DATA_LOG_20174 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20174                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20174 on TY_DATA_LOG_20174 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20174                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20174 on TY_DATA_LOG_20174 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20174                                       */
-/*==============================================================*/
-create index IDX_PTIME_20174 on TY_DATA_LOG_20174 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20174                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20174 on TY_DATA_LOG_20174 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-
-drop index IDX_DUTIME_20181;
-
-drop index IDX_PTIME_20181;
-
-drop index IDX_UA_CID_DCODE_20181;
-
-drop index IDX_UA_GID_BCODE_20181;
-
-drop index UNIQ_IMEI_20181;
 
 drop table TY_DATA_LOG_20181 cascade constraints;
 
@@ -1651,55 +895,6 @@ comment on column TY_DATA_LOG_20181.ACTIVE is
 comment on column TY_DATA_LOG_20181.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20181                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20181 on TY_DATA_LOG_20181 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20181                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20181 on TY_DATA_LOG_20181 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20181                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20181 on TY_DATA_LOG_20181 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20181                                       */
-/*==============================================================*/
-create index IDX_PTIME_20181 on TY_DATA_LOG_20181 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20181                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20181 on TY_DATA_LOG_20181 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20182;
-
-drop index IDX_PTIME_20182;
-
-drop index IDX_UA_CID_DCODE_20182;
-
-drop index IDX_UA_GID_BCODE_20182;
-
-drop index UNIQ_IMEI_20182;
-
 drop table TY_DATA_LOG_20182 cascade constraints;
 
 /*==============================================================*/
@@ -1755,55 +950,6 @@ comment on column TY_DATA_LOG_20182.ACTIVE is
 
 comment on column TY_DATA_LOG_20182.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
-
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20182                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20182 on TY_DATA_LOG_20182 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20182                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20182 on TY_DATA_LOG_20182 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20182                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20182 on TY_DATA_LOG_20182 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20182                                       */
-/*==============================================================*/
-create index IDX_PTIME_20182 on TY_DATA_LOG_20182 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20182                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20182 on TY_DATA_LOG_20182 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20183;
-
-drop index IDX_PTIME_20183;
-
-drop index IDX_UA_CID_DCODE_20183;
-
-drop index IDX_UA_GID_BCODE_20183;
-
-drop index UNIQ_IMEI_20183;
 
 drop table TY_DATA_LOG_20183 cascade constraints;
 
@@ -1861,54 +1007,6 @@ comment on column TY_DATA_LOG_20183.ACTIVE is
 comment on column TY_DATA_LOG_20183.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20183                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20183 on TY_DATA_LOG_20183 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20183                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20183 on TY_DATA_LOG_20183 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20183                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20183 on TY_DATA_LOG_20183 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20183                                       */
-/*==============================================================*/
-create index IDX_PTIME_20183 on TY_DATA_LOG_20183 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20183                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20183 on TY_DATA_LOG_20183 (
-   DEVICE_UPLOAD_TIME ASC
-);
-
-drop index IDX_DUTIME_20184;
-
-drop index IDX_PTIME_20184;
-
-drop index IDX_UA_CID_DCODE_20184;
-
-drop index IDX_UA_GID_BCODE_20184;
-
-drop index UNIQ_IMEI_20184;
 
 drop table TY_DATA_LOG_20184 cascade constraints;
 
@@ -1966,41 +1064,3 @@ comment on column TY_DATA_LOG_20184.ACTIVE is
 comment on column TY_DATA_LOG_20184.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
-/*==============================================================*/
-/* Index: UNIQ_IMEI_20184                                       */
-/*==============================================================*/
-create unique index UNIQ_IMEI_20184 on TY_DATA_LOG_20184 (
-   IMEI ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_CID_DCODE_20184                                */
-/*==============================================================*/
-create index IDX_UA_CID_DCODE_20184 on TY_DATA_LOG_20184 (
-   UA ASC,
-   CHANNEL_ID ASC,
-   DEVICE_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_UA_GID_BCODE_20184                                */
-/*==============================================================*/
-create index IDX_UA_GID_BCODE_20184 on TY_DATA_LOG_20184 (
-   UA ASC,
-   GROUP_ID ASC,
-   BATCH_CODE ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_PTIME_20184                                       */
-/*==============================================================*/
-create index IDX_PTIME_20184 on TY_DATA_LOG_20184 (
-   PROCESS_TIME ASC
-);
-
-/*==============================================================*/
-/* Index: IDX_DUTIME_20184                                      */
-/*==============================================================*/
-create index IDX_DUTIME_20184 on TY_DATA_LOG_20184 (
-   DEVICE_UPLOAD_TIME ASC
-);

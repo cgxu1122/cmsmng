@@ -23,7 +23,8 @@ public class ScheduleBakServiceImplTest extends BaseTest {
     @Test
     public void testStatisticsData() throws Exception {
         long start = System.currentTimeMillis();
-        String str = "2014-07-07 03:18:05";
+//        String str = "2014-07-07 03:18:05";
+        String str = "2014-07-13 00:00:05";
         Date startTime = DateFormatUtils.parse(str, GlobalConstants.DEFAULT_DATE_FORMAT);
         scheduleBakService.statisticsData(startTime, DateHandler.getEndTime(new Date()));
         long end = System.currentTimeMillis();

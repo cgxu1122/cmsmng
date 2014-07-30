@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.SysResourceMapper">
+
+    <sql id="TABLE_NAME"> TY_RESOURCE </sql>
+    <sql id="CommonFieldSql">
+        RESOURCE_ID,
+        PARENT_ID,
+        RES_NAME,
+        RES_URL,
+        FULL_PATH,
+        LEVELS,
+        CREATE_TIME
+    </sql>
+
+    <resultMap id="SysResourceResultMap" type="com.ifhz.core.po.auth.SysResource">
+        <id column="RESOURCE_ID" property="resourceId" jdbcType="BIGINT"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="BIGINT"/>
+        <result column="RES_NAME" property="resName" jdbcType="VARCHAR"/>
+        <result column="RES_URL" property="resUrl" jdbcType="VARCHAR"/>
+        <result column="FULL_PATH" property="fullPath" jdbcType="VARCHAR"/>
+        <result column="LEVELS" property="levels" jdbcType="BIGINT"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getById" resultMap="SysResourceResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where RESOURCE_ID = #{resourceId}
+    </select>
+
+    <select id="queryListByRoleId" resultMap="SysResourceResultMap">
+        select
+            res.RESOURCE_ID as RESOURCE_ID,
+            res.PARENT_ID   as PARENT_ID,
+            res.RES_NAME    as RES_NAME,
+            res.RES_URL     as RES_URL,
+            res.FULL_PATH   as FULL_PATH,
+            res.LEVELS      as LEVELS,
+            res.CREATE_TIME as CREATE_TIME
+        from TY_RESOURCE res
+        inner join TY_ROLE_RESOURCE_REF ref on res.RESOURCE_ID = ref.RESOURCE_ID
+        where ref.ROLE_ID = #{roleId}
+    </select>
+
+
+    <select id="queryAllList" resultMap="SysResourceResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+    </select>
+</mapper>
