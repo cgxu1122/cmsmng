@@ -163,15 +163,54 @@ public class SysUserController extends BaseController {
         result.put("ret", 1);
         result.put("message", "保存成功");
 
-        //todo 未完成
+        if (null == user.getUserId()) {
+            result.put("ret", -1);
+            result.put("message", "用户为空");
+            return result;
+        }
+
+        SysUser dbuser = sysUserService.getById(user.getUserId());
+
+        String realName = req.getParameter("realName");
+        if (org.apache.commons.lang3.StringUtils.isBlank(realName)) {
+            result.put("ret", -1);
+            result.put("message", "手机号码为空");
+            return result;
+        }
+        if (!org.apache.commons.lang3.StringUtils.equals(realName, dbuser.getRealName())) {
+            dbuser.setRealName(realName);
+        }
+
+        String cellPhone = req.getParameter("cellPhone");
+        if (org.apache.commons.lang3.StringUtils.isBlank(cellPhone)) {
+            result.put("ret", -1);
+            result.put("message", "手机号码为空");
+            return result;
+        }
+        if (!org.apache.commons.lang3.StringUtils.equals(cellPhone, dbuser.getCellPhone())) {
+            dbuser.setCellPhone(cellPhone);
+        }
+
+        String address = req.getParameter("address");
+        if (org.apache.commons.lang3.StringUtils.isBlank(address)) {
+            result.put("ret", -1);
+            result.put("message", "地址为空");
+            return result;
+        }
+        if (!org.apache.commons.lang3.StringUtils.equals(address, dbuser.getAddress())) {
+            dbuser.setAddress(address);
+        }
 
         if (user.getRoleId() == null) {
             result.put("ret", -1);
             result.put("message", "请选择角色");
             return result;
         }
+        if (user.getRoleId() != dbuser.getRoleId()) {
+            dbuser.setRoleId(user.getRoleId());
+        }
 
-        sysUserService.update(user);
+        sysUserService.update(dbuser);
         return result;
     }
 

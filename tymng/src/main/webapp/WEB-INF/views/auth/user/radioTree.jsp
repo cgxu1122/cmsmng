@@ -30,6 +30,8 @@
             var roleId = treeNode.id;
             parent.document.getElementById("roleName").value = roleName;
             parent.document.getElementById("roleId").value = roleId;
+            parent.document.getElementById("updateRoleName").value = roleName;
+            parent.document.getElementById("updateRoleId").value = roleId;
             parent.$('#roleTree_dialog').dialog('close');
         }
 

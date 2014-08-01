@@ -82,7 +82,7 @@
         <include refid="TABLE_NAME"/>
         <set>
             <if test="realName != null and realName != ''">
-                REAL_NAME = ${realName},
+                REAL_NAME = #{realName},
             </if>
             <if test="cellPhone != null and cellPhone != ''">
                 CELLPHONE = #{cellPhone},

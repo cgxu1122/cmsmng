@@ -85,7 +85,7 @@ function saveUpdatePassword() {
     }
     $('#upfm').form('submit', {
         method: "post",
-        url: '<%=basePath%>/tymng/auth/user/updatePassowrd',
+        url: '<%=basePath%>/tymng/auth/user/updatePassword',
         onSubmit: function () {
             return $(this).form('validate');
         },
@@ -121,12 +121,11 @@ function updaterow() {
 
     $('#fm1').form('submit', {
         method: "post",
-        url: '<%=basePath%>/tymng/user/update',
+        url: '<%=basePath%>/tymng/auth/user/update',
         onSubmit: function () {
             return $(this).form('validate');
         },
         success: function (result) {
-            var result = eval('(' + result + ')');
             result = eval('(' + result + ')');
             if (result.code == -1) {
                 $.messager.alert('错误', result.message);
@@ -192,11 +191,16 @@ function initPage() {
         columns: [
             [
                 {field: 'loginName', title: '登录名', align: 'center', width: 100},
-                {field: 'realName', title: '姓名', align: 'center', width: 100},
+                {field: 'realName', title: '真实姓名', align: 'center', width: 100},
                 {field: 'roleName', title: '角色', align: 'center', width: 100},
                 {field: 'cellPhone', title: '手机', align: 'center', width: 200},
                 {field: 'address', title: '地址', align: 'center', width: 200},
                 {field: 'createTime', title: '创建时间', align: 'center', width: 200,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'updateTime', title: '修改时间', align: 'center', width: 200,
                     formatter: function (value) {
                         return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
                     }
@@ -208,7 +212,7 @@ function initPage() {
                     return "禁用";
                 }
                 },
-                {field: 'id', hidden: true}
+                {field: 'userId', hidden: true}
             ]
         ],
         toolbar: "#toolBar"
@@ -335,8 +339,8 @@ function selectRole() {
 <div>
     <div id="updatePassworddlg" class="easyui-dialog" style="width:400px;height:200px;padding:10px 20px" closed="true"
          buttons="#updatePasswprd-buttons">
-        <form id="upfm" method="get" novalidate>
-            <input type="hidden" id="userIdUpPw" name="userIdUpPw"/>
+        <form id="upfm" method="post" novalidate>
+            <input type="hidden" name="userId"/>
 
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>密码:</label>
@@ -345,7 +349,7 @@ function selectRole() {
             </div>
             <div class="fitem">
                 <label><font color="red">*</font>确认密码:</label>
-                <input type="password" id="comfirmPasswordUp" name="comfirmPassword" class="easyui-validatebox"
+                <input type="password" id="comfirmPasswordUp" name="confirmPwd" class="easyui-validatebox"
                        required="true">
             </div>
         </form>
@@ -365,6 +369,10 @@ function selectRole() {
         <form id="fm1" method="post" novalidate>
             <input type="hidden" id="userId" name="userId"/>
 
+            <div class="fitem" style="margin-left:1px">
+                <label><font color="red">*</font>真实姓名:</label>
+                <input id="realNameUp" name="realName" class="easyui-validatebox" required="true">
+            </div>
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>手机:</label>
                 <input id="cellphoneUp" name="cellPhone" class="easyui-numberbox" required="true" validType="digits">
@@ -373,14 +381,12 @@ function selectRole() {
                 <label><font color="red">*</font>地址:</label>
                 <input id="addressUp" name="address" class="easyui-validatebox" required="true">
             </div>
-            <div class="fitem" style="margin-left:30px">
-                <label>角色:</label>
-                <input id="updateUser" name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
-            </div>
-            <div class="fitem">
-                <label><font color="red">*</font>状态:</label>
-                <input type="radio" name="active" value="1"><span>启用</span>
-                <input type="radio" name="active" value="2"/><span>禁用</span>
+            <div class="fitem" style="margin-left:26px">
+                <label><font color="red">*</font>角色:</label>
+                <input type="hidden" id="updateRoleId" name="roleId" value="${roleId}"/>
+                <input type="text" id="updateRoleName" name="roleName" readonly required="true" style="width:160px"
+                       value="${roleName}"/>
+                <a href="javascript:void(0)" onclick="selectRole()">选择角色</a>
             </div>
         </form>
     </div>
