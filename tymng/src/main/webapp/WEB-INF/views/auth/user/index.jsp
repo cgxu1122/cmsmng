@@ -162,21 +162,6 @@ function initPage() {
         search();
     });
 
-    $("#addUser").combogrid({
-        panelWidth: 300,
-        idField: 'roleId',
-        textField: 'roleName',
-        url: '<%=basePath%>/tymng/user/getAllRole',
-        method: 'post',
-        columns: [
-            [
-                {field: 'roleId', hidden: true},
-                {field: 'roleName', title: '角色名称', width: 120}
-            ]
-        ],
-        fitColumns: true
-    });
-
     $("#updateUser").combogrid({
         panelWidth: 300,
         idField: 'roleId',
@@ -246,6 +231,18 @@ function search() {
     });
 }
 
+
+function selectRole() {
+    var url = '<%=basePath%>/tymng/auth/user/tree';
+    $('#roleTree_dialog').html("<iframe width='300' id='roleForm' height='400' frameborder=0 scrolling=no src='" + url + "'></iframe>");
+    $('#roleTree_dialog').dialog({
+        title: '选择角色',
+        modal: true,
+        width: "auto",
+        height: "auto"
+    });
+}
+;
 </script>
 <script type="text/javascript" src="<%= basePath %>/common/js/validateExtends.js"></script>
 </head>
@@ -296,12 +293,12 @@ function search() {
             <label><font color="red">*</font>登录名:</label>
             <input id="loginName" name="loginName" class="easyui-validatebox" required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
-            <label><font color="red">*</font>姓名:</label>
+        <div class="fitem">
+            <label><font color="red">*</font>真实姓名:</label>
             <input id="realName" name="realName" class="easyui-validatebox" required="true">
         </div>
-        <div class="fitem" style="margin-left:25px">
-            <label><font color="red">*</font>密码:</label>
+        <div class="fitem" style="margin-left:24px">
+        <label><font color="red">*</font>密码:</label>
             <input type="password" id="password" name="password" class="easyui-validatebox" required="true"
                    validType="isPasswd">
         </div>
@@ -318,14 +315,12 @@ function search() {
             <label>地址:</label>
             <input name="address" class="easyui-numberbox" maxlength="200">
         </div>
-        <div class="fitem" style="margin-left:30px">
+        <div class="fitem" style="margin-left:26px">
             <label><font color="red">*</font>角色:</label>
-            <input id="addUser" name="roleId" class="easyui-combogrid" required="true" style="width:160px"/>
-        </div>
-        <div class="fitem">
-            <label><font color="red">*</font>状态:</label>
-            <input type="radio" name="status" value="1" id="enable" checked="checked"/><span>启用</span>
-            <input type="radio" name="status" value="2" id="disable"/><span>禁用</span>
+            <input type="hidden" id="roleId" value="${roleId}"/>
+            <input type="text" id="roleName" name="roleName" readonly required="true" style="width:160px"
+                   value="${roleName}"/>
+            <a href="javascript:void(0)" onclick="selectRole()">选择角色</a>
         </div>
     </form>
 </div>
@@ -392,5 +387,8 @@ function search() {
            onclick="javascript:$('#dlg1').dialog('close')">取消</a>
     </div>
 </div>
+
+
+<div id="roleTree_dialog"/>
 </body>
 </html>

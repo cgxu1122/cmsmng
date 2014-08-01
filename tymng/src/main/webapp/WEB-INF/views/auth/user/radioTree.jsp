@@ -28,6 +28,9 @@
         function onClick(event, treeId, treeNode, clickFlag) {
             var roleName = treeNode.name;
             var roleId = treeNode.id;
+            parent.document.getElementById("roleName").value = roleName;
+            parent.document.getElementById("roleId").value = roleId;
+            parent.$('#roleTree_dialog').dialog('close');
         }
 
         function expandNode(e) {
