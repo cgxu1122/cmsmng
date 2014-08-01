@@ -59,14 +59,13 @@ function saverow() {
 
     $('#fm').form('submit', {
         method: "post",
-        url: '<%=basePath%>/tymng/user/insert',
+        url: '<%=basePath%>/tymng/auth/user/insert',
         onSubmit: function () {
             return $(this).form('validate');
         },
         success: function (result) {
-            var result = eval('(' + result + ')');
             result = eval('(' + result + ')');
-            if (result.code == -1) {
+            if (result.ret == -1) {
                 $.messager.alert('错误', result.message);
             } else {
                 $.messager.alert('成功', result.message);
@@ -317,7 +316,7 @@ function selectRole() {
         </div>
         <div class="fitem" style="margin-left:26px">
             <label><font color="red">*</font>角色:</label>
-            <input type="hidden" id="roleId" value="${roleId}"/>
+            <input type="hidden" id="roleId" name="roleId" value="${roleId}"/>
             <input type="text" id="roleName" name="roleName" readonly required="true" style="width:160px"
                    value="${roleName}"/>
             <a href="javascript:void(0)" onclick="selectRole()">选择角色</a>
