@@ -55,7 +55,7 @@
         <include refid="TABLE_NAME"/>
         <set>
             <if test="roleName != null and roleName != ''">
-                ROLE_NAME = ${roleName},
+                ROLE_NAME = #{roleName},
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime},

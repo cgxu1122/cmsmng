@@ -60,7 +60,6 @@
                         $.messager.alert('成功', result.message);
                         $('#dlg').dialog('close');
                         $('#dg').datagrid('reload');
-                        //window.self.location.reload(true);
                         parent.frames['leftFrame'].location.reload(true);
                     }
                 }
@@ -85,8 +84,7 @@
                 data: {"roleId": $('#roleId').val(), "roleName": $('#roleName').val()},
                 success: function (result) {
                     var result = eval('(' + result + ')');
-                    result = eval('(' + result + ')');
-                    if (result.code == -1) {
+                    if (result.ret == -1) {
                         $.messager.alert('错误', result.message);
                     } else {
                         $('#dlg1').dialog('close');
@@ -103,10 +101,9 @@
             if (row) {
                 $.messager.confirm('提示', '确定要角色[' + row.roleName + ']及其所有子角色么?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/tymng/auth/role/delete', {id: row.roleId}, function (result) {
-                            result = eval('(' + result + ')');
-                            if (result.code == -1) {
-                                $.messager.alert('错误', result.message);
+                        $.post('<%=basePath%>/tymng/auth/role/delete', {roleId: row.roleId}, function (result) {
+                            if (result.ret == -1) {
+                                $.messager.alert('错误', res.message);
                             } else {
                                 //$('#dg').datagrid('reload');
                                 window.self.location.reload(true);
@@ -117,7 +114,6 @@
                 });
             }
         }
-
     </script>
 </head>
 <body>
