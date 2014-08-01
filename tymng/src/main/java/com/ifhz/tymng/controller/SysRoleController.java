@@ -21,7 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,15 +48,23 @@ public class SysRoleController extends BaseController {
         return "auth/role/role_maint";
     }
 
+
+    @RequestMapping("/blank")
+    public String blank() {
+        return "auth/role/blank";
+    }
+
+
     @RequestMapping("/roleTree")
     public String tree() {
         return "auth/role/roleTree";
     }
 
-    @RequestMapping("/showdetail/{id}")
-    public ModelAndView showdetail(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("authoritymgmt/role_display_area");
-        mav.addObject("parentId", id);
+
+    @RequestMapping("/roleIndex")
+    public ModelAndView showdetail(@RequestParam("parentId") long parentId, HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView("auth/role/role_display_area");
+        mav.addObject("parentId", parentId);
         return mav;
     }
 
@@ -74,11 +85,18 @@ public class SysRoleController extends BaseController {
             pagination.setPageSize(pageSize);
         }
 
+        SysRole parentRole = sysRoleService.getById(parentId);
+
+
         SysRole sysRole = new SysRole();
         sysRole.setParentId(parentId);
         List<SysRole> list = sysRoleService.queryByVo(pagination, sysRole);
-        if (list == null) {
+        if (CollectionUtils.isEmpty(list)) {
             list = Lists.newArrayList();
+        } else {
+            for (SysRole role : list) {
+                role.setParentRoleName(parentRole.getRoleName());
+            }
         }
 
         JSONObject result = new JSONObject();

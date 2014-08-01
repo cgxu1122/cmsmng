@@ -19,18 +19,14 @@
                 height: 400,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/tymng/role/getById/${parentId}',
+                url: '<%=basePath%>/tymng/auth/role/list',
+                queryParams: {parentId:  ${parentId} },
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
                 columns: [
                     [
-                        {
-                            field: 'roleName',
-                            title: '角色名称',
-                            align: 'center',
-                            width: 100
-                        },
+                        {field: 'roleName', title: '角色名称', align: 'center', width: 100},
                         {
                             field: 'levels',
                             title: '层级',
@@ -38,22 +34,22 @@
                             width: 100
                         },
                         {
-                            field: 'fullPath',
-                            title: '路径',
+                            field: 'parentRoleName',
+                            title: '父角色名称',
                             align: 'center',
                             width: 100
                         },
                         {
                             field: 'createTime',
-                            title: '添加时间',
+                            title: '创建时间',
                             align: 'center',
                             width: 200
                         },
                         {
-                            field: 'parentName',
-                            title: '父角色名称',
+                            field: 'updateTime',
+                            title: '修改时间',
                             align: 'center',
-                            width: 100
+                            width: 200
                         },
                         {
                             field: 'roleId',
@@ -126,7 +122,7 @@
         function deleterow() {
             var row = $('#dg').datagrid('getSelected');
             if (row) {
-                $.messager.confirm('提示', '确定要角色[' + row.roleName + ']?', function (r) {
+                $.messager.confirm('提示', '确定要角色[' + row.roleName + ']及其所有子角色么?', function (r) {
                     if (r) {
                         $.post('<%=basePath%>/tymng/role/delete', {id: row.roleId}, function (result) {
                             result = eval('(' + result + ')');

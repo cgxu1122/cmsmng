@@ -21,7 +21,7 @@
         };
         var zNodes = {};
         function onClick(event, treeId, treeNode, clickFlag) {
-            parent.frames['mainFrame'].location = "<%=basePath%>/tymng/auth/role/list?parentId=" + treeNode.id;
+            parent.frames['mainFrame'].location = "<%=basePath%>/tymng/auth/role/roleIndex?parentId=" + treeNode.id;
         }
 
         function expandNode(e) {
