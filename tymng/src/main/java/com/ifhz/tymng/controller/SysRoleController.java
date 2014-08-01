@@ -160,7 +160,7 @@ public class SysRoleController extends BaseController {
             }
         }
 
-        SysRole parentRole = sysRoleService.getById(Long.valueOf(parentId));
+        SysRole parentRole = sysRoleService.getById(parentId);
         SysRole role = new SysRole();
         role.setParentId(parentRole.getRoleId());
         role.setLevels(parentRole.getLevels() + 1);

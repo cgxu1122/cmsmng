@@ -9,7 +9,7 @@
     <script type="text/javascript" src="<%=basePath %>/plug/ztree/js/jquery.ztree.all-3.5.min.js"></script>
     <SCRIPT type="text/javascript">
         <!--
-        var roleId = '${roleId}'
+        var roleId = '${roleId}';
         var setting = {
             check: {
                 enable: true,
@@ -25,15 +25,26 @@
 
         $(document).ready(function () {
             createTree();
+            $("#expandAllBtn").bind("click", {type: "expandAll"}, expandNode);
+            $("#collapseAllBtn").bind("click", {type: "collapseAll"}, expandNode);
+            $("#sysAuth").bind("click", {type: "collapseAll"}, sysAuth);
         });
 
+        function expandNode(e) {
+            var zTree = $.fn.zTree.getZTreeObj("treeboxbox_tree");
+            var type = e.data.type;
+            if (type == "expandAll") {
+                zTree.expandAll(true);
+            } else if (type == "collapseAll") {
+                zTree.expandAll(false);
+            }
+        }
 
         function createTree() {
-            var zNodes;
             $.ajax({
                 type: 'POST',
                 url: '/tymng/auth/sysauth/initResourceTree',
-                data: {roleId: roleId},
+                data: {roleId: ${roleId}},
                 dataType: "json",
                 ContentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -41,7 +52,7 @@
                     $.fn.zTree.init($("#treeboxbox_tree"), setting, zNodes);
                 },
                 error: function (msg) {
-                    alert("加载失败");
+                    alert("角色授权失败");
                 }
             });
         }
@@ -53,11 +64,14 @@
             for (var i = 0; i < nodes.length; i++) {
                 array[i] = nodes[i].id;
             }
-
+            var resIds = '';
+            if (array.length > 0) {
+                resIds = array.join(",");
+            }
             $.ajax({
                 method: 'post',
                 url: '<%=basePath%>/tymng/auth/sysauth/auth',
-                data: {roleId: roleId, resIdList: array},
+                data: {roleId: roleId, resIds: resIds},
                 dataType: "json",
                 ContentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -70,6 +84,13 @@
 </head>
 
 <body>
+<div>
+    <p>
+        [ <a id="expandAllBtn" href="#" title="全部展开" onclick="return false;">全部展开</a> ]
+        [ <a id="collapseAllBtn" href="#" title="全部关闭" onclick="return false;">全部关闭</a> ]
+        [ <a id="sysAuth" href="#" title="角色授权" onclick="return false;">角色授权</a> ]
+    </p>
+</div>
 <div id="treeboxbox_tree" class="ztree"></div>
 
 </body>

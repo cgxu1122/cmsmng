@@ -85,7 +85,7 @@ public class SysAuthServiceImpl implements SysAuthService {
         } else {
             loginHasResList = sysResourceAdapter.queryListByRoleId(loginRoleId);
         }
-        if (role.getRootId().longValue() == -1) {
+        if (role.getParentId().longValue() == -1) {
             parentRoleHasResList = sysResourceAdapter.queryAllList();
         } else {
             parentRoleHasResList = sysResourceAdapter.queryListByRoleId(role.getParentId());
@@ -101,9 +101,9 @@ public class SysAuthServiceImpl implements SysAuthService {
                 node.setName(resource.getResName());
                 node.setOpen(true);
                 if (roleHasResList.contains(resource)) {
-                    node.setChecked(false);
-                } else {
                     node.setChecked(true);
+                } else {
+                    node.setChecked(false);
                 }
                 if (loginHasResList.contains(resource)) {
                     node.setChkDisabled(false);

@@ -10,10 +10,6 @@
     <SCRIPT type="text/javascript">
         <!--
         var setting = {
-            check: {
-                enable: true,
-                chkStyle: "checkbox"
-            },
             data: {
                 simpleData: {
                     enable: true
@@ -25,7 +21,7 @@
         };
         var zNodes = {};
         function onClick(event, treeId, treeNode, clickFlag) {
-            parent.frames['mainFrame'].location = "<%=basePath%>/tymng/auth/sysauth/list?roleId=" + treeNode.id;
+            parent.frames['mainFrame'].location = "<%=basePath%>/tymng/auth/sysauth/resourceIndex?roleId=" + treeNode.id;
         }
 
         function expandNode(e) {

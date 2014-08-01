@@ -5,6 +5,7 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.constants.AdminRoleType;
@@ -13,6 +14,7 @@ import com.ifhz.core.service.auther.SysRoleService;
 import com.ifhz.core.service.auther.jsonBean.TreeNode;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,13 @@ public class SysAuthController extends BaseController {
         return "auth/sys/roleTree";
     }
 
-    @RequestMapping("/resourceTree")
-    public ModelAndView index(HttpServletRequest request) {
+    @RequestMapping("/blank")
+    public String blank() {
+        return "auth/sys/blank";
+    }
+
+    @RequestMapping("/resourceIndex")
+    public ModelAndView resourceIndex(HttpServletRequest request) {
         String roleId = request.getParameter("roleId");
         Map<String, Object> result = Maps.newHashMap();
         result.put("roleId", roleId);
@@ -91,12 +98,23 @@ public class SysAuthController extends BaseController {
     public
     @ResponseBody
     String sysAuth(@RequestParam(value = "roleId", required = true) Long roleId,
-                   @RequestParam(value = "resIdList", required = true) List<Long> resIdList) {
+                   @RequestParam(value = "resIds", required = true) String resIds) {
         String msg = "授权成功";
         try {
             long loginRoleId = CurrentUserUtil.getRoleId();
             if (loginRoleId == roleId.longValue()) {
                 msg = "不能给自己赋权";
+            }
+            List<Long> resIdList = Lists.newArrayList();
+            if (StringUtils.isBlank(resIds)) {
+                msg = "请先选择权限再授权.";
+            } else {
+                String[] ids = StringUtils.split(resIds, "\\,");
+                for (int i = 0; i < ids.length; i++) {
+                    if (StringUtils.isNotBlank(ids[i])) {
+                        resIdList.add(Long.parseLong(ids[i]));
+                    }
+                }
             }
             if (CollectionUtils.isNotEmpty(resIdList)) {
                 sysAuthService.authSys(roleId, resIdList);
