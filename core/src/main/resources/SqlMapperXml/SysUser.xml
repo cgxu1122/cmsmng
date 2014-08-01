@@ -121,18 +121,13 @@
         <if test="record.roleId != null">
             and ROLE_ID = #{record.roleId}
         </if>
+        <if test="record.roleIdList != null">
+            where ROLE_ID in
+            <foreach item="item" index="index" collection="record.roleIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         order by UPDATE_TIME
-    </select>
-
-    <select id="queryListWithinRoleIdList" resultMap="SysUserResultMap">
-        select
-        <include refid="CommonFieldSql"/>
-        from
-        <include refid="TABLE_NAME"/>
-        where ROLE_ID in
-        <foreach item="item" index="index" collection="roleIdList" open="(" separator="," close=")">
-            #{item}
-        </foreach>
     </select>
 
     <delete id="delete">

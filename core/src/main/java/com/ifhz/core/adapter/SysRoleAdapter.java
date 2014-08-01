@@ -28,4 +28,6 @@ public interface SysRoleAdapter {
     public List<SysRole> queryParentListByRoleId(Long roleId);
 
     public List<SysRole> queryAllRoleList();
+
+    public List<SysRole> queryListByRootId(Long rootId);
 }

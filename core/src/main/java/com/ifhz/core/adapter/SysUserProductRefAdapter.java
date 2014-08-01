@@ -16,5 +16,5 @@ public interface SysUserProductRefAdapter {
 
     public int delete(SysUserProductRef record);
 
-    public List<SysUserProductRef> queryListByUserId(Long userId);
+    public List<Long> queryProductIdListByUserId(Long userId);
 }

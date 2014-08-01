@@ -69,6 +69,8 @@
         </set>
         where PRODUCT_ID = #{productId}
     </update>
+
+
     <select id="queryByVo" parameterType="com.ifhz.core.po.ProductInfo" resultMap="ProductInfoResultMap">
         select pi.*,pi2.PARTNER_NAME from
         <include refid="TABLE_NAME"/>
@@ -97,6 +99,16 @@
         </if>
         order by pi.UPDATE_TIME DESC
     </select>
+
+
+    <select id="queryAllList" resultMap="ProductInfoResultMap">
+        select pi.*,pi2.PARTNER_NAME from
+        <include refid="TABLE_NAME"/>
+        pi
+        INNER JOIN TY_PARTNER_INFO pi2 ON pi.PARTNER_ID = pi2.PARTNER_ID
+    </select>
+
+
     <delete id="delete" parameterType="com.ifhz.core.po.ProductInfo">
         delete from
         <include refid="TABLE_NAME"/>

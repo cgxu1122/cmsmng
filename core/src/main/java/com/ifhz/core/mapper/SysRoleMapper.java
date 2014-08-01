@@ -28,5 +28,7 @@ public interface SysRoleMapper {
 
     public List<SysRole> queryParentListByRoleId(@Param(value = "roleId") Long roleId);
 
+    public List<SysRole> queryListByRootId(@Param(value = "rootId") Long rootId);
+
     public List<SysRole> queryAllRoleList();
 }

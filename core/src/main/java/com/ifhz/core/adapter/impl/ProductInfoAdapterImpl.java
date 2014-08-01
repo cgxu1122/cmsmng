@@ -52,4 +52,9 @@ public class ProductInfoAdapterImpl implements ProductInfoAdapter {
         record.setUpdateTime(new Date());
         return productInfoMapper.update(record);
     }
+
+    @Override
+    public List<ProductInfo> queryAllList() {
+        return null;
+    }
 }

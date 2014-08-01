@@ -8,8 +8,10 @@ import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.service.device.DeviceInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +45,8 @@ public class DeviceApiController {
     private LocalDirCacheService localDirCacheService;
     @Resource(name = "imeiUploadService")
     private ImeiUploadService imeiUploadService;
+    @Resource(name = "deviceInfoService")
+    private DeviceInfoService deviceInfoService;
 
     @RequestMapping(value = "/processData.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
@@ -98,18 +102,27 @@ public class DeviceApiController {
     public
     @ResponseBody
     JSONObject processFile(HttpServletRequest request) {
-        LOGGER.info("rev msg -------start");
-        long start = System.currentTimeMillis();
+        LOGGER.info("rev msg processFile-------start");
         JSONObject result = null;
         if (StringUtils.equalsIgnoreCase("application/octet-stream", request.getContentType())) {
             try {
                 String file = request.getParameter("file");
+                String deviceCode = request.getParameter("deviceCode");
                 LOGGER.info("file={}", file);
                 if (StringUtils.isBlank(file)) {
                     result = ApiJsonHandler.genJsonRet(ResultType.Fail);
                     return result;
                 }
                 String localFileName = localDirCacheService.getLocalFileName(file);
+                if (StringUtils.isNotBlank(deviceCode)) {
+                    DeviceInfo deviceInfo = deviceInfoService.queryByDeviceCode(deviceCode);
+                    if (deviceInfo == null) {
+                        LOGGER.info("deviceCode={}, 没有找到对应的仓库信息", deviceCode);
+                    } else {
+                        localFileName = String.valueOf(deviceInfo.getChannelId()) + "_" + localFileName;
+                    }
+                }
+
                 LOGGER.info("localFileName={}", localFileName);
                 String localFilePath = localDirCacheService.storeFile(request.getInputStream(), localFileName);
                 LOGGER.info("localFilePath = {}", localFilePath);
@@ -129,6 +142,7 @@ public class DeviceApiController {
         if (result == null) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
         }
+        LOGGER.info("rev msg processFile-------end");
 
         return result;
     }

@@ -66,4 +66,9 @@ public class SysRoleAdapterImpl implements SysRoleAdapter {
     public List<SysRole> queryAllRoleList() {
         return sysRoleMapper.queryAllRoleList();
     }
+
+    @Override
+    public List<SysRole> queryListByRootId(Long rootId) {
+        return sysRoleMapper.queryListByRootId(rootId);
+    }
 }

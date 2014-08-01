@@ -24,4 +24,6 @@ public interface ProductInfoMapper {
     public int update(ProductInfo record);
 
     public int delete(ProductInfo record);
+
+    public List<ProductInfo> queryAllList();
 }

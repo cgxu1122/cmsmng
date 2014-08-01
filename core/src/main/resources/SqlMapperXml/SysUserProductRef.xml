@@ -35,11 +35,10 @@
         )
     </insert>
 
-    <select id="queryByUserId" parameterType="long" resultMap="UserProductRefResultMap">
-        select * from
+    <select id="queryProductIdListByUserId" parameterType="long" resultType="long">
+        select PRODUCT_ID from
         <include refid="TABLE_NAME"/>
         where USER_ID = #{userId}
-        order by sort
     </select>
 
     <delete id="delete" parameterType="com.ifhz.core.po.auth.SysUserProductRef">
