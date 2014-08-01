@@ -39,7 +39,6 @@
         values
         (
         SEQ_ROLE.NEXTVAL,
-        #{roleId,jdbcType=BIGINT},
         #{roleName,jdbcType=VARCHAR},
         #{parentId,jdbcType=BIGINT},
         #{fullPath,jdbcType=VARCHAR},

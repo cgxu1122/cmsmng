@@ -26,35 +26,12 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'roleName', title: '角色名称', align: 'center', width: 100},
-                        {
-                            field: 'levels',
-                            title: '层级',
-                            align: 'center',
-                            width: 200
-                        },
-                        {
-                            field: 'parentRoleName',
-                            title: '父角色名称',
-                            align: 'center',
-                            width: 200
-                        },
-                        {
-                            field: 'createTime',
-                            title: '创建时间',
-                            align: 'center',
-                            width: 200
-                        },
-                        {
-                            field: 'updateTime',
-                            title: '修改时间',
-                            align: 'center',
-                            width: 200
-                        },
-                        {
-                            field: 'roleId',
-                            hidden: true
-                        }
+                        { field: 'roleName', title: '角色名称', align: 'center', width: 100},
+                        { field: 'levels', title: '层级', align: 'center', width: 200 },
+                        { field: 'parentRoleName', title: '父角色名称', align: 'center', width: 200 },
+                        { field: 'createTime', title: '创建时间', align: 'center', width: 200 },
+                        { field: 'updateTime', title: '修改时间', align: 'center', width: 200 },
+                        { field: 'roleId', hidden: true }
                     ]
                 ],
                 pagination: true,
@@ -69,19 +46,21 @@
 
 
         function saverow() {
+            $('#parentId').val('${parentId}');
             $('#fm').form('submit', {
-                url: '<%=basePath%>/tymng/role/insert/${parentId}',
+                url: '<%=basePath%>/tymng/auth/role/insert',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
                 success: function (result) {
                     var result = eval('(' + result + ')');
-                    result = eval('(' + result + ')');
-                    if (result.code == -1) {
+                    if (result.ret == -1) {
                         $.messager.alert('错误', result.message);
                     } else {
                         $.messager.alert('成功', result.message);
                         $('#dlg').dialog('close');
+                        $('#dg').datagrid('reload');
+                        //window.self.location.reload(true);
                         parent.frames['leftFrame'].location.reload(true);
                     }
                 }
@@ -99,7 +78,7 @@
 
         function updaterow() {
             $('#fm1').form('submit', {
-                url: '<%=basePath%>/tymng/role/update',
+                url: '<%=basePath%>/tymng/auth/role/update',
                 onSubmit: function () {
                     return $(this).form('validate');
                 },
@@ -124,7 +103,7 @@
             if (row) {
                 $.messager.confirm('提示', '确定要角色[' + row.roleName + ']及其所有子角色么?', function (r) {
                     if (r) {
-                        $.post('<%=basePath%>/tymng/role/delete', {id: row.roleId}, function (result) {
+                        $.post('<%=basePath%>/tymng/auth/role/delete', {id: row.roleId}, function (result) {
                             result = eval('(' + result + ')');
                             if (result.code == -1) {
                                 $.messager.alert('错误', result.message);
@@ -172,10 +151,9 @@
     <br/>
 
     <form id="fm" method="post" novalidate>
-        <input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
-
         <div class="fitem">
-            <label>角色名称:</label> <input name="roleName" class="easyui-validatebox" required="true">
+            <label>角色名称:</label> <input name="roleName" id="addRoleName" class="easyui-validatebox" required="true">
+            <input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
         </div>
     </form>
 </div>

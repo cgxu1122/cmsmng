@@ -2,6 +2,7 @@ package com.ifhz.core.service.auther.impl;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.SysRoleAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.AdminRoleType;
 import com.ifhz.core.po.auth.SysRole;
@@ -32,18 +33,21 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    @Log
     public int insert(SysRole po) {
         return sysRoleAdapter.insert(po);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    @Log
     public int update(SysRole po) {
         return sysRoleAdapter.update(po);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    @Log
     public int delete(Long roleId) {
         List<SysRole> list = queryChildListByRoleId(roleId);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -56,26 +60,31 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    @Log
     public SysRole getById(Long roleId) {
         return sysRoleAdapter.getById(roleId);
     }
 
     @Override
+    @Log
     public List<SysRole> queryByVo(Pagination pagination, SysRole record) {
         return sysRoleAdapter.queryByVo(pagination, record);
     }
 
     @Override
+    @Log
     public List<SysRole> queryChildListByRoleId(Long roleId) {
         return sysRoleAdapter.queryChildListByRoleId(roleId);
     }
 
     @Override
+    @Log
     public List<SysRole> queryParentListByRoleId(Long roleId) {
         return sysRoleAdapter.queryParentListByRoleId(roleId);
     }
 
     @Override
+    @Log
     public List<TreeNode> queryTreeNodeList(AdminRoleType type, Long roleId) {
         List<TreeNode> result = Lists.newArrayList();
         List<SysRole> temp = null;

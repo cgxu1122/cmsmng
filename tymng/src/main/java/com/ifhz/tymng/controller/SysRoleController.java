@@ -137,6 +137,7 @@ public class SysRoleController extends BaseController {
         result.put("ret", 1);
         result.put("message", "保存成功");
 
+
         if (StringUtils.isBlank(roleName)) {
             result.put("ret", -1);
             result.put("message", "请输入角色名称");
@@ -159,7 +160,7 @@ public class SysRoleController extends BaseController {
             }
         }
 
-        SysRole parentRole = sysRoleService.getById(parentId);
+        SysRole parentRole = sysRoleService.getById(Long.valueOf(parentId));
         SysRole role = new SysRole();
         role.setParentId(parentRole.getRoleId());
         role.setLevels(parentRole.getLevels() + 1);
