@@ -181,7 +181,7 @@ function initPage() {
         height: '522',
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/user/getAll',
+        url: '<%=basePath%>/tymng/auth/user/list',
         loadMsg: '数据加载中请稍后……',
         pagination: true,
         pageSize: 100,
@@ -194,11 +194,15 @@ function initPage() {
                 {field: 'loginName', title: '登录名', align: 'center', width: 100},
                 {field: 'realName', title: '姓名', align: 'center', width: 100},
                 {field: 'roleName', title: '角色', align: 'center', width: 100},
-                {field: 'cellphone', title: '手机', align: 'center', width: 200},
+                {field: 'cellPhone', title: '手机', align: 'center', width: 200},
                 {field: 'address', title: '地址', align: 'center', width: 200},
-                {field: 'createTime', title: '创建时间', align: 'center', width: 200},
-                {field: 'status', title: '状态', align: 'center', width: 100, formatter: function (value) {
-                    if (value == 1) {
+                {field: 'createTime', title: '创建时间', align: 'center', width: 200,
+                    formatter: function (value) {
+                        return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                    }
+                },
+                {field: 'active', title: '状态', align: 'center', width: 100, formatter: function (value) {
+                    if (value == "Y") {
                         return "启用";
                     }
                     return "禁用";
@@ -225,7 +229,7 @@ function initPage() {
 function search() {
     var value = $('#searchValue').val();
     $('#dgg').datagrid({
-        url: "<%=basePath%>/tymng/user/getAll",
+        url: "<%=basePath%>/tymng/auth/user/list",
         queryParams: { 'searchValue': value}
     });
 }
@@ -252,7 +256,7 @@ function selectRole() {
             <tr>
 
                 <td>
-                    <input type="text" name="searchValue" id="searchValue" placeholder="姓名/角色名称"/>
+                    <input type="text" name="searchValue" id="searchValue" placeholder="登录名/真实姓名"/>
                 </td>
                 <td align="center">
                     <a id="searchbtn" href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
@@ -290,7 +294,7 @@ function selectRole() {
     <form id="fm" method="post" novalidate>
         <div class="fitem" style="margin-left:11px">
             <label><font color="red">*</font>登录名:</label>
-            <input id="loginName" name="loginName" class="easyui-validatebox" required="true">
+            <input id="loginName" name="loginName" class="easyui-validatebox" required="true" placeholder="只包含字母和数字">
         </div>
         <div class="fitem">
             <label><font color="red">*</font>真实姓名:</label>
@@ -308,7 +312,7 @@ function selectRole() {
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>手机:</label>
-            <input name="cellphone" class="easyui-numberbox" validType="digits">
+            <input name="cellPhone" class="easyui-numberbox" validType="digits">
         </div>
         <div class="fitem" style="margin-left:30px">
             <label>地址:</label>
@@ -363,7 +367,7 @@ function selectRole() {
 
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>手机:</label>
-                <input id="cellphoneUp" name="cellphone" class="easyui-numberbox" required="true" validType="digits">
+                <input id="cellphoneUp" name="cellPhone" class="easyui-numberbox" required="true" validType="digits">
             </div>
             <div class="fitem" style="margin-left:25px">
                 <label><font color="red">*</font>地址:</label>
@@ -375,8 +379,8 @@ function selectRole() {
             </div>
             <div class="fitem">
                 <label><font color="red">*</font>状态:</label>
-                <input type="radio" name="status" value="1"><span>启用</span>
-                <input type="radio" name="status" value="2"/><span>禁用</span>
+                <input type="radio" name="active" value="1"><span>启用</span>
+                <input type="radio" name="active" value="2"/><span>禁用</span>
             </div>
         </form>
     </div>

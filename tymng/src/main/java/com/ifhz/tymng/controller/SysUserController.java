@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.Active;
 import com.ifhz.core.constants.AdminRoleType;
 import com.ifhz.core.po.auth.SysRole;
 import com.ifhz.core.po.auth.SysUser;
@@ -86,8 +87,9 @@ public class SysUserController extends BaseController {
 
 
     @RequestMapping(value = "/list", produces = {"application/json;charset=UTF-8"})
+    public
     @ResponseBody
-    public JSONObject list(@RequestParam(value = "page", required = true) Integer pageNum,
+    JSONObject list(@RequestParam(value = "page", required = true) Integer pageNum,
                            @RequestParam(value = "rows", required = true) Integer pageSize,
                            @RequestParam(value = "roleId", required = false) Long roleId,
                            @RequestParam(value = "searchValue", required = false) String searchValue,
@@ -146,7 +148,7 @@ public class SysUserController extends BaseController {
         user.setCreateTime(new Date());
         String password = StringUtils.trim(user.getPassword());
         user.setPassword(password);
-
+        user.setActive(Active.Y.dbValue);
         sysUserService.insert(user);
 
         return result;

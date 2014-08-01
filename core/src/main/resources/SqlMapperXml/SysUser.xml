@@ -115,9 +115,10 @@
         <include refid="TABLE_NAME"/>
         where 1=1
         <if test="record.searchValue != null">
-            and LOGIN_NAME like concat(concat('%',#{record.searchValue}),'%' )
+            and (LOGIN_NAME like concat(concat('%',#{record.searchValue}),'%' )
+            or REAL_NAME like concat(concat('%',#{record.searchValue}),'%' ))
         </if>
-        <if test="roleId != null">
+        <if test="record.roleId != null">
             and ROLE_ID = #{record.roleId}
         </if>
         order by UPDATE_TIME

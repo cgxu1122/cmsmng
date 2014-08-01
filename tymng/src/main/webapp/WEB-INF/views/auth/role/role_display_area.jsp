@@ -29,8 +29,16 @@
                         { field: 'roleName', title: '角色名称', align: 'center', width: 100},
                         { field: 'levels', title: '层级', align: 'center', width: 200 },
                         { field: 'parentRoleName', title: '父角色名称', align: 'center', width: 200 },
-                        { field: 'createTime', title: '创建时间', align: 'center', width: 200 },
-                        { field: 'updateTime', title: '修改时间', align: 'center', width: 200 },
+                        { field: 'createTime', title: '创建时间', align: 'center', width: 200,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
+                        { field: 'updateTime', title: '修改时间', align: 'center', width: 200,
+                            formatter: function (value) {
+                                return new Date(value).formate("yyyy-MM-dd HH:mm:ss");
+                            }
+                        },
                         { field: 'roleId', hidden: true }
                     ]
                 ],

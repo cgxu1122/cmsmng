@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public final class PatternUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(PatternUtils.class);
-    private static final String LoginNameRegex = "^[a-zA-Z]\\w*$";
+    private static final String LoginNameRegex = "[A-Za-z0-9]+";
     private static final String ApkSoftNameRegex = "[A-Za-z0-9\\._-]+";
     /**
      * 特殊字符 校验正则 "."没有做校验
