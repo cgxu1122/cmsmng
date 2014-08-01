@@ -137,14 +137,30 @@ function updaterow() {
         }
     });
 }
-function deleterow() {
+function disablerow() {
     var row = $('#dgg').datagrid('getSelected');
     if (row) {
-        $.messager.confirm('提示', '确定要删除[' + row.roleName + ']?', function (r) {
+        $.messager.confirm('提示', '确定要禁用[' + row.roleName + ']?', function (r) {
             if (r) {
-                $.post('<%=basePath%>/tymng/user/delete', {id: row.userId}, function (result) {
-                    var result = eval("(" + result + ")");
-                    if (result.code == 1) {
+                $.post('<%=basePath%>/tymng/auth/user/updateStatus', {userId: row.userId, active: "N"}, function (result) {
+                    if (result.ret == 1) {
+                        $('#dgg').datagrid('reload');
+                    } else {
+                        $.messager.alert('错误', result.errorMsg);
+                    }
+                }, 'json');
+            }
+        });
+    }
+}
+
+function enablerow() {
+    var row = $('#dgg').datagrid('getSelected');
+    if (row) {
+        $.messager.confirm('提示', '确定要启用[' + row.roleName + ']?', function (r) {
+            if (r) {
+                $.post('<%=basePath%>/tymng/auth/user/updateStatus', {userId: row.userId, active: "Y"}, function (result) {
+                    if (result.ret == 1) {
                         $('#dgg').datagrid('reload');
                     } else {
                         $.messager.alert('错误', result.errorMsg);
@@ -277,9 +293,14 @@ function selectRole() {
                 </shiro:hasPermission>
                 <shiro:hasPermission name="system_user_delete">
                     <td align="center">
-                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="deleterow()">删除用户信息</a>
+                        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="disablerow()">禁用用户</a>
                     </td>
                 </shiro:hasPermission>
+                <%--<shiro:hasPermission name="system_user_enable">--%>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="enablerow()">启用用户</a>
+                </td>
+                <%--</shiro:hasPermission>--%>
                 <shiro:hasPermission name="system_user_update_pw">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="updatePassword()">修改用户密码</a>

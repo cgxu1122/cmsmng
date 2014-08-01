@@ -100,6 +100,20 @@
         WHERE USER_ID = #{userId}
     </update>
 
+    <update id="updateStatus" parameterType="com.ifhz.core.po.auth.SysUser">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="active != null and active != ''">
+                ACTIVE = #{active},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        WHERE USER_ID = #{userId}
+    </update>
+
     <update id="updatePassword" parameterType="com.ifhz.core.po.auth.SysUser">
         UPDATE
         <include refid="TABLE_NAME"/>
