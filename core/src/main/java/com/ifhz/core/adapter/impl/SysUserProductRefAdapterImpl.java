@@ -16,7 +16,7 @@ import java.util.List;
  * Date: 2014/7/30
  * Time: 11:47
  */
-@Repository("userProductRefAdapter")
+@Repository("sysUserProductRefAdapter")
 public class SysUserProductRefAdapterImpl implements SysUserProductRefAdapter {
 
     @Resource(name = "sysUserProductRefMapper")

@@ -82,6 +82,4 @@ public class ApkInfoServiceImpl implements ApkInfoService {
 
         return ret;
     }
-
-
 }

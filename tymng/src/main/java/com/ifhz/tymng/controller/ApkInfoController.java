@@ -44,6 +44,8 @@ public class ApkInfoController extends BaseController {
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
 
+    private static final String CountPkgPath = "com.chris.apkmonitor/com.chris.apkmonitor.MainActivity";
+
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
         return new ModelAndView("apkInfo/index");
@@ -125,7 +127,12 @@ public class ApkInfoController extends BaseController {
         try {
             ApkInfo po = new ApkInfo();
             po.setApkName(apkName.trim());
-            String packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+            String packagePath = null;
+            if (StringUtils.containsIgnoreCase(type, "2")) {
+                packagePath = CountPkgPath;
+            } else {
+                packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+            }
             if (StringUtils.isNotBlank(packagePath)) {
                 po.setPackagePath(packagePath);
             }
@@ -241,9 +248,11 @@ public class ApkInfoController extends BaseController {
     }
 
     @RequestMapping(value = "/delete", produces = {"application/json;charset=UTF-8"})
+    public
     @ResponseBody
-    public JSONObject delete(HttpServletRequest request) {
+    JSONObject delete(HttpServletRequest request) {
         String apkId = request.getParameter("apkId");
+        LOGGER.info("apkId={}", apkId);
         String errorMsg = null;
         if (StringUtils.isEmpty(apkId)) {
             errorMsg = "系统错误，请联系管理员！";

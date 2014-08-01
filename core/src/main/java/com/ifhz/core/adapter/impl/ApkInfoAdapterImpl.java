@@ -52,7 +52,7 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     public int delete(ApkInfo record) {
         record.setActive(JcywConstants.ACTIVE_D);
         record.setUpdateTime(new Date());
-        return apkInfoMapper.update(record);
+        return apkInfoMapper.delete(record);
     }
 
     @Override
