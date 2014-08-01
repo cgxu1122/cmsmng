@@ -113,21 +113,31 @@
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
-        where 1=1
+        where USER_ID != 1
         <if test="record.searchValue != null">
-            and (LOGIN_NAME like concat(concat('%',#{record.searchValue}),'%' )
-            or REAL_NAME like concat(concat('%',#{record.searchValue}),'%' ))
+            and ( LOGIN_NAME like concat(concat('%',#{record.searchValue}),'%' ) or REAL_NAME like
+            concat(concat('%',#{record.searchValue}),'%' ) )
         </if>
         <if test="record.roleId != null">
             and ROLE_ID = #{record.roleId}
         </if>
-        <if test="record.roleIdList != null">
-            where ROLE_ID in
-            <foreach item="item" index="index" collection="record.roleIdList" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
         order by UPDATE_TIME
+    </select>
+
+
+    <select id="queryListByVo" resultMap="SysUserResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where USER_ID != 1
+        and ROLE_ID in (select ROLE_ID from TY_ROLE where ROOT_ID = 4)
+        <if test="searchValue != null">
+            and (
+            LOGIN_NAME like concat(concat('%',#{searchValue}),'%' )
+            or REAL_NAME like concat(concat('%',#{searchValue}),'%' )
+            )
+        </if>
     </select>
 
     <delete id="delete">

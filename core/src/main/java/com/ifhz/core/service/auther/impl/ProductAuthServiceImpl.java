@@ -4,15 +4,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.ProductInfoAdapter;
 import com.ifhz.core.adapter.SysRoleAdapter;
+import com.ifhz.core.adapter.SysUserAdapter;
 import com.ifhz.core.adapter.SysUserProductRefAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.po.ProductInfo;
-import com.ifhz.core.po.auth.SysRole;
 import com.ifhz.core.po.auth.SysUser;
 import com.ifhz.core.po.auth.SysUserProductRef;
 import com.ifhz.core.service.auther.ProductAuthService;
-import com.ifhz.core.service.auther.SysUserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class ProductAuthServiceImpl implements ProductAuthService {
     @Autowired
     private SysRoleAdapter sysRoleAdapter;
     @Autowired
-    private SysUserService sysUserService;
+    private SysUserAdapter sysUserAdapter;
     @Autowired
     private ProductInfoAdapter productInfoAdapter;
     @Autowired
@@ -63,20 +62,11 @@ public class ProductAuthServiceImpl implements ProductAuthService {
 
     @Override
     public List<SysUser> queryUserList(Pagination pagination, String searchValue) {
-        SysUser user = new SysUser();
-        List<Long> roleIdList = Lists.newArrayList();
-        if (StringUtils.isNotBlank(searchValue)) {
-            user.setSearchValue(searchValue.trim());
-        }
-        List<SysRole> roleList = sysRoleAdapter.queryListByRootId(4L);
-        if (CollectionUtils.isNotEmpty(roleList)) {
-            for (Long roleId : roleIdList) {
-                roleIdList.add(roleId);
-            }
-            user.setRoleIdList(roleIdList);
+        if (StringUtils.isBlank(searchValue)) {
+            searchValue = null;
         }
 
-        return sysUserService.queryByVo(pagination, user);
+        return sysUserAdapter.queryListByVo(pagination, searchValue);
     }
 
     @Override

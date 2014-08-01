@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -56,8 +57,10 @@ public class ProductAuthController extends BaseController {
     }
 
     @RequestMapping("/productIndex")
-    public String productList() {
-        return "auth/product/productList";
+    public ModelAndView productIndex(@RequestParam("userId") long userId) {
+        ModelAndView mav = new ModelAndView("auth/product/productList");
+        mav.addObject("userId", userId);
+        return mav;
     }
 
     @RequestMapping(value = "/userList", produces = {"application/json;charset=UTF-8"})

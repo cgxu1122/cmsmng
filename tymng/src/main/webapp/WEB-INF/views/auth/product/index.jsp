@@ -7,8 +7,8 @@
     <title></title>
 </head>
 <frameset cols="400,*" frameborder="yes" framespacing="0" border="1">
-    <frame src="<%=basePath%>/tymng/auth/product/userList" name="leftFrame" scrolling="yes" id="leftFrame"
+    <frame src="<%=basePath%>/tymng/auth/productauth/userIndex" name="leftFrame" scrolling="yes" id="leftFrame"
            title="leftFrame"/>
-    <frame src="<%=basePath%>/tymng/auth/product/blank" name="mainFrame" id="mainFrame" title="mainFrame"/>
+    <frame src="<%=basePath%>/tymng/auth/productauth/blank" name="mainFrame" id="mainFrame" title="mainFrame"/>
 </frameset>
 </html>

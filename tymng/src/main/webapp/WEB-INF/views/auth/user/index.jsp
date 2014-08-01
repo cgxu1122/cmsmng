@@ -217,13 +217,6 @@ function initPage() {
         ],
         toolbar: "#toolBar"
     });
-
-    //设置角色选择下拉框去获取所有角色列表
-    $("#allRoles").combobox({
-        url: "<%=basePath%>/tymng/user/getAllRole",
-        valueField: "roleId",
-        textField: "roleName"
-    });
 }
 
 
@@ -258,7 +251,6 @@ function selectRole() {
     <div>
         <table>
             <tr>
-
                 <td>
                     <input type="text" name="searchValue" id="searchValue" placeholder="登录名/真实姓名"/>
                 </td>
@@ -305,7 +297,7 @@ function selectRole() {
             <input id="realName" name="realName" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem" style="margin-left:24px">
-        <label><font color="red">*</font>密码:</label>
+            <label><font color="red">*</font>密码:</label>
             <input type="password" id="password" name="password" class="easyui-validatebox" required="true"
                    validType="isPasswd">
         </div>
