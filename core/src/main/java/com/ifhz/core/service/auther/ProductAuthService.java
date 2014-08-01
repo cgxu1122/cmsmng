@@ -1,8 +1,13 @@
 package com.ifhz.core.service.auther;
 
+import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.Active;
+import com.ifhz.core.po.ProductInfo;
+import com.ifhz.core.po.auth.SysUser;
 import com.ifhz.core.po.auth.SysUserProductRef;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -12,7 +17,11 @@ import java.util.List;
  */
 public interface ProductAuthService {
 
-    public boolean authProduct(Long userId, List<SysUserProductRef> recordList);
+    public boolean authProduct(Active active, SysUserProductRef record);
 
     public List<SysUserProductRef> queryListByUserId(Long userId);
+
+    public List<SysUser> queryUserList(Pagination pagination, String searchValue);
+
+    public Map<String, List<ProductInfo>> queryProductList(Long userId);
 }

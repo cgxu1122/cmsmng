@@ -19,6 +19,8 @@ public class ProductInfo {
     private String productNameCondition;
     private String partnerName;
 
+    private boolean hasAuth = false;
+
     public Date getQueryStartTime() {
         return queryStartTime;
     }
@@ -97,5 +99,13 @@ public class ProductInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public boolean isHasAuth() {
+        return hasAuth;
+    }
+
+    public void setHasAuth(boolean hasAuth) {
+        this.hasAuth = hasAuth;
     }
 }

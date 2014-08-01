@@ -70,12 +70,6 @@ public class SysUserAdapterImpl implements SysUserAdapter {
     }
 
     @Override
-    public List<SysUser> queryListWithinRoleIdList(List<Long> roleIdList) {
-        List<SysUser> list = sysUserMapper.queryListWithinRoleIdList(roleIdList);
-        return list == null ? Lists.<SysUser>newArrayList() : list;
-    }
-
-    @Override
     public List<SysUser> queryByVo(Pagination pagination, SysUser record) {
         return sysUserMapper.queryByVo(pagination, record);
     }

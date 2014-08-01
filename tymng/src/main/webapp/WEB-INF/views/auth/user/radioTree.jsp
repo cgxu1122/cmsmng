@@ -21,11 +21,21 @@
                 }
             },
             callback: {
-                onClick: onClick
+                onClick: onClick,
+                onCheck: onCheck
             }
         };
         var zNodes = {};
         function onClick(event, treeId, treeNode, clickFlag) {
+            var roleName = treeNode.name;
+            var roleId = treeNode.id;
+            treeNode.checked = true;
+            parent.document.getElementById("roleName").value = roleName;
+            parent.document.getElementById("roleId").value = roleId;
+            parent.$('#roleTree_dialog').dialog('close');
+        }
+
+        function onCheck(event, treeId, treeNode) {
             var roleName = treeNode.name;
             var roleId = treeNode.id;
             parent.document.getElementById("roleName").value = roleName;

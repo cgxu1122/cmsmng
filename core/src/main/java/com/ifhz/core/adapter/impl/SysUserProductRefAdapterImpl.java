@@ -34,9 +34,9 @@ public class SysUserProductRefAdapterImpl implements SysUserProductRefAdapter {
     }
 
     @Override
-    public List<SysUserProductRef> queryListByUserId(Long userId) {
-        List<SysUserProductRef> result = sysUserProductRefMapper.queryListByUserId(userId);
-        return result == null ? Lists.<SysUserProductRef>newArrayList() : result;
+    public List<Long> queryProductIdListByUserId(Long userId) {
+        List<Long> result = sysUserProductRefMapper.queryProductIdListByUserId(userId);
+        return result == null ? Lists.<Long>newArrayList() : result;
     }
 
 

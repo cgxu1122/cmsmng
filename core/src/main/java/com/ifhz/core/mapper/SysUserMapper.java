@@ -30,7 +30,5 @@ public interface SysUserMapper {
 
     public List<SysUser> queryListByRoleId(@Param("roleId") Long roleId);
 
-    public List<SysUser> queryListWithinRoleIdList(@Param("roleIdList") List<Long> roleIdList);
-
     public List<SysUser> queryByVo(Pagination pagination, @Param(value = "record") SysUser record);
 }

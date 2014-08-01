@@ -17,5 +17,5 @@ public interface SysUserProductRefMapper {
 
     public int delete(SysUserProductRef record);
 
-    public List<SysUserProductRef> queryListByUserId(@Param("userId") Long userId);
+    public List<Long> queryProductIdListByUserId(@Param("userId") Long userId);
 }

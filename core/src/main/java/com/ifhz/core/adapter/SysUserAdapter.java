@@ -29,7 +29,5 @@ public interface SysUserAdapter {
 
     public List<SysUser> queryListByRoleId(Long roleId);
 
-    public List<SysUser> queryListWithinRoleIdList(List<Long> roleIdList);
-
     public List<SysUser> queryByVo(Pagination pagination, SysUser record);
 }

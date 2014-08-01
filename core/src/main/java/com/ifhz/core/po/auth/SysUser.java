@@ -2,6 +2,7 @@ package com.ifhz.core.po.auth;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类描述
@@ -27,6 +28,8 @@ public class SysUser implements Serializable {
     private String roleName;
 
     private String searchValue;
+
+    private List<Long> roleIdList;
 
     public Long getUserId() {
         return userId;
@@ -122,5 +125,13 @@ public class SysUser implements Serializable {
 
     public void setSearchValue(String searchValue) {
         this.searchValue = searchValue;
+    }
+
+    public List<Long> getRoleIdList() {
+        return roleIdList;
+    }
+
+    public void setRoleIdList(List<Long> roleIdList) {
+        this.roleIdList = roleIdList;
     }
 }

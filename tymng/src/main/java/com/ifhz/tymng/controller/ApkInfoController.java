@@ -203,7 +203,7 @@ public class ApkInfoController extends BaseController {
                 md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
                 FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
             } catch (Exception e) {
-                LOGGER.error("insert DeviceSystem error", e);
+                LOGGER.error("update error", e);
                 result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
                 return result;
             }
@@ -232,6 +232,7 @@ public class ApkInfoController extends BaseController {
                 try {
                     FtpUtils.ftpDelete(originFtpPath);
                 } catch (Exception e) {
+                    LOGGER.error("", e);
                 }
             }
             result.put("msg", "修改成功!");
@@ -250,46 +251,40 @@ public class ApkInfoController extends BaseController {
     @RequestMapping(value = "/delete", produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject delete(HttpServletRequest request) {
-        String apkId = request.getParameter("apkId");
-        LOGGER.info("apkId={}", apkId);
-        String errorMsg = null;
-        if (StringUtils.isEmpty(apkId)) {
-            errorMsg = "系统错误，请联系管理员！";
-        }
-        JSONObject result = new JSONObject();
-        if (!StringUtils.isEmpty(errorMsg)) {
-            result.put("errorMsg", errorMsg);
-            return result;
-        }
-        ApkInfo ai = apkInfoService.getById(Long.parseLong(apkId));
-        if (ai == null) {
-            result.put("errorMsg", "数据已被其他人操作，请刷新!");
-        } else {
-            apkInfoService.delete(ai);
-            if (StringUtils.isNotBlank(ai.getFtpPath())) {
-                try {
-                    FtpUtils.ftpDelete(ai.getFtpPath());
-                } catch (Exception e) {
-                }
+    JSONObject delete(@RequestParam(value = "apkId", required = true) Long apkId,
+                      HttpServletRequest request) {
+
+        JSONObject result = null;
+        try {
+            LOGGER.info("apkId={}", apkId);
+            String errorMsg = null;
+            if (apkId == null) {
+                errorMsg = "系统错误，请联系管理员！";
             }
-            result.put("msg", "删除成功!");
+            result = new JSONObject();
+            if (!StringUtils.isEmpty(errorMsg)) {
+                result.put("errorMsg", errorMsg);
+                return result;
+            }
+            ApkInfo ai = apkInfoService.getById(apkId);
+            if (ai == null) {
+                result.put("errorMsg", "数据已被其他人操作，请刷新!");
+            } else {
+                apkInfoService.delete(ai);
+                if (StringUtils.isNotBlank(ai.getFtpPath())) {
+                    try {
+                        FtpUtils.ftpDelete(ai.getFtpPath());
+                    } catch (Exception e) {
+                        LOGGER.error("", e);
+                    }
+                }
+                result.put("msg", "删除成功!");
+            }
+        } catch (Exception e) {
+            LOGGER.error("");
         }
         return result;
     }
-
-/*
-    private String storeLocalFile(Map<String, FileItem> params, String originFileName) throws Exception {
-        FileItem file = params.get("file");
-        String fileExt = FileHandle.getFileExt(originFileName);
-        String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
-        String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
-        if (StringUtils.isBlank(toFilePath)) {
-            throw new Exception("文件保存到本地失败！！！");
-        }
-
-        return toFilePath;
-    }*/
 
     private enum Type {
         Insert, Update;
@@ -313,20 +308,8 @@ public class ApkInfoController extends BaseController {
             } else {
                 return true;
             }
-
         }
 
         return false;
     }
-
-    private void deleteLocalFile(File localFile) {
-        if (localFile != null) {
-            try {
-                localFile.deleteOnExit();
-                localFile.delete();
-            } catch (Exception e) {
-            }
-        }
-    }
-
 }

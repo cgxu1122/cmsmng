@@ -78,7 +78,7 @@
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
-        where 1 =1
+        where USER_ID != 1
         <if test="record.parentId != null">
             and PARENT_ID = #{record.parentId}
         </if>
@@ -86,6 +86,14 @@
             and ROLE_NAME = #{record.roleName}
         </if>
         order by UPDATE_TIME
+    </select>
+
+    <select id="queryListByRootId" resultMap="SysRoleResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ROOT_ID = #{rootId}
     </select>
 
     <select id="queryChildListByRoleId" resultMap="SysRoleResultMap">
