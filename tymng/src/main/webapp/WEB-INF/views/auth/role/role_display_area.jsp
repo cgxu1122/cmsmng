@@ -31,13 +31,13 @@
                             field: 'levels',
                             title: '层级',
                             align: 'center',
-                            width: 100
+                            width: 200
                         },
                         {
                             field: 'parentRoleName',
                             title: '父角色名称',
                             align: 'center',
-                            width: 100
+                            width: 200
                         },
                         {
                             field: 'createTime',
