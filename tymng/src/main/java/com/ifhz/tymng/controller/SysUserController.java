@@ -264,6 +264,45 @@ public class SysUserController extends BaseController {
         return result;
     }
 
+
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject updateStatus(HttpServletRequest req) {
+
+        JSONObject result = new JSONObject();
+        result.put("ret", 1);
+        result.put("message", "状态修改成功");
+
+        try {
+            String active = req.getParameter("active");
+            if (StringUtils.isBlank(active)) {
+                result.put("ret", -1);
+                result.put("message", "状态必须填写");
+                return result;
+            }
+
+            String userId = req.getParameter("userId");
+            if (StringUtils.isBlank(userId)) {
+                result.put("ret", -1);
+                result.put("message", "用户id必须填写");
+                return result;
+            }
+
+            SysUser dbuser = sysUserService.getById(Long.valueOf(userId));
+            dbuser.setActive(active);
+            sysUserService.updateStatus(dbuser);
+        } catch (Exception e) {
+            LOGGER.error("updatePassword error", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
+
+
     /**
      * 名称唯一性验证
      *
