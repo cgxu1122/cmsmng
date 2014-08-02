@@ -78,7 +78,7 @@
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
-        where USER_ID != 1
+        where ROLE_ID != 1
         <if test="record.parentId != null">
             and PARENT_ID = #{record.parentId}
         </if>

@@ -73,4 +73,9 @@ public class SysUserAdapterImpl implements SysUserAdapter {
     public List<SysUser> queryByVo(Pagination pagination, SysUser record) {
         return sysUserMapper.queryByVo(pagination, record);
     }
+
+    @Override
+    public List<SysUser> queryListByVo(Pagination pagination, String searchValue) {
+        return sysUserMapper.queryListByVo(pagination, searchValue);
+    }
 }

@@ -62,7 +62,7 @@ public class SysRoleController extends BaseController {
 
 
     @RequestMapping("/roleIndex")
-    public ModelAndView showdetail(@RequestParam("parentId") long parentId, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView roleIndex(@RequestParam("parentId") long parentId, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("auth/role/role_display_area");
         mav.addObject("parentId", parentId);
         return mav;

@@ -16,7 +16,7 @@
         function initPage() {
             grid = $('#dg').datagrid({
                 width: 'auto',
-                height: 400,
+                height: 522,
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/tymng/auth/role/list',
