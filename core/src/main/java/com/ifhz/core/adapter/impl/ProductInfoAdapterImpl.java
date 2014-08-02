@@ -55,6 +55,6 @@ public class ProductInfoAdapterImpl implements ProductInfoAdapter {
 
     @Override
     public List<ProductInfo> queryAllList() {
-        return null;
+        return productInfoMapper.queryAllList();
     }
 }
