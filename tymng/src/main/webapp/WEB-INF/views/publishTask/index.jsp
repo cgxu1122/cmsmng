@@ -19,8 +19,12 @@ function addrow() {
     addChannelList = new Array();
     $("#addModelList").empty();
     $("#addChannelList").empty();
-    var data = $('#groupId').combobox('getData');
-    $("#groupId").combobox('select', data[0].value);
+    var val = $("#groupId").combobox("getData");
+    for (var item in val[0]) {
+        if (item == "value") {
+            $("#groupId").combobox("select", val[0][item]);
+        }
+    }
     $('#groupId').combobox({
         onChange: function (newValue, oldValue) {
             if (newValue != oldValue) {
@@ -285,7 +289,7 @@ function selectChannel(channelId, channelName) {
     var channelHtml = "<tr>" +
             "<input type='hidden' name='channelId' value='" + channelId + "'>" +
             "<td><input type='text' name='channelName' value='" + channelName + "' readonly='readonly'></td>" +
-            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addModelList.pop(" + channelId + ");'>删除</a></td>" +
+            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addChannelList.pop(" + channelId + ");'>删除</a></td>" +
             "</tr>";
     if (!addChannelList.in_array(channelId)) {
         addChannelList.push(channelId);
@@ -500,7 +504,7 @@ function selectChannel(channelId, channelName) {
     <ul id="tt"></ul>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
        onclick="javascript:selectTreeChannels()">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
