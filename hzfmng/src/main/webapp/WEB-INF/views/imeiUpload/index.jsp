@@ -39,26 +39,26 @@
 <body>
 <div id="toolBar">
     <div>
-        <table>
-            <tr>
-                <td>
-                    <input type="text" name="channelName" value="${channelName}" readonly/>
-                    <input type="hidden" name="channelId" id="channelId" value="${channelId}"/>
-                </td>
-                <td>
-                    <input id="dd"/>
-                </td>
-                <td>
-                <form id="fm" method="post" enctype="multipart/form-data" novalidate>
-                        <input type="file" name="excelFile"/>
-                    </form>
-                </td>
-                <td align="center">
-                    <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
-                       onclick="importImei()">导入imei</a>
-                </td>
-            </tr>
-        </table>
+        <form id="fm" method="post" enctype="multipart/form-data" novalidate>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="channelName" value="${channelName}" readonly/>
+                        <input type="hidden" name="channelId" id="channelId" value="${channelId}"/>
+                    </td>
+                    <td>
+                        <input id="dd"/>
+                    </td>
+                    <td>
+                        <input type="file" name="excelFile" style="width: 150px"/>
+                    </td>
+                    <td align="center">
+                        <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
+                           onclick="importImei()">导入imei</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
 </div>
 

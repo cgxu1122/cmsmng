@@ -154,9 +154,11 @@
         <div class="iheadertit">内置业务管理系统</div>
         <div class="iheadermsg">
             <span class="iheadername">欢迎：<shiro:principal></shiro:principal></span>
-            <a class="easyui-linkbutton" href="<%=basePath%>/hzfmng/logout">退出</a>
-            <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
             </span>
+            <div style="margin-left: 120px;margin-top: -3px">
+                <a class="easyui-linkbutton" href="<%=basePath%>/hzfmng/logout">退出</a>
+                <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
+            </div>
         </div>
     </div>
 </div>
@@ -186,7 +188,7 @@
                 <shiro:hasPermission name="partnerquery_db_arrival">
                     <div class="nav-item">
                         <a href="javascript:addTab('地包渠道到达','<%=basePath%>/hzfmng/partnerQuery/indexDBArrive','menu_icon_datadeal')">
-                        <span class="menu_icon_datadeal"></span>
+                            <span class="menu_icon_datadeal"></span>
                             <span>地包渠道到达</span>
                         </a>
                     </div>
@@ -202,7 +204,7 @@
                 <shiro:hasPermission name="partnerquery_cphzf_arrival">
                     <div class="nav-item">
                         <a href="javascript:addTab('合作方到达','<%=basePath%>/hzfmng/partnerQuery/indexCPArrive','menu_icon_datadeal')">
-                        <span class="menu_icon_datadeal"></span>
+                            <span class="menu_icon_datadeal"></span>
                             <span>合作方到达</span>
                         </a>
                     </div>
