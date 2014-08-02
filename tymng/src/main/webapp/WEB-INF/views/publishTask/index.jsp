@@ -19,12 +19,8 @@ function addrow() {
     addChannelList = new Array();
     $("#addModelList").empty();
     $("#addChannelList").empty();
-    var val = $("#groupId").combobox("getData");
-    for (var item in val[0]) {
-        if (item == "value") {
-            $("#groupId").combobox("select", val[0][item]);
-        }
-    }
+    var data = $("#groupId").combobox("getData");
+    $('#groupId').combobox("select", data[0].value);
     $('#groupId').combobox({
         onChange: function (newValue, oldValue) {
             if (newValue != oldValue) {
