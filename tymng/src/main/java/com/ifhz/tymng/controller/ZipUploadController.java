@@ -79,7 +79,8 @@ public class ZipUploadController {
                 throw new Exception("文件保存到本地失败！！！");
             }
             LOGGER.info("用户上传ZIP文件fileName={},保存到本地成功,路径为{}", toFilePath);
-            boolean ret = imeiUploadService.processZipData(toFilePath);
+            boolean ret = false;
+            imeiUploadService.processZipData(toFilePath, null, null);
             result.put("ret", ret);
             if (!ret) {
                 result.put("errorMsg", "处理上传文件失败，请检查文件格式是否正确或者重新操作");
