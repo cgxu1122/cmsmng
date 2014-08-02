@@ -20,7 +20,8 @@ function addrow() {
     $("#addModelList").empty();
     $("#addChannelList").empty();
     var data = $('#groupId').combobox('getData');
-    $("#groupId").combobox('select', data[0].value);
+    var opt = $('#groupId').combobox('options');
+    alert(opt);
     $('#groupId').combobox({
         onChange: function (newValue, oldValue) {
             if (newValue != oldValue) {
