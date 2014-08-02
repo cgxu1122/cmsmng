@@ -6,7 +6,6 @@
 }
 
 .calendar table {
-    table-layout: fixed;
     border-collapse: separate;
     font-size: 12px;
     width: 100%;
@@ -103,12 +102,6 @@
 .calendar-other-month {
     opacity: 0.3;
     filter: alpha(opacity=30);
-}
-
-.calendar-disabled {
-    opacity: 0.6;
-    filter: alpha(opacity=60);
-    cursor: default;
 }
 
 .calendar-menu {
@@ -210,7 +203,6 @@
 
 .calendar-body th {
     background: #fafafa;
-    padding: 2px 0;
 }
 
 .calendar-hover,

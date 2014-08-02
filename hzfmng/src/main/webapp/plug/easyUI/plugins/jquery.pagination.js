@@ -1,10 +1,12 @@
-/**
- * jQuery EasyUI 1.4
+﻿/**
+ * jQuery EasyUI 1.3.5
  *
- * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the GPL or commercial licenses
+ * To use it on other terms please contact us: info@jeasyui.com
+ * http://www.gnu.org/licenses/gpl.txt
+ * http://www.jeasyui.com/license_commercial.php
  *
  */
 (function ($) {
@@ -144,10 +146,6 @@
         if (_18.pageNumber > _19) {
             _18.pageNumber = _19;
         }
-        if (_18.total == 0) {
-            _18.pageNumber = 0;
-            _19 = 0;
-        }
         if (bb.num) {
             bb.num.val(_18.pageNumber);
         }
@@ -187,10 +185,10 @@
         _1c = _1c.replace(/{total}/, _18.total);
         $(_15).find("div.pagination-info").html(_1c);
         if (bb.first) {
-            bb.first.linkbutton({disabled: ((!_18.total) || _18.pageNumber == 1)});
+            bb.first.linkbutton({disabled: (_18.pageNumber == 1)});
         }
         if (bb.prev) {
-            bb.prev.linkbutton({disabled: ((!_18.total) || _18.pageNumber == 1)});
+            bb.prev.linkbutton({disabled: (_18.pageNumber == 1)});
         }
         if (bb.next) {
             bb.next.linkbutton({disabled: (_18.pageNumber == _19)});

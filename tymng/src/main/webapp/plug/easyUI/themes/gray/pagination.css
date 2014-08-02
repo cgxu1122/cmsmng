@@ -50,10 +50,21 @@
     font-size: 12px;
 }
 
-.pagination-link .l-btn-text {
+a.pagination-link {
+    padding: 1px;
+}
+
+a.pagination-link span.l-btn-left {
+    padding-left: 0;
+}
+
+a.pagination-link span span.l-btn-text {
     width: 24px;
     text-align: center;
-    margin: 0;
+}
+
+a:hover.pagination-link {
+    padding: 0;
 }
 
 .pagination-first {
