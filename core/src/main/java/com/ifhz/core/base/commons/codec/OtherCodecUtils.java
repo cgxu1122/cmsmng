@@ -27,7 +27,7 @@ public final class OtherCodecUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        String xml = FileUtils.readFileToString(new File("D://log.dat"));
+        String xml = FileUtils.readFileToString(new File("E://log.dat"));
         String str = OtherCodecUtils.decode(xml);
         System.out.println(str);
     }

@@ -11,6 +11,7 @@ import com.ifhz.core.po.CounterTempLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.DataLogApiService;
+import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
@@ -104,14 +105,14 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public boolean saveDeviceDataLog(DataLog po) {
+    public ImeiStatus saveDeviceDataLog(DataLog po) {
         LOGGER.info("执行DataLog保存操作 --- 开始");
         if (po != null) {
             //验证非法数据
             if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null) {
                 LOGGER.info("非法数据，校验不通过 , {}", JSON.toJSONString(po));
                 DeviceCommonLog.info("{}", JSON.toJSONString(po));
-                return false;
+                return ImeiStatus.Invalid;
             }
             // 查询imei是否已经到达过
             DataLog dataLog = dataLogApiService.getByImei(po.getImei());
@@ -136,18 +137,20 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");
                     dataLogApiService.insertDeviceData(po);
-//                    taskExecutor.execute(new StatDeviceRunnable(dataLog));
-                    statDeviceService.updateStat(dataLog);
-                    return true;
+//                    taskExecutor.execute(new StatDeviceRunnable(po));
+                    statDeviceService.updateStat(po);
+                    return ImeiStatus.Success;
                 } else {
                     LOGGER.info("渠道id[{}]--不在系统范围内", po.getChannelId());
+                    return ImeiStatus.Invalid;
                 }
             } else {
                 LOGGER.info("{} 记录已经存在", po.getImei());
+                return ImeiStatus.Repeat;
             }
         }
         LOGGER.info("执行DataLog插入操作 --- 结束");
-        return false;
+        return ImeiStatus.Invalid;
     }
 
     @Override

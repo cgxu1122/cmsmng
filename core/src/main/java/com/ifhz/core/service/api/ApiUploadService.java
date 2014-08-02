@@ -1,6 +1,7 @@
 package com.ifhz.core.service.api;
 
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.service.api.bean.ImeiStatus;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface ApiUploadService {
 
     public void saveCounterDataLog(DataLog po);
 
-    public boolean saveDeviceDataLog(DataLog po);
+    public ImeiStatus saveDeviceDataLog(DataLog po);
 
     public void batchSave(List<DataLog> processLogList);
 }
