@@ -164,10 +164,18 @@ public class PackageInfoController extends BaseController {
     @ResponseBody
     public JSONObject update(HttpServletRequest request) {
         String packageId = request.getParameter("packageId");
+        String groupId = request.getParameter("groupId");
+        String packageName = request.getParameter("packageName");
+        String batchId = request.getParameter("batchId");
+        String batchCode = request.getParameter("batchCode");
         String remark = request.getParameter("remark");
         String errorMsg = null;
         if (StringUtils.isEmpty(packageId)) {
             errorMsg = "系统错误，请联系管理员！";
+        } else if (StringUtils.isEmpty(packageName)) {
+            errorMsg = "请填写安装包名称！";
+        } else if (StringUtils.isEmpty(batchId) || StringUtils.isEmpty(batchCode)) {
+            errorMsg = "请匹配正确的批次号！";
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -179,6 +187,39 @@ public class PackageInfoController extends BaseController {
             result.put("errorMsg", "数据已被删除，请刷新!");
             return result;
         }
+        Pagination page = new Pagination();
+        page.setCurrentPage(1);
+        page.setPageSize(2);
+        PackageInfo pi = new PackageInfo();
+        pi.setActive(JcywConstants.ACTIVE_Y);
+        pi.setPackageName(packageName.trim());
+        List<PackageInfo> piList = packageInfoService.queryByVo(page, pi);
+        if (CollectionUtils.isNotEmpty(piList)) {
+            for (PackageInfo subpi : piList) {
+                if (!subpi.getPackageId().equals(Long.parseLong(packageId))) {
+                    result.put("errorMsg", "安装包名称重复，请重新填写！");
+                    return result;
+                }
+            }
+        }
+        pi = new PackageInfo();
+        pi.setActive(JcywConstants.ACTIVE_Y);
+        if (StringUtils.isNotEmpty(groupId)) {
+            pi.setGroupId(Long.parseLong(groupId));
+            piList = packageInfoService.queryByVo(page, pi);
+            if (CollectionUtils.isNotEmpty(piList)) {
+                for (PackageInfo subpi : piList) {
+                    if (!subpi.getPackageId().equals(Long.parseLong(packageId))) {
+                        result.put("errorMsg", "每个渠道组只能有一个通用包！不能重复添加！");
+                        return result;
+                    }
+                }
+            }
+            packageInfo.setGroupId(Long.parseLong(groupId));
+        }
+        packageInfo.setPackageName(packageName.trim());
+        packageInfo.setBatchCode(batchCode);
+        packageInfo.setBatchId(Long.parseLong(batchId));
         packageInfo.setRemark(remark);
         String[] apkIdList = request.getParameterValues("apkId");
         String[] apkNameList = request.getParameterValues("apkName");

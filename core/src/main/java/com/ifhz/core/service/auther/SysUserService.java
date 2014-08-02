@@ -33,4 +33,7 @@ public interface SysUserService {
 
     public List<SysUser> queryByVo(Pagination pagination, SysUser record);
 
+    public List<SysUser> queryMngListByVo(Pagination pagination, String searchValue);
+
+
 }

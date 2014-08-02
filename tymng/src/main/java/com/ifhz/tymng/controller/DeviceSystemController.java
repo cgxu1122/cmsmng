@@ -2,18 +2,16 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
-import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.device.DeviceSystemService;
-import com.ifhz.core.utils.FileHandle;
 import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangjian
@@ -41,6 +40,8 @@ public class DeviceSystemController extends BaseController {
     private DeviceSystemService deviceSystemService;
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
+
+    private static final String Store_APK_Path = MapConfig.getString(GlobalConstants.KEY_STORE_APK_DIR, GlobalConstants.GLOBAL_CONFIG, "/upload");
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
@@ -88,53 +89,44 @@ public class DeviceSystemController extends BaseController {
             result.put("errorMsg", "表单参数填写有误,请重新填写并提交！");
             return result;
         }
-        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
         try {
-            String newFileName = localDirCacheService.getLocalFileName(originFileName);
-            String storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+            String storeLocalFilePath = localDirCacheService.storeApkFile(file.getInputStream(), originFileName);
             if (StringUtils.isBlank(storeLocalFilePath)) {
                 throw new Exception("上传文件保存出错，请重新操作");
             }
             md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
-            FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
+
+            //版本号唯一性校验
+            DeviceSystem ds = new DeviceSystem();
+            ds.setVersion(version.trim());
+            Pagination page = new Pagination();
+            page.setCurrentPage(1);
+            page.setPageSize(1);
+            List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
+            if (list != null && list.size() > 0) {
+                result.put("errorMsg", "版本号重复，请重新输入！");
+                return result;
+            }
+            String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
+            path = StringUtils.replace(path, "\\", "/");
+            path = StringUtils.replace(path, Store_APK_Path, "");
+            path = StringUtils.replace(path, "D:/upload", "");
+
+            ds.setVersion(version.trim());
+            ds.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
+            ds.setFtpPath(path);
+            ds.setDownloadUrl(path);
+            ds.setMd5Value(md5Value);
+            deviceSystemService.insert(ds);
+            result.put("msg", "添加成功!");
         } catch (Exception e) {
             LOGGER.error("insert DeviceSystem error", e);
             result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
             return result;
         }
 
-        //版本号唯一性校验
-        DeviceSystem ds = new DeviceSystem();
-        ds.setVersion(version.trim());
-        Pagination page = new Pagination();
-        page.setCurrentPage(1);
-        page.setPageSize(1);
-        List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
-        if (list != null && list.size() > 0) {
-            result.put("errorMsg", "版本号重复，请重新输入！");
-            return result;
-        }
-        ds.setVersion(version.trim());
-        ds.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
-        ds.setFtpPath(dir + originFileName);
-        ds.setDownloadUrl(dir + originFileName);
-        ds.setMd5Value(md5Value);
-        deviceSystemService.insert(ds);
-        result.put("msg", "添加成功!");
 
         return result;
-    }
-
-    private String storeLocalFile(Map<String, FileItem> params, String originFileName) throws Exception {
-        FileItem file = params.get("file");
-        String fileExt = FileHandle.getFileExt(originFileName);
-        String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
-        String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
-        if (StringUtils.isBlank(toFilePath)) {
-            throw new Exception("文件保存到本地失败！！！");
-        }
-
-        return toFilePath;
     }
 
     @RequestMapping(value = "/update", produces = {"application/json;charset=UTF-8"})
@@ -156,63 +148,57 @@ public class DeviceSystemController extends BaseController {
             result.put("errorMsg", "请正确输入版本号！");
             return result;
         }
-        String storeLocalFilePath = null;
-        String dir = GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.FTP_SERVER_DEVICEDIR).replace("{0}", String.valueOf(Calendar.getInstance().getTimeInMillis()));
-        if (StringUtils.isNotBlank(originFileName)) {
-            try {
-                String newFileName = localDirCacheService.getLocalFileName(originFileName);
-                storeLocalFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+
+        try {
+            DeviceSystem deviceSystem = deviceSystemService.getById(systemId);
+            if (deviceSystem == null) {
+                result.put("errorMsg", "数据已被删除，请刷新!");
+                return result;
+            }
+            //版本号唯一性校验
+            DeviceSystem ds = new DeviceSystem();
+            ds.setVersion(version.trim());
+            Pagination page = new Pagination();
+            page.setCurrentPage(1);
+            page.setPageSize(2);
+            List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
+            if (list != null && list.size() > 0) {
+                for (DeviceSystem repeatVersionDs : list) {
+                    if (!repeatVersionDs.getSystemId().equals(deviceSystem.getSystemId())) {
+                        result.put("errorMsg", "版本号重复，请重新输入！");
+                        return result;
+                    }
+                }
+            }
+
+            if (StringUtils.isNotBlank(originFileName)) {
+                String storeLocalFilePath = localDirCacheService.storeApkFile(file.getInputStream(), originFileName);
                 if (StringUtils.isBlank(storeLocalFilePath)) {
                     throw new Exception("上传文件保存出错，请重新操作");
                 }
                 md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
-                FtpUtils.ftpUpload(file.getInputStream(), dir, originFileName);
-            } catch (Exception e) {
-                LOGGER.error("insert DeviceSystem error", e);
-                result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
-                return result;
-            }
-        }
 
+                String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
+                path = StringUtils.replace(path, "\\", "/");
+                path = StringUtils.replace(path, Store_APK_Path, "");
+                path = StringUtils.replace(path, "D:/upload", "");
 
-        DeviceSystem deviceSystem = deviceSystemService.getById(systemId);
-        String originFtpPath = deviceSystem.getFtpPath();
-        if (deviceSystem == null) {
-            result.put("errorMsg", "数据已被删除，请刷新!");
-            return result;
-        }
-        //版本号唯一性校验
-        DeviceSystem ds = new DeviceSystem();
-        ds.setVersion(version.trim());
-        Pagination page = new Pagination();
-        page.setCurrentPage(1);
-        page.setPageSize(2);
-        List<DeviceSystem> list = deviceSystemService.queryByVo(page, ds);
-        if (list != null && list.size() > 0) {
-            for (DeviceSystem repeatVersionDs : list) {
-                if (!repeatVersionDs.getSystemId().equals(deviceSystem.getSystemId())) {
-                    result.put("errorMsg", "版本号重复，请重新输入！");
-                    return result;
+                if (!StringUtils.equalsIgnoreCase(md5Value, deviceSystem.getMd5Value())) {
+                    deviceSystem.setMd5Value(md5Value);
+                    deviceSystem.setFtpPath(path);
+                    deviceSystem.setDownloadUrl(path);
                 }
             }
-        }
-        if (StringUtils.isNotBlank(originFileName)) {
-            if (!StringUtils.equalsIgnoreCase(md5Value, deviceSystem.getMd5Value())) {
-                deviceSystem.setMd5Value(md5Value);
-                deviceSystem.setFtpPath(dir + originFileName);
-            }
-        }
-        deviceSystem.setVersion(version.trim());
-        deviceSystem.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
-        deviceSystem.setUpdateTime(new Date());
 
-        deviceSystemService.update(deviceSystem);
-        result.put("msg", "修改成功!");
-        if (StringUtils.isNotBlank(originFtpPath)) {
-            try {
-                FtpUtils.ftpDelete(originFtpPath);
-            } catch (Exception e) {
-            }
+            deviceSystem.setVersion(version.trim());
+            deviceSystem.setEffectiveTime(DateFormatUtils.parse(effectiveTime, GlobalConstants.DATE_FORMAT_DPT));
+            deviceSystem.setUpdateTime(new Date());
+
+            deviceSystemService.update(deviceSystem);
+            result.put("msg", "修改成功!");
+        } catch (Exception e) {
+            LOGGER.error("insert DeviceSystem error", e);
+            result.put("errorMsg", "上传文件出错，请重新上传或者联系管理员！");
         }
 
         return result;

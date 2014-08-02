@@ -32,4 +32,6 @@ public interface SysUserAdapter {
     public List<SysUser> queryByVo(Pagination pagination, SysUser record);
 
     public List<SysUser> queryListByVo(Pagination pagination, String searchValue);
+
+    public List<SysUser> queryMngListByVo(Pagination pagination, String searchValue);
 }

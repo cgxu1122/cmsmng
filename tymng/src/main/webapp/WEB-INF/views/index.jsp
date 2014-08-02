@@ -431,7 +431,7 @@
     <div title="辅助功能" style="overflow: auto;">
         <shiro:hasPermission name="tymng_help_queryimei">
             <div class="nav-item">
-                <a href="javascript:addTab('查询Imei','<%=basePath%>/hzfmng/imeiQuery/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('查询Imei','<%=basePath%>/tymng/imeiQuery/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>查询Imei</span>
                 </a>
@@ -439,7 +439,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="tymng_help_uploadimei">
             <div class="nav-item">
-                <a href="javascript:addTab('上传Imei','<%=basePath%>/hzfmng/imeiUpload/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('上传Imei','<%=basePath%>/tymng/imeiUpload/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>上传Imei</span>
                 </a>
@@ -447,7 +447,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="tymng_help_uploadzip">
             <div class="nav-item">
-                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/hzfmng/zipUpload/index','menu_icon_datadeal')">
+                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/tymng/zipUpload/index','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>上传Zip文件</span>
                 </a>

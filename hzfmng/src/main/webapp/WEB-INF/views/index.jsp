@@ -175,19 +175,35 @@
                         </a>
                     </div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="partnerquery_db">
+                <shiro:hasPermission name="partnerquery_db_process">
                     <div class="nav-item">
-                        <a href="javascript:addTab('地包渠道查询','<%=basePath%>/hzfmng/partnerQuery/indexDB','menu_icon_datadeal')">
+                        <a href="javascript:addTab('地包渠道安装','<%=basePath%>/hzfmng/partnerQuery/indexDB','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>地包渠道</span>
+                            <span>地包渠道安装</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="partnerquery_cphzf">
+                <shiro:hasPermission name="partnerquery_db_arrival">
                     <div class="nav-item">
-                        <a href="javascript:addTab('cp合作方查询','<%=basePath%>/hzfmng/partnerQuery/indexCP','menu_icon_datadeal')">
+                        <a href="javascript:addTab('地包渠道到达','<%=basePath%>/hzfmng/partnerQuery/indexDB','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>cp合作方</span>
+                            <span>地包渠道到达</span>
+                        </a>
+                    </div>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="partnerquery_cphzf_process">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('合作方安装','<%=basePath%>/hzfmng/partnerQuery/indexCP','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>合作方安装</span>
+                        </a>
+                    </div>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="partnerquery_cphzf_arrival">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('合作方到达','<%=basePath%>/hzfmng/partnerQuery/indexCP','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>合作方到达</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
@@ -199,9 +215,9 @@
                         </a>
                     </div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="help_menu">
+                <shiro:hasPermission name="hzfmng_help_menu">
                     <div title="辅助功能" style="overflow: auto;">
-                        <shiro:hasPermission name="help_queryimei">
+                        <shiro:hasPermission name="hzfmng_help_queryimei">
                             <div class="nav-item">
                                 <a href="javascript:addTab('查询Imei','<%=basePath%>/hzfmng/imeiQuery/index','menu_icon_datadeal')">
                                     <span class="menu_icon_datadeal"></span>
@@ -209,7 +225,7 @@
                                 </a>
                             </div>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="help_uploadimei">
+                        <shiro:hasPermission name="hzfmng_help_uploadimei">
                             <div class="nav-item">
                                 <a href="javascript:addTab('上传Imei','<%=basePath%>/hzfmng/imeiUpload/index','menu_icon_datadeal')">
                                     <span class="menu_icon_datadeal"></span>
@@ -217,7 +233,7 @@
                                 </a>
                             </div>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="help_uploadzip">
+                        <shiro:hasPermission name="hzfmng_help_uploadzip">
                             <div class="nav-item">
                                 <a href="javascript:addTab('上传Zip文件','<%=basePath%>/hzfmng/zipUpload/index','menu_icon_datadeal')">
                                     <span class="menu_icon_datadeal"></span>

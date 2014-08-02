@@ -64,6 +64,18 @@
         update
         <include refid="TABLE_NAME"/>
         <set>
+            <if test="packageName != null">
+                PACKAGE_NAME = #{packageName},
+            </if>
+            <if test="batchId != null">
+                BATCH_ID = #{batchId},
+            </if>
+            <if test="batchCode != null">
+                BATCH_CODE = #{batchCode},
+            </if>
+            <if test="groupId != null">
+                GROUP_ID = #{groupId},
+            </if>
             <if test="active != null">
                 ACTIVE = #{active},
             </if>

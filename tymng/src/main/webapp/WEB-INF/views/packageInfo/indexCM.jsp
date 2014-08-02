@@ -52,7 +52,50 @@ function saverow() {
         }
     });
 }
-
+function copyrow() {
+    var row = $('#dg').datagrid('getSelected');
+    if (row) {
+        $('#dlg').dialog('open').dialog('setTitle', '复制');
+        $('#fm').form('clear');
+        $("#addApkList").empty();
+        addApkList = new Array();
+        if ("${type}" == "N") {
+            $("#groupIdDiv").empty();
+        } else if ("${type}" == "Y") {
+            var data = $('#groupId').combobox('getData');
+            $("#groupId ").combobox('select', data[0].value);
+        }
+        $('#fm').form('load', row);
+        var packageApkRefList = row.packageApkRefList;
+        if (packageApkRefList) {
+            for (var i = 0; i < packageApkRefList.length; i++) {
+                addApkList.push(packageApkRefList[i].apkId);
+                var autoRunVal = packageApkRefList[i].autoRun;
+                var desktopIconVal = packageApkRefList[i].desktopIcon;
+                var autoRunMsg = "非自启动";
+                var desktopIconMsg = "不创建快捷";
+                if ("Y" == autoRunVal) {
+                    autoRunMsg = "自启动";
+                }
+                if ("Y" == desktopIconVal) {
+                    desktopIconMsg = "创建快捷";
+                }
+                var apkHtml = "<tr>" +
+                        "<input type='hidden' name='apkId' value='" + packageApkRefList[i].apkId + "'>" +
+                        "<input type='hidden' name='apkType' value='" + packageApkRefList[i].apkType + "'>" +
+                        "<td><input type='text' name='apkName' value='" + packageApkRefList[i].apkName + "' readonly='readonly'></td>" +
+                        "<td>" + autoRunMsg + "</td><td>" + desktopIconMsg + "</td>" +
+                        "<input type='hidden' name='autoRun' value='" + autoRunVal + "'>" +
+                        "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addApkList.pop(" + packageApkRefList[i].apkId + ");'>删除</a></td>" +
+                        "</tr>";
+                $('#addApkList').append(apkHtml);
+            }
+        }
+    }
+}
 function editrow() {
     $("#upApkList").empty();
     updateApkList = new Array();
@@ -168,7 +211,7 @@ function initPage() {
         ]
     });
 }
-function getBatchInfoByPackageName(packageName) {
+function getBatchInfoByPackageName(packageName, type) {
     if (packageName == "")return null;
     if (packageName.indexOf("#") <= 0) {
         $.messager.alert('错误', "安装包名称中没有'#',无法匹配批次号！");
@@ -181,11 +224,21 @@ function getBatchInfoByPackageName(packageName) {
             var result = eval('(' + result + ')');
             if (result.errorMsg) {
                 $.messager.alert('错误', result.errorMsg);
-                $("#batchId").val('');
-                $("#batchCode").val('');
+                if (type == 1) {
+                    $("#batchId").val('');
+                    $("#batchCode").val('');
+                } else if (type == 2) {
+                    $("#upbatchId").val('');
+                    $("#upbatchCode").val('');
+                }
             } else {
-                $("#batchId").val(result.batchInfo.batchId);
-                $("#batchCode").val(result.batchInfo.batchCode);
+                if (type == 1) {
+                    $("#batchId").val(result.batchInfo.batchId);
+                    $("#batchCode").val(result.batchInfo.batchCode);
+                } else if (type == 2) {
+                    $("#upbatchId").val(result.batchInfo.batchId);
+                    $("#upbatchCode").val(result.batchInfo.batchCode);
+                }
             }
         }
     });
@@ -310,6 +363,9 @@ function selectApk(apkId, apkName, apkType, type) {
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addrow()">添加</a>
                     </td>
                 </shiro:hasPermission>
+                <td align="center">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="copyrow()">复制</a>
+                </td>
                 <shiro:hasPermission name="publish_common_pkg_update">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改</a>
@@ -380,11 +436,14 @@ function selectApk(apkId, apkName, apkType, type) {
 
         <div class="fitem" style="margin-left:8px">
             <label><font color="red">*</font>安装包名称:</label>
-            <input type="text" name="packageName" class="easyui-validatebox" readonly="readonly">
+            <input id="uppackageName" type="text" name="packageName" class="easyui-validatebox" required="true"
+                   maxlength="50"
+                   onblur="javascript:getBatchInfoByPackageName($(this).val(),2)">
         </div>
         <div class="fitem" style="margin-left:31px">
             <label><font color="red">*</font>批次号:</label>
-            <input name="batchCode" readonly="readonly">
+            <input id="upbatchCode" name="batchCode" readonly="readonly">
+            <input id="upbatchId" name="batchId" readonly="readonly" type="hidden">
         </div>
         <div class="fitem" style="margin-left:48px">
             <label>备注:</label>

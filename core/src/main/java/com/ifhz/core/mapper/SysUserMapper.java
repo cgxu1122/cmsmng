@@ -34,4 +34,7 @@ public interface SysUserMapper {
 
     public List<SysUser> queryListByVo(Pagination pagination,
                                        @Param(value = "searchValue") String searchValue);
+
+    public List<SysUser> queryMngListByVo(Pagination pagination,
+                                          @Param(value = "searchValue") String searchValue);
 }

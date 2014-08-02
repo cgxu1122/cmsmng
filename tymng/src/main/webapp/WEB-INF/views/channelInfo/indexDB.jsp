@@ -222,12 +222,6 @@ function showMngDialog(type, upMngId) {
             [
                 {field: 'userId', title: '负责人id', align: 'center', width: 80},
                 {field: 'loginName', title: '用户名', align: 'center', width: 150},
-                {field: 'createTime', title: '创建时间', align: 'center', width: 150,
-                    formatter: function (value) {
-                        return value;
-                        //return new Date(value).formate("yyyy-MM-dd");
-                    }
-                },
                 {field: 'action', title: '操作', align: 'center', width: 100,
                     formatter: function (value, row, index) {
                         return "<a href='javascript:void(0)' onclick=javascript:selectMng('" + row.userId + "','" + row.loginName + "','" + type + "')>选择</a>";
