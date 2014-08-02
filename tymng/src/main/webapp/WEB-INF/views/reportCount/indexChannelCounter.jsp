@@ -116,6 +116,15 @@ function initPage() {
                             return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',7)>" + value + "</a>";
                         }
                     }
+                },
+                {field: 'prsInvalidUnAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.processDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',8)>" + value + "</a>";
+                        }
+                    }
                 }
             ]
         ]
