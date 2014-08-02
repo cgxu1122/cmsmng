@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.InputSupplier;
 import com.google.common.io.OutputSupplier;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.constants.GlobalConstants;
@@ -36,9 +37,14 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
      */
     private final Cache<String, Boolean> dirs = createDirCache();
 
-    private static final String Store_Temp_Path = MapConfig.getString(GlobalConstants.KEY_STORE_TEMP_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app/temp");
-    private static final String Store_Path = MapConfig.getString(GlobalConstants.KEY_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/data/app/store");
+    private static final String Store_Path = MapConfig.getString(GlobalConstants.KEY_STORE_DIR, GlobalConstants.GLOBAL_CONFIG, "/store/app/perm");
+    private static final String Store_Temp_Path = MapConfig.getString(GlobalConstants.KEY_STORE_TEMP_DIR, GlobalConstants.GLOBAL_CONFIG, "/store/app/temp");
+    private static final String Store_APK_Path = MapConfig.getString(GlobalConstants.KEY_STORE_APK_DIR, GlobalConstants.GLOBAL_CONFIG, "/upload");
 
+
+    private enum Type {
+        Perm, Temp, Apk;
+    }
 
     /**
      * 文件存储的父目录,格式为YYYY-MM-dd
@@ -46,15 +52,24 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     private static final String PARENT_DIR_PATTERN = "yyyy-MM-dd";
 
 
-    public String preStore(final InputStream in, String localFileName, boolean isTempFile) throws Exception {
-        LOGGER.info("localFileName = {},isTempFile={}", localFileName, isTempFile);
+    @Log
+    public String preStore(final InputStream in, String localFileName, Type type) throws Exception {
+        LOGGER.info("localFileName ={},type={}", localFileName, type);
         String storePath;
-        if (isTempFile) {
+        if (type == Type.Temp) {
             storePath = Store_Temp_Path;
-        } else {
+        } else if (type == Type.Perm) {
             storePath = Store_Path;
+        } else {
+            storePath = Store_APK_Path;
         }
-        String parentDir = getParentDir();
+
+        String parentDir;
+        if (type != Type.Apk) {
+            parentDir = getParentDir();
+        } else {
+            parentDir = getApkParentDir();
+        }
         if (StringUtils.isNotBlank(parentDir)) {
             storePath = storePath + File.separator + parentDir;
         }
@@ -91,23 +106,34 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
         return DateFormatUtils.formatDate(new Date(), PARENT_DIR_PATTERN);
     }
 
+    public String getApkParentDir() {
+        final StringBuffer buff = new StringBuffer();
+        buff.append("data");
+        buff.append(File.separator);
+        buff.append("apk");
+        buff.append(File.separator);
+        buff.append(String.valueOf(new Date().getTime()));
+
+        return buff.toString();
+    }
+
     /**
      * 创建一个目录的缓存
      *
      * @return
      */
     private Cache<String, Boolean> createDirCache() {
-        return CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(60, TimeUnit.MINUTES).build();
+        return CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(60, TimeUnit.MINUTES).build();
     }
 
     @Override
     public String storeTempFile(InputStream in, String localFileName) throws Exception {
-        return preStore(in, localFileName, true);
+        return preStore(in, localFileName, Type.Temp);
     }
 
     @Override
     public String storeFile(InputStream in, String localFileName) throws Exception {
-        return preStore(in, localFileName, false);
+        return preStore(in, localFileName, Type.Perm);
     }
 
     @Override
@@ -129,6 +155,11 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
         dirs.get(key, new DirCacheLoader(key));
         String prefix = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
         return storePath + File.separator + prefix.toLowerCase() + ".xlsx";
+    }
+
+    @Override
+    public String storeApkFile(InputStream in, String localFileName) throws Exception {
+        return preStore(in, localFileName, Type.Apk);
     }
 
 

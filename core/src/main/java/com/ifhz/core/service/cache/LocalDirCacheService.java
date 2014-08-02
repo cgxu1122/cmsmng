@@ -17,4 +17,6 @@ public interface LocalDirCacheService {
     public String getLocalFileName(String originFileName);
 
     public String getExcelTempPath() throws Exception;
+
+    public String storeApkFile(final InputStream in, String localFileName) throws Exception;
 }

@@ -38,6 +38,7 @@ public final class GlobalConstants {
     public static final String KEY_SYS_INIT_DATE = "system_init_date";
     public static final String KEY_STORE_TEMP_DIR = "store.temp.dir";
     public static final String KEY_STORE_DIR = "store.dir";
+    public static final String KEY_STORE_APK_DIR = "store.apk.dir";
     public static final String KEY_STAT_INTERVAL_MINUTE = "stat.interval.minute";
 
     /**
