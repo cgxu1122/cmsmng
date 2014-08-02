@@ -3,7 +3,6 @@ package com.ifhz.tymng.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
-import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
@@ -481,10 +480,7 @@ public class ChannelInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String searchValue = request.getParameter("searchValue");
-        SysUser user = new SysUser();
-        user.setRoleId(UserConstants.USER_TYPE_MANAGER);
-        user.setSearchValue(searchValue);
-        List<SysUser> list = sysUserService.queryByVo(page, user);
+        List<SysUser> list = sysUserService.queryMngListByVo(page, searchValue);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);

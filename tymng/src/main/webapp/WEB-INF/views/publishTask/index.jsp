@@ -24,29 +24,14 @@ function addrow() {
     $('#groupId').combobox({
         onChange: function (newValue, oldValue) {
             if (newValue != oldValue) {
+                addModelList = new Array();
+                addChannelList = new Array();
                 $("#addModelList").empty();
                 $("#addChannelList").empty();
-                reloadTree(newValue);
             }
         }
     });
     $('#effectTime').datebox('setValue', getCurrrentDateStr());
-}
-function reloadTree(groupId) {
-    /*$('#tt').tree({
-     url: "
-    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId,
-     onClick: function (node) {
-     $('#parentIdCondition').val(node.id);
-     searchChannelEvt();
-     },
-     onBeforeExpand: function (node, param) {
-     $('#tt').tree('options').url = "
-    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
-     }
-     });*/
-    $('#searchGroupIdValue').val(groupId);
-    searchChannelEvt();
 }
 function saverow() {
     $('#fm').form('submit', {
@@ -282,37 +267,19 @@ function selectModel(modelId, modelName) {
 function showChannelDialog() {
     $('#channeldlg').dialog('open').dialog('setTitle', '选择渠道');
     var groupId = $('#groupId').combobox('getValue');
-    $('#channeldg').datagrid({
-        width: 'auto',
-        height: 'auto',
-        fitColumns: true,
-        striped: true,
-        singleSelect: true,
-        url: '<%=basePath%>/tymng/channelInfo/listAll',
-        queryParams: {groupId: groupId},
-        loadMsg: '数据加载中请稍后……',
-        pagination: true,
-        rownumbers: true,
-        columns: [
-            [
-                {field: 'channelName', title: '渠道/仓库名称', align: 'center', width: 300},
-                {field: 'action', title: '操作', align: 'center', width: 100,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:selectChannel('" + row.channelId + "','" + row.channelName + "')>选择</a>";
-                    }
-                }
-            ]
-        ]
+    $('#tt').tree({
+        checkbox: true,
+        url: "<%=basePath%>/tymng/channelInfo/listTreeAll?groupId=" + groupId
     });
 }
-function searchChannelEvt() {
-    var groupId = $('#groupId').combobox('getValue');
-    var value = $('#searchChannelValue').val();
-    var parentIdCondition = $('#parentIdCondition').val();
-    $('#channeldg').datagrid({
-        url: "<%=basePath%>/tymng/channelInfo/list",
-        queryParams: {groupId: groupId, channelNameCondition: value, parentIdCondition: parentIdCondition}
-    });
+function selectTreeChannels() {
+    var nodes = $('#tt').tree('getChecked');
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].id != -1) {
+            selectChannel(nodes[i].id, nodes[i].text);
+        }
+    }
+    $('#channeldlg').dialog('close')
 }
 function selectChannel(channelId, channelName) {
     var channelHtml = "<tr>" +
@@ -439,7 +406,6 @@ function selectChannel(channelId, channelName) {
         </div>
     </form>
 </div>
-
 <div id="update-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#updatedlg').dialog('close')">关闭</a>
@@ -513,26 +479,29 @@ function selectChannel(channelId, channelName) {
      data-options="iconCls:'icon-save',resizable:true"
      closed="true"
      buttons="#channeldlg-buttons">
-    <div>
-        <div>
-            <table>
-                <tr>
-                    <td>
-                        <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="渠道/仓库名称"/>
-                        <input type="hidden" name="parentIdCondition" id="parentIdCondition"/>
-                    </td>
-                    <td align="center">
-                        <a id="searchChannelbtn" href="javascript:void(0)" class="easyui-linkbutton"
-                           iconCls="icon-search"
-                           onclick="searchChannelEvt()">查询</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="channeldg" region="center"></div>
+    <%-- <div>
+         <div>
+             <table>
+                 <tr>
+                     <td>
+                         <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="渠道/仓库名称"/>
+                         <input type="hidden" name="parentIdCondition" id="parentIdCondition"/>
+                     </td>
+                     <td align="center">
+                         <a id="searchChannelbtn" href="javascript:void(0)" class="easyui-linkbutton"
+                            iconCls="icon-search"
+                            onclick="searchChannelEvt()">查询</a>
+                     </td>
+                 </tr>
+             </table>
+         </div>
+     </div>--%>
+    <%--<div id="channeldg" region="center"></div>--%>
+    <ul id="tt"></ul>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:selectTreeChannels()">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
 </div>

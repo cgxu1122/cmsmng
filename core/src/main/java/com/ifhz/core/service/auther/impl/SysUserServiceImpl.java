@@ -96,4 +96,9 @@ public class SysUserServiceImpl implements SysUserService {
     public List<SysUser> queryByVo(Pagination pagination, SysUser record) {
         return sysUserAdapter.queryByVo(pagination, record);
     }
+
+    @Override
+    public List<SysUser> queryMngListByVo(Pagination pagination, String searchValue) {
+        return sysUserAdapter.queryMngListByVo(pagination, searchValue);
+    }
 }
