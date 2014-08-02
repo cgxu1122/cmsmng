@@ -91,7 +91,6 @@ function saveUpdatePassword() {
         },
         data: {"userId": $('#userIdUpPw').val(), "password": $('#passwordUp').val},
         success: function (result) {
-            var result = eval('(' + result + ')');
             result = eval('(' + result + ')');
             if (result.code == -1) {
                 $.messager.alert('错误', result.message);
