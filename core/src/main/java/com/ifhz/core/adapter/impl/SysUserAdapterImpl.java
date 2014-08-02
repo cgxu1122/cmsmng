@@ -37,6 +37,12 @@ public class SysUserAdapterImpl implements SysUserAdapter {
     }
 
     @Override
+    public int updateStatus(SysUser po) {
+        po.setUpdateTime(new Date());
+        return sysUserMapper.updateStatus(po);
+    }
+
+    @Override
     public int updatePassword(SysUser po) {
         po.setUpdateTime(new Date());
         return sysUserMapper.updatePassword(po);

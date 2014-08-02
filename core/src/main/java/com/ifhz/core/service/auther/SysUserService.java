@@ -17,6 +17,8 @@ public interface SysUserService {
 
     public int update(SysUser record);
 
+    public int updateStatus(SysUser record);
+
     public int updatePassword(SysUser record);
 
     public int delete(Long userId);

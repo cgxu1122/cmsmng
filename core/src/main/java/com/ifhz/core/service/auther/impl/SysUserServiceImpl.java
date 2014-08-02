@@ -47,6 +47,12 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public int updateStatus(SysUser record) {
+        return sysUserAdapter.updateStatus(record);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updatePassword(SysUser record) {
         return sysUserAdapter.updatePassword(record);
     }

@@ -18,6 +18,8 @@ public interface SysUserMapper {
 
     public int update(SysUser po);
 
+    public int updateStatus(SysUser po);
+
     public int updatePassword(SysUser po);
 
     public int delete(@Param("userId") Long userId);
