@@ -8,6 +8,10 @@
     padding-top: 10px;
 }
 
+.messager-button .l-btn {
+    width: 70px;
+}
+
 .messager-icon {
     float: left;
     width: 32px;

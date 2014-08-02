@@ -1,12 +1,10 @@
-﻿/**
- * jQuery EasyUI 1.3.5
+/**
+ * jQuery EasyUI 1.4
  *
- * Copyright (c) 2009-2013 www.jeasyui.com. All rights reserved.
+ * Copyright (c) 2009-2014 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL or commercial licenses
- * To use it on other terms please contact us: info@jeasyui.com
- * http://www.gnu.org/licenses/gpl.txt
- * http://www.jeasyui.com/license_commercial.php
+ * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
+ * To use it on other terms please contact us at info@jeasyui.com
  *
  */
 (function ($) {
@@ -85,7 +83,7 @@
             if (_d.disabled == true) {
                 return;
             }
-            $(this).bind("mousemove.resizable", {target: this},function (e) {
+            $(this).bind("mousemove.resizable", {target: this}, function (e) {
                 if ($.fn.resizable.isResizing) {
                     return;
                 }
@@ -95,7 +93,7 @@
                 } else {
                     $(e.data.target).css("cursor", _f + "-resize");
                 }
-            }).bind("mouseleave.resizable", {target: this},function (e) {
+            }).bind("mouseleave.resizable", {target: this}, function (e) {
                 $(e.data.target).css("cursor", "");
             }).bind("mousedown.resizable", {target: this}, function (e) {
                 var dir = _10(e);

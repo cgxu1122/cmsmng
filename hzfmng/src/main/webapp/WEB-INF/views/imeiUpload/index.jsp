@@ -8,7 +8,16 @@
     <title>Demo</title>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#dd').datebox().datebox('calendar').calendar({
+                validator: function (date) {
+                    var now = new Date();
+                    var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3);
+                    var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    return d1 <= date && date <= d2;
+                }
+            });
         });
+
         function importImei() {
             $('#fm').form('submit', {
                 url: '<%=basePath%>/hzfmng/imeiUpload/exportImei.do',
@@ -33,7 +42,14 @@
         <table>
             <tr>
                 <td>
-                    <form id="fm" method="post" enctype="multipart/form-data" novalidate>
+                    <input type="text" name="channelName" value="${channelName}" readonly/>
+                    <input type="hidden" name="channelId" id="channelId" value="${channelId}"/>
+                </td>
+                <td>
+                    <input id="dd"/>
+                </td>
+                <td>
+                <form id="fm" method="post" enctype="multipart/form-data" novalidate>
                         <input type="file" name="excelFile"/>
                     </form>
                 </td>
