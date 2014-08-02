@@ -18,10 +18,14 @@
                 },
                 success: function (result) {
                     var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
+                    if (!result.ret) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
-                        $.messager.alert('提示', "导入成功！");
+                        var html = "保存成功个数：" + result.Success + "<br>" +
+                                "参数校验失败个数：" + result.Invalid + "<br>" +
+                                "imei重复个数：" + result.Repeat + "<br>" +
+                                "处理失败个数：" + result.Failure + "<br>";
+                        $('#callback').html(html);
                     }
                 }
             });
@@ -46,6 +50,8 @@
         </table>
     </div>
 </div>
+<div id="callback">
 
+</div>
 </body>
 </html>
