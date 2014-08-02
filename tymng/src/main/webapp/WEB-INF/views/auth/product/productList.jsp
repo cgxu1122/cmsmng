@@ -21,6 +21,7 @@
             }
 
             $.post('<%=basePath%>/tymng/auth/productauth/productAuth', {userId: ${userId}, productId: obj.value, type: _type}, function (result) {
+                alert("授权成功")
             });
         }
 
