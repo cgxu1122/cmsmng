@@ -18,7 +18,7 @@
         <result column="PRS_ACTIVE_INVALID_NUM" property="prsActiveInvalidNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_REPLACE_NUM" property="prsInvalidReplaceNum" jdbcType="BIGINT"/>
         <result column="PRS_INVALID_UNINSTALL_NUM" property="prsInvalidUninstallNum" jdbcType="BIGINT"/>
-        <result column="PRS_INVALID_UN_RE_NUM" property="prsInvalidUnReNum" jdbcType="BIGINT"/>
+        <result column="PRS_INVALID_UN_RE_NUM" property="prsInvalidUnAndReNum" jdbcType="BIGINT"/>
 
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
         <result column="VERSION" property="version" jdbcType="BIGINT"/>
@@ -61,7 +61,7 @@
         #{prsActiveInvalidNum,jdbcType=BIGINT},
         #{prsInvalidReplaceNum,jdbcType=BIGINT},
         #{prsInvalidUninstallNum,jdbcType=BIGINT},
-        #{prsInvalidUnReNum,jdbcType=BIGINT},
+        #{prsInvalidUnAndReNum,jdbcType=BIGINT},
         #{md5Key,jdbcType=VARCHAR},
         #{version,jdbcType=BIGINT}
         )
@@ -95,8 +95,8 @@
             <if test="prsInvalidUninstallNum != null and prsInvalidUninstallNum != 0">
                 PRS_INVALID_UNINSTALL_NUM = #{prsInvalidUninstallNum},
             </if>
-            <if test="prsInvalidUnReNum != null and prsInvalidUnReNum != 0">
-                PRS_INVALID_UN_RE_NUM = #{prsInvalidUnReNum},
+            <if test="prsInvalidUnAndReNum != null and prsInvalidUnAndReNum != 0">
+                PRS_INVALID_UN_RE_NUM = #{prsInvalidUnAndReNum},
             </if>
         </set>
         where ID = #{id}
