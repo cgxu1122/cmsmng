@@ -215,7 +215,7 @@
                 $(this).css("cursor", "");
                 return;
             }
-            _23.unbind(".draggable").bind("mousemove.draggable", {target: this},function (e) {
+            _23.unbind(".draggable").bind("mousemove.draggable", {target: this}, function (e) {
                 if ($.fn.draggable.isDragging) {
                     return;
                 }
@@ -225,7 +225,7 @@
                 } else {
                     $(this).css("cursor", "");
                 }
-            }).bind("mouseleave.draggable", {target: this},function (e) {
+            }).bind("mouseleave.draggable", {target: this}, function (e) {
                 $(this).css("cursor", "");
             }).bind("mousedown.draggable", {target: this}, function (e) {
                 if (_25(e) == false) {

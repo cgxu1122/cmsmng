@@ -148,7 +148,7 @@ a:hover.l-btn-disabled {
     background: linear-gradient(to bottom, #919191 0, #6a6a6a 100%);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#6a6a6a, GradientType=0);
-    filter: alpha(opacity=50) progid:DXImageTransform.Microsoft.gradient(startColorstr=#919191, endColorstr=#6a6a6a, GradientType=0);
+    filter: alpha(opacity=50) progid : DXImageTransform . Microsoft . gradient(startColorstr = #919191, endColorstr = #6a6a6a, GradientType = 0);
 }
 
 a.l-btn-plain-disabled,

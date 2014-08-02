@@ -78,7 +78,7 @@
         var _1a = _19.options;
         var _1b = _19.searchbox.find("input.searchbox-text");
         var _1c = _19.searchbox.find(".searchbox-button");
-        _1b.unbind(".searchbox").bind("blur.searchbox",function (e) {
+        _1b.unbind(".searchbox").bind("blur.searchbox", function (e) {
             _1a.value = $(this).val();
             if (_1a.value == "") {
                 $(this).val(_1a.prompt);
@@ -86,7 +86,7 @@
             } else {
                 $(this).removeClass("searchbox-prompt");
             }
-        }).bind("focus.searchbox",function (e) {
+        }).bind("focus.searchbox", function (e) {
             if ($(this).val() != _1a.value) {
                 $(this).val(_1a.value);
             }
@@ -99,9 +99,9 @@
                 return false;
             }
         });
-        _1c.unbind(".searchbox").bind("click.searchbox",function () {
+        _1c.unbind(".searchbox").bind("click.searchbox", function () {
             _1a.searcher.call(_18, _1a.value, _1b._propAttr("name"));
-        }).bind("mouseenter.searchbox",function () {
+        }).bind("mouseenter.searchbox", function () {
             $(this).addClass("searchbox-button-hover");
         }).bind("mouseleave.searchbox", function () {
             $(this).removeClass("searchbox-button-hover");

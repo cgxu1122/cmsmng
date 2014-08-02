@@ -15,9 +15,9 @@
     };
     function _3(_4) {
         var _5 = $.data(_4, "tooltip").options;
-        $(_4).unbind(".tooltip").bind(_5.showEvent + ".tooltip",function (e) {
+        $(_4).unbind(".tooltip").bind(_5.showEvent + ".tooltip", function (e) {
             _10(_4, e);
-        }).bind(_5.hideEvent + ".tooltip",function (e) {
+        }).bind(_5.hideEvent + ".tooltip", function (e) {
             _17(_4, e);
         }).bind("mousemove.tooltip", function (e) {
             if (_5.trackMouse) {

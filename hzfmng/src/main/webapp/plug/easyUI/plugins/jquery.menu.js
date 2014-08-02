@@ -96,7 +96,7 @@
     };
     function _12(_18, _19) {
         var _1a = $.data(_18, "menu");
-        _19.unbind(".menu").bind("mouseenter.menu",function () {
+        _19.unbind(".menu").bind("mouseenter.menu", function () {
             if (_1a.timer) {
                 clearTimeout(_1a.timer);
                 _1a.timer = null;
@@ -114,7 +114,7 @@
             return;
         }
         _1d.unbind(".menu");
-        _1d.bind("click.menu",function () {
+        _1d.bind("click.menu", function () {
             if ($(this).hasClass("menu-item-disabled")) {
                 return;
             }
@@ -127,7 +127,7 @@
             }
             var _1f = $(_1c).menu("getItem", this);
             $.data(_1c, "menu").options.onClick.call(_1c, _1f);
-        }).bind("mouseenter.menu",function (e) {
+        }).bind("mouseenter.menu", function (e) {
             _1d.siblings().each(function () {
                 if (this.submenu) {
                     _22(this.submenu);

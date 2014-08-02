@@ -34,7 +34,7 @@
                 t.find(".l-btn-empty").addClass(_3.iconCls);
             }
         }
-        t.unbind(".linkbutton").bind("focus.linkbutton",function () {
+        t.unbind(".linkbutton").bind("focus.linkbutton", function () {
             if (!_3.disabled) {
                 $(this).find(".l-btn-text").addClass("l-btn-focus");
             }

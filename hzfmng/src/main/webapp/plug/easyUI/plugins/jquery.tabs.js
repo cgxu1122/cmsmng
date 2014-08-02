@@ -173,7 +173,7 @@
     function _29(_2a) {
         var _2b = $.data(_2a, "tabs");
         var _2c = _2b.options;
-        $(_2a).children("div.tabs-header").unbind().bind("click",function (e) {
+        $(_2a).children("div.tabs-header").unbind().bind("click", function (e) {
             if ($(e.target).hasClass("tabs-scroller-left")) {
                 $(_2a).tabs("scrollBy", -_2c.scrollIncrement);
             } else {

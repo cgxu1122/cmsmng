@@ -50,10 +50,10 @@
         } else {
             btn.linkbutton("enable");
             var _12 = null;
-            t.bind("click.menubutton",function () {
+            t.bind("click.menubutton", function () {
                 _13(_f);
                 return false;
-            }).bind("mouseenter.menubutton",function () {
+            }).bind("mouseenter.menubutton", function () {
                 _12 = setTimeout(function () {
                     _13(_f);
                 }, _11.duration);

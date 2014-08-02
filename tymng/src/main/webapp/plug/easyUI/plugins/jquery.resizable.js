@@ -85,7 +85,7 @@
             if (_d.disabled == true) {
                 return;
             }
-            $(this).bind("mousemove.resizable", {target: this},function (e) {
+            $(this).bind("mousemove.resizable", {target: this}, function (e) {
                 if ($.fn.resizable.isResizing) {
                     return;
                 }
@@ -95,7 +95,7 @@
                 } else {
                     $(e.data.target).css("cursor", _f + "-resize");
                 }
-            }).bind("mouseleave.resizable", {target: this},function (e) {
+            }).bind("mouseleave.resizable", {target: this}, function (e) {
                 $(e.data.target).css("cursor", "");
             }).bind("mousedown.resizable", {target: this}, function (e) {
                 var dir = _10(e);

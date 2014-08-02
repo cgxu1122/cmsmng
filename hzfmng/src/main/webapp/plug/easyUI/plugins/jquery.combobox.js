@@ -264,14 +264,14 @@
             _d(_4a, $(_4a).combobox("getValue"));
             _4b.onShowPanel.call(_4a);
         }}));
-        $(_4a).combo("panel").unbind().bind("mouseover",function (e) {
+        $(_4a).combo("panel").unbind().bind("mouseover", function (e) {
             $(this).children("div.combobox-item-hover").removeClass("combobox-item-hover");
             var _4c = $(e.target).closest("div.combobox-item");
             if (!_4c.hasClass("combobox-item-disabled")) {
                 _4c.addClass("combobox-item-hover");
             }
             e.stopPropagation();
-        }).bind("mouseout",function (e) {
+        }).bind("mouseout", function (e) {
             $(e.target).closest("div.combobox-item").removeClass("combobox-item-hover");
             e.stopPropagation();
         }).bind("click", function (e) {

@@ -15,7 +15,7 @@
         $(_2).addClass("timespinner-f");
         $(_2).spinner(_3);
         $(_2).unbind(".timespinner");
-        $(_2).bind("click.timespinner",function () {
+        $(_2).bind("click.timespinner", function () {
             var _4 = 0;
             if (this.selectionStart != null) {
                 _4 = this.selectionStart;

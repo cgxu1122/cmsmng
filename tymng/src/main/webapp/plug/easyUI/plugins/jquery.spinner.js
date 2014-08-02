@@ -40,18 +40,18 @@
         var _e = $.data(_c, "spinner").spinner;
         _e.find(".spinner-arrow-up,.spinner-arrow-down").unbind(".spinner");
         if (!_d.disabled) {
-            _e.find(".spinner-arrow-up").bind("mouseenter.spinner",function () {
+            _e.find(".spinner-arrow-up").bind("mouseenter.spinner", function () {
                 $(this).addClass("spinner-arrow-hover");
-            }).bind("mouseleave.spinner",function () {
+            }).bind("mouseleave.spinner", function () {
                 $(this).removeClass("spinner-arrow-hover");
             }).bind("click.spinner", function () {
                 _d.spin.call(_c, false);
                 _d.onSpinUp.call(_c);
                 $(_c).validatebox("validate");
             });
-            _e.find(".spinner-arrow-down").bind("mouseenter.spinner",function () {
+            _e.find(".spinner-arrow-down").bind("mouseenter.spinner", function () {
                 $(this).addClass("spinner-arrow-hover");
-            }).bind("mouseleave.spinner",function () {
+            }).bind("mouseleave.spinner", function () {
                 $(this).removeClass("spinner-arrow-hover");
             }).bind("click.spinner", function () {
                 _d.spin.call(_c, true);

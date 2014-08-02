@@ -461,18 +461,18 @@
             e.stopPropagation();
         });
         var _76 = _75.find("div.datagrid-cell");
-        _76.closest("td").unbind(".datagrid").bind("mouseenter.datagrid",function () {
+        _76.closest("td").unbind(".datagrid").bind("mouseenter.datagrid", function () {
             if (_72.resizing) {
                 return;
             }
             $(this).addClass("datagrid-header-over");
-        }).bind("mouseleave.datagrid",function () {
+        }).bind("mouseleave.datagrid", function () {
             $(this).removeClass("datagrid-header-over");
         }).bind("contextmenu.datagrid", function (e) {
             var _77 = $(this).attr("field");
             _74.onHeaderContextMenu.call(_71, e, _77);
         });
-        _76.unbind(".datagrid").bind("click.datagrid",function (e) {
+        _76.unbind(".datagrid").bind("click.datagrid", function (e) {
             var p1 = $(this).offset().left + 5;
             var p2 = $(this).offset().left + $(this)._outerWidth() - 5;
             if (e.pageX < p2 && e.pageX > p1) {
@@ -574,7 +574,7 @@
                 }, 0);
             }});
         });
-        dc.body1.add(dc.body2).unbind().bind("mouseover",function (e) {
+        dc.body1.add(dc.body2).unbind().bind("mouseover", function (e) {
             if (_72.resizing) {
                 return;
             }
@@ -585,7 +585,7 @@
             var _83 = _84(tr);
             _eb(_71, _83);
             e.stopPropagation();
-        }).bind("mouseout",function (e) {
+        }).bind("mouseout", function (e) {
             var tr = $(e.target).closest("tr.datagrid-row");
             if (!_82(tr)) {
                 return;
@@ -593,7 +593,7 @@
             var _85 = _84(tr);
             _74.finder.getTr(_71, _85).removeClass("datagrid-row-over");
             e.stopPropagation();
-        }).bind("click",function (e) {
+        }).bind("click", function (e) {
             var tt = $(e.target);
             var tr = tt.closest("tr.datagrid-row");
             if (!_82(tr)) {
@@ -632,7 +632,7 @@
                 _74.onClickRow.call(_71, _86, row);
             }
             e.stopPropagation();
-        }).bind("dblclick",function (e) {
+        }).bind("dblclick", function (e) {
             var tt = $(e.target);
             var tr = tt.closest("tr.datagrid-row");
             if (!_82(tr)) {

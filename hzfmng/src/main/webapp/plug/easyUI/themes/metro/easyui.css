@@ -1082,7 +1082,7 @@ a:hover.l-btn-disabled {
     background: linear-gradient(to bottom, #ffffff 0, #ffffff 100%);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff, GradientType=0);
-    filter: alpha(opacity=50) progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff, GradientType=0);
+    filter: alpha(opacity=50) progid : DXImageTransform . Microsoft . gradient(startColorstr = #ffffff, endColorstr = #ffffff, GradientType = 0);
 }
 
 a.l-btn-plain-disabled,

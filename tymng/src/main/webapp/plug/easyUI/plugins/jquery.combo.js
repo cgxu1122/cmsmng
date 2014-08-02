@@ -101,7 +101,7 @@
         _24.unbind(".combo");
         _25.unbind(".combo");
         if (!_21.disabled && !_21.readonly) {
-            _24.bind("click.combo",function (e) {
+            _24.bind("click.combo", function (e) {
                 if (!_21.editable) {
                     _26.call(this);
                 } else {
@@ -147,9 +147,9 @@
                         }
                 }
             });
-            _25.bind("click.combo",function () {
+            _25.bind("click.combo", function () {
                 _26.call(this);
-            }).bind("mouseenter.combo",function () {
+            }).bind("mouseenter.combo", function () {
                 $(this).addClass("combo-arrow-hover");
             }).bind("mouseleave.combo", function () {
                 $(this).removeClass("combo-arrow-hover");

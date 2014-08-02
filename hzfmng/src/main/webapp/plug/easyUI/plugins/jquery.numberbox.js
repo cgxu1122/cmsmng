@@ -46,9 +46,9 @@
     };
     function _f(_10) {
         var _11 = $.data(_10, "numberbox").options;
-        $(_10).unbind(".numberbox").bind("keypress.numberbox",function (e) {
+        $(_10).unbind(".numberbox").bind("keypress.numberbox", function (e) {
             return _11.filter.call(_10, e);
-        }).bind("blur.numberbox",function () {
+        }).bind("blur.numberbox", function () {
             _7(_10, $(this).val());
             $(this).val(_11.formatter.call(_10, _8(_10)));
         }).bind("focus.numberbox", function () {

@@ -118,7 +118,7 @@
         var dc = $.data(_2d, "datagrid").dc;
         var _2e = dc.body1.add(dc.body2);
         var _2f = ($.data(_2e[0], "events") || $._data(_2e[0], "events")).click[0].handler;
-        dc.body1.add(dc.body2).bind("mouseover",function (e) {
+        dc.body1.add(dc.body2).bind("mouseover", function (e) {
             var tt = $(e.target);
             var tr = tt.closest("tr.datagrid-row");
             if (!tr.length) {
@@ -128,7 +128,7 @@
                 tt.hasClass("tree-expanded") ? tt.addClass("tree-expanded-hover") : tt.addClass("tree-collapsed-hover");
             }
             e.stopPropagation();
-        }).bind("mouseout",function (e) {
+        }).bind("mouseout", function (e) {
             var tt = $(e.target);
             var tr = tt.closest("tr.datagrid-row");
             if (!tr.length) {

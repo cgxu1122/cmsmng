@@ -31,7 +31,7 @@
         if (_9.options.novalidate) {
             return;
         }
-        _8.bind("focus.validatebox",function () {
+        _8.bind("focus.validatebox", function () {
             _9.validating = true;
             _9.value = undefined;
             (function () {
@@ -50,14 +50,14 @@
                     setTimeout(arguments.callee, 200);
                 }
             })();
-        }).bind("blur.validatebox",function () {
+        }).bind("blur.validatebox", function () {
             if (_9.timer) {
                 clearTimeout(_9.timer);
                 _9.timer = undefined;
             }
             _9.validating = false;
             _a(_7);
-        }).bind("mouseenter.validatebox",function () {
+        }).bind("mouseenter.validatebox", function () {
             if (_8.hasClass("validatebox-invalid")) {
                 _b(_7);
             }

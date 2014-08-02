@@ -17,7 +17,7 @@
     };
     function _4(_5) {
         var _6 = $.data(_5, "tree").options;
-        $(_5).unbind().bind("mouseover",function (e) {
+        $(_5).unbind().bind("mouseover", function (e) {
             var tt = $(e.target);
             var _7 = tt.closest("div.tree-node");
             if (!_7.length) {
@@ -32,7 +32,7 @@
                 }
             }
             e.stopPropagation();
-        }).bind("mouseout",function (e) {
+        }).bind("mouseout", function (e) {
             var tt = $(e.target);
             var _8 = tt.closest("div.tree-node");
             if (!_8.length) {
@@ -47,7 +47,7 @@
                 }
             }
             e.stopPropagation();
-        }).bind("click",function (e) {
+        }).bind("click", function (e) {
             var tt = $(e.target);
             var _9 = tt.closest("div.tree-node");
             if (!_9.length) {
@@ -66,7 +66,7 @@
                 }
             }
             e.stopPropagation();
-        }).bind("dblclick",function (e) {
+        }).bind("dblclick", function (e) {
             var _a = $(e.target).closest("div.tree-node");
             if (!_a.length) {
                 return;
@@ -851,13 +851,13 @@
         _e3.val(_e1.text).focus();
         _e3.width(_e2 + 20);
         _e3.height(document.compatMode == "CSS1Compat" ? (18 - (_e3.outerHeight() - _e3.height())) : 18);
-        _e3.bind("click",function (e) {
+        _e3.bind("click", function (e) {
             return false;
-        }).bind("mousedown",function (e) {
+        }).bind("mousedown", function (e) {
             e.stopPropagation();
-        }).bind("mousemove",function (e) {
+        }).bind("mousemove", function (e) {
             e.stopPropagation();
-        }).bind("keydown",function (e) {
+        }).bind("keydown", function (e) {
             if (e.keyCode == 13) {
                 _e4(_de, _df);
                 return false;
