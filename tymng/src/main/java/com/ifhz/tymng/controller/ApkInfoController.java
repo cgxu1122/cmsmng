@@ -6,7 +6,6 @@ import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.codec.AnalysisApkFile;
 import com.ifhz.core.base.commons.codec.DesencryptUtils;
 import com.ifhz.core.base.commons.constants.JcywConstants;
-import com.ifhz.core.base.commons.util.FtpUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ApkInfo;
@@ -174,71 +173,59 @@ public class ApkInfoController extends BaseController {
             return result;
         }
         ApkInfo apkInfo = apkInfoService.getById(apkId);
-        String originFtpPath = apkInfo.getFtpPath();
         if (apkInfo == null) {
             result.put("errorMsg", "数据已被删除，请刷新!");
             return result;
         }
-        if (StringUtils.isNotBlank(originFileName)) {
-            if (!StringUtils.endsWithIgnoreCase(originFileName.trim(), ".apk")) {
-                result.put("errorMsg", "请上传后缀名为Apk的文件");
-                return result;
-            }
-            if (!PatternUtils.verifyApkSoftName(originFileName)) {
-                result.put("errorMsg", "Apk的文件名称不合法");
-                return result;
-            }
-            try {
+
+        try {
+            if (StringUtils.isNotBlank(originFileName)) {
+                if (!StringUtils.endsWithIgnoreCase(originFileName.trim(), ".apk")) {
+                    result.put("errorMsg", "请上传后缀名为Apk的文件");
+                    return result;
+                }
+                if (!PatternUtils.verifyApkSoftName(originFileName)) {
+                    result.put("errorMsg", "Apk的文件名称不合法");
+                    return result;
+                }
                 String storeLocalFilePath = localDirCacheService.storeApkFile(file.getInputStream(), originFileName);
                 if (StringUtils.isBlank(storeLocalFilePath)) {
                     throw new Exception("上传文件保存出错，请重新操作");
                 }
                 md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+                String packagePath;
+                if (StringUtils.containsIgnoreCase(type, "2")) {
+                    packagePath = CountPkgPath;
+                } else {
+                    packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+                }
+                if (StringUtils.isNotBlank(packagePath)) {
+                    apkInfo.setPackagePath(packagePath);
+                }
 
+                String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
+                path = StringUtils.replace(path, "\\", "/");
+                path = StringUtils.replace(path, Store_APK_Path, "");
+                path = StringUtils.replace(path, "D:/upload", "");
 
+                apkInfo.setSoftName(originFileName);
+                apkInfo.setFtpPath(path);
+                apkInfo.setDownloadUrl(path);
+                }
                 if (!StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
                     apkInfo.setMd5Value(md5Value);
                     apkInfo.setUpdateTime(new Date());
                 }
-                if (StringUtils.isNotBlank(originFileName)) {
-                    String packagePath;
-                    if (StringUtils.containsIgnoreCase(type, "2")) {
-                        packagePath = CountPkgPath;
-                    } else {
-                        packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
-                    }
-                    if (StringUtils.isNotBlank(packagePath)) {
-                        apkInfo.setPackagePath(packagePath);
-                    }
 
-                    String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
-                    path = StringUtils.replace(path, "\\", "/");
-                    path = StringUtils.replace(path, Store_APK_Path, "");
-                    path = StringUtils.replace(path, "D:/upload", "");
+            apkInfo.setApkName(apkName.trim());
+            apkInfo.setType(type);
+            apkInfoService.update(apkInfo);
 
-                    apkInfo.setSoftName(originFileName);
-                    apkInfo.setFtpPath(path);
-                    apkInfo.setDownloadUrl(path);
-
-                    apkInfo.setApkName(apkName.trim());
-                    apkInfo.setType(type);
-                    apkInfoService.update(apkInfo);
-                }
-
-
-                if (StringUtils.isNotBlank(originFtpPath)) {
-                    try {
-                        FtpUtils.ftpDelete(originFtpPath);
-                    } catch (Exception e) {
-                        LOGGER.error("", e);
-                    }
-                }
                 result.put("msg", "修改成功!");
             } catch (Exception e) {
                 LOGGER.error("updateApkInfo error", e);
                 result.put("errorMsg", "保存失败，请重新上传或者联系管理员！");
             }
-        }
 
         return result;
     }
@@ -269,7 +256,7 @@ public class ApkInfoController extends BaseController {
                 result.put("msg", "删除成功!");
             }
         } catch (Exception e) {
-            LOGGER.error("");
+            LOGGER.error("deleteApkIno error", e);
         }
         return result;
     }

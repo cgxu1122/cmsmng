@@ -17,5 +17,5 @@
     <entry key="store.temp.dir">D:\\store\\app\\temp</entry>
     <entry key="store.apk.dir">D:\\upload</entry>
     <entry key="aapt.work.dir">D:\bin\adt-bundle-windows-x86_64-20140624\sdk\build-tools\android-4.4W</entry>
-    <entry key="host.prefix">http://192.168.1.108:8090</entry>
+    <entry key="host.prefix">http://192.168.1.102:8090</entry>
 </properties>
