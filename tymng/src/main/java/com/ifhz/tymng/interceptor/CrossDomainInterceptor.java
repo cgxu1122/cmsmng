@@ -16,14 +16,12 @@ public class CrossDomainInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest arg0,
                                 HttpServletResponse arg1, Object arg2, Exception arg3)
             throws Exception {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1,
                            Object arg2, ModelAndView arg3) throws Exception {
-        // TODO Auto-generated method stub、
         arg1.addHeader("Access-Control-Allow-Origin", "*");
 
     }

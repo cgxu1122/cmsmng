@@ -1,6 +1,9 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ifhz.core.base.commons.constants.JcywConstants;
+import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.progress.ProgressModel;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
@@ -20,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -50,6 +54,8 @@ public class ZipUploadController {
     public
     @ResponseBody
     JSONObject uploadZip(@RequestParam(value = "zipFile", required = true) MultipartFile file,
+                         @RequestParam(value = "channelId", required = true) Long channelId,
+                         @RequestParam(value = "processDateStr", required = true) String processDateStr,
                          HttpServletRequest request) {
         JSONObject result = new JSONObject();
         if (file == null || file.isEmpty()) {
@@ -68,12 +74,12 @@ public class ZipUploadController {
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
             String fileExt = FileHandle.getFileExt(originFileName);
             String newFileName = UUID.randomUUID() + "." + fileExt.toLowerCase();
-            String toFilePath = localDirCacheService.storeFile(file.getInputStream(), newFileName);
+            String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             if (StringUtils.isBlank(toFilePath)) {
                 throw new Exception("文件保存到本地失败！！！");
             }
             LOGGER.info("用户上传ZIP文件fileName={},保存到本地成功,路径为{}", toFilePath);
-            boolean ret = imeiUploadService.processCsvData(toFilePath);
+            boolean ret = imeiUploadService.processZipData(toFilePath);
             result.put("ret", ret);
             if (!ret) {
                 result.put("errorMsg", "处理上传文件失败，请检查文件格式是否正确或者重新操作");
@@ -86,6 +92,30 @@ public class ZipUploadController {
             LOGGER.info("list:returnObj={}", result);
         }
 
+        return result;
+    }
+
+
+    @RequestMapping(value = "/channelList", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject channelList(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String channelNameCondition = request.getParameter("channelNameCondition");
+        ChannelInfo ci = new ChannelInfo();
+        ci.setActive(JcywConstants.ACTIVE_Y);
+        if (StringUtils.isNotBlank(channelNameCondition))
+            ci.setChannelNameCondition(channelNameCondition.trim());
+        List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
         return result;
     }
 

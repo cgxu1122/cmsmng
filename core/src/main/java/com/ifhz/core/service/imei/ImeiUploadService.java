@@ -1,5 +1,10 @@
 package com.ifhz.core.service.imei;
 
+import com.ifhz.core.service.api.bean.ImeiStatus;
+
+import java.util.Date;
+import java.util.Map;
+
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -8,10 +13,9 @@ package com.ifhz.core.service.imei;
  */
 public interface ImeiUploadService {
 
-    public boolean processCsvData(String filePath);
+    public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate);
 
+    public Map<ImeiStatus, Integer> processZipData(String filePath, Long channelId, Date processDate);
 
-    public boolean processZipData(String filePath);
-
-    public void asyncProcessCsvData(String filePath);
+    public void asyncProcessCsvData(String filePath, Long channelId, Date processDate);
 }

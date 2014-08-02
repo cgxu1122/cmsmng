@@ -106,7 +106,6 @@ public class ProductInfoController extends BaseController {
         pi.setPartnerId(Long.parseLong(partnerId));
         pi.setQueryDataSource(queryDataSource);
         pi.setQueryStartTime(DateFormatUtils.parse(queryStartTime, GlobalConstants.DATE_FORMAT_DPT));
-        //TODO 添加用户名密码
         productInfoService.insert(pi);
         result.put("msg", "添加成功!");
         return result;

@@ -10,6 +10,7 @@
         $(document).ready(function () {
         });
         function importZip() {
+
             $('#fm').form('submit', {
                 url: '<%=basePath%>/tymng/zipUpload/importZip.do',
                 onSubmit: function () {

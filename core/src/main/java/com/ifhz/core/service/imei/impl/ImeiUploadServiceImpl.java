@@ -6,6 +6,7 @@ import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
+import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.imei.ImeiUploadService;
 import org.apache.commons.io.FileUtils;
@@ -19,6 +20,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.Date;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 /**
  * 类描述
@@ -38,7 +43,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
 
-    public boolean processCsvData(String filePath) {
+    public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
         BufferedReader reader = null;
         try {
@@ -64,13 +69,13 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
             }
         } catch (IOException e) {
             LOGGER.error("processCsvData error", e);
-            return false;
+            return null;
         } finally {
             IOUtils.closeQuietly(reader);
             LOGGER.info("解析CSV文件:{}--------------------结束", filePath);
         }
 
-        return true;
+        return null;
     }
 
 
@@ -94,14 +99,39 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     }
 
     @Override
-    public boolean processZipData(String filePath) {
-        return false;
+    public Map<ImeiStatus, Integer> processZipData(String filePath, Long channelId, Date processDate) {
+        BufferedOutputStream bos = null;
+        ZipEntry entry = null;
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
+            ZipFile zipfile = new ZipFile(filePath);
+
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entry.isDirectory()) {
+                    continue;
+                } else {
+                    InputStreamReader is = new InputStreamReader(zipfile.getInputStream(entry));
+                    BufferedReader br = new BufferedReader(is);
+                    String con = null;
+                    while ((con = br.readLine()) != null) {
+                        System.out.println(entry.getName());
+                        System.out.println(con);
+                    }
+                }
+            }
+            zis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
-    public void asyncProcessCsvData(String filePath) {
+    public void asyncProcessCsvData(String filePath, Long channelId, Date processDate) {
         if (StringUtils.isNotBlank(filePath)) {
-            taskExecutor.execute(new AsyncPrcoessCsvTask(filePath));
+            taskExecutor.execute(new AsyncProcessCsvTask(filePath, channelId, processDate));
         }
     }
 
@@ -140,22 +170,22 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     }
 
 
-    private class AsyncPrcoessCsvTask implements Runnable {
+    private class AsyncProcessCsvTask implements Runnable {
 
         private String csvFilePath;
+        private Long channelId;
+        private Date processDate;
 
-        private AsyncPrcoessCsvTask(String csvFilePath) {
+        private AsyncProcessCsvTask(String csvFilePath, Long channelId, Date processDate) {
             this.csvFilePath = csvFilePath;
+            this.channelId = channelId;
+            this.processDate = processDate;
         }
 
         @Override
         public void run() {
-            boolean ret = processCsvData(csvFilePath);
-            if (ret) {
-                LOGGER.info("csvFilePath={} -----------------process success", csvFilePath);
-            } else {
-                LOGGER.info("csvFilePath={} -----------------process failure", csvFilePath);
-            }
+            Map<ImeiStatus, Integer> map = processCsvData(csvFilePath, channelId, processDate);
+            LOGGER.info("map={}", JSON.toJSONString(map));
         }
     }
 }
