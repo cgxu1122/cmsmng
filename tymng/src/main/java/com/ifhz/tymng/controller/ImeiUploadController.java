@@ -82,7 +82,6 @@ public class ImeiUploadController {
         return result;
     }
 
-
     public boolean checkFileType(String fileName) {
         if (StringUtils.endsWithIgnoreCase(fileName, ".csv")) {
             return true;

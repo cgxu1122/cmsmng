@@ -66,7 +66,8 @@ public class ImeiUploadController {
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
-            boolean ret = imeiUploadService.processCsvData(toFilePath);
+            imeiUploadService.processCsvData(toFilePath, null, null);
+            boolean ret = false;
             result.put("ret", ret);
             if (!ret) {
                 result.put("errorMsg", "处理上传文件失败，请检查文件格式是否正确或者重新操作");
