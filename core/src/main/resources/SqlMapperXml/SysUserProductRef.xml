@@ -45,5 +45,6 @@
         delete from
         <include refid="TABLE_NAME"/>
         where USER_ID = #{userId}
+        and PRODUCT_ID = #{productId}
     </delete>
 </mapper>

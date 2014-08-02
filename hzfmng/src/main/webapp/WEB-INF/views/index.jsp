@@ -185,8 +185,8 @@
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_db_arrival">
                     <div class="nav-item">
-                        <a href="javascript:addTab('地包渠道到达','<%=basePath%>/hzfmng/partnerQuery/indexDB','menu_icon_datadeal')">
-                            <span class="menu_icon_datadeal"></span>
+                        <a href="javascript:addTab('地包渠道到达','<%=basePath%>/hzfmng/partnerQuery/indexDBArrive','menu_icon_datadeal')">
+                        <span class="menu_icon_datadeal"></span>
                             <span>地包渠道到达</span>
                         </a>
                     </div>
@@ -201,8 +201,8 @@
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_cphzf_arrival">
                     <div class="nav-item">
-                        <a href="javascript:addTab('合作方到达','<%=basePath%>/hzfmng/partnerQuery/indexCP','menu_icon_datadeal')">
-                            <span class="menu_icon_datadeal"></span>
+                        <a href="javascript:addTab('合作方到达','<%=basePath%>/hzfmng/partnerQuery/indexCPArrive','menu_icon_datadeal')">
+                        <span class="menu_icon_datadeal"></span>
                             <span>合作方到达</span>
                         </a>
                     </div>
