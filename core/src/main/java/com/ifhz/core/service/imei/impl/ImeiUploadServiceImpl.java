@@ -65,7 +65,11 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                         String[] data = StringUtils.split(line, "\\|");
                         DataLog dataLog = translateDataLog(data);
                         if (dataLog != null) {
-                            apiUploadService.saveDeviceDataLog(dataLog);
+                            try {
+                                apiUploadService.saveDeviceDataLog(dataLog);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             LOGGER.info("数据转换失败：{}", line);
                         }

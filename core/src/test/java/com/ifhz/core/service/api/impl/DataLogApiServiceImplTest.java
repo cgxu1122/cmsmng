@@ -94,7 +94,11 @@ public class DataLogApiServiceImplTest extends BaseTest {
                             String imei = getStringCellValue(row.getCell(3)).trim();
                             DataLog dataLog = translate(pTime, modelName, channelName, imei);
                             if (dataLog != null) {
-                                apiUploadService.saveDeviceDataLog(dataLog);
+                                try {
+                                    apiUploadService.saveDeviceDataLog(dataLog);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }

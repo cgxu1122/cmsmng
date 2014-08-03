@@ -56,7 +56,13 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
         if (StringUtils.isNotBlank(result)) {
             List<WdjDataResult> dataResultList = JSON.parseArray(result, WdjDataResult.class);
             List<DataLog> dataLogList = getDataLogList(dataResultList);
-            apiUploadService.batchSave(dataLogList);
+            for (DataLog dataLog : dataLogList) {
+                try {
+                    apiUploadService.saveDeviceDataLog(dataLog);
+                } catch (Exception e) {
+                    LOGGER.error("saveDeviceDataLog error", e);
+                }
+            }
         }
     }
 

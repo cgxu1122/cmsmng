@@ -1,6 +1,8 @@
 package com.ifhz.core.service.api.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.log.CounterCommonLog;
@@ -15,21 +17,21 @@ import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
-import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.StatCounterService;
 import com.ifhz.core.service.stat.StatDeviceService;
 import com.ifhz.core.service.stat.constants.CounterActive;
-import org.apache.commons.collections.CollectionUtils;
+import com.ifhz.core.vo.DeviceResultVo;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -47,14 +49,10 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     private DataLogApiService dataLogApiService;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
-    @Resource(name = "modelInfoCacheService")
-    private ModelInfoCacheService modelInfoCacheService;
     @Resource(name = "statCounterService")
     private StatCounterService statCounterService;
     @Resource(name = "statDeviceService")
     private StatDeviceService statDeviceService;
-    @Resource(name = "taskExecutor")
-    private TaskExecutor taskExecutor;
 
     //手机imei|手机ua|手机到达状态
     @Override
@@ -158,17 +156,46 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
     @Override
     @Log
-    public void batchSave(List<DataLog> processLogList) {
-        if (CollectionUtils.isNotEmpty(processLogList)) {
-            for (DataLog log : processLogList) {
+    public Map<String, ImeiStatus> saveMap(Map<String, DataLog> dataLogMap) {
+        Map<String, ImeiStatus> result = Maps.newHashMap();
+        if (MapUtils.isNotEmpty(dataLogMap)) {
+            for (Map.Entry<String, DataLog> entry : dataLogMap.entrySet()) {
+                String key = entry.getKey();
+                DataLog dataLog = entry.getValue();
                 try {
-                    saveDeviceDataLog(log);
+                    ImeiStatus status = this.saveDeviceDataLog(dataLog);
+                    result.put(key, status);
                 } catch (Exception e) {
+                    result.put(key, ImeiStatus.Failure);
                     LOGGER.error("saveDeviceDataLog error", e);
-                    DeviceCommonLog.info("{}", JSON.toJSONString(log));
                 }
+
             }
         }
+        return result;
+    }
+
+    @Override
+    @Log
+    public List<DeviceResultVo> batchSave(Map<String, DataLog> dataLogMap) {
+        List<DeviceResultVo> result = Lists.newArrayList();
+        if (MapUtils.isNotEmpty(dataLogMap)) {
+            Map<String, ImeiStatus> tempMap = saveMap(dataLogMap);
+            for (Map.Entry<String, ImeiStatus> entry : tempMap.entrySet()) {
+                String key = entry.getKey();
+                ImeiStatus value = entry.getValue();
+                DeviceResultVo vo = new DeviceResultVo();
+                vo.setId(key);
+                if (ImeiStatus.Invalid == value) {
+                    vo.setActive(false);
+                } else {
+                    vo.setActive(true);
+                }
+                result.add(vo);
+            }
+        }
+
+        return result;
     }
 
 

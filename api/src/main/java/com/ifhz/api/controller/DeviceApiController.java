@@ -2,10 +2,11 @@ package com.ifhz.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.DeviceInfo;
@@ -13,6 +14,8 @@ import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.device.DeviceInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
+import com.ifhz.core.vo.DeviceRequestVo;
+import com.ifhz.core.vo.DeviceResultVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -27,6 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -51,47 +55,41 @@ public class DeviceApiController {
     @RequestMapping(value = "/processData.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
-    JSONObject processLog(@RequestParam(value = "id", required = true) String id,
-                          @RequestParam(value = "data", required = true) String data) {
-        LOGGER.info("receive request id={},data={}", id, data);
+    JSONObject processLog(@RequestParam(value = "data", required = true) String data) {
+        LOGGER.info("receive request data={}", data);
         JSONObject result = null;
         try {
             if (StringUtils.isNotEmpty(data)) {
-                List<DataLog> dataLogList = Lists.newArrayList();
-                List<String> processList = JSON.parseArray(data, String.class);
-                if (CollectionUtils.isNotEmpty(processList)) {
-                    for (String processLog : processList) {
-                        LOGGER.info("receive encode processLog={}", processLog);
-                        if (StringUtils.isNotBlank(processLog)) {
+                Map<String, DataLog> dataLogMap = Maps.newHashMap();
+                List<DeviceRequestVo> requestVoList = JSON.parseArray(data, DeviceRequestVo.class);
+                if (CollectionUtils.isNotEmpty(requestVoList)) {
+                    for (DeviceRequestVo requestVo : requestVoList) {
+                        LOGGER.info("receive encode requestVo={}", JSON.toJSONString(requestVo));
+                        if (requestVo != null && StringUtils.isNotBlank(requestVo.getContent())) {
                             //解码 手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-                            String source = CodecUtils.decode(processLog).trim();
-                            LOGGER.info("receive decode processLog={}", source);
-                            String[] array = StringUtils.split(source, "|");
+                            String content = CodecUtils.decode(requestVo.getContent()).trim();
+                            LOGGER.info("receive decode content={}", content);
+                            String[] array = StringUtils.split(content, "|");
                             DataLog dataLog = translateDataLog(array);
                             if (dataLog != null) {
-                                dataLogList.add(dataLog);
+                                dataLogMap.put(requestVo.getId(), dataLog);
                             }
-
                         }
                     }
-                    if (CollectionUtils.isNotEmpty(dataLogList)) {
-                        apiUploadService.batchSave(dataLogList);
-                        result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
-                        result.put("id", id);
-                    }
+                    List<DeviceResultVo> dataList = apiUploadService.batchSave(dataLogMap);
+                    result = ApiJsonHandler.genJsonRet(ResultType.SuccUpgrade);
+                    result.put("dataList", dataList);
                 }
             }
 
             if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-                result.put("id", id);
             }
         } catch (Exception e) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
-            result.put("id", id);
-            LOGGER.error("processLog error ", e);
+            LOGGER.error("processData error ", e);
         } finally {
-            LOGGER.info("processLog:returnObj={}", result);
+            LOGGER.info("processData:returnObj={}", result);
         }
 
         return result;
@@ -167,7 +165,8 @@ public class DeviceApiController {
 
                 String processTimeStamp = StringUtils.trimToEmpty(data[5]);
                 if (StringUtils.isNotBlank(processTimeStamp)) {
-                    result.setProcessTime(new Date(Long.parseLong(processTimeStamp)));
+                    Date processTime = DateFormatUtils.parse(processTimeStamp, "yyyyMMdd");
+                    result.setProcessTime(processTime);
                 }
                 result.setDeviceUploadTime(new Date());
             } catch (Exception e) {

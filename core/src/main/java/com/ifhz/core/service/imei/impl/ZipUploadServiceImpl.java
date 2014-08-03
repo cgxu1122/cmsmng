@@ -14,6 +14,7 @@ import com.ifhz.core.service.imei.ZipUploadService;
 import com.ifhz.core.service.imei.bean.XmlBean;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,10 +60,12 @@ public class ZipUploadServiceImpl implements ZipUploadService {
             return result;
         }
         ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+        FileInputStream fis = null;
+        ZipInputStream zis = null;
         try {
             ZipEntry entry = null;
-            FileInputStream fis = new FileInputStream(filePath);
-            ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
+            fis = new FileInputStream(filePath);
+            zis = new ZipInputStream(new BufferedInputStream(fis));
             ZipFile zipfile = new ZipFile(filePath);
 
             while ((entry = zis.getNextEntry()) != null) {
@@ -80,25 +83,29 @@ public class ZipUploadServiceImpl implements ZipUploadService {
                                 stream.processAnnotations(XmlBean.class);
                                 XmlBean bean = (XmlBean) stream.fromXML(content.trim());
                                 if (bean != null) {
-                                    DataLog dataLog = new DataLog();
-                                    dataLog.setImei(bean.getImei());
-                                    dataLog.setUa(ModelHandler.translateUa(bean.getUa()));
-                                    dataLog.setProcessTime(processDate);
-                                    dataLog.setChannelId(channelId);
-                                    dataLog.setBatchCode(getBatchCode(bean));
-                                    dataLog.setDeviceCode("手工安装");
-                                    dataLog.setDeviceUploadTime(new Date());
-                                    if (channelInfo != null) {
-                                        dataLog.setGroupId(channelInfo.getGroupId());
-                                    }
-                                    ImeiStatus status = apiUploadService.saveDeviceDataLog(dataLog);
-                                    if (status != null) {
-                                        if (result.containsKey(status)) {
-                                            Integer count = result.get(status);
-                                            result.put(status, count + 1);
-                                        } else {
-                                            result.put(status, 1);
+                                    try {
+                                        DataLog dataLog = new DataLog();
+                                        dataLog.setImei(bean.getImei());
+                                        dataLog.setUa(ModelHandler.translateUa(bean.getUa()));
+                                        dataLog.setProcessTime(processDate);
+                                        dataLog.setChannelId(channelId);
+                                        dataLog.setBatchCode(getBatchCode(bean));
+                                        dataLog.setDeviceCode("手工安装");
+                                        dataLog.setDeviceUploadTime(new Date());
+                                        if (channelInfo != null) {
+                                            dataLog.setGroupId(channelInfo.getGroupId());
                                         }
+                                        ImeiStatus status = apiUploadService.saveDeviceDataLog(dataLog);
+                                        if (status != null) {
+                                            if (result.containsKey(status)) {
+                                                Integer count = result.get(status);
+                                                result.put(status, count + 1);
+                                            } else {
+                                                result.put(status, 1);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        LOGGER.error("saveDeviceDataLog error", e);
                                     }
                                 }
                             }
@@ -112,9 +119,11 @@ public class ZipUploadServiceImpl implements ZipUploadService {
                     continue;
                 }
             }
-            zis.close();
         } catch (Exception e) {
             LOGGER.error("processFile error", e);
+        } finally {
+            IOUtils.closeQuietly(fis);
+            IOUtils.closeQuietly(zis);
         }
 
         return result;

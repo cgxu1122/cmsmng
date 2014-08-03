@@ -36,26 +36,14 @@ public final class CodecUtils {
 
 */
         ////手机imei|手机ua|到达状态
-        String imei1 = "864545024785429|8729|1";
-        String imei2 = "864545024785767|8729|1";
-        String imei3 = "864545024785775|8729|2";
-        String imei4 = "864545024786591|8729|2";
-        String imei5 = "864545024837618|8729|3";
-        String imei6 = "864545024838335|8729|3";
-        String imei7 = "864545024838459|8729|4";
-        String imei8 = "864545024838608|8729|4";
-        String imei9 = "864545024839911|8729|4";
-        String imei10 = "864545024791237|8729|4";
+        String imei1 = "DB11111|8729|1";
+        String imei2 = "DB11112|8729|2";
+        String imei3 = "DB11113|8729|3";
+        String imei10 = "DB11114|8729|4";
 
         System.out.println(decode(imei1));
         System.out.println(decode(imei2));
         System.out.println(decode(imei3));
-        System.out.println(decode(imei4));
-        System.out.println(decode(imei5));
-        System.out.println(decode(imei6));
-        System.out.println(decode(imei7));
-        System.out.println(decode(imei8));
-        System.out.println(decode(imei9));
         System.out.println(decode(imei10));
 
 
