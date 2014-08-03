@@ -8,6 +8,7 @@ import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
+import com.ifhz.core.service.stat.handle.DateHandler;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
@@ -133,6 +134,7 @@ public class ImeiUploadController {
 
     private boolean checkProcessDate(Date processDate) {
         Date startTime = DateFormatUtils.addDay(new Date(), -3);
+        startTime = DateHandler.getStartTime(startTime);
         Date endTime = new Date();
         if (processDate.before(endTime) && processDate.after(startTime)) {
             return true;
