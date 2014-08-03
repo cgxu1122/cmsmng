@@ -58,6 +58,7 @@ public class ImeiUploadController {
                           @RequestParam(value = "processDateStr", required = true) String processDateStr,
                           HttpServletRequest request) {
         JSONObject result = new JSONObject();
+        result.put("ret", true);
         String originFileName = file.getOriginalFilename();
         if (file.isEmpty() || StringUtils.isBlank(originFileName)) {
             result.put("ret", false);
