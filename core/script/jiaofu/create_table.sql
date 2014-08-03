@@ -2249,6 +2249,8 @@ comment on column TY_DATA_LOG_20184.ACTIVE is
 comment on column TY_DATA_LOG_20184.COUNTER_UPLOAD_TIME is
 '计数器上传时间';
 
+drop table TY_IMEI_TEMP;
+
 -- Create table
 create global temporary table TY_IMEI_TEMP
 (
