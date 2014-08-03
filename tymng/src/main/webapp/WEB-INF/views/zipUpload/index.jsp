@@ -8,15 +8,27 @@
     <title>Demo</title>
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#processDate").datebox({
+                value: getCurrrentDateStr()
+            });
+            var d = new Date();
+            var nowDate = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+            d.setDate(d.getDate() - 3);
+            var m = d.getMonth() + 1;
+            var oldDate = d.getFullYear() + '年' + m + '月' + d.getDate() + '日';
+            $("#datetagmsg").html("日期只能选择" + oldDate + "到" + nowDate);
         });
         function importZip() {
-
+            var channelId = $("#channelId").val();
+            if (channelId == null || channelId == "") {
+                $.messager.alert('错误', "请选择仓库！");
+                return;
+            }
+            $("body").showLoading();
             $('#fm').form('submit', {
                 url: '<%=basePath%>/tymng/zipUpload/importZip.do',
-                onSubmit: function () {
-                    return $(this).form('validate');
-                },
                 success: function (result) {
+                    $("body").hideLoading();
                     var result = eval('(' + result + ')');
                     if (!result.ret) {
                         $.messager.alert('错误', result.errorMsg);
@@ -30,25 +42,110 @@
                 }
             });
         }
+
+        function showChannelDialog() {
+            $('#channeldlg').dialog('open').dialog('setTitle', '选择仓库');
+            $('#channeldg').datagrid({
+                width: 'auto',
+                height: 'auto',
+                fitColumns: true,
+                striped: true,
+                url: '<%=basePath%>/tymng/zipUpload/channelList',
+                queryParams: {groupId: 1},
+                loadMsg: '数据加载中请稍后……',
+                pagination: true,
+                rownumbers: true,
+                singleSelect: true,
+                //idField: 'channelId',
+                columns: [
+                    [
+                        {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
+                        {field: 'channelId', hidden: 'true'},
+                        {field: 'ck', checkbox: true}
+                    ]
+                ]
+            });
+        }
+        function searchChannelEvt() {
+            var value = $('#searchChannelValue').val();
+            $('#channeldg').datagrid({
+                url: "<%=basePath%>/tymng/zipUpload/channelList",
+                queryParams: {channelNameCondition: value}
+            });
+        }
+        function selectChannel() {
+            var rows = $('#channeldg').datagrid('getSelections');
+            for (var i = 0; i < rows.length; i++) {
+                $("#channelId").val(rows[i].channelId);
+                $("#channelName").val(rows[i].channelName);
+            }
+            $('#channeldlg').dialog('close')
+        }
     </script>
 </head>
 <body>
 <div id="toolBar">
     <div>
-        <table>
-            <tr>
+        <form id="fm" method="post" enctype="multipart/form-data" novalidate>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"
+                               onclick="showChannelDialog()"/>
+                        <input type="hidden" name="channelId" id="channelId"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font color="red" id="datetagmsg"></font>
+                    </td>
+                </tr>
+                <tr>
                 <td>
-                    <form id="fm" method="post" enctype="multipart/form-data" novalidate>
+                        <input type="text" name="processDate" id="processDate" placeholder="日期"/>
+                    </td>
+                </tr>
+                <tr>
+                <td>
                         <input type="file" name="zipFile"/>
-                    </form>
-                </td>
+                    </td>
+                </tr>
+                <tr>
                 <td align="center">
                     <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="importZip()">导入zip</a>
                 </td>
             </tr>
         </table>
+        </form>
     </div>
+</div>
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#channeldlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="仓库名称"/>
+                    </td>
+                    <td align="center">
+                        <a id="searchChannelBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           iconCls="icon-search"
+                           onclick="searchChannelEvt()">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="channeldg"></div>
+</div>
+<div id="channeldlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
+       onclick="javascript:selectChannel();">确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
 </div>
 <div id="callback">
 
