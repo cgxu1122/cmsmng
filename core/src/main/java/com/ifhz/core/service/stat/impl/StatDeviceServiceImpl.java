@@ -73,7 +73,12 @@ public class StatDeviceServiceImpl implements StatDeviceService {
                             }
                         }
                         if (logStat.getGroupId() == GroupType.DB.VALUE || logStat.getGroupId() == GroupType.LW.VALUE) {
-                            ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(logStat.getChannelId());
+                            ChannelInfo channelInfo = null;
+                            try {
+                                channelInfo = channelInfoCacheService.getByChannelId(logStat.getChannelId());
+                            } catch (Exception e) {
+                                LOGGER.error("getByChannelId error", e);
+                            }
                             if (channelInfo != null && channelInfo.getLaowuId() != null) {
                                 logStat.setLaowuId(channelInfo.getLaowuId());
                             }

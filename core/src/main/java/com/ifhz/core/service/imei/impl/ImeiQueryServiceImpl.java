@@ -59,7 +59,12 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         if (CollectionUtils.isNotEmpty(result)) {
             for (DataLogResult dataLogResult : result) {
                 if (StringUtils.isNotBlank(dataLogResult.getUa()) && dataLogResult.getGroupId() != null) {
-                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(dataLogResult.getUa(), dataLogResult.getGroupId());
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(dataLogResult.getUa(), dataLogResult.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
                     if (modelInfo != null && StringUtils.isNotBlank(modelInfo.getModelName())) {
                         dataLogResult.setModelName(modelInfo.getModelName());
                     } else {
@@ -70,7 +75,12 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                 }
                 Long channelId = dataLogResult.getChannelId();
                 if (channelId != null) {
-                    ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    ChannelInfo channelInfo = null;
+                    try {
+                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    } catch (Exception e) {
+                        LOGGER.error("getByChannelId error", e);
+                    }
                     if (channelInfo != null) {
                         dataLogResult.setChannelName(channelInfo.getChannelName());
                     } else {

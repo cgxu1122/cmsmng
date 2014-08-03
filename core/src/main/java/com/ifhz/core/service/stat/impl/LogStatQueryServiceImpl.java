@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.LogStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
@@ -10,6 +11,8 @@ import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,6 +26,7 @@ import java.util.List;
  */
 @Service("logStatQueryService")
 public class LogStatQueryServiceImpl implements LogStatQueryService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogStatQueryServiceImpl.class);
     @Resource(name = "logStatAdapter")
     private LogStatAdapter logStatAdapter;
     @Resource(name = "channelInfoCacheService")
@@ -31,13 +35,19 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
     private ModelInfoCacheService modelInfoCacheService;
 
     @Override
+    @Log
     public List<LogStat> queryByVo(Pagination page, LogStat record) {
         List<LogStat> logStatList = logStatAdapter.queryByVO(page, record);
         if (CollectionUtils.isNotEmpty(logStatList)) {
             for (LogStat logStat : logStatList) {
                 String ua = logStat.getUa();
                 if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logStat.getGroupId());
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
                     if (modelInfo != null) {
                         logStat.setModelName(modelInfo.getModelName());
                     } else {
@@ -46,7 +56,12 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
                 }
                 Long channelId = logStat.getChannelId();
                 if (channelId != null) {
-                    ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    ChannelInfo channelInfo = null;
+                    try {
+                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    } catch (Exception e) {
+                        LOGGER.error("getByChannelId error", e);
+                    }
                     if (channelInfo != null) {
                         logStat.setChannelName(channelInfo.getChannelName());
                     } else {
@@ -60,13 +75,19 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
     }
 
     @Override
+    @Log
     public List<LogStat> querySumByVo(Pagination page, LogStat record) {
         List<LogStat> logStatList = logStatAdapter.querySumByVO(page, record);
         if (CollectionUtils.isNotEmpty(logStatList)) {
             for (LogStat logStat : logStatList) {
                 String ua = logStat.getUa();
                 if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logStat.getGroupId());
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
                     if (modelInfo != null) {
                         logStat.setModelName(modelInfo.getModelName());
                     } else {
@@ -75,7 +96,12 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
                 }
                 Long channelId = logStat.getChannelId();
                 if (channelId != null) {
-                    ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    ChannelInfo channelInfo = null;
+                    try {
+                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    } catch (Exception e) {
+                        LOGGER.error("getByChannelId error", e);
+                    }
                     if (channelInfo != null) {
                         logStat.setChannelName(channelInfo.getChannelName());
                     } else {
