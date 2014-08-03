@@ -1,6 +1,7 @@
 package com.ifhz.core.service.imei.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
@@ -21,9 +22,6 @@ import javax.annotation.Resource;
 import java.io.*;
 import java.util.Date;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 /**
  * 类描述
@@ -99,8 +97,8 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     }
 
     @Override
-    public Map<ImeiStatus, Integer> processZipData(String filePath, Long channelId, Date processDate) {
-        BufferedOutputStream bos = null;
+    public Map<ImeiStatus, Integer> processImeiExcelData(String filePath, Long channelId, Date processDate) {
+        /*BufferedOutputStream bos = null;
         ZipEntry entry = null;
         try {
             FileInputStream fis = new FileInputStream(filePath);
@@ -123,9 +121,9 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
             zis.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
-        return null;
+        return Maps.newHashMap();
     }
 
     @Override

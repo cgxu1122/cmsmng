@@ -15,7 +15,8 @@ public interface ImeiUploadService {
 
     public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate);
 
-    public Map<ImeiStatus, Integer> processZipData(String filePath, Long channelId, Date processDate);
+
+    public Map<ImeiStatus, Integer> processImeiExcelData(String filePath, Long channelId, Date processDate);
 
     public void asyncProcessCsvData(String filePath, Long channelId, Date processDate);
 }
