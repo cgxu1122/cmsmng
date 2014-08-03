@@ -1,5 +1,6 @@
 package com.ifhz.core.base.commons.excel;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.handle.ModelHandler;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -105,10 +107,18 @@ public class ExcelHandle {
                     return cell.getStringCellValue();
                 case Cell.CELL_TYPE_NUMERIC:
                     String value = cell.getNumericCellValue() + "";
-                    BigDecimal bd = new BigDecimal(value);
-                    return bd.toPlainString();
+                    if (StringUtils.isNotBlank(value)) {
+                        DecimalFormat format = new DecimalFormat("0");
+                        BigDecimal bd = new BigDecimal(value);
+                        return format.format(bd);
+                    }
                 case Cell.CELL_TYPE_FORMULA:
-                    return cell.getNumericCellValue() + "";
+                    String v = cell.getNumericCellValue() + "";
+                    if (StringUtils.isNotBlank(v)) {
+                        DecimalFormat format = new DecimalFormat("0");
+                        BigDecimal bd = new BigDecimal(v);
+                        return format.format(bd);
+                    }
                 case Cell.CELL_TYPE_ERROR:
                     return "";
                 default:
@@ -117,5 +127,11 @@ public class ExcelHandle {
         }
 
         return "";
+    }
+
+    public static void main(String[] args) throws Exception {
+        String path = "C:\\Users\\chenggang.xu.QUNARSERVERS\\Downloads\\ImeiUploadFile.xls";
+        List<DataLog> list = readImeiDataFromExcel(path);
+        System.out.println(JSON.toJSONString(list));
     }
 }
