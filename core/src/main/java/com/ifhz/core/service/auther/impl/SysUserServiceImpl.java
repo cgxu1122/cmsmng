@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,5 +113,11 @@ public class SysUserServiceImpl implements SysUserService {
     @Log
     public List<SysUser> queryMngListByVo(Pagination pagination, String searchValue) {
         return sysUserAdapter.queryMngListByVo(pagination, searchValue);
+    }
+
+    @Override
+    public int updatePasswordForFirstLogin(SysUser record) {
+        record.setLastLoginTime(new Date());
+        return sysUserAdapter.updatePasswordForFirstLogin(record);
     }
 }

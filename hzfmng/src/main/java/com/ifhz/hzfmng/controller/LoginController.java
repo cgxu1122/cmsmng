@@ -12,6 +12,7 @@ import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.auther.impl.ShiroDbRealm;
 import com.ifhz.core.shiro.exception.CaptchaException;
 import com.ifhz.core.shiro.exception.UserNamePasswordErrorException;
+import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import com.ifhz.core.util.MD5keyUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,8 +48,15 @@ public class LoginController extends BaseController {
 
 
     @RequestMapping(value = "/")
-    public String loginSuccess() {
-        return "index";
+    public ModelAndView loginSuccess() {
+        ModelAndView mav = new ModelAndView("index");
+        SysUser sysUser = sysUserService.getById(CurrentUserUtil.getUserId());
+        if (sysUser.getLastLoginTime() == null) {
+            mav.addObject("isFirstLogin", 0);
+        } else {
+            mav.addObject("isFirstLogin", 1);
+        }
+        return mav;
     }
 
 
@@ -120,7 +129,7 @@ public class LoginController extends BaseController {
             SysUser sysUser = new SysUser();
             sysUser.setUserId(u.getUserId());
             sysUser.setPassword(newPassword.trim());
-            sysUserService.updatePassword(sysUser);
+            sysUserService.updatePasswordForFirstLogin(sysUser);
         } else {
             result.put("ret", -1);
             result.put("message", "原密码错误");

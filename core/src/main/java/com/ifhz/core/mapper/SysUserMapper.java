@@ -22,6 +22,8 @@ public interface SysUserMapper {
 
     public int updatePassword(SysUser po);
 
+    public int updatePasswordForFirstLogin(SysUser po);
+
     public int delete(@Param("userId") Long userId);
 
     public SysUser getById(@Param("userId") Long userId);

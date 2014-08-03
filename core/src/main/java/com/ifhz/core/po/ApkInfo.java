@@ -11,18 +11,6 @@ import java.util.Date;
  */
 public class ApkInfo implements Serializable {
     private static final long serialVersionUID = 816717945758726323L;
-    /*
-    APK_ID         			number(15)           not null,
-   APK_NAME            varchar2(50)					not null,
-   SOFT_NAME           varchar2(100)					not null,
-   FTP_PATH        		varchar2(500)         not null,
-   MD5VALUE        		varchar2(500)         not null,
-   DOWNLOAD_URL       varchar2(500)         not null,
-   ACTIVE              varchar2(2)           not null,
-   TYPE                varchar2(2)           not null,
-   CREATE_TIME        		date               default SYSDATE not null,
-   UPDATE_TIME        		date               default SYSDATE not null
-     */
 
     private Long apkId;
     private String apkName;
@@ -35,6 +23,7 @@ public class ApkInfo implements Serializable {
     private String packagePath;
     private Date createTime;
     private Date updateTime;
+    private Date fileUpdateTime;
 
 
     private String apkNameCondition;
@@ -135,6 +124,14 @@ public class ApkInfo implements Serializable {
         this.apkNameCondition = apkNameCondition;
     }
 
+    public Date getFileUpdateTime() {
+        return fileUpdateTime;
+    }
+
+    public void setFileUpdateTime(Date fileUpdateTime) {
+        this.fileUpdateTime = fileUpdateTime;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("ApkInfo{");
@@ -146,8 +143,11 @@ public class ApkInfo implements Serializable {
         sb.append(", downloadUrl='").append(downloadUrl).append('\'');
         sb.append(", active='").append(active).append('\'');
         sb.append(", type='").append(type).append('\'');
+        sb.append(", packagePath='").append(packagePath).append('\'');
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", fileUpdateTime=").append(fileUpdateTime);
+        sb.append(", apkNameCondition='").append(apkNameCondition).append('\'');
         sb.append('}');
         return sb.toString();
     }

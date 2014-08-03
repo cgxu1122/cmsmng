@@ -296,24 +296,4 @@ public class StatTaskServiceImpl implements StatTaskService {
 
         return true;
     }
-
-
-    //加工日期
-    //判断此加工数据 同时计数器数据也已经上传
-                        /*if (dataLog.getActive() != null && dataLog.getCounterUploadTime() != null) {
-                            logStat.setPrsActiveTotalNum(logStat.getPrsActiveTotalNum() + 1);
-                            boolean isInvalid = false;
-                            if (dataLog.getActive() == CounterActive.Valid.value) {
-                                logStat.setPrsActiveValidNum(logStat.getPrsActiveValidNum() + 1);
-                            } else if (dataLog.getActive() == CounterActive.Invalid_Replace.value) {
-                                isInvalid = true;
-                                logStat.setPrsActiveInvalidNum(logStat.getPrsActiveInvalidNum() + 1);
-                            } else if (dataLog.getActive() == CounterActive.Invalid_Uninstall.value) {
-                                isInvalid = true;
-                                logStat.setPrsInvalidUninstallNum(logStat.getPrsInvalidUninstallNum() + 1);
-                            }
-                            if (isInvalid) {
-                                logStat.setPrsActiveInvalidNum(logStat.getPrsActiveInvalidNum() + 1);
-                            }
-                        }*/
 }

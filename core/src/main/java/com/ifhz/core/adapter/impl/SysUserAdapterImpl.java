@@ -49,6 +49,11 @@ public class SysUserAdapterImpl implements SysUserAdapter {
     }
 
     @Override
+    public int updatePasswordForFirstLogin(SysUser po) {
+        return sysUserMapper.updatePasswordForFirstLogin(po);
+    }
+
+    @Override
     public int delete(Long userId) {
         return sysUserMapper.delete(userId);
     }

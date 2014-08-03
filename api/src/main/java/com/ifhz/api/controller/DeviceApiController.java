@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
-import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.po.DataLog;
@@ -67,9 +66,9 @@ public class DeviceApiController {
                         LOGGER.info("receive encode requestVo={}", JSON.toJSONString(requestVo));
                         if (requestVo != null && StringUtils.isNotBlank(requestVo.getContent())) {
                             //解码 手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-                            String content = CodecUtils.decode(requestVo.getContent()).trim();
-                            LOGGER.info("receive decode content={}", content);
-                            String[] array = StringUtils.split(content, "|");
+//                            String content = CodecUtils.decode(requestVo.getContent()).trim();
+                            LOGGER.info("receive decode content={}", requestVo.getContent());
+                            String[] array = StringUtils.split(requestVo.getContent().trim(), "|");
                             DataLog dataLog = translateDataLog(array);
                             if (dataLog != null) {
                                 dataLogMap.put(requestVo.getId(), dataLog);

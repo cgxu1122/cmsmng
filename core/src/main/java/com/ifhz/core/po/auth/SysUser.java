@@ -24,6 +24,7 @@ public class SysUser implements Serializable {
     private String active;
     private Date createTime;
     private Date updateTime;
+    private Date lastLoginTime;
 
     private String roleName;
 
@@ -133,5 +134,13 @@ public class SysUser implements Serializable {
 
     public void setRoleIdList(List<Long> roleIdList) {
         this.roleIdList = roleIdList;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 }

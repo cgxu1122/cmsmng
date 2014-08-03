@@ -35,5 +35,5 @@ public interface SysUserService {
 
     public List<SysUser> queryMngListByVo(Pagination pagination, String searchValue);
 
-
+    public int updatePasswordForFirstLogin(SysUser record);
 }

@@ -90,10 +90,10 @@ public class SysUserController extends BaseController {
     public
     @ResponseBody
     JSONObject list(@RequestParam(value = "page", required = true) Integer pageNum,
-                           @RequestParam(value = "rows", required = true) Integer pageSize,
-                           @RequestParam(value = "roleId", required = false) Long roleId,
-                           @RequestParam(value = "searchValue", required = false) String searchValue,
-                           HttpServletRequest request) {
+                    @RequestParam(value = "rows", required = true) Integer pageSize,
+                    @RequestParam(value = "roleId", required = false) Long roleId,
+                    @RequestParam(value = "searchValue", required = false) String searchValue,
+                    HttpServletRequest request) {
         /**分页*/
         Pagination pagination = new Pagination();
         pagination.setCurrentPage(pageNum);
@@ -257,6 +257,7 @@ public class SysUserController extends BaseController {
         return result;
     }
 
+
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public
     @ResponseBody
@@ -305,7 +306,6 @@ public class SysUserController extends BaseController {
 
         return result;
     }
-
 
 
     /**

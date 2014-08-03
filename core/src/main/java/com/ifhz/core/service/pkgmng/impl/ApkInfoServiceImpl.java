@@ -63,6 +63,7 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(ApkInfo record) {
+        record.setUpdateTime(new Date());
         return apkInfoAdapter.update(record);
     }
 

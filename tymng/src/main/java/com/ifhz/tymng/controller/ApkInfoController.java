@@ -86,7 +86,6 @@ public class ApkInfoController extends BaseController {
                              @RequestParam(value = "apkName", required = true) String apkName,
                              @RequestParam(value = "type", required = true) String type,
                              HttpServletRequest request) {
-        long start = System.currentTimeMillis();
         String originFileName = file.getOriginalFilename();
         LOGGER.info("rev msg apkName={},type={},originalFilename={}", apkName, type, originFileName);
         JSONObject result = new JSONObject();
@@ -139,6 +138,7 @@ public class ApkInfoController extends BaseController {
             po.setDownloadUrl(path.trim());
             po.setMd5Value(md5Value);
             po.setType(type);
+            po.setFileUpdateTime(new Date());
             apkInfoService.insert(po);
             result.put("msg", "添加成功!");
 
@@ -211,21 +211,21 @@ public class ApkInfoController extends BaseController {
                 apkInfo.setSoftName(originFileName);
                 apkInfo.setFtpPath(path);
                 apkInfo.setDownloadUrl(path);
-                }
-                if (!StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
-                    apkInfo.setMd5Value(md5Value);
-                    apkInfo.setUpdateTime(new Date());
-                }
+            }
+            if (!StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
+                apkInfo.setMd5Value(md5Value);
+                apkInfo.setFileUpdateTime(new Date());
+            }
 
             apkInfo.setApkName(apkName.trim());
             apkInfo.setType(type);
             apkInfoService.update(apkInfo);
 
-                result.put("msg", "修改成功!");
-            } catch (Exception e) {
-                LOGGER.error("updateApkInfo error", e);
-                result.put("errorMsg", "保存失败，请重新上传或者联系管理员！");
-            }
+            result.put("msg", "修改成功!");
+        } catch (Exception e) {
+            LOGGER.error("updateApkInfo error", e);
+            result.put("errorMsg", "保存失败，请重新上传或者联系管理员！");
+        }
 
         return result;
     }

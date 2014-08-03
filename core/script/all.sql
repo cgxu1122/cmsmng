@@ -69,6 +69,7 @@ create table TY_APK_INFO  (
    DOWNLOAD_URL         VARCHAR2(500 CHAR),
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
+   FILE_UPDATE_TIME    DATE,
    ACTIVE               VARCHAR2(2 CHAR)               default 'Y',
    PACKAGE_PATH         VARCHAR2(500 CHAR),
    constraint PK_TY_APK_INFO primary key (APK_ID)
@@ -1111,6 +1112,7 @@ create table TY_USER  (
    ROLE_ID              NUMBER(15)                      not null,
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
+   LAST_LOGIN_TIME      DATE,
    constraint PK_TY_USER primary key (USER_ID)
 );
 

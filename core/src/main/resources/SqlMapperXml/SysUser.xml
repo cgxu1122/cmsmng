@@ -13,7 +13,8 @@
         ACTIVE,
         ROLE_ID,
         CREATE_TIME,
-        UPDATE_TIME
+        UPDATE_TIME,
+        LAST_LOGIN_TIME
     </sql>
 
     <resultMap id="SysUserResultMap" type="com.ifhz.core.po.auth.SysUser">
@@ -27,6 +28,7 @@
         <result column="ROLE_ID" property="roleId" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.auth.SysUser">
@@ -49,7 +51,8 @@
         #{active,jdbcType=VARCHAR},
         #{roleId,jdbcType=BIGINT},
         #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP}
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{lastLoginTime,jdbcType=TIMESTAMP}
         )
     </insert>
 
@@ -91,7 +94,7 @@
                 ADDRESS = #{address},
             </if>
             <if test="roleId != null and roleId != 0">
-            ROLE_ID = #{roleId},
+                ROLE_ID = #{roleId},
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime},
@@ -119,6 +122,15 @@
         <include refid="TABLE_NAME"/>
         set UPDATE_TIME = SYSDATE,
         PASSWORD = #{password}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="updatePasswordForFirstLogin" parameterType="com.ifhz.core.po.auth.SysUser">
+        UPDATE
+        <include refid="TABLE_NAME"/>
+        set UPDATE_TIME = SYSDATE,
+        PASSWORD = #{password},
+        LAST_LOGIN_TIME = #{lastLoginTime}
         WHERE USER_ID = #{userId}
     </update>
 

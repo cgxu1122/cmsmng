@@ -1,6 +1,7 @@
 package com.ifhz.core.vo;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
 
@@ -55,7 +56,13 @@ public class DeviceResultVo implements Serializable {
         array.add(vo3);
         array.add(vo4);
 
-        System.out.println(array.toJSONString());
+
+        JSONObject ret = new JSONObject();
+        ret.put("status", 0);
+        ret.put("dataList", array);
+
+        System.out.println(ret.toJSONString());
+
     }
 
 }

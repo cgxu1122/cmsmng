@@ -21,6 +21,8 @@ public interface SysUserAdapter {
 
     public int updatePassword(SysUser po);
 
+    public int updatePasswordForFirstLogin(SysUser po);
+
     public int delete(Long userId);
 
     public SysUser getById(Long userId);

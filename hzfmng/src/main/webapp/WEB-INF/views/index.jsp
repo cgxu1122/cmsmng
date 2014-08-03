@@ -72,6 +72,12 @@
         jQuery.ajaxSetup({
             cache: false
         });//ajax不缓存
+        $(document).ready(function () {
+            var checkAlertMpd = '${isFirstLogin}';
+            if (checkAlertMpd == 0) {
+                restp();
+            }
+        });
 
         function addTab(title, href, icon) {
             var tt = $('#main-center');

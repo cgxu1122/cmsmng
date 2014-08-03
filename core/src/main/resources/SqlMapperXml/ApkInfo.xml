@@ -28,7 +28,8 @@
         TYPE,
         PACKAGE_PATH,
         CREATE_TIME,
-        UPDATE_TIME
+        UPDATE_TIME,
+        FILE_UPDATE_TIME
     </sql>
 
     <resultMap id="ApkInfoResultMap" type="com.ifhz.core.po.ApkInfo">
@@ -43,6 +44,7 @@
         <result column="PACKAGE_PATH" property="packagePath" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="FILE_UPDATE_TIME" property="fileUpdateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="ApkInfoResultMap">
@@ -74,7 +76,8 @@
         #{type,jdbcType=VARCHAR},
         #{packagePath,jdbcType=VARCHAR},
         #{createTime},
-        #{updateTime,jdbcType=TIMESTAMP}
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{fileUpdateTime,jdbcType=TIMESTAMP}
         )
     </insert>
     <update id="update" parameterType="com.ifhz.core.po.ApkInfo">
@@ -107,6 +110,9 @@
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime},
+            </if>
+            <if test="fileUpdateTime != null">
+                FILE_UPDATE_TIME = #{fileUpdateTime},
             </if>
         </set>
         where APK_ID = #{apkId}
@@ -145,7 +151,7 @@
         from
         <include refid="TABLE_NAME"/>
         where ACTIVE = 'Y'
-        and UPDATE_TIME between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        and FILE_UPDATE_TIME between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
     </select>
 
 
