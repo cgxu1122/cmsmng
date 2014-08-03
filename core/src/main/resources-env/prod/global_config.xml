@@ -12,8 +12,9 @@
     <entry key="stat.pageSize">10000</entry>
     <entry key="wdj.query.url">http://115.29.46.109/interface/export?upload_dt=</entry>
     <entry key="device.logFile.dir">/data/app/device</entry>
-    <entry key="store.dir">/data/app/store</entry>
-    <entry key="store.temp.dir">/data/app/temp</entry>
+    <entry key="store.dir">/store/app/perm</entry>
+    <entry key="store.temp.dir">/store/app/temp</entry>
+    <entry key="apk.upload.dir">/upload</entry>
     <entry key="aapt.work.dir">/sa/soft/adt-bundle-linux-x86_64-20140624/sdk/build-tools/android-4.4W</entry>
     <entry key="host.prefix">http://download.dfstock4g.com</entry>
 </properties>
