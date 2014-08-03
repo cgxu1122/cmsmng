@@ -5,6 +5,7 @@ import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ public class ExcelHandle {
             if (row == null) {
                 continue;
             }
-            String imei = row.getCell(0).getStringCellValue();
+            String imei = getCellValue(row.getCell(0));
             if (StringUtils.isNotBlank(imei)) {
                 result.add(imei);
             }
@@ -71,13 +73,13 @@ public class ExcelHandle {
 
             try {
                 DataLog dataLog = new DataLog();
-                String imei = row.getCell(0).getStringCellValue();
+                String imei = getCellValue(row.getCell(0));
                 if (StringUtils.containsIgnoreCase(imei, "手机IMEI")) {
                     continue;
                 }
-                String ua = row.getCell(1).getStringCellValue();
-                String batchCode = row.getCell(2).getStringCellValue();
-                String deviceCode = row.getCell(3).getStringCellValue();
+                String ua = getCellValue(row.getCell(1));
+                String batchCode = getCellValue(row.getCell(2));
+                String deviceCode = getCellValue(row.getCell(3));
                 dataLog.setImei(StringUtils.trimToEmpty(imei));
                 dataLog.setUa(ModelHandler.translateUa(StringUtils.trimToEmpty(ua)));
                 dataLog.setBatchCode(StringUtils.trimToEmpty(batchCode));
@@ -90,5 +92,30 @@ public class ExcelHandle {
         }
 
         return result;
+    }
+
+
+    private static String getCellValue(Cell cell) {
+        if (cell != null) {
+            int type = cell.getCellType();
+            switch (type) {
+                case Cell.CELL_TYPE_BLANK:
+                    return "";
+                case Cell.CELL_TYPE_BOOLEAN:
+                    return cell.getStringCellValue();
+                case Cell.CELL_TYPE_NUMERIC:
+                    String value = cell.getNumericCellValue() + "";
+                    BigDecimal bd = new BigDecimal(value);
+                    return bd.toPlainString();
+                case Cell.CELL_TYPE_FORMULA:
+                    return cell.getNumericCellValue() + "";
+                case Cell.CELL_TYPE_ERROR:
+                    return "";
+                default:
+                    return cell.getStringCellValue();
+            }
+        }
+
+        return "";
     }
 }
