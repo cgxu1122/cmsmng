@@ -102,8 +102,8 @@
                 </tr>
                 <tr>
                 <td>
-                        <input type="text" name="processDate" id="processDate" placeholder="日期"/>
-                    </td>
+                    <input type="text" name="processDateStr" id="processDate" placeholder="日期"/>
+                </td>
                 </tr>
                 <tr>
                 <td>
