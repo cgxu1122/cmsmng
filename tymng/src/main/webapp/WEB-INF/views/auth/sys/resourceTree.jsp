@@ -88,7 +88,9 @@
     <p>
         [ <a id="expandAllBtn" href="#" title="全部展开" onclick="return false;">全部展开</a> ]
         [ <a id="collapseAllBtn" href="#" title="全部关闭" onclick="return false;">全部关闭</a> ]
+        <shiro:hasPermission name="system_auth_btn">
         [ <a id="sysAuth" href="#" title="角色授权" onclick="return false;">角色授权</a> ]
+        </shiro:hasPermission>
     </p>
 </div>
 <div id="treeboxbox_tree" class="ztree"></div>
