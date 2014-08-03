@@ -76,7 +76,7 @@ public class DeviceInfoController extends BaseController {
         }
         //设备编码唯一性校验
         DeviceInfo di = new DeviceInfo();
-        di.setDeviceCode(deviceCode.trim());
+        di.setDeviceCode(deviceCode.trim().toUpperCase());
         di.setActive(JcywConstants.ACTIVE_Y);
         Pagination page = new Pagination();
         page.setCurrentPage(1);
@@ -123,7 +123,7 @@ public class DeviceInfoController extends BaseController {
         }
         //设备编码唯一性校验
         DeviceInfo di = new DeviceInfo();
-        di.setDeviceCode(deviceCode.trim());
+        di.setDeviceCode(deviceCode.trim().toUpperCase());
         di.setGroupId(deviceInfo.getGroupId());
         di.setActive(JcywConstants.ACTIVE_Y);
         Pagination page = new Pagination();
@@ -138,7 +138,7 @@ public class DeviceInfoController extends BaseController {
                 }
             }
         }
-        deviceInfo.setDeviceCode(deviceCode.trim());
+        deviceInfo.setDeviceCode(deviceCode.trim().toUpperCase());
         deviceInfo.setGroupId(Long.parseLong(groupId));
         deviceInfo.setChannelId(Long.parseLong(channelId));
         deviceInfoService.update(deviceInfo);
