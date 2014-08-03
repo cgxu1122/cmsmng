@@ -55,6 +55,7 @@
                 //idField: 'channelId',
                 columns: [
                     [
+                        {field: 'groupName', title: '渠道组名称', align: 'center', width: 150},
                         {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
                         {field: 'channelId', hidden: 'true'},
                         {field: 'ck', checkbox: true}
