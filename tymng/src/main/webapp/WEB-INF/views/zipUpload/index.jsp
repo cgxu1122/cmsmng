@@ -30,10 +30,14 @@
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');
-                    if (result.errorMsg) {
+                    if (!result.ret) {
                         $.messager.alert('错误', result.errorMsg);
                     } else {
-                        $.messager.alert('提示', "导入成功！");
+                        var html = "保存成功个数：" + result.Success + "<br>" +
+                                "参数校验失败个数：" + result.Invalid + "<br>" +
+                                "imei重复个数：" + result.Repeat + "<br>" +
+                                "处理失败个数：" + result.Failure + "<br>";
+                        $('#callback').html(html);
                     }
                 }
             });
@@ -98,8 +102,8 @@
                 </tr>
                 <tr>
                 <td>
-                        <input type="text" name="processDate" id="processDate" placeholder="日期"/>
-                    </td>
+                    <input type="text" name="processDateStr" id="processDate" placeholder="日期"/>
+                </td>
                 </tr>
                 <tr>
                 <td>
@@ -142,6 +146,9 @@
        onclick="javascript:selectChannel();">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
+</div>
+<div id="callback">
+
 </div>
 </body>
 </html>
