@@ -14,7 +14,6 @@ import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.imei.ImeiUploadService;
-import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -119,7 +118,6 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                 ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
                 for (DataLog dataLog : dataLogList) {
                     try {
-                        dataLog.setMd5Key(StatConvertHandler.getMd5KeyForLogStat(dataLog));
                         dataLog.setProcessTime(processDate);
                         dataLog.setChannelId(channelId);
                         dataLog.setGroupId(channelInfo.getGroupId());

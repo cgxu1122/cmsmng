@@ -59,7 +59,6 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
     }
 
     @Override
-    @Log
     public DeviceSystem queryNewestVersion(Date currentTime) {
         List<DeviceSystem> result = deviceSystemAdapter.queryNewestVersion(currentTime);
         if (CollectionUtils.isNotEmpty(result)) {
