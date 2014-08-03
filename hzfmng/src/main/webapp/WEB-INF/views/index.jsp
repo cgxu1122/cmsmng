@@ -155,10 +155,8 @@
         <div class="iheadermsg">
             <span class="iheadername">欢迎：<shiro:principal></shiro:principal></span>
             </span>
-            <div style="margin-left: 120px;margin-top: -3px">
-                <a class="easyui-linkbutton" href="<%=basePath%>/hzfmng/logout">退出</a>
-                <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
-            </div>
+            <a class="easyui-linkbutton" href="<%=basePath%>/hzfmng/logout">退出</a>
+            <a class="easyui-linkbutton" href="#" onclick="restp()">修改密码</a>
         </div>
     </div>
 </div>
