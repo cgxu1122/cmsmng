@@ -35,6 +35,10 @@
                 }
             });
         }
+
+        function downloadImeiTemplate() {
+            window.location.href = "<%=basePath%>/tempExport/ImeiUploadFile.xls";
+        }
     </script>
 </head>
 <body>
@@ -42,6 +46,12 @@
     <div>
         <form id="fm" method="post" enctype="multipart/form-data" novalidate>
             <table>
+                <tr>
+                    <td align="left" colspan="2">
+                        <a href="javascript:void(0)" class="easyui-linkbutton"
+                           onclick="downloadImeiTemplate()">下载模板文件</a>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         仓库名称：
