@@ -2,6 +2,7 @@ package com.ifhz.core.service.model.impl;
 
 import com.ifhz.core.adapter.ModelInfoAdapter;
 import com.ifhz.core.adapter.PubChlModRefAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.PubChlModRef;
@@ -43,12 +44,14 @@ public class ModelInfoServiceImpl implements ModelInfoService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(ModelInfo record) {
         return modelInfoAdapter.insert(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(ModelInfo record) {
         ModelInfo modelInfo = modelInfoAdapter.getById(record.getModelId());
@@ -67,6 +70,7 @@ public class ModelInfoServiceImpl implements ModelInfoService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(ModelInfo record) {
         int ret = modelInfoAdapter.delete(record);
@@ -83,6 +87,7 @@ public class ModelInfoServiceImpl implements ModelInfoService {
     }
 
     @Override
+    @Log
     public ModelInfo getByGroupIdAndUa(Long groupId, String ua) {
         return modelInfoAdapter.getByGroupIdAndUa(groupId, ua);
     }

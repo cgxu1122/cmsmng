@@ -1,6 +1,7 @@
 package com.ifhz.core.service.partner.impl;
 
 import com.ifhz.core.adapter.PartnerInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.Active;
@@ -30,16 +31,19 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
 
 
     @Override
+    @Log
     public PartnerInfo getById(Long id) {
         return partnerInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<PartnerInfo> queryByVo(Pagination page, PartnerInfo record) {
         return partnerInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(PartnerInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
             SysUser user = new SysUser();
@@ -55,6 +59,7 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
     }
 
     @Override
+    @Log
     public int update(PartnerInfo record) {
         if (record.getUserId() != null) {
             SysUser user = sysUserService.getById(record.getUserId());
@@ -67,11 +72,13 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
     }
 
     @Override
+    @Log
     public int delete(PartnerInfo record) {
         return partnerInfoAdapter.delete(record);
     }
 
     @Override
+    @Log
     public PartnerInfo getPartnerInfoByUserId(Long userId) {
         if (userId == null) return null;
         return partnerInfoAdapter.getPartnerInfoByUserId(userId);

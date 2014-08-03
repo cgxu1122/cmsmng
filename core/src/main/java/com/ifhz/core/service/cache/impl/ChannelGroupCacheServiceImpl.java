@@ -5,6 +5,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.ifhz.core.adapter.ChannelGroupAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.ChannelGroup;
 import com.ifhz.core.service.cache.ChannelGroupCacheService;
 import org.apache.commons.lang.StringUtils;
@@ -39,16 +40,19 @@ public class ChannelGroupCacheServiceImpl implements ChannelGroupCacheService {
     }
 
     @Override
+    @Log
     public void cleanCache() {
         this.CACHE.invalidateAll();
     }
 
     @Override
+    @Log
     public CacheStats status() {
         return this.CACHE.stats();
     }
 
     @Override
+    @Log
     public ChannelGroup getByKeyCode(String keyCode) {
         Preconditions.checkArgument(StringUtils.isNotBlank(keyCode), "String keyCode must not be Null and Empty !");
         try {
@@ -72,6 +76,7 @@ public class ChannelGroupCacheServiceImpl implements ChannelGroupCacheService {
         }
 
         @Override
+        @Log
         public ChannelGroup call() {
             ChannelGroup result = null;
             try {

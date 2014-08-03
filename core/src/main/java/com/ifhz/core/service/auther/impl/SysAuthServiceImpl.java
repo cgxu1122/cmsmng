@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.SysResourceAdapter;
 import com.ifhz.core.adapter.SysRoleAdapter;
 import com.ifhz.core.adapter.SysRoleResRefAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.AdminRoleType;
 import com.ifhz.core.po.auth.SysResource;
 import com.ifhz.core.po.auth.SysRole;
@@ -40,6 +41,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     private SysRoleResRefAdapter sysRoleResRefAdapter;
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public boolean authSys(Long roleId, List<Long> recordList) {
         if (CollectionUtils.isNotEmpty(recordList)) {
@@ -58,6 +60,7 @@ public class SysAuthServiceImpl implements SysAuthService {
 
 
     @Override
+    @Log
     public List<String> queryResUrlListByRoleId(Long roleId) {
         List<String> result = Lists.newArrayList();
         List<SysResource> resourceList = sysResourceAdapter.queryListByRoleId(roleId);
@@ -73,6 +76,7 @@ public class SysAuthServiceImpl implements SysAuthService {
     }
 
     @Override
+    @Log
     public List<TreeNode> queryTreeNodeList(AdminRoleType type, Long loginRoleId, Long roleId) {
         List<TreeNode> result = Lists.newArrayList();
         List<SysResource> parentRoleHasResList = null;

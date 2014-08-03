@@ -1,6 +1,7 @@
 package com.ifhz.core.service.imei.impl;
 
 import com.google.common.collect.Maps;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.codec.OtherCodecUtils;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.DataLog;
@@ -49,6 +50,7 @@ public class ZipUploadServiceImpl implements ZipUploadService {
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
 
+    @Log
     @Override
     public Map<ImeiStatus, Integer> processFile(String filePath, Long channelId, Date processDate) {
         Map<ImeiStatus, Integer> result = Maps.newHashMap();
@@ -119,6 +121,7 @@ public class ZipUploadServiceImpl implements ZipUploadService {
     }
 
 
+    @Log
     private String getBatchCode(XmlBean bean) {
         String result = "";
         if (bean != null) {

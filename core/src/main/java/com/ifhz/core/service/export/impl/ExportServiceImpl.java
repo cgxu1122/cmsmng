@@ -2,6 +2,7 @@ package com.ifhz.core.service.export.impl;
 
 import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.export.ExportService;
 import com.ifhz.core.service.export.model.BaseExportModel;
@@ -27,6 +28,7 @@ import java.util.*;
 public class ExportServiceImpl implements ExportService {
 
     @Override
+    @Log
     public void writeData(List<String[]> dataList, File file) {
         if (!CollectionUtils.isEmpty(dataList)) {
             try {
@@ -43,6 +45,7 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override
+    @Log
     public void writeData(BaseExportModel dataModel, File file) {
         if (dataModel != null && file != null) {
             List<? extends Object> dataList = dataModel.getDataList();
@@ -100,6 +103,7 @@ public class ExportServiceImpl implements ExportService {
         }
     }
 
+    @Log
     public void writeXLSData(List<String[]> dataList, File file) {
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet("Sheet1");

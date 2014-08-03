@@ -5,6 +5,7 @@ import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
 import com.ifhz.core.adapter.LogStatAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.TempLogType;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.LogStat;
@@ -41,7 +42,7 @@ public class StatCounterServiceImpl implements StatCounterService {
     @Resource(name = "counterTempLogAdapter")
     private CounterTempLogAdapter counterTempLogAdapter;
 
-
+    @Log
     public void updateStat(DataLog dataLog) {
         LOGGER.info("Counter Stat ---------开始");
         if (dataLog != null) {

@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.ifhz.core.adapter.ProductInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.ProductInfo;
 import com.ifhz.core.service.cache.ProductInfoCacheService;
 import org.slf4j.Logger;
@@ -33,21 +34,25 @@ public class ProductInfoCacheServiceImpl implements ProductInfoCacheService {
     @Resource(name = "productInfoAdapter")
     private ProductInfoAdapter productInfoAdapter;
 
+    @Log
     private Cache<Long, ProductInfo> createCache() {
         return CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(60, TimeUnit.MINUTES).build();
     }
 
     @Override
+    @Log
     public void cleanCache() {
         this.CACHE.invalidateAll();
     }
 
     @Override
+    @Log
     public CacheStats status() {
         return this.CACHE.stats();
     }
 
     @Override
+    @Log
     public ProductInfo getById(Long productId) {
         Preconditions.checkArgument(productId != null, "productId must be not empty");
 
@@ -65,6 +70,7 @@ public class ProductInfoCacheServiceImpl implements ProductInfoCacheService {
     }
 
     @Override
+    @Log
     public void remove(Long productId) {
         Preconditions.checkArgument(productId != null, "productId must be not empty");
         try {
@@ -87,6 +93,7 @@ public class ProductInfoCacheServiceImpl implements ProductInfoCacheService {
         }
 
         @Override
+        @Log
         public ProductInfo call() {
             ProductInfo result = null;
             try {

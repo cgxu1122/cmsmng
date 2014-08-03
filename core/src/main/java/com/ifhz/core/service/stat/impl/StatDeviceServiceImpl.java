@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.LogStatAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.enums.GroupType;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.DataLog;
@@ -47,6 +48,7 @@ public class StatDeviceServiceImpl implements StatDeviceService {
     private ChannelInfoCacheService channelInfoCacheService;
 
     @Override
+    @Log
     public void updateStat(DataLog dataLog) {
         LOGGER.info("Device Stat ---------开始");
         long start = System.currentTimeMillis();
@@ -173,6 +175,7 @@ public class StatDeviceServiceImpl implements StatDeviceService {
         LOGGER.info("Device Stat totalTime={} ---------结束", (end - start));
     }
 
+    @Log
     private DataLogRequest getDataLogRequestByProductStat(ProductStat productStat) {
         DataLogRequest dataLogRequest = new DataLogRequest();
         dataLogRequest.setDate(productStat.getProcessDate());
@@ -187,7 +190,7 @@ public class StatDeviceServiceImpl implements StatDeviceService {
         return dataLogRequest;
     }
 
-
+    @Log
     private DataLogRequest getDataLogRequestByLogStat(LogStat logStat) {
         DataLogRequest dataLogRequest = new DataLogRequest();
         dataLogRequest.setDate(logStat.getProcessDate());
@@ -202,7 +205,7 @@ public class StatDeviceServiceImpl implements StatDeviceService {
         return dataLogRequest;
     }
 
-
+    @Log
     private boolean isQueryCount(Date createTime, Date now) {
         Date date = DateHandler.getEndTime(createTime);
         long d = date.getTime();

@@ -4,6 +4,7 @@ import com.ifhz.core.adapter.PackageApkRefAdapter;
 import com.ifhz.core.adapter.PackageInfoAdapter;
 import com.ifhz.core.adapter.PubChlModRefAdapter;
 import com.ifhz.core.adapter.PublishTaskAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PackageApkRef;
 import com.ifhz.core.po.PackageInfo;
@@ -40,16 +41,19 @@ public class PackageInfoServiceImpl implements PackageInfoService {
     private PublishTaskAdapter publishTaskAdapter;
 
     @Override
+    @Log
     public PackageInfo getById(Long id) {
         return packageInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<PackageInfo> queryByVo(Pagination page, PackageInfo record) {
         return packageInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(PackageInfo record) {
         int flag = packageInfoAdapter.insert(record);
@@ -63,6 +67,7 @@ public class PackageInfoServiceImpl implements PackageInfoService {
         return flag;
     }
 
+    @Log
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(PackageInfo record) {
@@ -91,6 +96,7 @@ public class PackageInfoServiceImpl implements PackageInfoService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(PackageInfo record) {
         //先删除关联表信息

@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.LogStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.service.stat.LogStatUpdateService;
 import org.slf4j.Logger;
@@ -27,23 +28,27 @@ public class LogStatUpdateServiceImpl implements LogStatUpdateService {
 
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(LogStat record) {
         return logStatAdapter.insert(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(LogStat record) {
         return logStatAdapter.update(record);
     }
 
     @Override
+    @Log
     public LogStat getByMd5Key(String md5Key) {
         return logStatAdapter.getByMd5Key(md5Key);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updateStat(LogStat record) {
         return 0;

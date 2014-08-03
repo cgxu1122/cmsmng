@@ -1,6 +1,7 @@
 package com.ifhz.core.service.product.impl;
 
 import com.ifhz.core.adapter.ProductInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductInfo;
 import com.ifhz.core.service.cache.ProductInfoCacheService;
@@ -26,26 +27,31 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
 
     @Override
+    @Log
     public ProductInfo getById(Long id) {
         return productInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<ProductInfo> queryByVo(Pagination page, ProductInfo record) {
         return productInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(ProductInfo record) {
         return productInfoAdapter.insert(record);
     }
 
     @Override
+    @Log
     public int update(ProductInfo record) {
         return productInfoAdapter.update(record);
     }
 
     @Override
+    @Log
     public int delete(ProductInfo record) {
         int ret = productInfoAdapter.delete(record);
         if (ret == 1) {

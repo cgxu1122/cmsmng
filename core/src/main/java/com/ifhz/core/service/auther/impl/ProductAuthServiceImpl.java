@@ -6,6 +6,7 @@ import com.ifhz.core.adapter.ProductInfoAdapter;
 import com.ifhz.core.adapter.SysRoleAdapter;
 import com.ifhz.core.adapter.SysUserAdapter;
 import com.ifhz.core.adapter.SysUserProductRefAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.po.ProductInfo;
@@ -44,6 +45,7 @@ public class ProductAuthServiceImpl implements ProductAuthService {
     private SysUserProductRefAdapter sysUserProductRefAdapter;
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public boolean authProduct(Active active, SysUserProductRef record) {
         int ret = 0;
@@ -56,11 +58,13 @@ public class ProductAuthServiceImpl implements ProductAuthService {
     }
 
     @Override
+    @Log
     public List<SysUserProductRef> queryListByUserId(Long userId) {
         return null;
     }
 
     @Override
+    @Log
     public List<SysUser> queryUserList(Pagination pagination, String searchValue) {
         if (StringUtils.isBlank(searchValue)) {
             searchValue = null;
@@ -70,6 +74,7 @@ public class ProductAuthServiceImpl implements ProductAuthService {
     }
 
     @Override
+    @Log
     public Map<String, List<ProductInfo>> queryProductList(Long userId) {
         Map<String, List<ProductInfo>> map = Maps.newHashMap();
         List<ProductInfo> productInfoList = productInfoAdapter.queryAllList();

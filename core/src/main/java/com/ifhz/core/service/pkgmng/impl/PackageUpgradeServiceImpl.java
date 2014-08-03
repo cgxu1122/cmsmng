@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.ifhz.core.adapter.*;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.constants.ApiEnums;
 import com.ifhz.core.po.*;
@@ -46,6 +47,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
 
 
     @Override
+    @Log
     public List<PackageVo> queryNormalPkgList(long groupId, long channelId, boolean isInitPkg, Date startTime, Date endTime) {
         LOGGER.info("groupId={},channelId={},isInitPkg={},startTime={},endTime={}", groupId, channelId, isInitPkg, startTime, endTime);
         Map<Long, PackageVo> packageVoMap = Maps.newHashMap();
@@ -105,6 +107,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
     }
 
     @Override
+    @Log
     public PackageVo queryCommonPkgList(long groupId, Date startTime, Date endTime) {
         PackageVo packageVo = null;
         List<PubChlModRef> list = pubChlModRefAdapter.queryCommonPkgList(groupId, startTime, endTime);
@@ -131,6 +134,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
     }
 
     @Override
+    @Log
     public List<ApkVo> queryApkList(Date startTime, Date endTime) {
         List<ApkVo> result = Lists.newArrayList();
         List<ApkInfo> apkInfoList = apkInfoAdapter.queryUpgradeList(startTime, endTime);
@@ -146,6 +150,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
     }
 
     @Override
+    @Log
     public List<ApkVo> queryApkList(long groupId, long channelId, Date startTime, Date endTime) {
         Set<Long> paramList = Sets.newHashSet();
         List<ApkVo> result = Lists.newArrayList();

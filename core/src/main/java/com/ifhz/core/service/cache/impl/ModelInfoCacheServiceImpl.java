@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.ifhz.core.adapter.ModelInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
@@ -35,22 +36,26 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
     @Resource(name = "modelInfoAdapter")
     private ModelInfoAdapter modelInfoAdapter;
 
+    @Log
     private Cache<String, ModelInfo> createCache() {
         return CacheBuilder.newBuilder().maximumSize(2000).expireAfterWrite(60, TimeUnit.MINUTES).build();
     }
 
     @Override
+    @Log
     public void cleanCache() {
         this.CACHE.invalidateAll();
     }
 
     @Override
+    @Log
     public CacheStats status() {
         return this.CACHE.stats();
     }
 
 
     @Override
+    @Log
     public ModelInfo getByUaAndGrouId(String ua, Long groupId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(ua), "ua must be not empty");
         Preconditions.checkArgument(groupId != null, "groupId must be not empty");
@@ -69,6 +74,7 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
     }
 
     @Override
+    @Log
     public void remove(String ua, Long groupId) {
         Preconditions.checkArgument(StringUtils.isNotBlank(ua), "ua must be not empty");
         Preconditions.checkArgument(groupId != null, "groupId must be not empty");
@@ -94,6 +100,7 @@ public class ModelInfoCacheServiceImpl implements ModelInfoCacheService {
         }
 
         @Override
+        @Log
         public ModelInfo call() {
             ModelInfo result = null;
             try {

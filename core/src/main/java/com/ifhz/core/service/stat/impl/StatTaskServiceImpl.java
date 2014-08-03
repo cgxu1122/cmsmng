@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.DataLogAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
@@ -65,6 +66,7 @@ public class StatTaskServiceImpl implements StatTaskService {
      * @param startTime 开始时间 不允许跨天
      * @param endTime   结束时间 不允许跨天
      */
+    @Log
     public void scanDataLog(Date startTime, Date endTime) {
         LOGGER.info("统计程序开始执行{},{}", DateFormatUtils.formatDate(startTime, "yyyy-MM-dd HH:mm:ss:sss"), DateFormatUtils.formatDate(endTime, "yyyy-MM-dd HH:mm:ss:sss"));
         String tableName = splitTableService.getCurrentTableName(startTime);
@@ -131,6 +133,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         }
     }
 
+    @Log
     @Override
     public void resetStat(Date startTime, Date endTime) {
         LOGGER.info("统计程序开始执行{},{}", DateFormatUtils.formatDate(startTime, "yyyy-MM-dd HH:mm:ss:sss"), DateFormatUtils.formatDate(endTime, "yyyy-MM-dd HH:mm:ss:sss"));
@@ -138,6 +141,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         LOGGER.info("删除原有统计表中的对应processDate={}的统计数据", DateFormatUtils.formatDate(startTime, "yyyy-MM-dd"));
     }
 
+    @Log
     private LogStat getLogStatFromMap(Map<String, LogStat> container, String md5Key, DataLog dataLog) {
         if (container.containsKey(md5Key)) {
             return container.get(md5Key);
@@ -146,6 +150,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         }
     }
 
+    @Log
     private ProductStat getProductStatFromMap(Map<String, ProductStat> container, String md5Key, DataLog dataLog, Long productId) {
         if (container.containsKey(md5Key)) {
             return container.get(md5Key);
@@ -154,7 +159,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         }
     }
 
-
+    @Log
     public void saveLogStatMap(Map<String, LogStat> param, Date date) {
         if (MapUtils.isNotEmpty(param)) {
             for (Map.Entry<String, LogStat> entry : param.entrySet()) {
@@ -204,6 +209,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         }
     }
 
+    @Log
     private DataLogRequest getDataLogRequestByLogStat(LogStat logStat) {
         DataLogRequest dataLogRequest = new DataLogRequest();
         dataLogRequest.setDate(logStat.getProcessDate());
@@ -218,7 +224,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         return dataLogRequest;
     }
 
-
+    @Log
     private DataLogRequest getDataLogRequestByProductStat(ProductStat productStat) {
         DataLogRequest dataLogRequest = new DataLogRequest();
         dataLogRequest.setDate(productStat.getProcessDate());
@@ -233,6 +239,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         return dataLogRequest;
     }
 
+    @Log
     public void saveProductStatMap(Map<String, ProductStat> param, Date date) {
         if (MapUtils.isNotEmpty(param)) {
             for (Map.Entry<String, ProductStat> entry : param.entrySet()) {
@@ -273,6 +280,7 @@ public class StatTaskServiceImpl implements StatTaskService {
         }
     }
 
+    @Log
     private boolean isQueryCount(Date processDate, Date startTime) {
         Date date = DateHandler.getEndTime(processDate);
         long d = date.getTime();

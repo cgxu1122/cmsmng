@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.ifhz.core.adapter.DictInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DictInfo;
@@ -42,16 +43,19 @@ public class DictInfoCacheServiceImpl implements DictInfoCacheService {
     }
 
     @Override
+    @Log
     public void cleanCache() {
         this.CACHE.invalidateAll();
     }
 
     @Override
+    @Log
     public CacheStats status() {
         return this.CACHE.stats();
     }
 
     @Override
+    @Log
     public DictInfo getByKeyCode(String keyCode) {
         Preconditions.checkArgument(StringUtils.isNotBlank(keyCode), "String keyCode must not be Null and Empty !");
         try {
@@ -64,6 +68,7 @@ public class DictInfoCacheServiceImpl implements DictInfoCacheService {
     }
 
     @Override
+    @Log
     public Date getSystemInitDate() {
         Date result = null;
         DictInfo po = getByKeyCode(GlobalConstants.KEY_SYS_INIT_DATE);
@@ -88,6 +93,7 @@ public class DictInfoCacheServiceImpl implements DictInfoCacheService {
         }
 
         @Override
+        @Log
         public DictInfo call() {
             DictInfo result = null;
             try {

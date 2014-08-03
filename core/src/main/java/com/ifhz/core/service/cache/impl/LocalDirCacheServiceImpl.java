@@ -101,11 +101,13 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
         return storeFile.getAbsolutePath();
     }
 
+    @Log
     public String getParentDir() {
         // 只根据时间生成目录，与文件名无关
         return DateFormatUtils.formatDate(new Date(), PARENT_DIR_PATTERN);
     }
 
+    @Log
     public String getApkParentDir() {
         final StringBuffer buff = new StringBuffer();
         buff.append("data");
@@ -122,21 +124,25 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
      *
      * @return
      */
+    @Log
     private Cache<String, Boolean> createDirCache() {
         return CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(60, TimeUnit.MINUTES).build();
     }
 
     @Override
+    @Log
     public String storeTempFile(InputStream in, String localFileName) throws Exception {
         return preStore(in, localFileName, Type.Temp);
     }
 
     @Override
+    @Log
     public String storeFile(InputStream in, String localFileName) throws Exception {
         return preStore(in, localFileName, Type.Perm);
     }
 
     @Override
+    @Log
     public String getLocalFileName(String originFileName) {
         String fileExt = FileHandle.getFileExt(originFileName);
         String prefix = StringUtils.replace(UUID.randomUUID().toString(), "-", "");
@@ -144,6 +150,7 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     }
 
     @Override
+    @Log
     public String getExcelTempPath() throws Exception {
         String storePath = Store_Temp_Path;
         String parentDir = getParentDir();
@@ -158,6 +165,7 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
     }
 
     @Override
+    @Log
     public String storeApkFile(InputStream in, String localFileName) throws Exception {
         return preStore(in, localFileName, Type.Apk);
     }
@@ -172,6 +180,7 @@ public class LocalDirCacheServiceImpl implements LocalDirCacheService {
         }
 
         @Override
+        @Log
         public Boolean call() throws Exception {
             File dir = new File(key);
             if (dir.isDirectory()) {

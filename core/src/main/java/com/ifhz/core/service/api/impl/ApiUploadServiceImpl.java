@@ -2,6 +2,7 @@ package com.ifhz.core.service.api.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.log.CounterCommonLog;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
 import com.ifhz.core.constants.GlobalConstants;
@@ -57,6 +58,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
     //手机imei|手机ua|手机到达状态
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void saveCounterDataLog(DataLog po) {
         if (po != null) {
@@ -104,6 +106,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public ImeiStatus saveDeviceDataLog(DataLog po) {
         LOGGER.info("执行DataLog保存操作 --- 开始");
@@ -154,6 +157,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     }
 
     @Override
+    @Log
     public void batchSave(List<DataLog> processLogList) {
         if (CollectionUtils.isNotEmpty(processLogList)) {
             for (DataLog log : processLogList) {
@@ -177,6 +181,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         }
 
         @Override
+        @Log
         public void run() {
             try {
                 statCounterService.updateStat(dataLog);
@@ -196,6 +201,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         }
 
         @Override
+        @Log
         public void run() {
             try {
                 statDeviceService.updateStat(dataLog);

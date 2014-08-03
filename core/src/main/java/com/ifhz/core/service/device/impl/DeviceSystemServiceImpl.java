@@ -1,6 +1,7 @@
 package com.ifhz.core.service.device.impl;
 
 import com.ifhz.core.adapter.DeviceSystemAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.device.DeviceSystemService;
@@ -25,16 +26,19 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
 
 
     @Override
+    @Log
     public DeviceSystem getById(Long id) {
         return deviceSystemAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<DeviceSystem> queryByVo(Pagination page, DeviceSystem record) {
         return deviceSystemAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(DeviceSystem record) {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());
@@ -42,17 +46,20 @@ public class DeviceSystemServiceImpl implements DeviceSystemService {
     }
 
     @Override
+    @Log
     public int update(DeviceSystem record) {
         record.setUpdateTime(new Date());
         return deviceSystemAdapter.update(record);
     }
 
     @Override
+    @Log
     public int delete(DeviceSystem record) {
         return deviceSystemAdapter.delete(record);
     }
 
     @Override
+    @Log
     public DeviceSystem queryNewestVersion(Date currentTime) {
         List<DeviceSystem> result = deviceSystemAdapter.queryNewestVersion(currentTime);
         if (CollectionUtils.isNotEmpty(result)) {

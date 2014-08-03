@@ -2,6 +2,7 @@ package com.ifhz.core.service.common.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.common.bean.SplitTableBean;
@@ -32,6 +33,7 @@ public class SplitTableServiceImpl implements SplitTableService {
 
 
     @Override
+    @Log
     public String getCurrentTableName(Date now) {
         String tableName = TablePrefix + getTableSuffix(now);
         LOGGER.info("{},{}", JSON.toJSONString(now), tableName);
@@ -39,6 +41,7 @@ public class SplitTableServiceImpl implements SplitTableService {
     }
 
     @Override
+    @Log
     public List<String> getTableNameList(Date now) {
         List<String> list = getQueryTableList(TablePrefix, now);
         LOGGER.info("{},{}", JSON.toJSONString(now), list);
@@ -46,6 +49,7 @@ public class SplitTableServiceImpl implements SplitTableService {
     }
 
     @Override
+    @Log
     public List<String> getListFromDate2Now(Date date) {
         Date now = new Date();
         List<String> list = getQueryTableList(TablePrefix, date, now);
@@ -54,6 +58,7 @@ public class SplitTableServiceImpl implements SplitTableService {
     }
 
 
+    @Log
     private String getTableSuffix(Date now) {
         StringBuffer buff = new StringBuffer("");
         //获取当前时间年和月
@@ -68,6 +73,7 @@ public class SplitTableServiceImpl implements SplitTableService {
     }
 
 
+    @Log
     private List<String> getQueryTableList(String prefix, Date now) {
         List<String> tableList = Lists.newArrayList();
         Date initDate = dictInfoCacheService.getSystemInitDate();
@@ -80,7 +86,7 @@ public class SplitTableServiceImpl implements SplitTableService {
         return tableList;
     }
 
-
+    @Log
     private List<String> getQueryTableList(String prefix, Date date, Date now) {
         List<String> tableList = Lists.newArrayList();
         SplitTableBean bean = new SplitTableBean(date, now);

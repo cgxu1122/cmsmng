@@ -3,6 +3,7 @@ package com.ifhz.core.service.imei.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.imei.DeviceImeiQueryService;
 import com.ifhz.core.service.imei.StatImeiQueryService;
@@ -34,7 +35,7 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
     @Resource(name = "deviceImeiQueryService")
     private DeviceImeiQueryService deviceImeiQueryService;
 
-
+    @Log
     public List<StatImeiResult> queryImeiListFromLog(StatImeiRequest request) {
         Preconditions.checkArgument(request != null, "StatImeiRequest must be not null");
         Preconditions.checkArgument(StringUtils.isNotBlank(request.getUa()), "StatImeiRequest.UA must be not null");
@@ -74,6 +75,7 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
     }
 
 
+    @Log
     public List<StatImeiResult> queryImeiListFromProduct(StatImeiRequest request) {
         Preconditions.checkArgument(request != null, "StatImeiRequest must be not null");
         Preconditions.checkArgument(StringUtils.isNotBlank(request.getUa()), "StatImeiRequest.UA must be not null");

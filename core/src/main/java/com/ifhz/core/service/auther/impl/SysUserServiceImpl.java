@@ -3,6 +3,7 @@ package com.ifhz.core.service.auther.impl;
 
 import com.ifhz.core.adapter.SysRoleAdapter;
 import com.ifhz.core.adapter.SysUserAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.AdminRoleType;
 import com.ifhz.core.po.auth.SysRole;
@@ -34,51 +35,60 @@ public class SysUserServiceImpl implements SysUserService {
     private SysRoleAdapter sysRoleAdapter;
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(SysUser record) {
         return sysUserAdapter.insert(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(SysUser record) {
         return sysUserAdapter.update(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updateStatus(SysUser record) {
         return sysUserAdapter.updateStatus(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updatePassword(SysUser record) {
         return sysUserAdapter.updatePassword(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(Long userId) {
         return sysUserAdapter.delete(userId);
     }
 
     @Override
+    @Log
     public SysUser getById(Long userId) {
         return sysUserAdapter.getById(userId);
     }
 
     @Override
+    @Log
     public SysUser getByLoginName(String loginName) {
         return sysUserAdapter.getByLoginName(loginName);
     }
 
     @Override
+    @Log
     public List<SysUser> queryListByRoleId(Long roleId) {
         return sysUserAdapter.queryListByRoleId(roleId);
     }
 
     @Override
+    @Log
     public boolean checkAdminMng(long userId) {
         if (userId <= 0) {
             return false;
@@ -93,11 +103,13 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Log
     public List<SysUser> queryByVo(Pagination pagination, SysUser record) {
         return sysUserAdapter.queryByVo(pagination, record);
     }
 
     @Override
+    @Log
     public List<SysUser> queryMngListByVo(Pagination pagination, String searchValue) {
         return sysUserAdapter.queryMngListByVo(pagination, searchValue);
     }

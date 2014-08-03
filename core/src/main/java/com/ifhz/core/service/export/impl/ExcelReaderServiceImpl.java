@@ -1,5 +1,6 @@
 package com.ifhz.core.service.export.impl;
 
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.export.ExcelReaderService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -35,6 +36,7 @@ public class ExcelReaderServiceImpl implements ExcelReaderService {
     private InputStream input;
     public DecimalFormat df = new DecimalFormat("0");
 
+    @Log
     public String[] readHeader(File file) {// 读取Excel表格表头的内容
         String header[] = null;
         if (file != null) {
@@ -71,7 +73,7 @@ public class ExcelReaderServiceImpl implements ExcelReaderService {
         return header;
     }
 
-
+    @Log
     @Override
     public List<String[]> readContent(File file, boolean isRandom) {
         List<String[]> content = new ArrayList<String[]>();
@@ -131,6 +133,8 @@ public class ExcelReaderServiceImpl implements ExcelReaderService {
         return content;
     }
 
+
+    @Log
     // 获取单元格数据内容为字符串类型的数据
     private String getStringCellValue(Cell cell) {
         String strCell = "";

@@ -2,6 +2,7 @@ package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.ChannelGroupAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GroupEnums;
 import com.ifhz.core.po.ModelInfo;
@@ -36,6 +37,7 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     private ChannelGroupAdapter channelGroupAdapter;
 
     @Override
+    @Log
     public List<ProductStat> queryByVo(Pagination page, ProductStat record) {
         List<ProductStat> productStatList = productStatAdapter.queryByVo(page, record);
         if (CollectionUtils.isNotEmpty(productStatList)) {
@@ -62,6 +64,7 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     }
 
     @Override
+    @Log
     public List<ProductStat> querySumByVo(Pagination page, ProductStat record) {
         List<ProductStat> productStatList = productStatAdapter.querySumByVo(page, record);
         if (CollectionUtils.isNotEmpty(productStatList)) {
@@ -88,6 +91,7 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     }
 
     @Override
+    @Log
     public Date getMaxQueryDateByPartnerId(Long partnerId) {
         Date date = productStatAdapter.getMaxQueryDateByPartnerId(partnerId);
         if (date == null) {
@@ -97,6 +101,7 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
     }
 
     @Override
+    @Log
     public ProductStat queryCountByVo(ProductStat record) {
         return productStatAdapter.queryCountByVo(record);
     }

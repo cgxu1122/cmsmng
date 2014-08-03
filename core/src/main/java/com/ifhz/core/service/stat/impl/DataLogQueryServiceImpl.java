@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.DataLogAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.common.SplitTableService;
 import com.ifhz.core.service.stat.DataLogQueryService;
 import com.ifhz.core.service.stat.bean.DataLogRequest;
@@ -28,6 +29,7 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
     private SplitTableService splitTableService;
 
     @Override
+    @Log
     public long queryDeviceUpdDayNum(DataLogRequest dataLogRequest) {
         long deviceUpdDayNum = 0L;
         String tableName = splitTableService.getCurrentTableName(dataLogRequest.getDate());
@@ -40,6 +42,7 @@ public class DataLogQueryServiceImpl implements DataLogQueryService {
     }
 
     @Override
+    @Log
     public long queryProductUpdDayNum(DataLogRequest dataLogRequest) {
         long productUpdDayNum = 0L;
         String tableName = splitTableService.getCurrentTableName(dataLogRequest.getDate());

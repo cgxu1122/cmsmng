@@ -2,6 +2,7 @@ package com.ifhz.core.service.export.impl;
 
 import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVReader;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.export.CSVReaderService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class CSVReaderServiceImpl implements CSVReaderService {
     private DataInputStream in = null;
     private CSVReader reader = null;
 
+    @Log
     public String[] readHeader(File file) {// 读取表头的内容
         String header[] = null;
         try {
@@ -58,6 +60,7 @@ public class CSVReaderServiceImpl implements CSVReaderService {
 
 
     @Override
+    @Log
     public List<String[]> readContent(File file) {
         List<String[]> content = new ArrayList<String[]>();
         try {

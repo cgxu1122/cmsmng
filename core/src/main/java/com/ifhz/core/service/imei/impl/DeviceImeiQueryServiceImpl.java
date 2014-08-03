@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.DataLogAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.imei.DeviceImeiQueryService;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.stat.handle.DateHandler;
@@ -34,6 +35,8 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
     @Resource(name = "dataLogAdapter")
     private DataLogAdapter dataLogAdapter;
 
+
+    @Log
     public List<String> getLogImeiList(List<String> tableNameList, StatImeiRequest request) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tableNameList)) {
@@ -65,6 +68,7 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
         return result == null ? Lists.<String>newArrayList() : result;
     }
 
+    @Log
     public List<String> getProductImeiList(List<String> tableNameList, StatImeiRequest request) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tableNameList)) {
@@ -96,6 +100,8 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
         return result == null ? Lists.<String>newArrayList() : result;
     }
 
+
+    @Log
     private Map<String, Object> getLogParams(String tableName, StatImeiRequest request) {
         Map<String, Object> params = Maps.newHashMap();
         params.put("ua", request.getUa());
@@ -113,6 +119,7 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
     }
 
 
+    @Log
     private Map<String, Object> getProductParams(String tableName, StatImeiRequest request) {
         Map<String, Object> params = Maps.newHashMap();
         params.put("ua", request.getUa());
@@ -138,6 +145,7 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
         }
 
         @Override
+        @Log
         public List<String> call() throws Exception {
             LOGGER.info("params={}", JSON.toJSONString(params));
             List<String> result = null;
@@ -157,6 +165,7 @@ public class DeviceImeiQueryServiceImpl implements DeviceImeiQueryService {
         }
 
         @Override
+        @Log
         public List<String> call() throws Exception {
             LOGGER.info("params={}", JSON.toJSONString(params));
             List<String> result = null;

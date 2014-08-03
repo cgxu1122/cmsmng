@@ -1,5 +1,6 @@
 package com.ifhz.core.service.schedule.impl;
 
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.schedule.CounterTempLogService;
 import com.ifhz.core.service.schedule.ScheduleBakService;
 import com.ifhz.core.service.stat.StatTaskService;
@@ -31,6 +32,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     @Resource(name = "statTaskService")
     private StatTaskService statTaskService;
 
+    @Log
     private boolean isCrossDay(Date startTime, Date endTime) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
@@ -47,6 +49,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void scanCounterTempLogFoUnDo(Date startTime, Date endTime) {
         LOGGER.info("scanCounterTempLogFoUnDo startTime={},endTime={}------------------------start");
         try {
@@ -60,6 +63,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void scanCounterTempLogFoUnStat(Date startTime, Date endTime) {
         LOGGER.info("scanCounterTempLogFoUnStat startTime={},endTime={}------------------------start");
         try {
@@ -73,6 +77,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void statisticsData(Date startTime, Date endTime) {
         LOGGER.info("statisticsData startTime={},endTime={}------------------------start");
         try {
@@ -91,6 +96,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void fetchWdjData(Date date) {
         LOGGER.info("fetch Wdj Data date={}------------------------start");
         try {
@@ -102,6 +108,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void resetStat(Date date) {
 
     }

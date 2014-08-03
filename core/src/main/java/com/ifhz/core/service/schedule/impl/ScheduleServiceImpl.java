@@ -1,5 +1,6 @@
 package com.ifhz.core.service.schedule.impl;
 
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.constants.GlobalConstants;
@@ -38,6 +39,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private DictInfoCacheService dictInfoCacheService;
 
     @Override
+    @Log
     public void scanCounterTempLogFoUnDo() {
         LOGGER.info("scanCounterTempLogFoUnDo ------------------------start");
         long start = System.currentTimeMillis();
@@ -56,6 +58,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Log
     public void scanCounterTempLogFoUnStat() {
         LOGGER.info("scanCounterTempLogFoUnStat ------------------------start");
         long start = System.currentTimeMillis();
@@ -80,6 +83,7 @@ public class ScheduleServiceImpl implements ScheduleService {
      * 结束时间 开始时间+30分钟
      */
     @Override
+    @Log
     public void statisticsData() {
         LOGGER.info("statisticsData ------------------------start");
         long start = System.currentTimeMillis();
@@ -108,6 +112,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Log
     public void fetchWdjData() {
         LOGGER.info("fetch Wdj Data ------------------------start");
         long start = System.currentTimeMillis();
@@ -123,6 +128,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LOGGER.info("fetch Wdj Data --------------------------end");
     }
 
+    @Log
     private boolean isCrossDay(Date startTime, Date endTime) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
@@ -140,6 +146,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     @Override
+    @Log
     public void deleteCounterTempLog() {
         LOGGER.info("deleteCounterTempLog ------------------------start");
         long start = System.currentTimeMillis();

@@ -1,6 +1,7 @@
 package com.ifhz.core.service.mail.impl;
 
 import com.google.common.collect.Maps;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.mail.MailSenderService;
 import com.ifhz.core.service.mail.enums.MailType;
 import org.apache.commons.collections.MapUtils;
@@ -41,6 +42,7 @@ public class MailSenderServiceImpl implements MailSenderService {
 
 
     @Override
+    @Log
     public void asyncSendMail(final MailType mailType, final Map<String, Object> params) throws Exception {
         LOGGER.info("asyncSendMail param mailType:{},params:{}", mailType, params);
         taskExecutor.execute(new SendMailTask(mailType, params));
@@ -48,6 +50,7 @@ public class MailSenderServiceImpl implements MailSenderService {
 
 
     @Override
+    @Log
     public void sendMail(MailType mailType, Map<String, Object> params) throws Exception {
         LOGGER.info("sendMail param mailType:{},params:{}", mailType, params);
         if (MapUtils.isNotEmpty(params)) {
@@ -58,12 +61,14 @@ public class MailSenderServiceImpl implements MailSenderService {
     }
 
     @Override
+    @Log
     public void sendMail(MailType mailType, List<String> tos, String subject, Map<String, Object> params) throws Exception {
         LOGGER.info("sendMail param mailType:{},tos:{},subject:{},params:{}", mailType, tos, subject, params);
         commonsMailEngine.sendMail(mailType, tos, subject, params);
     }
 
     @Override
+    @Log
     public void asyncSendMail(final MailType mailType, final List<String> tos, final String subject, final Map<String, Object> params) throws Exception {
         LOGGER.info("asyncSendMail param mailType:{},tos:{},subject:{},params:{}", mailType, tos, subject, params);
         taskExecutor.execute(new SendMailWithToUserTask(mailType, subject, tos, params));
@@ -81,7 +86,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         }
 
         @Override
-
+        @Log
         public void run() {
             try {
                 sendMail(mailType, params);
@@ -106,7 +111,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         }
 
         @Override
-
+        @Log
         public void run() {
             try {
                 commonsMailEngine.sendMail(mailType, toList, subject, params);

@@ -2,6 +2,7 @@ package com.ifhz.core.service.imei.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.excel.ExcelHandle;
@@ -49,6 +50,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
 
+    @Log
     public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
         BufferedReader reader = null;
@@ -84,7 +86,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         return null;
     }
 
-
+    @Log
     private String decodeFile(String filePath) {
         String path = null;
         try {
@@ -105,6 +107,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     }
 
     @Override
+    @Log
     public Map<ImeiStatus, Integer> processImeiExcelData(String filePath, Long channelId, Date processDate) {
         Map<ImeiStatus, Integer> result = Maps.newHashMap();
         if (StringUtils.isBlank(filePath) || channelId == null || processDate == null) {
@@ -144,12 +147,14 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     }
 
     @Override
+    @Log
     public void asyncProcessCsvData(String filePath, Long channelId, Date processDate) {
         if (StringUtils.isNotBlank(filePath)) {
             taskExecutor.execute(new AsyncProcessCsvTask(filePath, channelId, processDate));
         }
     }
 
+    @Log
     private DataLog translateDataLog(String[] data) {
         //手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
         DataLog result = null;
@@ -198,6 +203,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         }
 
         @Override
+        @Log
         public void run() {
             Map<ImeiStatus, Integer> map = processCsvData(csvFilePath, channelId, processDate);
             LOGGER.info("map={}", JSON.toJSONString(map));

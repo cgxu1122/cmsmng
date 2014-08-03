@@ -2,6 +2,7 @@ package com.ifhz.core.service.schedule.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.CounterTempLogAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.constants.TempLogType;
@@ -39,6 +40,7 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
     private StatCounterService statCounterService;
 
     @Override
+    @Log
     public void scanCounterTempLogFoUnDo(Date startTime, Date endTime) {
         LOGGER.info("scanCounterTempLogFoUnDo -------start,[{},{}]", startTime, endTime);
         long totalCount = counterTempLogAdapter.queryTotalCount(startTime, endTime, TempLogType.UnDo.value);
@@ -66,6 +68,7 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
     }
 
     @Override
+    @Log
     public void scanCounterTempLogFoUnStat(Date startTime, Date endTime) {
         LOGGER.info("scanCounterTempLogFoUnStat -------start,[{},{}]", startTime, endTime);
         long totalCount = counterTempLogAdapter.queryTotalCount(startTime, endTime, TempLogType.UnDo.value);
@@ -93,11 +96,12 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
     }
 
     @Override
+    @Log
     public void batchDelete(Date startTime, Date endTime) {
         counterTempLogAdapter.batchDelete(startTime, endTime);
     }
 
-
+    @Log
     private void processCounterTempLog(CounterTempLog tempLog, boolean isUpdateDataLog) {
         LOGGER.info("processCounterTempLog -------start,isUpdateDataLog={},tempLog={}", isUpdateDataLog, JSON.toJSONString(tempLog));
         if (tempLog != null) {

@@ -2,6 +2,7 @@ package com.ifhz.core.service.batch.impl;
 
 import com.ifhz.core.adapter.BatchInfoAdapter;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.BatchInfo;
 import com.ifhz.core.po.BatchProductRef;
@@ -28,16 +29,19 @@ public class BatchInfoServiceImpl implements BatchInfoService {
     private BatchProductRefAdapter batchProductRefAdapter;
 
     @Override
+    @Log
     public BatchInfo getById(Long id) {
         return batchInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<BatchInfo> queryByVo(Pagination page, BatchInfo record) {
         return batchInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(BatchInfo record) {
         int flag = batchInfoAdapter.insert(record);
         List<ProductInfo> productInfoList = record.getProductInfoList();
@@ -64,6 +68,7 @@ public class BatchInfoServiceImpl implements BatchInfoService {
     }
 
     @Override
+    @Log
     public int update(BatchInfo record) {
         //先删除
         BatchProductRef delBpRef = new BatchProductRef();
@@ -93,6 +98,7 @@ public class BatchInfoServiceImpl implements BatchInfoService {
     }
 
     @Override
+    @Log
     public int delete(BatchInfo record) {
         //先删除关联表信息
         BatchProductRef delBpRef = new BatchProductRef();
@@ -102,6 +108,7 @@ public class BatchInfoServiceImpl implements BatchInfoService {
     }
 
     @Override
+    @Log
     public Long getSeqByGroupId(Long groupId) {
         return batchInfoAdapter.getSeqByGroupId(groupId);
     }

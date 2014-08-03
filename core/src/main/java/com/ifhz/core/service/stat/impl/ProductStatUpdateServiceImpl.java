@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.ProductStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.stat.ProductStatUpdateService;
 import org.slf4j.Logger;
@@ -26,18 +27,21 @@ public class ProductStatUpdateServiceImpl implements ProductStatUpdateService {
     private ProductStatAdapter productStatAdapter;
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(ProductStat record) {
         return productStatAdapter.insert(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(ProductStat record) {
         return productStatAdapter.update(record);
     }
 
     @Override
+    @Log
     public ProductStat getByMd5Key(String md5Key) {
         return productStatAdapter.getByMd5Key(md5Key);
     }

@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.LogStatAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
@@ -31,6 +32,7 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
     private ModelInfoCacheService modelInfoCacheService;
 
     @Override
+    @Log
     public List<LogStat> queryByVo(Pagination page, LogStat record) {
         List<LogStat> logStatList = logStatAdapter.queryByVO(page, record);
         if (CollectionUtils.isNotEmpty(logStatList)) {
@@ -60,6 +62,7 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
     }
 
     @Override
+    @Log
     public List<LogStat> querySumByVo(Pagination page, LogStat record) {
         List<LogStat> logStatList = logStatAdapter.querySumByVO(page, record);
         if (CollectionUtils.isNotEmpty(logStatList)) {
@@ -89,6 +92,7 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
     }
 
     @Override
+    @Log
     public LogStat queryCountByVo(LogStat record) {
         return logStatAdapter.queryCountByVO(record);
     }

@@ -3,6 +3,7 @@ package com.ifhz.core.service.pkgmng.impl;
 import com.ifhz.core.adapter.ApkInfoAdapter;
 import com.ifhz.core.adapter.PackageApkRefAdapter;
 import com.ifhz.core.adapter.PubChlModRefAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ApkInfo;
 import com.ifhz.core.po.PackageApkRef;
@@ -38,16 +39,19 @@ public class ApkInfoServiceImpl implements ApkInfoService {
 
 
     @Override
+    @Log
     public ApkInfo getById(Long id) {
         return apkInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<ApkInfo> queryByVo(Pagination page, ApkInfo record) {
         return apkInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(ApkInfo record) {
         record.setCreateTime(new Date());
@@ -56,12 +60,14 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(ApkInfo record) {
         return apkInfoAdapter.update(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(ApkInfo record) {
         int ret = apkInfoAdapter.delete(record);

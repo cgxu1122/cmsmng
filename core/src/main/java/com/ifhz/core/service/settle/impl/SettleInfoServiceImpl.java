@@ -2,6 +2,7 @@ package com.ifhz.core.service.settle.impl;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.SettleInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.SettleInfo;
 import com.ifhz.core.service.settle.SettleInfoService;
@@ -30,24 +31,28 @@ public class SettleInfoServiceImpl implements SettleInfoService {
     }
 
     @Override
+    @Log
     public List<SettleInfo> queryByVo(Pagination page, SettleInfo record) {
         List<SettleInfo> list = settleInfoAdapter.queryByVo(page, record);
         return list == null ? Lists.<SettleInfo>newArrayList() : list;
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(SettleInfo record) {
         return settleInfoAdapter.insert(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(SettleInfo record) {
         return settleInfoAdapter.update(record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(SettleInfo record) {
         return settleInfoAdapter.delete(record);

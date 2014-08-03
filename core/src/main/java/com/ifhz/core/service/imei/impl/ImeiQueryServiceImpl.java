@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.ifhz.core.adapter.ImeiQueryAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
@@ -47,6 +48,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
 
     private static final ExecutorService THREADPOOL = Executors.newFixedThreadPool(128);
 
+    @Log
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public List<DataLogResult> queryListByImeiList(List<String> imeiList) {
@@ -87,6 +89,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         return result == null ? Lists.<DataLogResult>newArrayList() : result;
     }
 
+    @Log
     private List<DataLogResult> getDataLogResultList(List<String> tableNameList) {
         List<DataLogResult> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(tableNameList)) {
@@ -103,7 +106,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         return result;
     }
 
-
+    @Log
     private List<DataLogResult> asyncDataLogResultList(Date date) {
         List<DataLogResult> result = Lists.newArrayList();
         List<ImeiQueryTask> taskList = genTaskList(date);
@@ -132,6 +135,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         return result;
     }
 
+    @Log
     private List<ImeiQueryTask> genTaskList(Date date) {
         List<String> tableNameList = splitTableService.getTableNameList(date);
         List<ImeiQueryTask> taskList = Lists.newArrayList();
@@ -157,6 +161,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
         }
 
         @Override
+        @Log
         public List<DataLogResult> call() throws Exception {
             List<DataLogResult> result = imeiQueryAdapter.queryListByImeiList(tableName);
             return result == null ? Lists.<DataLogResult>newArrayList() : result;
@@ -169,6 +174,7 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
      */
     private static class DataLogResultByProcessTime implements Comparator<DataLogResult> {
         @Override
+        @Log
         public int compare(DataLogResult o1, DataLogResult o2) {
             if (o1 == null)
                 return -1;

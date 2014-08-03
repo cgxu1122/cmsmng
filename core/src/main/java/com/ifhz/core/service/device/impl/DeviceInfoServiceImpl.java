@@ -1,6 +1,7 @@
 package com.ifhz.core.service.device.impl;
 
 import com.ifhz.core.adapter.DeviceInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.device.DeviceInfoService;
@@ -23,31 +24,37 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
 
 
     @Override
+    @Log
     public DeviceInfo getById(Long id) {
         return deviceInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<DeviceInfo> queryByVo(Pagination page, DeviceInfo record) {
         return deviceInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(DeviceInfo record) {
         return deviceInfoAdapter.insert(record);
     }
 
     @Override
+    @Log
     public int update(DeviceInfo record) {
         return deviceInfoAdapter.update(record);
     }
 
     @Override
+    @Log
     public int delete(DeviceInfo record) {
         return deviceInfoAdapter.delete(record);
     }
 
     @Override
+    @Log
     public DeviceInfo queryByDeviceCode(String deviceCode) {
         return deviceInfoAdapter.queryByDeviceCode(deviceCode);
     }

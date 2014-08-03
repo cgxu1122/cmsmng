@@ -1,6 +1,7 @@
 package com.ifhz.core.service.mail.impl;
 
 import com.google.common.collect.Maps;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.mail.bean.BasicMailConfig;
 import com.ifhz.core.service.mail.enums.MailType;
@@ -39,6 +40,7 @@ public class CommonsMailEngine {
         this.templateContainer = templateContainer;
     }
 
+    @Log
     public void sendMail(MailType mailType) throws Exception {
         BasicMailConfig template = this.getBasicMailBean(mailType);
         if (template == null) {
@@ -51,6 +53,7 @@ public class CommonsMailEngine {
         LOGGER.info("sendMail return value={}", result);
     }
 
+    @Log
     public void sendMail(MailType mailType, Map<String, Object> params) throws Exception {
         BasicMailConfig template = this.getBasicMailBean(mailType);
         if (template == null) {
@@ -63,6 +66,7 @@ public class CommonsMailEngine {
         LOGGER.info("sendMail return value={}", result);
     }
 
+    @Log
     public void sendMail(MailType mailType, List<String> tos, Map<String, Object> params) throws Exception {
         BasicMailConfig template = this.getBasicMailBean(mailType);
         if (template == null) {
@@ -79,6 +83,7 @@ public class CommonsMailEngine {
         LOGGER.info("sendMail return value={}", result);
     }
 
+    @Log
     public void sendMail(MailType mailType, List<String> tos, String subject, Map<String, Object> params) throws Exception {
         BasicMailConfig template = this.getBasicMailBean(mailType);
         if (template == null) {
@@ -96,6 +101,7 @@ public class CommonsMailEngine {
     }
 
 
+    @Log
     private BasicMailConfig getBasicMailBean(MailType type) {
         BasicMailConfig result = null;
         if (type != null) {
@@ -109,7 +115,7 @@ public class CommonsMailEngine {
         return result;
     }
 
-
+    @Log
     private HtmlEmail translateMail(BasicMailConfig config, Map<String, Object> params) throws Exception {
         HtmlEmail email = new HtmlEmail();
 
@@ -149,6 +155,7 @@ public class CommonsMailEngine {
         return email;
     }
 
+    @Log
     public String getImagePath(String attachmentPath) {
         String path = null;
         if (StringUtils.isNotBlank(attachmentPath)) {

@@ -1,6 +1,7 @@
 package com.ifhz.core.service.batch.impl;
 
 import com.ifhz.core.adapter.BatchProductRefAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.BatchProductRef;
 import com.ifhz.core.service.batch.BatchProductRefService;
@@ -23,16 +24,19 @@ public class BatchProductRefServiceImpl implements BatchProductRefService {
 
 
     @Override
+    @Log
     public List<BatchProductRef> queryByVo(Pagination page, BatchProductRef record) {
         return batchProductRefAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(BatchProductRef record) {
         return batchProductRefAdapter.insert(record);
     }
 
     @Override
+    @Log
     public int delete(BatchProductRef record) {
         return batchProductRefAdapter.delete(record);
     }

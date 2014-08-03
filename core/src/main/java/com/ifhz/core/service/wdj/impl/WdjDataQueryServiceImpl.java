@@ -3,6 +3,7 @@ package com.ifhz.core.service.wdj.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.MapConfig;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.http.client.HttpClientService;
@@ -46,6 +47,7 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
     private ApiUploadService apiUploadService;
 
 
+    @Log
     public void queryDataList(Date date) {
         String uploadDateStr = DateFormatUtils.formatDate(date, GlobalConstants.DATE_FORMAT_DPT);
         String url = WDJ_URL + uploadDateStr;
@@ -59,6 +61,7 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
     }
 
 
+    @Log
     private List<DataLog> getDataLogList(List<WdjDataResult> dataResultList) {
         Map<String, DataLog> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(dataResultList)) {
@@ -79,6 +82,7 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
         return Lists.<DataLog>newArrayList();
     }
 
+    @Log
     private DataLog translateDataLog(WdjDataResult dataResult) {
         try {
             if (dataResult != null) {
@@ -107,6 +111,7 @@ public class WdjDataQueryServiceImpl implements WdjDataQueryService {
     }
 
 
+    @Log
     private String invokeWdjInterface(String url) {
         try {
             LOGGER.info("url={}", url);

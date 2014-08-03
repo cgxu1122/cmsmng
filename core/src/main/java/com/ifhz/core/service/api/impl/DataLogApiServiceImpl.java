@@ -2,6 +2,7 @@ package com.ifhz.core.service.api.impl;
 
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.DataLogAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.common.SplitTableService;
@@ -36,6 +37,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
     private SplitTableService splitTableService;
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insertDeviceData(DataLog record) {
         Date now = new Date();
@@ -48,6 +50,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updateCounterData(DataLog record) {
         Date now = new Date();
@@ -61,6 +64,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
     }
 
     @Override
+    @Log
     public DataLog getByImei(String imei) {
         if (StringUtils.isBlank(imei)) {
             return null;
@@ -109,6 +113,7 @@ public class DataLogApiServiceImpl implements DataLogApiService {
         }
 
         @Override
+        @Log
         public DataLog call() throws Exception {
             try {
                 if (StringUtils.isNotBlank(tableName) && StringUtils.isNotBlank(imei)) {

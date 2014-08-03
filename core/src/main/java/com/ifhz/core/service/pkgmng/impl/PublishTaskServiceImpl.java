@@ -2,6 +2,7 @@ package com.ifhz.core.service.pkgmng.impl;
 
 import com.ifhz.core.adapter.PubChlModRefAdapter;
 import com.ifhz.core.adapter.PublishTaskAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.PubChlModRef;
@@ -34,16 +35,19 @@ public class PublishTaskServiceImpl implements PublishTaskService {
     private PubChlModRefAdapter pubChlModRefAdapter;
 
     @Override
+    @Log
     public PublishTask getById(Long id) {
         return publishTaskAdapter.getById(id);
     }
 
     @Override
+    @Log
     public List<PublishTask> queryByVo(Pagination page, PublishTask record) {
         return publishTaskAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(PublishTask record) {
         int flag = publishTaskAdapter.insert(record);
@@ -83,6 +87,7 @@ public class PublishTaskServiceImpl implements PublishTaskService {
     }
 
     @Override
+    @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int delete(PublishTask record) {
         //先删除关联表信息

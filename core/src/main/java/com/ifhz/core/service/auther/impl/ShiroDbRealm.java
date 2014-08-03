@@ -19,6 +19,7 @@
 package com.ifhz.core.service.auther.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.constants.AdminRoleType;
 import com.ifhz.core.po.auth.SysRole;
@@ -53,31 +54,38 @@ public class ShiroDbRealm extends AuthorizingRealm {
     private SysRoleService sysRoleService;
     private SysAuthService sysAuthService;
 
+    @Log
     public SysUserService getSysUserService() {
         return sysUserService;
     }
 
+    @Log
     public void setSysUserService(SysUserService sysUserService) {
         this.sysUserService = sysUserService;
     }
 
+    @Log
     public SysRoleService getSysRoleService() {
         return sysRoleService;
     }
 
+    @Log
     public void setSysRoleService(SysRoleService sysRoleService) {
         this.sysRoleService = sysRoleService;
     }
 
+    @Log
     public SysAuthService getSysAuthService() {
         return sysAuthService;
     }
 
+    @Log
     public void setSysAuthService(SysAuthService sysAuthService) {
         this.sysAuthService = sysAuthService;
     }
 
     @Override
+    @Log
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo shiro = new SimpleAuthorizationInfo();
@@ -92,6 +100,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
      * 用户认证
      */
     @Override
+    @Log
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordCaptchaToken upToken = (UsernamePasswordCaptchaToken) token;
         upToken.setRememberMe(true);
@@ -139,6 +148,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
     }
 
     @PostConstruct
+    @Log
     public void initCredentialsMatcher() {
         SimpleCredentialsMatcher matcher = new SimpleCredentialsMatcher();
         setCredentialsMatcher(matcher);
@@ -173,6 +183,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
          * 本函数输出将作为默认的<shiro:principal/>输出.
          */
         @Override
+        @Log
         public String toString() {
             return loginName;
         }

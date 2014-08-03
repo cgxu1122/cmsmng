@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import com.ifhz.core.adapter.ChannelInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import org.slf4j.Logger;
@@ -33,11 +34,13 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
     @Resource(name = "channelInfoAdapter")
     private ChannelInfoAdapter channelInfoAdapter;
 
+    @Log
     private Cache<Long, ChannelInfo> createCache() {
         return CacheBuilder.newBuilder().maximumSize(2000).expireAfterWrite(60, TimeUnit.MINUTES).build();
     }
 
     @Override
+    @Log
     public ChannelInfo getByChannelId(Long channelId) {
         Preconditions.checkArgument(channelId != null, "channelId must be not null");
         ChannelInfo ret = null;
@@ -51,6 +54,7 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
     }
 
     @Override
+    @Log
     public void remove(Long channelId) {
         Preconditions.checkArgument(channelId != null, "channelId must be not null");
         try {
@@ -62,11 +66,13 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
 
 
     @Override
+    @Log
     public void cleanCache() {
         this.CACHE.invalidateAll();
     }
 
     @Override
+    @Log
     public CacheStats status() {
         return this.CACHE.stats();
     }
@@ -84,6 +90,7 @@ public class ChannelInfoCacheServiceImpl implements ChannelInfoCacheService {
         }
 
         @Override
+        @Log
         public ChannelInfo call() {
             ChannelInfo result = null;
             try {

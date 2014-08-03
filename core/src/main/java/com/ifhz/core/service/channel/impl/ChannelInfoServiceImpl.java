@@ -1,6 +1,7 @@
 package com.ifhz.core.service.channel.impl;
 
 import com.ifhz.core.adapter.ChannelInfoAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
@@ -37,21 +38,25 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
 
 
     @Override
+    @Log
     public ChannelInfo getById(Long id) {
         return channelInfoAdapter.getById(id);
     }
 
     @Override
+    @Log
     public ChannelInfo getByUserId(Long userId) {
         return channelInfoAdapter.getByUserId(userId);
     }
 
     @Override
+    @Log
     public List<ChannelInfo> queryByVo(Pagination page, ChannelInfo record) {
         return channelInfoAdapter.queryByVo(page, record);
     }
 
     @Override
+    @Log
     public int insert(ChannelInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
             SysUser user = new SysUser();
@@ -76,6 +81,7 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     }
 
     @Override
+    @Log
     public int update(ChannelInfo record) {
         if (record.getUserId() != null) {
             SysUser user = sysUserService.getById(record.getUserId());
@@ -94,12 +100,14 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     }
 
     @Override
+    @Log
     public int delete(ChannelInfo record) {
         //删除所有子节点
         deleteSubChannel(record.getChannelId());
         return channelInfoAdapter.delete(record);
     }
 
+    @Log
     private void deleteSubChannel(Long parentId) {
         if (parentId == null) return;
         ChannelInfo ci = new ChannelInfo();
@@ -115,6 +123,7 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     }
 
     @Override
+    @Log
     public ChannelInfo getChannelInfoByUserId(Long userId) {
         if (userId == null) return null;
         return channelInfoAdapter.getChannelInfoByUserId(userId);
