@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class ExcelHandle {
     private static final int MaxRowSize = 3000;
+    private static final int MaxImeiRowSize = 10000;
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelHandle.class);
 
     public static List<String> readImeiListFromExcel(String excelFilePath) throws Exception {
@@ -61,15 +62,19 @@ public class ExcelHandle {
         }
         //获取第一个表格!
         Sheet sheet = wkbook.getSheetAt(0);
-        int maxRow = (MaxRowSize > sheet.getLastRowNum() ? sheet.getLastRowNum() : MaxRowSize);
+        int maxRow = (MaxRowSize > sheet.getLastRowNum() ? sheet.getLastRowNum() : MaxImeiRowSize);
         for (int rowNum = 0; rowNum <= maxRow; rowNum++) {
             Row row = sheet.getRow(rowNum);
             if (row == null) {
                 continue;
             }
+
             try {
                 DataLog dataLog = new DataLog();
                 String imei = row.getCell(0).getStringCellValue();
+                if (StringUtils.containsIgnoreCase(imei, "手机IMEI")) {
+                    continue;
+                }
                 String ua = row.getCell(1).getStringCellValue();
                 String batchCode = row.getCell(2).getStringCellValue();
                 String deviceCode = row.getCell(3).getStringCellValue();

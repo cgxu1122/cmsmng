@@ -56,6 +56,7 @@ public class ZipUploadServiceImpl implements ZipUploadService {
         if (StringUtils.isBlank(filePath) || channelId == null || processDate == null) {
             return result;
         }
+        ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
         try {
             ZipEntry entry = null;
             FileInputStream fis = new FileInputStream(filePath);
@@ -85,7 +86,6 @@ public class ZipUploadServiceImpl implements ZipUploadService {
                                     dataLog.setBatchCode(getBatchCode(bean));
                                     dataLog.setDeviceCode("手工安装");
                                     dataLog.setDeviceUploadTime(new Date());
-                                    ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
                                     if (channelInfo != null) {
                                         dataLog.setGroupId(channelInfo.getGroupId());
                                     }

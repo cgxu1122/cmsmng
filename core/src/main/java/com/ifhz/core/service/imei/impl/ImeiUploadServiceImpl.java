@@ -4,12 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.base.commons.excel.ExcelHandle;
 import com.ifhz.core.base.commons.log.DeviceCommonLog;
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
 import com.ifhz.core.service.api.bean.ImeiStatus;
+import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.imei.ImeiUploadService;
+import com.ifhz.core.service.stat.handle.StatConvertHandler;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +46,8 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     private TaskExecutor taskExecutor;
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
+    @Resource(name = "channelInfoCacheService")
+    private ChannelInfoCacheService channelInfoCacheService;
 
     public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
@@ -98,32 +106,41 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
 
     @Override
     public Map<ImeiStatus, Integer> processImeiExcelData(String filePath, Long channelId, Date processDate) {
-        /*BufferedOutputStream bos = null;
-        ZipEntry entry = null;
+        Map<ImeiStatus, Integer> result = Maps.newHashMap();
+        if (StringUtils.isBlank(filePath) || channelId == null || processDate == null) {
+            return result;
+        }
         try {
-            FileInputStream fis = new FileInputStream(filePath);
-            ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
-            ZipFile zipfile = new ZipFile(filePath);
+            List<DataLog> dataLogList = ExcelHandle.readImeiDataFromExcel(filePath);
+            if (CollectionUtils.isNotEmpty(dataLogList)) {
+                ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                for (DataLog dataLog : dataLogList) {
+                    try {
+                        dataLog.setMd5Key(StatConvertHandler.getMd5KeyForLogStat(dataLog));
+                        dataLog.setProcessTime(processDate);
+                        dataLog.setChannelId(channelId);
+                        dataLog.setGroupId(channelInfo.getGroupId());
+                        dataLog.setDeviceUploadTime(new Date());
 
-            while ((entry = zis.getNextEntry()) != null) {
-                if (entry.isDirectory()) {
-                    continue;
-                } else {
-                    InputStreamReader is = new InputStreamReader(zipfile.getInputStream(entry));
-                    BufferedReader br = new BufferedReader(is);
-                    String con = null;
-                    while ((con = br.readLine()) != null) {
-                        System.out.println(entry.getName());
-                        System.out.println(con);
+                        ImeiStatus status = apiUploadService.saveDeviceDataLog(dataLog);
+                        if (status != null) {
+                            if (result.containsKey(status)) {
+                                Integer count = result.get(status);
+                                result.put(status, count + 1);
+                            } else {
+                                result.put(status, 1);
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOGGER.info("process Row ===>DataLog", e);
                     }
                 }
             }
-            zis.close();
         } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+            LOGGER.error("processImeiExcelData error", e);
+        }
 
-        return Maps.newHashMap();
+        return result;
     }
 
     @Override

@@ -115,7 +115,10 @@ public class ImeiUploadController {
 
 
     public boolean checkFileType(String fileName) {
-        if (StringUtils.endsWithIgnoreCase(fileName, ".csv")) {
+        if (StringUtils.endsWithIgnoreCase(fileName, ".xls")) {
+            return true;
+        }
+        if (StringUtils.endsWithIgnoreCase(fileName, ".xlsx")) {
             return true;
         }
 
