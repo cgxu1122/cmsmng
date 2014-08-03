@@ -2,6 +2,7 @@ package com.ifhz.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Splitter;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.base.commons.codec.CodecUtils;
@@ -47,9 +48,11 @@ public class CounterApiController {
             if (StringUtils.isNotBlank(data)) {
                 String source = CodecUtils.decode(data).trim();
                 LOGGER.info("receive decode data={}", source);
-                String[] array = StringUtils.split(source, "|");
+                Splitter splitter = Splitter.on("|");
+                Iterable<String> iterable = splitter.split(source);
+
                 //手机imei|手机ua|到达状态
-                DataLog dataLog = translateDataLog(array);
+                DataLog dataLog = translateDataLog(iterable);
                 if (dataLog != null) {
                     apiUploadService.saveCounterDataLog(dataLog);
                     result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
@@ -91,6 +94,39 @@ public class CounterApiController {
             }
         } else {
             LOGGER.info("数据校验不通过：{}", JSON.toJSONString(data));
+        }
+
+        return result;
+    }
+
+    private DataLog translateDataLog(Iterable<String> iterable) {
+        //手机imei|手机ua|到达状态
+        DataLog result = null;
+        if (iterable != null) {
+            try {
+                result = new DataLog();
+                result.setCounterUploadTime(new Date());
+                int i = 0;
+                for (String value : iterable) {
+                    if (i == 0) {
+                        result.setImei(StringUtils.trimToEmpty(value));
+                    } else if (i == 1) {
+                        result.setUa(StringUtils.trimToEmpty(value));
+                    } else if (i == 2) {
+                        String activeStr = StringUtils.trimToEmpty(value);
+                        if (StringUtils.isNotBlank(activeStr)) {
+                            result.setActive(Integer.parseInt(activeStr));
+                        }
+                    }
+                    i++;
+                }
+            } catch (Exception e) {
+                CounterCommonLog.info("{}", JSON.toJSONString(iterable));
+                LOGGER.error("translateDataLog error ", e);
+                return null;
+            }
+        } else {
+            LOGGER.info("数据校验不通过：{}", JSON.toJSONString(iterable));
         }
 
         return result;

@@ -1,6 +1,7 @@
 package com.ifhz.core.service.imei.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.codec.CodecUtils;
@@ -62,8 +63,9 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                 try {
                     if (StringUtils.isNotBlank(line)) {
                         LOGGER.info("process [{}] line={}", (i++), line);
-                        String[] data = StringUtils.split(line, "\\|");
-                        DataLog dataLog = translateDataLog(data);
+                        Splitter splitter = Splitter.on("|");
+                        Iterable<String> iterable = splitter.split(line);
+                        DataLog dataLog = translateDataLog(iterable);
                         if (dataLog != null) {
                             try {
                                 apiUploadService.saveDeviceDataLog(dataLog);
@@ -186,6 +188,50 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
             }
         } else {
             LOGGER.info("数据校验不通过：{}", JSON.toJSONString(data));
+        }
+
+        return result;
+    }
+
+    private DataLog translateDataLog(Iterable<String> iterable) {
+        //手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
+        DataLog result = null;
+        if (iterable != null) {
+            try {
+                result = new DataLog();
+                int i = 0;
+                for (String value : iterable) {
+                    if (i == 0) {
+                        result.setImei(StringUtils.trimToEmpty(value));
+                    } else if (i == 1) {
+                        result.setUa(StringUtils.trimToEmpty(value));
+                    } else if (i == 2) {
+                        String channelIdStr = StringUtils.trimToEmpty(value);
+                        if (StringUtils.isNotBlank(channelIdStr)) {
+                            result.setChannelId(Long.parseLong(channelIdStr));
+                        }
+                    } else if (i == 3) {
+                        result.setDeviceCode(StringUtils.trimToEmpty(value));
+                    } else if (i == 4) {
+                        result.setBatchCode(StringUtils.trimToEmpty(value));
+                    } else if (i == 5) {
+                        String processTimeStamp = StringUtils.trimToEmpty(value);
+                        if (StringUtils.isNotBlank(processTimeStamp)) {
+                            Date processTime = DateFormatUtils.parse(processTimeStamp, "yyyyMMdd");
+                            result.setProcessTime(processTime);
+                        }
+                    }
+                    i++;
+                }
+
+                result.setDeviceUploadTime(new Date());
+            } catch (Exception e) {
+                DeviceCommonLog.info("{}", JSON.toJSONString(iterable));
+                LOGGER.error("translateDataLog error ", e);
+                return null;
+            }
+        } else {
+            LOGGER.info("数据校验不通过：{}", JSON.toJSONString(iterable));
         }
 
         return result;

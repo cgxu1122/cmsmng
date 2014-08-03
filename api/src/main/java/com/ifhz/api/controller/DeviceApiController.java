@@ -2,6 +2,7 @@ package com.ifhz.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
@@ -66,10 +67,11 @@ public class DeviceApiController {
                         LOGGER.info("receive encode requestVo={}", JSON.toJSONString(requestVo));
                         if (requestVo != null && StringUtils.isNotBlank(requestVo.getContent())) {
                             //解码 手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
-//                            String content = CodecUtils.decode(requestVo.getContent()).trim();
                             LOGGER.info("receive decode content={}", requestVo.getContent());
-                            String[] array = StringUtils.split(requestVo.getContent().trim(), "|");
-                            DataLog dataLog = translateDataLog(array);
+                            Splitter splitter = Splitter.on("|");
+                            Iterable<String> iterable = splitter.split(requestVo.getContent().trim());
+
+                            DataLog dataLog = translateDataLog(iterable);
                             if (dataLog != null) {
                                 dataLogMap.put(requestVo.getId(), dataLog);
                             }
@@ -146,35 +148,45 @@ public class DeviceApiController {
     }
 
 
-    private DataLog translateDataLog(String[] data) {
+    private DataLog translateDataLog(Iterable<String> iterable) {
         //手机imei|手机ua|渠道id|加工设备编码|批次号|手机加工时间戳
         DataLog result = null;
-        if (data != null && data.length == 6) {
+        if (iterable != null) {
             try {
                 result = new DataLog();
-                result.setImei(StringUtils.trimToEmpty(data[0]));
-                result.setUa(StringUtils.trimToEmpty(data[1]));
-                String channelIdStr = StringUtils.trimToEmpty(data[2]);
-                if (StringUtils.isNotBlank(channelIdStr)) {
-                    result.setChannelId(Long.parseLong(channelIdStr));
+                int i = 0;
+                for (String value : iterable) {
+                    if (i == 0) {
+                        result.setImei(StringUtils.trimToEmpty(value));
+                    } else if (i == 1) {
+                        result.setUa(StringUtils.trimToEmpty(value));
+                    } else if (i == 2) {
+                        String channelIdStr = StringUtils.trimToEmpty(value);
+                        if (StringUtils.isNotBlank(channelIdStr)) {
+                            result.setChannelId(Long.parseLong(channelIdStr));
+                        }
+                    } else if (i == 3) {
+                        result.setDeviceCode(StringUtils.trimToEmpty(value));
+                    } else if (i == 4) {
+                        result.setBatchCode(StringUtils.trimToEmpty(value));
+                    } else if (i == 5) {
+                        String processTimeStamp = StringUtils.trimToEmpty(value);
+                        if (StringUtils.isNotBlank(processTimeStamp)) {
+                            Date processTime = DateFormatUtils.parse(processTimeStamp, "yyyyMMdd");
+                            result.setProcessTime(processTime);
+                        }
+                    }
+                    i++;
                 }
 
-                result.setDeviceCode(StringUtils.trimToEmpty(data[3]));
-                result.setBatchCode(StringUtils.trimToEmpty(data[4]));
-
-                String processTimeStamp = StringUtils.trimToEmpty(data[5]);
-                if (StringUtils.isNotBlank(processTimeStamp)) {
-                    Date processTime = DateFormatUtils.parse(processTimeStamp, "yyyyMMdd");
-                    result.setProcessTime(processTime);
-                }
                 result.setDeviceUploadTime(new Date());
             } catch (Exception e) {
-                DeviceCommonLog.info("{}", JSON.toJSONString(data));
+                DeviceCommonLog.info("{}", JSON.toJSONString(iterable));
                 LOGGER.error("translateDataLog error ", e);
                 return null;
             }
         } else {
-            LOGGER.info("数据校验不通过：{}", JSON.toJSONString(data));
+            LOGGER.info("数据校验不通过：{}", JSON.toJSONString(iterable));
         }
 
         return result;
