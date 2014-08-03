@@ -75,6 +75,13 @@ public class PublishTaskController extends BaseController {
             errorMsg = "请选择生效时间！";
         } else if (StringUtils.isEmpty(groupId) && !StringUtils.isNumeric(groupId)) {
             errorMsg = "请选择渠道组！";
+        } else if (JcywConstants.BASE_CONSTANT_N.equals(pkgType)) {
+            if (modelIds == null || modelIds.length == 0) {
+                errorMsg = "请选择安装机型！";
+            }
+            if (channelIds == null || channelIds.length == 0) {
+                errorMsg = "请选择安装仓库！";
+            }
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
