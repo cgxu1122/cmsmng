@@ -58,7 +58,7 @@ public class ImeiUploadController {
                           HttpServletRequest request) {
         JSONObject result = new JSONObject();
         String originFileName = file.getOriginalFilename();
-        if (file.isEmpty() || StringUtils.isNotBlank(originFileName)) {
+        if (file.isEmpty() || StringUtils.isBlank(originFileName)) {
             result.put("ret", false);
             result.put("errorMsg", "非法请求，请选择需要上传Excel文件");
             return result;
@@ -70,6 +70,10 @@ public class ImeiUploadController {
         }
         try {
             Date processDate = DateFormatUtils.parse(processDateStr, "yyyy-MM-dd");
+            if (!checkProcessDate(processDate)) {
+                result.put("ret", false);
+                result.put("errorMsg", "日期选择无效，请重新选择");
+            }
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
@@ -94,6 +98,16 @@ public class ImeiUploadController {
         }
 
         return result;
+    }
+
+    private boolean checkProcessDate(Date processDate) {
+        Date startTime = DateFormatUtils.addDay(new Date(), -3);
+        Date endTime = new Date();
+        if (processDate.before(endTime) && processDate.after(startTime)) {
+            return true;
+        }
+
+        return false;
     }
 
     public boolean checkFileType(String fileName) {
