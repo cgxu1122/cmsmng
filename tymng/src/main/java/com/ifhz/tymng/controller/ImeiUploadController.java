@@ -1,10 +1,13 @@
 package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.progress.ProgressModel;
+import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.imei.ImeiUploadService;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 类描述
@@ -48,6 +53,8 @@ public class ImeiUploadController {
     public
     @ResponseBody
     JSONObject exportImei(@RequestParam(value = "excelFile", required = true) MultipartFile file,
+                          @RequestParam(value = "channelId", required = true) Long channelId,
+                          @RequestParam(value = "processDateStr", required = true) String processDateStr,
                           HttpServletRequest request) {
         JSONObject result = new JSONObject();
         String originFileName = file.getOriginalFilename();
@@ -62,21 +69,28 @@ public class ImeiUploadController {
             return result;
         }
         try {
+            Date processDate = DateFormatUtils.parse(processDateStr, "yyyy-MM-dd");
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
-            imeiUploadService.processCsvData(toFilePath, null, null);
-            result.put("ret", false);
-            if (!false) {
-                result.put("errorMsg", "处理上传文件失败，请检查文件格式是否正确或者重新操作");
+            Map<ImeiStatus, Integer> map = imeiUploadService.processImeiExcelData(toFilePath, channelId, processDate);
+            if (MapUtils.isNotEmpty(map)) {
+                for (Map.Entry<ImeiStatus, Integer> entry : map.entrySet()) {
+                    result.put(entry.getKey().name(), entry.getValue());
+                }
+            }
+            for (ImeiStatus imeiStatus : ImeiStatus.values()) {
+                if (!result.containsKey(imeiStatus.name())) {
+                    result.put(imeiStatus.name(), 0);
+                }
             }
         } catch (Exception e) {
             result.put("ret", false);
             result.put("errorMsg", "处理上传文件失败，请重新操作");
-            LOGGER.error("list error ", e);
+            LOGGER.error("exportImei error ", e);
         } finally {
-            LOGGER.info("list:returnObj={}", result);
+            LOGGER.info("returnObj={}", result);
         }
 
         return result;
