@@ -90,8 +90,8 @@
             <if test="address != null and address != ''">
                 ADDRESS = #{address},
             </if>
-            <if test="roleId != null and cellPhone != 0">
-                ROLE_ID = #{roleId},
+            <if test="roleId != null and roleId != 0">
+            ROLE_ID = #{roleId},
             </if>
             <if test="updateTime != null">
                 UPDATE_TIME = #{updateTime},
