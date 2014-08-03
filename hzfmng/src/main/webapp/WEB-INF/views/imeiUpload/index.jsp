@@ -8,14 +8,15 @@
     <title>Demo</title>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#dd').datebox().datebox('calendar').calendar({
-                validator: function (date) {
-                    var now = new Date();
-                    var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3);
-                    var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    return d1 <= date && date <= d2;
-                }
+            $("#processDate").datebox({
+                value: getCurrrentDateStr()
             });
+            var d = new Date();
+            var nowDate = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+            d.setDate(d.getDate() - 3);
+            var m = d.getMonth() + 1;
+            var oldDate = d.getFullYear() + '年' + m + '月' + d.getDate() + '日';
+            $("#datetagmsg").html("日期只能选择" + oldDate + "到" + nowDate);
         });
 
         function importImei() {
@@ -46,13 +47,24 @@
                         <input type="text" name="channelName" value="${channelName}" readonly/>
                         <input type="hidden" name="channelId" id="channelId" value="${channelId}"/>
                     </td>
+                </tr>
+                <tr>
                     <td>
-                        <input id="dd"/>
+                        <font color="red" id="datetagmsg"></font>
                     </td>
+                </tr>
+                <tr>
                     <td>
-                        <input type="file" name="excelFile" style="width: 150px"/>
+                        <input type="text" name="processDate" id="processDate" placeholder="日期"/>
                     </td>
-                    <td align="center">
+                </tr>
+                <tr>
+                    <td>
+                        <input type="file" name="excelFile" style="margin-left: 80px"/>
+                    </td>
+                </tr>
+                <tr>
+                <td align="center">
                         <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                            onclick="importImei()">导入imei</a>
                     </td>
