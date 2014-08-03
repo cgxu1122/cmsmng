@@ -50,7 +50,18 @@ public class ZipUploadController {
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request) {
-        return new ModelAndView("zipUpload/index");
+        ModelAndView mav = new ModelAndView("zipUpload/index");
+        Long userId = CurrentUserUtil.getUserId();
+        ChannelInfo channelInfo = channelInfoService.getByUserId(userId);
+        String channelName;
+        if (channelInfo == null) {
+            channelName = "非仓库用户不允许执行此操作，请联系管理员";
+        } else {
+            channelName = channelInfo.getChannelName();
+        }
+        mav.addObject("channelName", channelInfo.getChannelName());
+
+        return mav;
     }
 
     @RequestMapping(value = "/importZip.do", produces = {"application/json;charset=UTF-8"})
@@ -86,7 +97,7 @@ public class ZipUploadController {
             ChannelInfo channelInfo = channelInfoService.getByUserId(userId);
             if (channelInfo == null) {
                 result.put("ret", false);
-                result.put("errorMsg", "非仓库用户，不能够上传I执行此操作，请联系管理员");
+                result.put("errorMsg", "非仓库用户不允许执行此操作，请联系管理员");
             }
             Map<ImeiStatus, Integer> map = zipUploadService.processFile(toFilePath, channelInfo.getChannelId(), processDate);
             if (MapUtils.isNotEmpty(map)) {
