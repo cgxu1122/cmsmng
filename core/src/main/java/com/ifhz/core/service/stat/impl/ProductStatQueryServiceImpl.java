@@ -13,6 +13,8 @@ import com.ifhz.core.service.cache.ProductInfoCacheService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +29,8 @@ import java.util.List;
  */
 @Service("productStatQueryService")
 public class ProductStatQueryServiceImpl implements ProductStatQueryService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductStatQueryServiceImpl.class);
+
     @Resource(name = "productStatAdapter")
     private ProductStatAdapter productStatAdapter;
     @Resource(name = "modelInfoCacheService")
@@ -44,9 +48,16 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
             for (ProductStat productStat : productStatList) {
                 String ua = productStat.getUa();
                 if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productStat.getGroupId());
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
                     if (modelInfo != null) {
                         productStat.setModelName(modelInfo.getModelName());
+                    } else {
+                        productStat.setModelName("未知");
                     }
                 }
                 if (productStat.getGroupId() != null) {
@@ -71,9 +82,16 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
             for (ProductStat productStat : productStatList) {
                 String ua = productStat.getUa();
                 if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productStat.getGroupId());
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
                     if (modelInfo != null) {
                         productStat.setModelName(modelInfo.getModelName());
+                    } else {
+                        productStat.setModelName("未知");
                     }
                 }
                 if (productStat.getGroupId() != null) {

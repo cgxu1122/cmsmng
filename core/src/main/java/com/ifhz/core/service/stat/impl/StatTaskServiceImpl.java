@@ -187,7 +187,12 @@ public class StatTaskServiceImpl implements StatTaskService {
                         logStatUpdateService.update(entity);
                     } else {//数据库无数据则插入
                         if (value.getGroupId() == GroupType.DB.VALUE || value.getGroupId() == GroupType.LW.VALUE) {
-                            ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(value.getChannelId());
+                            ChannelInfo channelInfo = null;
+                            try {
+                                channelInfo = channelInfoCacheService.getByChannelId(value.getChannelId());
+                            } catch (Exception e) {
+                                LOGGER.error("getByChannelId error", e);
+                            }
                             if (channelInfo != null && channelInfo.getLaowuId() != null) {
                                 value.setLaowuId(channelInfo.getLaowuId());
                             }
