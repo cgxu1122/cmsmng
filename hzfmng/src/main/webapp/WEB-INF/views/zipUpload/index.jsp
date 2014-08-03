@@ -8,17 +8,15 @@
     <title>Demo</title>
     <script type="text/javascript">
         $(document).ready(function () {
-            $(document).ready(function () {
-                $("#processDate").datebox({
-                    value: getCurrrentDateStr()
-                });
-                var d = new Date();
-                var nowDate = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
-                d.setDate(d.getDate() - 3);
-                var m = d.getMonth() + 1;
-                var oldDate = d.getFullYear() + '年' + m + '月' + d.getDate() + '日';
-                $("#datetagmsg").html("日期只能选择" + oldDate + "到" + nowDate);
+            $("#processDate").datebox({
+                value: getCurrrentDateStr()
             });
+            var d = new Date();
+            var nowDate = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+            d.setDate(d.getDate() - 3);
+            var m = d.getMonth() + 1;
+            var oldDate = d.getFullYear() + '年' + m + '月' + d.getDate() + '日';
+            $("#datetagmsg").html("日期只能选择" + oldDate + "到" + nowDate);
         });
         function importZip() {
             $('#fm').form('submit', {
@@ -49,27 +47,32 @@
             <table>
                 <tr>
                     <td>
-                        <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"/>
-                        <input type="hidden" name="channelId" id="channelId"/>
+                        仓库名称：
+                    </td>
+                    <td align="left">
+                        ${channelName}
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td align="left" colspan="2">
                         <font color="red" id="datetagmsg"></font>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="text" name="processDate" id="processDate" placeholder="日期"/>
+                    <td>选择日期:</td>
+                    <td align="left">
+                        <input type="text" name="processDateStr" id="processDate" placeholder="日期"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td>选择文件:</td>
+                    <td align="left">
                         <input type="file" name="zipFile" style="width: 150px"/>
                     </td>
                 </tr>
                 <tr>
-                    <td align="center">
+                    <td></td>
+                    <td align="left">
                         <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                            onclick="importZip()">导入zip</a>
                     </td>

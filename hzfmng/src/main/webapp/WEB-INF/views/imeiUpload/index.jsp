@@ -44,27 +44,32 @@
             <table>
                 <tr>
                     <td>
-                        <input type="text" name="channelName" value="${channelName}" readonly/>
-                        <input type="hidden" name="channelId" id="channelId" value="${channelId}"/>
+                        仓库名称：
+                    </td>
+                    <td align="left">
+                        ${channelName}
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td align="left" colspan="2">
                         <font color="red" id="datetagmsg"></font>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="text" name="processDate" id="processDate" placeholder="日期"/>
+                    <td>选择日期:</td>
+                    <td align="left">
+                        <input type="text" name="processDateStr" id="processDate" placeholder="日期"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="file" name="excelFile" style="margin-left: 80px"/>
+                    <td>选择文件:</td>
+                    <td align="left">
+                        <input type="file" name="excelFile"/>
                     </td>
                 </tr>
                 <tr>
-                <td align="center">
+                    <td></td>
+                    <td align="left">
                         <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                            onclick="importImei()">导入imei</a>
                     </td>

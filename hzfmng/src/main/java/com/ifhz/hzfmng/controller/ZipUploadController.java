@@ -59,7 +59,7 @@ public class ZipUploadController {
         } else {
             channelName = channelInfo.getChannelName();
         }
-        mav.addObject("channelName", channelInfo.getChannelName());
+        mav.addObject("channelName", channelName);
 
         return mav;
     }
