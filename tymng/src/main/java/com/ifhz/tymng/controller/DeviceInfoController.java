@@ -128,7 +128,7 @@ public class DeviceInfoController extends BaseController {
         di.setActive(JcywConstants.ACTIVE_Y);
         Pagination page = new Pagination();
         page.setCurrentPage(1);
-        page.setPageSize(1);
+        page.setPageSize(2);
         List<DeviceInfo> list = deviceInfoService.queryByVo(page, di);
         if (list != null && list.size() > 0) {
             for (DeviceInfo repeatCodeCi : list) {
