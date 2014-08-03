@@ -107,8 +107,13 @@ public class SysUserController extends BaseController {
             list = Lists.newArrayList();
         } else {
             for (SysUser user : list) {
+
                 SysRole role = sysRoleService.getById(user.getRoleId());
-                user.setRoleName(role.getRoleName());
+                if (role == null) {
+                    user.setRoleName("未知");
+                } else {
+                    user.setRoleName(role.getRoleName());
+                }
             }
         }
         JSONObject result = new JSONObject();
