@@ -89,29 +89,33 @@
         <form id="fm" method="post" enctype="multipart/form-data" novalidate>
             <table>
                 <tr>
-                    <td>
-                        <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"
+                    <td>选择仓库：</td>
+                    <td align="left">
+                    <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"
                                onclick="showChannelDialog()"/>
                         <input type="hidden" name="channelId" id="channelId"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <font color="red" id="datetagmsg"></font>
+                    <td align="left" colspan="2">
+                    <font color="red" id="datetagmsg"></font>
                     </td>
                 </tr>
                 <tr>
-                <td>
-                    <input type="text" name="processDateStr" id="processDate" placeholder="日期"/>
-                </td>
-                </tr>
-                <tr>
-                <td>
-                        <input type="file" name="zipFile"/>
+                    <td>选择日期：</td>
+                    <td align="left">
+                        <input type="text" name="processDateStr" id="processDate" placeholder="日期"/>
                     </td>
                 </tr>
                 <tr>
-                <td align="center">
+                    <td>选择文件：</td>
+                    <td align="left">
+                    <input type="file" name="zipFile"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="left">
                     <a id="importImeiBtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="importZip()">导入zip</a>
                 </td>
