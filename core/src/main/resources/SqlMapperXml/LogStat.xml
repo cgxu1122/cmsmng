@@ -170,6 +170,45 @@
     </select>
 
 
+    <select id="queryHzfListByVo" resultMap="LogStatResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.deviceCode != null and record.deviceCode != ''">
+            and DEVICE_CODE = #{record.deviceCode}
+        </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID in (
+            select CHANNEL_ID from TY_CHANNEL_INFO
+            START WITH CHANNEL_ID = #{record.channelId}
+            CONNECT BY prior CHANNEL_ID = PARENT_ID
+            )
+        </if>
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and LAOWU_ID = #{record.laowuId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and PROCESS_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and PROCESS_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        <if test="record.channelIdCondidtion != null">
+            and CHANNEL_ID in (${record.channelIdCondidtion})
+        </if>
+    </select>
+
+
     <select id="querySumByVo" resultMap="LogStatResultMap">
         select
         UA,
