@@ -14,6 +14,8 @@ import java.util.List;
 public interface LogStatQueryService {
     public List<LogStat> queryByVo(Pagination page, LogStat record);
 
+    public List<LogStat> queryHzfListByVo(Pagination page, LogStat record);
+
     public List<LogStat> querySumByVo(Pagination page, LogStat record);
 
     public LogStat queryCountByVo(LogStat record);

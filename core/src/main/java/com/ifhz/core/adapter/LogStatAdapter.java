@@ -23,6 +23,8 @@ public interface LogStatAdapter {
 
     public List<LogStat> queryByVO(Pagination page, LogStat record);
 
+    public List<LogStat> queryHzfListByVo(Pagination page, LogStat record);
+
     public List<LogStat> querySumByVO(Pagination page, LogStat record);
 
     public LogStat queryCountByVO(LogStat record);

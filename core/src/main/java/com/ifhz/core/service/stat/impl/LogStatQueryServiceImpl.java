@@ -75,6 +75,45 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
     }
 
     @Override
+    public List<LogStat> queryHzfListByVo(Pagination page, LogStat record) {
+        List<LogStat> logStatList = logStatAdapter.queryHzfListByVo(page, record);
+        if (CollectionUtils.isNotEmpty(logStatList)) {
+            for (LogStat logStat : logStatList) {
+                String ua = logStat.getUa();
+                if (StringUtils.isNotEmpty(ua)) {
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
+                    if (modelInfo != null) {
+                        logStat.setModelName(modelInfo.getModelName());
+                    } else {
+                        logStat.setModelName("未知");
+                    }
+                }
+                Long channelId = logStat.getChannelId();
+                if (channelId != null) {
+                    ChannelInfo channelInfo = null;
+                    try {
+                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    } catch (Exception e) {
+                        LOGGER.error("getByChannelId error", e);
+                    }
+                    if (channelInfo != null) {
+                        logStat.setChannelName(channelInfo.getChannelName());
+                    } else {
+                        logStat.setModelName("未知");
+                    }
+                }
+            }
+        }
+
+        return logStatList;
+    }
+
+    @Override
     @Log
     public List<LogStat> querySumByVo(Pagination page, LogStat record) {
         List<LogStat> logStatList = logStatAdapter.querySumByVO(page, record);

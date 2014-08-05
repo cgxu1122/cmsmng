@@ -4,7 +4,6 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.LogStat;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,9 +22,9 @@ public interface LogStatMapper {
 
     public LogStat getByMd5Key(String md5Key);
 
-    public List<LogStat> queryListByQueryKey(String queryKey, Date startTime, Date endTime);
-
     public List<LogStat> queryByVo(Pagination page, @Param(value = "record") LogStat record);
+
+    public List<LogStat> queryHzfListByVo(Pagination page, @Param(value = "record") LogStat record);
 
     public List<LogStat> querySumByVo(Pagination page, @Param(value = "record") LogStat record);
 

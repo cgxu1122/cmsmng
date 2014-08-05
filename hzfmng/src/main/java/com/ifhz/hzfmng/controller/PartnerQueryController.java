@@ -137,7 +137,7 @@ public class PartnerQueryController extends BaseController {
             }
             logStat.setGroupId(null);
         }
-        List<LogStat> list = logStatQueryService.queryByVo(page, logStat);
+        List<LogStat> list = logStatQueryService.queryHzfListByVo(page, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
             LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
             list.add(countLogStat);
@@ -192,7 +192,7 @@ public class PartnerQueryController extends BaseController {
                 }
                 logStat.setGroupId(null);
             }
-            List<LogStat> list = logStatQueryService.queryByVo(null, logStat);
+            List<LogStat> list = logStatQueryService.queryHzfListByVo(null, logStat);
             if (CollectionUtils.isNotEmpty(list)) {
                 LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
                 list.add(countLogStat);
