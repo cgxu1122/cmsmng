@@ -273,6 +273,7 @@ function showChannelDialog() {
     var groupId = $('#groupId').combobox('getValue');
     $('#tt').tree({
         checkbox: true,
+        cascadeCheck: false,
         url: "<%=basePath%>/tymng/channelInfo/listTreeAll?groupId=" + groupId
     });
 }
