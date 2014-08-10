@@ -204,12 +204,16 @@ function selectPackage(packageId, packageName, pkgType, groupId) {
     if ("Y" == pkgType) {
         //$("#groupId").combobox('select', groupId);
         $("#groupId").combobox('disable');
-        $("#channelDiv").hide();
-        $("#addChannelList").empty();
         $("#modelDiv").hide();
         $("#addModelList").empty();
         $("#groupId").combobox('select', groupId);
         $("input[name=groupId]").removeAttr("disabled");
+        if (groupId == "1") {
+            $("#channelDiv").hide();
+            $("#addChannelList").empty();
+        } else {
+            $("#channelDiv").show();
+        }
     } else {
         $("#groupId").combobox('enable');
         $("#channelDiv").show();

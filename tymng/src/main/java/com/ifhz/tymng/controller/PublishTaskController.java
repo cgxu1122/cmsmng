@@ -82,6 +82,12 @@ public class PublishTaskController extends BaseController {
             if (channelIds == null || channelIds.length == 0) {
                 errorMsg = "请选择安装仓库！";
             }
+        } else {
+            if (JcywConstants.CHANNEL_GROUP_TY_ID_1 != Long.parseLong(groupId)) {
+                if (channelIds == null || channelIds.length == 0) {
+                    errorMsg = "请选择安装仓库！";
+                }
+            }
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {

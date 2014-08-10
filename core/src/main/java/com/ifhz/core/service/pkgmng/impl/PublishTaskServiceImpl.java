@@ -70,16 +70,15 @@ public class PublishTaskServiceImpl implements PublishTaskService {
                         //再添加新数据
                         pubChlModRefAdapter.insert(pubChlModRef);
                     }
-                } else {
-                    if (pubChl.getChannelId() == null) {//表示为通用包
-                        PubChlModRef pubChlModRef = new PubChlModRef();
-                        pubChlModRef.setActive(JcywConstants.ACTIVE_Y);
-                        pubChlModRef.setPublishId(record.getPublishId());
-                        pubChlModRef.setPackageId(record.getPackageId());
-                        pubChlModRef.setPkgType(record.getPkgType());
-                        pubChlModRef.setGroupId(pubChl.getGroupId());
-                        pubChlModRefAdapter.insert(pubChlModRef);
-                    }
+                } else {//表示为通用包
+                    PubChlModRef pubChlModRef = new PubChlModRef();
+                    pubChlModRef.setActive(JcywConstants.ACTIVE_Y);
+                    pubChlModRef.setPublishId(record.getPublishId());
+                    pubChlModRef.setPackageId(record.getPackageId());
+                    pubChlModRef.setPkgType(record.getPkgType());
+                    pubChlModRef.setGroupId(pubChl.getGroupId());
+                    pubChlModRef.setChannelId(pubChl.getChannelId());
+                    pubChlModRefAdapter.insert(pubChlModRef);
                 }
             }
         }

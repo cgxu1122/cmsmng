@@ -114,12 +114,15 @@ public class PackageInfoController extends BaseController {
         pi.setActive(JcywConstants.ACTIVE_Y);
         if (StringUtils.isNotEmpty(groupId)) {
             pi.setGroupId(Long.parseLong(groupId));
-            piList = packageInfoService.queryByVo(page, pi);
-            if (CollectionUtils.isNotEmpty(piList)) {
-                result.put("errorMsg", "每个渠道组只能有一个通用包！不能重复添加！");
-                return result;
+            if (JcywConstants.CHANNEL_GROUP_TY_ID_1 == Long.parseLong(groupId)) {
+                piList = packageInfoService.queryByVo(page, pi);
+                if (CollectionUtils.isNotEmpty(piList)) {
+                    result.put("errorMsg", "天音渠道组只能有一个通用包！不能重复添加！");
+                    return result;
+                }
             }
         }
+
         pi.setPackageName(packageName.trim());
         pi.setBatchCode(batchCode);
         pi.setBatchId(Long.parseLong(batchId));
@@ -204,13 +207,13 @@ public class PackageInfoController extends BaseController {
         }
         pi = new PackageInfo();
         pi.setActive(JcywConstants.ACTIVE_Y);
-        if (StringUtils.isNotEmpty(groupId)) {
+        if (StringUtils.isNotEmpty(groupId) && JcywConstants.CHANNEL_GROUP_TY_ID_1 == Long.parseLong(groupId)) {
             pi.setGroupId(Long.parseLong(groupId));
             piList = packageInfoService.queryByVo(page, pi);
             if (CollectionUtils.isNotEmpty(piList)) {
                 for (PackageInfo subpi : piList) {
                     if (!subpi.getPackageId().equals(Long.parseLong(packageId))) {
-                        result.put("errorMsg", "每个渠道组只能有一个通用包！不能重复添加！");
+                        result.put("errorMsg", "天音渠道组只能有一个通用包！不能重复添加！");
                         return result;
                     }
                 }
