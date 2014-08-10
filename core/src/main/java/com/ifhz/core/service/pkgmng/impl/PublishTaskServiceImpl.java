@@ -78,6 +78,10 @@ public class PublishTaskServiceImpl implements PublishTaskService {
                     pubChlModRef.setPkgType(record.getPkgType());
                     pubChlModRef.setGroupId(pubChl.getGroupId());
                     pubChlModRef.setChannelId(pubChl.getChannelId());
+
+                    //先根据groupId，channelId删除重复的数据
+                    pubChlModRefAdapter.deleteRepeatRefForCommonPkg(pubChlModRef);
+                    //再添加新数据
                     pubChlModRefAdapter.insert(pubChlModRef);
                 }
             }

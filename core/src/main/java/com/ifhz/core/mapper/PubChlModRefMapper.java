@@ -18,6 +18,8 @@ public interface PubChlModRefMapper {
 
     public int deleteRepeatRef(PubChlModRef record);
 
+    public int deleteRepeatRefForCommonPkg(PubChlModRef record);
+
     public int deleteByPublishId(PubChlModRef record);
 
     public int deleteByPackageId(PubChlModRef record);
@@ -33,6 +35,7 @@ public interface PubChlModRefMapper {
                                                  @Param("endTime") Date endTime);
 
     public List<PubChlModRef> queryCommonPkgList(@Param("groupId") Long groupId,
+                                                 @Param("channelId") Long channelId,
                                                  @Param("startTime") Date startTime,
                                                  @Param("endTime") Date endTime);
 
@@ -41,5 +44,5 @@ public interface PubChlModRefMapper {
                                                  @Param("channelId") Long channelId);
 
 
-    public List<Long> queryPkgIdListForCommonPkg(@Param("groupId") Long groupId);
+    public List<Long> queryPkgIdListForCommonPkg(@Param("groupId") Long groupId, @Param("channelId") Long channelId);
 }

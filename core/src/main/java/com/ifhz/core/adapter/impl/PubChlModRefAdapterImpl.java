@@ -3,6 +3,7 @@ package com.ifhz.core.adapter.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.PubChlModRefAdapter;
+import com.ifhz.core.constants.GroupEnums;
 import com.ifhz.core.mapper.PubChlModRefMapper;
 import com.ifhz.core.po.PubChlModRef;
 import org.slf4j.Logger;
@@ -41,6 +42,13 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     }
 
     @Override
+    public int deleteRepeatRefForCommonPkg(PubChlModRef record) {
+        record.setUpdateTime(new Date());
+        LOGGER.info("deleteRepeatRefForCommonPkg record={}", JSON.toJSONString(record));
+        return pubChlModRefMapper.deleteRepeatRefForCommonPkg(record);
+    }
+
+    @Override
     public int deleteByPublishId(PubChlModRef record) {
         record.setUpdateTime(new Date());
         LOGGER.info("deleteByPublishId record={}", JSON.toJSONString(record));
@@ -75,8 +83,14 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     }
 
     @Override
-    public List<PubChlModRef> queryCommonPkgList(Long groupId, Date startTime, Date endTime) {
-        List<PubChlModRef> result = pubChlModRefMapper.queryCommonPkgList(groupId, startTime, endTime);
+    public List<PubChlModRef> queryCommonPkgList(Long groupId, Long channelId, Date startTime, Date endTime) {
+        List<PubChlModRef> result = null;
+        if (groupId == GroupEnums.TY.value) {
+            result = pubChlModRefMapper.queryCommonPkgList(groupId, null, startTime, endTime);
+        } else {
+            result = pubChlModRefMapper.queryCommonPkgList(groupId, channelId, startTime, endTime);
+        }
+
         return result == null ? Lists.<PubChlModRef>newArrayList() : result;
     }
 
@@ -87,8 +101,14 @@ public class PubChlModRefAdapterImpl implements PubChlModRefAdapter {
     }
 
     @Override
-    public List<Long> queryPkgIdListForCommonPkg(Long groupId, Date startTime, Date endTime) {
-        List<Long> result = pubChlModRefMapper.queryPkgIdListForCommonPkg(groupId);
+    public List<Long> queryPkgIdListForCommonPkg(Long groupId, Long channelId, Date startTime, Date endTime) {
+        List<Long> result = null;
+        if (groupId == GroupEnums.TY.value) {
+            result = pubChlModRefMapper.queryPkgIdListForCommonPkg(groupId, null);
+        } else {
+            result = pubChlModRefMapper.queryPkgIdListForCommonPkg(groupId, channelId);
+        }
+
         return result == null ? Lists.<Long>newArrayList() : result;
     }
 }

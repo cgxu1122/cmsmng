@@ -63,7 +63,7 @@ public class UpgradePkgController {
                     Date startTime = dictInfoCacheService.getSystemInitDate();
                     long apkTimestamp = Long.parseLong(apkVersion.trim());
                     Date endTime = new Date(apkTimestamp);
-                    PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), startTime, endTime);
+                    PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), info.getChannelId(), startTime, endTime);
                     List<PackageVo> normalPkgList = packageUpgradeService.queryNormalPkgList(info.getGroupId(), info.getChannelId(), true, startTime, endTime);
                     //成功，无更新
                     if (commonPkg == null && CollectionUtils.isEmpty(normalPkgList)) {
@@ -80,7 +80,7 @@ public class UpgradePkgController {
                     Date startTime = new Date(pkgTimestamp - 1000);
                     long apkTimestamp = Long.parseLong(apkVersion.trim());
                     Date endTime = new Date(apkTimestamp);
-                    PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), startTime, endTime);
+                    PackageVo commonPkg = packageUpgradeService.queryCommonPkgList(info.getGroupId(), info.getChannelId(), startTime, endTime);
                     List<PackageVo> normalPkgList = packageUpgradeService.queryNormalPkgList(info.getGroupId(), info.getChannelId(), false, startTime, endTime);
                     //成功，无更新
                     if (commonPkg == null && CollectionUtils.isEmpty(normalPkgList)) {

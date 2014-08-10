@@ -16,7 +16,7 @@ public interface PackageUpgradeService {
 
     public List<PackageVo> queryNormalPkgList(long groupId, long channelId, boolean isInitPkg, Date startTime, Date endTime);
 
-    public PackageVo queryCommonPkgList(long groupId, Date startTime, Date endTime);
+    public PackageVo queryCommonPkgList(long groupId, long channelId, Date startTime, Date endTime);
 
     public List<ApkVo> queryApkList(Date startTime, Date endTime);
 

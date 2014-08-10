@@ -97,6 +97,7 @@ create table TY_PUB_CHL_MOD_REF  (
         #{active}
         )
     </insert>
+
     <update id="deleteRepeatRef" parameterType="com.ifhz.core.po.PubChlModRef">
         update
         <include refid="TABLE_NAME"/>
@@ -110,6 +111,20 @@ create table TY_PUB_CHL_MOD_REF  (
             and CHANNEL_ID IS NULL
         </if>
     </update>
+
+    <update id="deleteRepeatRefForCommonPkg" parameterType="com.ifhz.core.po.PubChlModRef">
+        update
+        <include refid="TABLE_NAME"/>
+        set ACTIVE = 'N',UPDATE_TIME = #{updateTime}
+        where GROUP_ID = #{groupId}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="channelId == null">
+            and CHANNEL_ID IS NULL
+        </if>
+    </update>
+
     <update id="deleteByPublishId" parameterType="com.ifhz.core.po.PubChlModRef">
         update
         <include refid="TABLE_NAME"/>
@@ -161,6 +176,9 @@ create table TY_PUB_CHL_MOD_REF  (
         from
         <include refid="TABLE_NAME"/>
         where GROUP_ID = #{groupId}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
         and PKG_TYPE = 'Y'
         and ACTIVE = 'Y'
         and UPDATE_TIME between #{startTime} and #{endTime}
@@ -184,6 +202,9 @@ create table TY_PUB_CHL_MOD_REF  (
         from
         <include refid="TABLE_NAME"/>
         where GROUP_ID = #{groupId}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
         and PKG_TYPE = 'Y'
         and ACTIVE = 'Y'
     </select>

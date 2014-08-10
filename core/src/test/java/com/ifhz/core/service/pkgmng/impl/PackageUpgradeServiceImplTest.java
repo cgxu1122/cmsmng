@@ -28,10 +28,11 @@ public class PackageUpgradeServiceImplTest extends BaseTest {
     @Test
     public void testQueryCommonPkgList() throws Exception {
         Long groupId = 1L;
+        Long channelId = 2L;
         Calendar calendar = Calendar.getInstance();
         Date startTime = calendar.getTime();
         Date endTime = calendar.getTime();
-        packageUpgradeService.queryCommonPkgList(groupId, startTime, endTime);
+        packageUpgradeService.queryCommonPkgList(groupId, channelId, startTime, endTime);
     }
 
     @Test

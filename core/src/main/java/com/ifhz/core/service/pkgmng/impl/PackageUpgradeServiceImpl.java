@@ -108,9 +108,9 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
 
     @Override
     @Log
-    public PackageVo queryCommonPkgList(long groupId, Date startTime, Date endTime) {
+    public PackageVo queryCommonPkgList(long groupId, long channelId, Date startTime, Date endTime) {
         PackageVo packageVo = null;
-        List<PubChlModRef> list = pubChlModRefAdapter.queryCommonPkgList(groupId, startTime, endTime);
+        List<PubChlModRef> list = pubChlModRefAdapter.queryCommonPkgList(groupId, channelId, startTime, endTime);
         if (CollectionUtils.isNotEmpty(list)) {
             for (PubChlModRef pubChlModRef : list) {
                 if (Active.N == Active.getByDbValue(pubChlModRef.getActive())) {
@@ -157,7 +157,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
         Set<Long> set = Sets.newHashSet();
 
         List<Long> normalPkgIdList = pubChlModRefAdapter.queryPkgIdListForNormalPkg(groupId, channelId, startTime, endTime);
-        List<Long> commonPkgIdList = pubChlModRefAdapter.queryPkgIdListForCommonPkg(groupId, startTime, endTime);
+        List<Long> commonPkgIdList = pubChlModRefAdapter.queryPkgIdListForCommonPkg(groupId, channelId, startTime, endTime);
         if (CollectionUtils.isNotEmpty(normalPkgIdList)) {
             paramList.addAll(normalPkgIdList);
         }
