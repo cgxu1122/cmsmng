@@ -275,11 +275,10 @@ function exportData() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var channelId = $('#channelId').val();
     var channelIdCondition = $('#channelIdCondition').val();
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelId=" + channelId + "&channelIdCondition=" + channelIdCondition,
+        url: "<%=basePath%>/tymng/reportCount/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelIdCondition=" + channelIdCondition,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
