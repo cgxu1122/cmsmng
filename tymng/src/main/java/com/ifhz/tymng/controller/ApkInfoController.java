@@ -211,8 +211,6 @@ public class ApkInfoController extends BaseController {
                 apkInfo.setSoftName(originFileName);
                 apkInfo.setFtpPath(path);
                 apkInfo.setDownloadUrl(path);
-            }
-            if (!StringUtils.equalsIgnoreCase(md5Value, apkInfo.getMd5Value())) {
                 apkInfo.setMd5Value(md5Value);
                 apkInfo.setFileUpdateTime(new Date());
             }
