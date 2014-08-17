@@ -280,7 +280,31 @@ public class ReportCountNewController extends BaseController {
                 titleMap.put("prsInvalidReplaceNum", "替换数量");
                 titleMap.put("prsInvalidUninstallNum", "卸载数量");
                 titleMap.put("prsInvalidUnAndReNum", "卸载并替换数量");
-                list = logStatQueryService.queryByVo(page, logStat);
+                if (StringUtils.isNotEmpty(channelIdCondition)) {
+                    logStat.setChannelIdCondition(channelIdCondition);
+                    list = logStatQueryService.queryByVo(page, logStat);
+                } else {//如果是地包渠道的负责人登录，则进行数据过滤
+                    if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+                        ChannelInfo ci = new ChannelInfo();
+                        ci.setGroupId(JcywConstants.CHANNEL_GROUP_DB_ID_2);
+                        ci.setActive(JcywConstants.ACTIVE_Y);
+                        ci.setMngId(CurrentUserUtil.getUserId());
+                        List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
+                        channelIdCondition = "";
+                        if (CollectionUtils.isNotEmpty(channelInfoList)) {
+                            for (ChannelInfo channelInfo : channelInfoList) {
+                                channelIdCondition += channelInfo.getChannelId() + ",";
+                            }
+                            if (channelIdCondition.endsWith(",")) {
+                                channelIdCondition = channelIdCondition.substring(0, channelIdCondition.length() - 1);
+                            }
+                            logStat.setChannelIdCondition(channelIdCondition);
+                            list = logStatQueryService.queryByVo(page, logStat);
+                        }
+                    } else {
+                        list = logStatQueryService.queryByVo(page, logStat);
+                    }
+                }
             } else if ("3".equals(exportType)) {//其他渠道装机查询
                 titleMap.put("devicePrsDayNum", "装机数量");
                 titleMap.put("prsActiveTotalNum", "装机到达数量");
