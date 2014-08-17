@@ -9,7 +9,6 @@ import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
-import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.imei.StatImeiQueryService;
 import com.ifhz.core.service.imei.bean.ImeiQueryType;
@@ -37,11 +36,9 @@ import java.util.*;
  * @author yangjian
  */
 @Controller
-@RequestMapping("/tymng/reportCount")
-public class ReportCountController extends BaseController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportCountController.class);
-    @Autowired
-    private ChannelInfoService channelInfoService;
+@RequestMapping("/tymng/reportCountNew")
+public class ReportCountNewController extends BaseController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportCountNewController.class);
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
@@ -51,24 +48,44 @@ public class ReportCountController extends BaseController {
     @Autowired
     private StatImeiQueryService statImeiQueryService;
 
-    @RequestMapping("/indexStore")
-    public ModelAndView indexTY(HttpServletRequest request) {
-        return new ModelAndView("reportCount/indexStore");
+    @RequestMapping("/indexInstallTY")
+    public ModelAndView indexInstallTY(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexInstallTY");
     }
 
-    @RequestMapping("/indexChannelProcess")
-    public ModelAndView indexDB(HttpServletRequest request) {
-        return new ModelAndView("reportCount/indexChannelProcess");
+    @RequestMapping("/indexInstallDB")
+    public ModelAndView indexInstallDB(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexInstallDB");
     }
 
-    @RequestMapping("/indexChannelCounter")
-    public ModelAndView indexCP(HttpServletRequest request) {
-        return new ModelAndView("reportCount/indexChannelCounter");
+    @RequestMapping("/indexInstallQT")
+    public ModelAndView indexInstallQT(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexInstallQT");
     }
 
-    @RequestMapping("/indexProduct")
-    public ModelAndView indexLW(HttpServletRequest request) {
-        return new ModelAndView("reportCount/indexProduct");
+    @RequestMapping("/indexInstallProduct")
+    public ModelAndView indexInstallProduct(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexInstallProduct");
+    }
+
+    @RequestMapping("/indexArriveTY")
+    public ModelAndView indexArriveTY(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexArriveTY");
+    }
+
+    @RequestMapping("/indexArriveDB")
+    public ModelAndView indexArriveDB(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexArriveDB");
+    }
+
+    @RequestMapping("/indexArriveQT")
+    public ModelAndView indexArriveQT(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexArriveQT");
+    }
+
+    @RequestMapping("/indexArriveProduct")
+    public ModelAndView indexArriveProduct(HttpServletRequest request) {
+        return new ModelAndView("reportCountNew/indexArriveProduct");
     }
 
     @RequestMapping(value = "/listStoreLogStat", produces = {"application/json;charset=UTF-8"})
@@ -211,28 +228,33 @@ public class ReportCountController extends BaseController {
             titleMap.put("processDate", "日期");
             titleMap.put("modelName", "机型全称");
             titleMap.put("channelName", "仓库名称");
+
             List<LogStat> list = new ArrayList<LogStat>();
             Pagination page = new Pagination();
             page.setCurrentPage(1);
             page.setPageSize(Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX)));
-            if ("1".equals(exportType)) {//按仓库查询
+            if ("1".equals(exportType)) {//天音渠道装机查询
                 titleMap.put("devicePrsDayNum", "装机数量");
-                titleMap.put("deviceUpdDayNum", "装机到达数量");
-                titleMap.put("prsActiveTotalNum", "累计到达数量");
+                titleMap.put("prsActiveTotalNum", "装机到达数量");
                 titleMap.put("prsActiveValidNum", "有效到达数量");
                 titleMap.put("prsActiveInvalidNum", "无效到达数量");
                 titleMap.put("prsInvalidReplaceNum", "替换数量");
                 titleMap.put("prsInvalidUninstallNum", "卸载数量");
                 titleMap.put("prsInvalidUnAndReNum", "卸载并替换数量");
                 list = logStatQueryService.querySumByVo(page, logStat);
-            } else if ("2".equals(exportType)) {//按渠道查询加工数据
+            } else if ("2".equals(exportType)) {//地包渠道装机查询
                 titleMap.put("deviceCode", "设备编码");
                 titleMap.put("devicePrsDayNum", "装机数量");
+                titleMap.put("prsActiveTotalNum", "装机到达数量");
+                titleMap.put("prsActiveValidNum", "有效到达数量");
+                titleMap.put("prsActiveInvalidNum", "无效到达数量");
+                titleMap.put("prsInvalidReplaceNum", "替换数量");
+                titleMap.put("prsInvalidUninstallNum", "卸载数量");
+                titleMap.put("prsInvalidUnAndReNum", "卸载并替换数量");
                 list = logStatQueryService.queryByVo(page, logStat);
-            } else if ("3".equals(exportType)) {//按渠道查询到达数据
-                titleMap.put("deviceCode", "设备编码");
-                titleMap.put("deviceUpdDayNum", "装机到达数量");
-                titleMap.put("prsActiveTotalNum", "累计到达数量");
+            } else if ("3".equals(exportType)) {//其他渠道装机查询
+                titleMap.put("devicePrsDayNum", "装机数量");
+                titleMap.put("prsActiveTotalNum", "装机到达数量");
                 titleMap.put("prsActiveValidNum", "有效到达数量");
                 titleMap.put("prsActiveInvalidNum", "无效到达数量");
                 titleMap.put("prsInvalidReplaceNum", "替换数量");
@@ -340,10 +362,10 @@ public class ReportCountController extends BaseController {
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
             titleMap.put("processDate", "日期");
             titleMap.put("modelName", "机型名称");
+            titleMap.put("productName", "产品名称");
             titleMap.put("groupName", "渠道组织");
             titleMap.put("productPrsDayNum", "装机数量");
-            titleMap.put("productUpdDayNum", "装机到达数量");
-            titleMap.put("prsActiveTotalNum", "累计到达数量");
+            titleMap.put("prsActiveTotalNum", "装机到达数量");
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
             String localFilePath = localDirCacheService.getExcelTempPath();
@@ -508,4 +530,5 @@ public class ReportCountController extends BaseController {
         }
         return statImeiRequest;
     }
+
 }
