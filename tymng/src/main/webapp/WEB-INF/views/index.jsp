@@ -365,7 +365,7 @@
     <div title="安装报表统计" style="overflow: auto;">
         <shiro:hasPermission name="report_ty_install">
             <div class="nav-item">
-                <a href="javascript:addTab('天音渠道安装查询','<%=basePath%>/tymng/reportCount/indexInstallTY','menu_icon_datadeal')">
+                <a href="javascript:addTab('天音渠道安装查询','<%=basePath%>/tymng/reportCountNew/indexInstallTY','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>天音渠道安装查询</span>
                 </a>
@@ -373,7 +373,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="report_db_install">
             <div class="nav-item">
-                <a href="javascript:addTab('地包渠道安装查询','<%=basePath%>/tymng/reportCount/indexInstallDB','menu_icon_datadeal')">
+                <a href="javascript:addTab('地包渠道安装查询','<%=basePath%>/tymng/reportCountNew/indexInstallDB','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>地包渠道安装查询</span>
                 </a>
@@ -381,7 +381,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="report_qt_install">
             <div class="nav-item">
-                <a href="javascript:addTab('其他渠道安装查询','<%=basePath%>/tymng/reportCount/indexInstallQT','menu_icon_datadeal')">
+                <a href="javascript:addTab('其他渠道安装查询','<%=basePath%>/tymng/reportCountNew/indexInstallQT','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>其他渠道安装查询</span>
                 </a>
@@ -389,7 +389,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="report_porduct_install">
             <div class="nav-item">
-                <a href="javascript:addTab('产品安装查询','<%=basePath%>/tymng/reportCount/indexInstallProduct','menu_icon_datadeal')">
+                <a href="javascript:addTab('产品安装查询','<%=basePath%>/tymng/reportCountNew/indexInstallProduct','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>产品安装查询</span>
                 </a>
@@ -401,7 +401,7 @@
     <div title="到达报表统计" style="overflow: auto;">
         <shiro:hasPermission name="report_ty_arrive">
             <div class="nav-item">
-                <a href="javascript:addTab('天音渠道到达查询','<%=basePath%>/tymng/reportCount/indexArriveTY','menu_icon_datadeal')">
+                <a href="javascript:addTab('天音渠道到达查询','<%=basePath%>/tymng/reportCountNew/indexArriveTY','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>天音渠道到达查询</span>
                 </a>
@@ -409,7 +409,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="report_db_arrive">
             <div class="nav-item">
-                <a href="javascript:addTab('地包渠道到达查询','<%=basePath%>/tymng/reportCount/indexArriveDB','menu_icon_datadeal')">
+                <a href="javascript:addTab('地包渠道到达查询','<%=basePath%>/tymng/reportCountNew/indexArriveDB','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>地包渠道到达查询</span>
                 </a>
@@ -417,7 +417,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="report_qt_arrive">
             <div class="nav-item">
-                <a href="javascript:addTab('其他渠道到达查询','<%=basePath%>/tymng/reportCount/indexArriveQT','menu_icon_datadeal')">
+                <a href="javascript:addTab('其他渠道到达查询','<%=basePath%>/tymng/reportCountNew/indexArriveQT','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>其他渠道到达查询</span>
                 </a>
@@ -425,7 +425,7 @@
         </shiro:hasPermission>
         <shiro:hasPermission name="report_porduct_arrive">
             <div class="nav-item">
-                <a href="javascript:addTab('产品到达查询','<%=basePath%>/tymng/reportCount/indexArriveProduct','menu_icon_datadeal')">
+                <a href="javascript:addTab('产品到达查询','<%=basePath%>/tymng/reportCountNew/indexArriveProduct','menu_icon_datadeal')">
                     <span class="menu_icon_datadeal"></span>
                     <span>产品到达查询</span>
                 </a>

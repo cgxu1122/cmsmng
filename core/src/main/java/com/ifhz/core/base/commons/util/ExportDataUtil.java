@@ -97,7 +97,7 @@ public class ExportDataUtil {
                 Set<String> key = titleMap.keySet();
                 if (!CollectionUtils.isEmpty(dataList)) {
                     //确定小于最大导出数
-                    Integer maxNum = Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX));
+                    Integer maxNum = Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX)) + 1;
                     if (dataList.size() < maxNum) {
                         maxNum = dataList.size();
                     }

@@ -8,7 +8,7 @@
     <entry key="ftp.server.password">123465</entry>
     <entry key="ftp.server.deviceDir">/data/device/{0}/</entry>
     <entry key="ftp.server.apkDir">/data/apk/{0}/</entry>
-    <entry key="export.num.max">50000</entry>
+    <entry key="export.num.max">100000</entry>
     <entry key="stat.pageSize">10000</entry>
     <entry key="wdj.query.url">http://115.29.46.109/interface/export?upload_dt=</entry>
     <entry key="device.logFile.dir">/data/app/device</entry>

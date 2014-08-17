@@ -72,17 +72,17 @@ public class LogStat implements Serializable {
     private Date startDate;
     private Date endDate;
     private Integer processType;
-    private String channelIdCondidtion;
+    private String channelIdCondition;
     //页面返回值
     private String channelName;
     private String queryImeiSource;
 
-    public String getChannelIdCondidtion() {
-        return channelIdCondidtion;
+    public String getChannelIdCondition() {
+        return channelIdCondition;
     }
 
-    public void setChannelIdCondidtion(String channelIdCondidtion) {
-        this.channelIdCondidtion = channelIdCondidtion;
+    public void setChannelIdCondition(String channelIdCondition) {
+        this.channelIdCondition = channelIdCondition;
     }
 
     public String getQueryImeiSource() {
