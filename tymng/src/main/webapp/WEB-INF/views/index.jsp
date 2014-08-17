@@ -362,6 +362,78 @@
     </div>
 </shiro:hasPermission>
 <shiro:hasPermission name="report_menu">
+    <div title="安装报表统计" style="overflow: auto;">
+        <shiro:hasPermission name="report_store">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道安装查询','<%=basePath%>/tymng/reportCount/indexInstallTY','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道安装查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_channel_device">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道安装查询','<%=basePath%>/tymng/reportCount/indexInstallDB','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道安装查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_channel_counter">
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道安装查询','<%=basePath%>/tymng/reportCount/indexInstallQT','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道安装查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_porduct">
+            <div class="nav-item">
+                <a href="javascript:addTab('产品安装查询','<%=basePath%>/tymng/reportCount/indexInstallProduct','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>产品安装查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+    </div>
+</shiro:hasPermission>
+<shiro:hasPermission name="report_menu">
+    <div title="到达报表统计" style="overflow: auto;">
+        <shiro:hasPermission name="report_store">
+            <div class="nav-item">
+                <a href="javascript:addTab('天音渠道到达查询','<%=basePath%>/tymng/reportCount/indexArriveTY','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>天音渠道到达查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_channel_device">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道到达查询','<%=basePath%>/tymng/reportCount/indexArriveDB','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道到达查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_channel_counter">
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道到达查询','<%=basePath%>/tymng/reportCount/indexArriveQT','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道到达查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="report_porduct">
+            <div class="nav-item">
+                <a href="javascript:addTab('产品到达查询','<%=basePath%>/tymng/reportCount/indexArriveProduct','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>产品到达查询</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+    </div>
+</shiro:hasPermission>
+<%--<shiro:hasPermission name="report_menu">
     <div title="报表统计" style="overflow: auto;">
         <shiro:hasPermission name="report_store">
             <div class="nav-item">
@@ -396,7 +468,7 @@
             </div>
         </shiro:hasPermission>
     </div>
-</shiro:hasPermission>
+</shiro:hasPermission>--%>
 <shiro:hasPermission name="system_menu">
     <div title="系统用户管理" style="overflow: auto;">
         <shiro:hasPermission name="system_user">
