@@ -433,42 +433,32 @@
         </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<%--<shiro:hasPermission name="report_menu">
-    <div title="报表统计" style="overflow: auto;">
-        <shiro:hasPermission name="report_store">
-            <div class="nav-item">
-                <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>按仓库查询</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="report_channel_device">
-            <div class="nav-item">
-                <a href="javascript:addTab('按渠道加工数据','<%=basePath%>/tymng/reportCount/indexChannelProcess','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>按渠道加工数据</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="report_channel_counter">
-            <div class="nav-item">
-                <a href="javascript:addTab('按渠道到达数据','<%=basePath%>/tymng/reportCount/indexChannelCounter','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>按渠道到达数据</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
-        <shiro:hasPermission name="report_porduct">
-            <div class="nav-item">
-                <a href="javascript:addTab('按产品查询','<%=basePath%>/tymng/reportCount/indexProduct','menu_icon_datadeal')">
-                    <span class="menu_icon_datadeal"></span>
-                    <span>按产品查询</span>
-                </a>
-            </div>
-        </shiro:hasPermission>
+<div title="报表统计" style="overflow: auto;">
+    <div class="nav-item">
+        <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按仓库查询</span>
+        </a>
     </div>
-</shiro:hasPermission>--%>
+    <div class="nav-item">
+        <a href="javascript:addTab('按渠道加工数据','<%=basePath%>/tymng/reportCount/indexChannelProcess','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按渠道加工数据</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('按渠道到达数据','<%=basePath%>/tymng/reportCount/indexChannelCounter','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按渠道到达数据</span>
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="javascript:addTab('按产品查询','<%=basePath%>/tymng/reportCount/indexProduct','menu_icon_datadeal')">
+            <span class="menu_icon_datadeal"></span>
+            <span>按产品查询</span>
+        </a>
+    </div>
+</div>
 <shiro:hasPermission name="system_menu">
     <div title="系统用户管理" style="overflow: auto;">
         <shiro:hasPermission name="system_user">
