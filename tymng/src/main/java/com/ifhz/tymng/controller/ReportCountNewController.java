@@ -2,13 +2,16 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.BaseController;
+import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.commons.util.ExportDataUtil;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
+import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.imei.StatImeiQueryService;
 import com.ifhz.core.service.imei.bean.ImeiQueryType;
@@ -17,6 +20,7 @@ import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
+import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -39,6 +43,8 @@ import java.util.*;
 @RequestMapping("/tymng/reportCountNew")
 public class ReportCountNewController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportCountNewController.class);
+    @Autowired
+    private ChannelInfoService channelInfoService;
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
@@ -174,10 +180,33 @@ public class ReportCountNewController extends BaseController {
         if (StringUtils.isNotEmpty(endDate)) {
             logStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
+
+        List<LogStat> list = new ArrayList<LogStat>();
         if (StringUtils.isNotEmpty(channelIdCondition)) {
             logStat.setChannelIdCondition(channelIdCondition);
+            list = logStatQueryService.queryByVo(page, logStat);
+        } else {//如果是地包渠道的负责人登录，则进行数据过滤
+            if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+                ChannelInfo ci = new ChannelInfo();
+                ci.setGroupId(JcywConstants.CHANNEL_GROUP_DB_ID_2);
+                ci.setActive(JcywConstants.ACTIVE_Y);
+                ci.setMngId(CurrentUserUtil.getUserId());
+                List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
+                channelIdCondition = "";
+                if (CollectionUtils.isNotEmpty(channelInfoList)) {
+                    for (ChannelInfo channelInfo : channelInfoList) {
+                        channelIdCondition += channelInfo.getChannelId() + ",";
+                    }
+                    if (channelIdCondition.endsWith(",")) {
+                        channelIdCondition = channelIdCondition.substring(0, channelIdCondition.length() - 1);
+                    }
+                    logStat.setChannelIdCondition(channelIdCondition);
+                    list = logStatQueryService.queryByVo(page, logStat);
+                }
+            } else {
+                list = logStatQueryService.queryByVo(page, logStat);
+            }
         }
-        List<LogStat> list = logStatQueryService.queryByVo(page, logStat);
         if (CollectionUtils.isNotEmpty(list)) {
             LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
             list.add(countLogStat);
