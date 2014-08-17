@@ -38,7 +38,7 @@
                         if (obj.hasAuth == true) {
                             checked = "checked";
                         }
-                        var contenthead = '<div style="float:left;overflow:hidden;margin-top: 5px;margin-left: 5px"><input type="checkbox" onclick="chkself(this)" value="' + obj.productId + '" title="' + obj.active + '" name="productId" ' + checked + '/><label><strong>' + obj.productName + '</strong></label></div>'
+                        var contenthead = '<div style="float:left;overflow:hidden;margin-top: 5px;margin-left: 5px"><shiro:hasPermission name="product_auth_btn"><input type="checkbox" onclick="chkself(this)" value="' + obj.productId + '" title="' + obj.active + '" name="productId" ' + checked + '/></shiro:hasPermission><label><strong>' + obj.productName + '</strong></label></div>'
                         full += contenthead;
                     }
 
