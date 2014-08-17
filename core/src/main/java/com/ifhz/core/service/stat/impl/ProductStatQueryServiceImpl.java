@@ -55,10 +55,12 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
                         LOGGER.error("getByUaAndGrouId error", e);
                     }
                     if (modelInfo != null) {
-                        productStat.setModelName(modelInfo.getModelName());
+                        productStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
                     } else {
-                        productStat.setModelName("未知");
+                        productStat.setModelName("未知(" + ua + ")");
                     }
+                } else {
+                    productStat.setModelName("未知()");
                 }
                 if (productStat.getGroupId() != null) {
                     productStat.setGroupName(GroupEnums.fromByValue(productStat.getGroupId()).name);
@@ -89,10 +91,12 @@ public class ProductStatQueryServiceImpl implements ProductStatQueryService {
                         LOGGER.error("getByUaAndGrouId error", e);
                     }
                     if (modelInfo != null) {
-                        productStat.setModelName(modelInfo.getModelName());
+                        productStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
                     } else {
-                        productStat.setModelName("未知");
+                        productStat.setModelName("未知(" + ua + ")");
                     }
+                } else {
+                    productStat.setModelName("未知()");
                 }
                 if (productStat.getGroupId() != null) {
                     productStat.setGroupName(GroupEnums.fromByValue(productStat.getGroupId()).name);

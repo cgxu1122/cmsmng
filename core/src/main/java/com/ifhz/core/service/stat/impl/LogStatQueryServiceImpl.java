@@ -49,10 +49,12 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
                         LOGGER.error("getByUaAndGrouId error", e);
                     }
                     if (modelInfo != null) {
-                        logStat.setModelName(modelInfo.getModelName());
+                        logStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
                     } else {
-                        logStat.setModelName("未知");
+                        logStat.setModelName("未知(" + ua + ")");
                     }
+                } else {
+                    logStat.setModelName("未知()");
                 }
                 Long channelId = logStat.getChannelId();
                 if (channelId != null) {
@@ -88,10 +90,12 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
                         LOGGER.error("getByUaAndGrouId error", e);
                     }
                     if (modelInfo != null) {
-                        logStat.setModelName(modelInfo.getModelName());
+                        logStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
                     } else {
-                        logStat.setModelName("未知");
+                        logStat.setModelName("未知(" + ua + ")");
                     }
+                } else {
+                    logStat.setModelName("未知()");
                 }
                 Long channelId = logStat.getChannelId();
                 if (channelId != null) {
@@ -128,10 +132,12 @@ public class LogStatQueryServiceImpl implements LogStatQueryService {
                         LOGGER.error("getByUaAndGrouId error", e);
                     }
                     if (modelInfo != null) {
-                        logStat.setModelName(modelInfo.getModelName());
+                        logStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
                     } else {
-                        logStat.setModelName("未知");
+                        logStat.setModelName("未知(" + ua + ")");
                     }
+                } else {
+                    logStat.setModelName("未知()");
                 }
                 Long channelId = logStat.getChannelId();
                 if (channelId != null) {
