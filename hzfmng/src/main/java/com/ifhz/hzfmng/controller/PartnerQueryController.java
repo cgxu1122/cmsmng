@@ -95,6 +95,11 @@ public class PartnerQueryController extends BaseController {
         return new ModelAndView("partnerQuery/indexLW");
     }
 
+    @RequestMapping("/indexQT")
+    public ModelAndView indexQT(HttpServletRequest request) {
+        return new ModelAndView("partnerQuery/indexQT");
+    }
+
     @RequestMapping(value = "/listLogStat", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject listLogStat(HttpServletRequest request) {

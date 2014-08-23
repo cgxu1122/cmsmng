@@ -22,7 +22,7 @@
             var ua = $('#ua').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/hzfmng/partnerQuery/listLogStat",
-                queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua}
+                queryParams: {groupId: 3, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
 
@@ -34,7 +34,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listLogStat',
-                queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
+                queryParams: {groupId: 3, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -50,7 +50,6 @@
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
                         {field: 'channelName', title: '仓库名称', align: 'center', width: 300},
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                         {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
@@ -58,7 +57,7 @@
                                 if (row.processDate == null) {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "')>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "')>" + value + "</a>";
                                 }
                             }
                         }
@@ -75,7 +74,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/modelInfo/list',
-                queryParams: {groupId: 2},
+                queryParams: {groupId: 3},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -96,7 +95,7 @@
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
                 url: "<%=basePath%>/hzfmng/modelInfo/list",
-                queryParams: {modelNameCondition: value, groupId: 2}
+                queryParams: {modelNameCondition: value, groupId: 3}
             });
         }
         function selectModel(ua, modelName) {
@@ -124,7 +123,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, deviceCode: deviceCode},
+                queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -143,7 +142,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');
@@ -162,7 +161,7 @@
             var ua = $('#ua').val();
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportData?groupId=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');
