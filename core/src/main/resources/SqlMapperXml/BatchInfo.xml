@@ -99,9 +99,17 @@
         </if>
         order by bi.UPDATE_TIME desc
     </select>
+
     <delete id="delete" parameterType="com.ifhz.core.po.BatchInfo">
         delete from
         <include refid="TABLE_NAME"/>
         where BATCH_ID = #{batchId}
     </delete>
+
+    <select id="queryByGroupIdAndBatchCode" resultMap="BatchInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where GROUP_ID= #{groupId}
+        and BATCH_CODE = #{batchCode}
+    </select>
 </mapper>

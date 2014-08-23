@@ -20,6 +20,7 @@
         });
 
         function importImei() {
+            $('#callback').html("");
             $('#fm').form('submit', {
                 url: '<%=basePath%>/hzfmng/imeiUpload/exportImei.do',
                 onSubmit: function () {
@@ -66,7 +67,12 @@
                 </tr>
                 <tr>
                     <td align="left" colspan="2">
-                        <font color="red" id="datetagmsg"></font>
+                        <font color="red">注意：Imei上传的最大值为1000</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="2">
+                    <font color="red" id="datetagmsg"></font>
                     </td>
                 </tr>
                 <tr>

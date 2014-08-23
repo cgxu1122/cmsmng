@@ -24,4 +24,6 @@ public interface BatchInfoMapper {
     public int delete(BatchInfo record);
 
     public Long getSeqByGroupId(Long groupId);
+
+    public BatchInfo queryByGroupIdAndBatchCode(@Param(value = "groupId") Long groupId, @Param(value = "batchCode") String batchCode);
 }

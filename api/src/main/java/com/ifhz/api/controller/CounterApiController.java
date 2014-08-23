@@ -54,8 +54,10 @@ public class CounterApiController {
                 //手机imei|手机ua|到达状态
                 DataLog dataLog = translateDataLog(iterable);
                 if (dataLog != null) {
-                    apiUploadService.saveCounterDataLog(dataLog);
-                    result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+                    boolean ret = apiUploadService.saveCounterDataLog(dataLog);
+                    if (ret) {
+                        result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
+                    }
                 } else {
                     LOGGER.warn("data is non-valid,data={}", data);
                 }

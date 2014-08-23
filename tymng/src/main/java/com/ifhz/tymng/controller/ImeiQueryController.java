@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 类描述
@@ -72,9 +73,9 @@ public class ImeiQueryController {
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             LOGGER.info("用户上传imei查询文件fileName={},保存到本地成功,路径为{}", toFilePath);
-            List<String> imeiList = ExcelHandle.readImeiListFromExcel(toFilePath);
-            LOGGER.info("用户上传imei查询文件fileName={},从Excel解析ImeiList={}", JSON.toJSONString(imeiList));
-            List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiList);
+            Set<String> imeiSet = ExcelHandle.readImeiListFromExcel(toFilePath);
+            LOGGER.info("用户上传imei查询文件fileName={},从Excel解析imeiSet={}", JSON.toJSONString(imeiSet));
+            List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiSet);
 
             result.put("ret", true);
             result.put("imeiPath", toFilePath);
@@ -105,9 +106,9 @@ public class ImeiQueryController {
 
         try {
             LOGGER.info("用户导出Imei文件 imeiPath={} ----------开始处理", imeiPath);
-            List<String> imeiList = ExcelHandle.readImeiListFromExcel(imeiPath);
-            LOGGER.info("用户上传imei查询文件fileName={},从Excel解析ImeiList={}", JSON.toJSONString(imeiList));
-            List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiList);
+            Set<String> imeiSet = ExcelHandle.readImeiListFromExcel(imeiPath);
+            LOGGER.info("用户上传imei查询文件fileName={},从Excel解析imeiSet={}", JSON.toJSONString(imeiSet));
+            List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiSet);
 
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();

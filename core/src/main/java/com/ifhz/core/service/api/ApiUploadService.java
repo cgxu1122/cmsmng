@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface ApiUploadService {
 
-    public void saveCounterDataLog(DataLog po);
+    public boolean saveCounterDataLog(DataLog po);
 
     public ImeiStatus saveDeviceDataLog(DataLog po);
 

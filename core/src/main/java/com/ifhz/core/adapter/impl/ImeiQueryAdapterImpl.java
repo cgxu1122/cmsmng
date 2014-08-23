@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 类描述
@@ -22,7 +23,7 @@ public class ImeiQueryAdapterImpl implements ImeiQueryAdapter {
     private ImeiTempMapper imeiTempMapper;
 
     @Override
-    public int insertBatch(List<String> list) {
+    public int insertBatch(Set<String> list) {
         return imeiTempMapper.insertBatch(list);
     }
 

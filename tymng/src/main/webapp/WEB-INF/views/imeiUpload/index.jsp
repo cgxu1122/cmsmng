@@ -11,14 +11,9 @@
             $("#processDate").datebox({
                 value: getCurrrentDateStr()
             });
-            var d = new Date();
-            var nowDate = d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
-            d.setDate(d.getDate() - 3);
-            var m = d.getMonth() + 1;
-            var oldDate = d.getFullYear() + '年' + m + '月' + d.getDate() + '日';
-            $("#datetagmsg").html("日期只能选择" + oldDate + "到" + nowDate);
         });
         function importImei() {
+            $('#callback').html("");
             var channelId = $("#channelId").val();
             if (channelId == null || channelId == "") {
                 $.messager.alert('错误', "请选择仓库！");
@@ -108,7 +103,7 @@
                 </tr>
                 <tr>
                     <td align="left" colspan="2">
-                    <font color="red" id="datetagmsg"></font>
+                        <font color="red">注意：Imei上传的最大值为1000</font>
                     </td>
                 </tr>
                 <tr>

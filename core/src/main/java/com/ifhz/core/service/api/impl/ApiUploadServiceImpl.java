@@ -58,13 +58,13 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     @Override
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public void saveCounterDataLog(DataLog po) {
+    public boolean saveCounterDataLog(DataLog po) {
         if (po != null) {
             //抛弃非法数据
             if (StringUtils.isBlank(po.getImei()) || po.getActive() == null) {
                 LOGGER.info("非法数据，校验不通过 ： {}", JSON.toJSONString(po));
                 CounterCommonLog.info("{}", JSON.toJSONString(po));
-                return;
+                return true;
             }
             // 查询imei是否已经到达过
             DataLog dataLog = dataLogApiService.getByImei(po.getImei());
@@ -82,7 +82,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 }
             }
             CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
-            LOGGER.info("CounterTempLog中没有找到对应数据，CounterTempLog查询数据为：{}", JSON.toJSONString(counterTempLog));
+            LOGGER.info("CounterTempLog中没有找到对应数据，CounterTempLog={},DataLog={}", JSON.toJSONString(counterTempLog), JSON.toJSONString(po));
             if (counterTempLog == null) {
                 CounterTempLog tempLog = new CounterTempLog();
                 tempLog.setImei(po.getImei());
@@ -91,16 +91,22 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 tempLog.setActive(po.getActive());
                 tempLog.setType(type.value);
 
-                counterTempLogAdapter.insert(tempLog);
+                int num = counterTempLogAdapter.insert(tempLog);
+                if (num == 1) {
+                    if (type == TempLogType.UnStat) {
+                        //异步统计到达数据
+                        statCounterService.updateStat(dataLog);
+                    }
+                } else {
+                    LOGGER.info("CounterTempLog保存失败-DataLog={}", JSON.toJSONString(po));
+                    return false;
+                }
             } else {
-                LOGGER.info("CounterTempLog中已经存在,忽略此数据");
-            }
-
-            if (type == TempLogType.UnStat) {
-                //异步统计到达数据
-                statCounterService.updateStat(dataLog);
+                LOGGER.info("CounterTempLog中已经存在,忽略此数据-DataLog={}", JSON.toJSONString(po));
             }
         }
+
+        return true;
     }
 
     @Override
@@ -137,10 +143,14 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     }
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");
-                    dataLogApiService.insertDeviceData(po);
+                    int num = dataLogApiService.insertDeviceData(po);
 //                    taskExecutor.execute(new StatDeviceRunnable(po));
-                    statDeviceService.updateStat(po);
-                    return ImeiStatus.Success;
+                    if (num == 1) {
+                        statDeviceService.updateStat(po);
+                        return ImeiStatus.Success;
+                    } else {
+                        return ImeiStatus.Failure;
+                    }
                 } else {
                     LOGGER.info("渠道id[{}]--不在系统范围内", po.getChannelId());
                     return ImeiStatus.Invalid;
@@ -151,7 +161,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
             }
         }
         LOGGER.info("执行DataLog插入操作 --- 结束");
-        return ImeiStatus.Invalid;
+        return ImeiStatus.Failure;
     }
 
     @Override
@@ -169,7 +179,6 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     result.put(key, ImeiStatus.Failure);
                     LOGGER.error("saveDeviceDataLog error", e);
                 }
-
             }
         }
         return result;
@@ -186,7 +195,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                 ImeiStatus value = entry.getValue();
                 DeviceResultVo vo = new DeviceResultVo();
                 vo.setId(key);
-                if (ImeiStatus.Invalid == value) {
+                if (ImeiStatus.Failure == value) {
                     vo.setActive(false);
                 } else {
                     vo.setActive(true);

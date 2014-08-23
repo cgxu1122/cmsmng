@@ -57,4 +57,9 @@ public class BatchInfoAdapterImpl implements BatchInfoAdapter {
     public Long getSeqByGroupId(Long groupId) {
         return batchInfoMapper.getSeqByGroupId(groupId);
     }
+
+    @Override
+    public BatchInfo queryByGroupIdAndBatchCode(Long groupId, String batchCode) {
+        return batchInfoMapper.queryByGroupIdAndBatchCode(groupId, batchCode);
+    }
 }

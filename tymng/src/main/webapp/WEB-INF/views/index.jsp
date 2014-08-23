@@ -433,7 +433,7 @@
         </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
-<div title="报表统计" style="overflow: auto;">
+<%--<div title="报表统计" style="overflow: auto;">
     <div class="nav-item">
         <a href="javascript:addTab('按仓库查询','<%=basePath%>/tymng/reportCount/indexStore','menu_icon_datadeal')">
             <span class="menu_icon_datadeal"></span>
@@ -458,7 +458,7 @@
             <span>按产品查询</span>
         </a>
     </div>
-</div>
+</div>--%>
 <shiro:hasPermission name="system_menu">
     <div title="系统用户管理" style="overflow: auto;">
         <shiro:hasPermission name="system_user">

@@ -54,6 +54,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                 while (true) {
                     logStatNum++;
                     LogStat logStat = logStatAdapter.getByMd5Key(md5Key);
+                    LOGGER.info("source logStat={}", JSON.toJSONString(logStat));
                     if (logStat == null) {
                         LOGGER.info("LogStat update failure LogStat not found,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                         break;
@@ -71,11 +72,14 @@ public class StatCounterServiceImpl implements StatCounterService {
                         logStat.setPrsActiveInvalidNum(logStat.getPrsActiveInvalidNum() + 1);
                         logStat.setPrsInvalidUnAndReNum(logStat.getPrsInvalidUnAndReNum() + 1);
                     }
+                    LOGGER.info("target logStat={}", JSON.toJSONString(logStat));
                     int num = logStatAdapter.update(logStat);
                     if (num == 1) {
                         isUpdateTempLog = true;
                         LOGGER.info("LogStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                         break;
+                    } else {
+                        LOGGER.info("LogStat update failure,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                     }
                     if (logStatNum == 10) {
                         LOGGER.info("LogStat update failure,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
@@ -85,6 +89,7 @@ public class StatCounterServiceImpl implements StatCounterService {
             }
             if (StringUtils.isNotBlank(dataLog.getBatchCode())) {
                 List<Long> productIdList = batchProductRefAdapter.queryProductIdList(dataLog.getBatchCode());
+                LOGGER.info("BatchCode={},productIdList={}", dataLog.getBatchCode(), JSON.toJSONString(productIdList));
                 if (CollectionUtils.isNotEmpty(productIdList)) {
                     for (Long productId : productIdList) {
                         String productMd5Key = StatConvertHandler.getMd5KeyForProductStat(dataLog, productId);
@@ -93,6 +98,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                             while (true) {
                                 productStatNum++;
                                 ProductStat productStat = productStatAdapter.getByMd5Key(productMd5Key);
+                                LOGGER.info("source productStat={}", JSON.toJSONString(productStat));
                                 if (productStat == null) {
                                     LOGGER.info("ProductStat update failure ProductStat not found,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
                                     break;
@@ -110,6 +116,7 @@ public class StatCounterServiceImpl implements StatCounterService {
                                     productStat.setPrsActiveInvalidNum(productStat.getPrsActiveInvalidNum() + 1);
                                     productStat.setPrsInvalidUnAndReNum(productStat.getPrsInvalidUnAndReNum() + 1);
                                 }
+                                LOGGER.info("target productStat={}", JSON.toJSONString(productStat));
                                 int num = productStatAdapter.update(productStat);
                                 if (num == 1) {
                                     isUpdateTempLog = true;

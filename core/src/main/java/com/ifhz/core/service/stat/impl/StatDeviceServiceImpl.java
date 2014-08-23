@@ -61,19 +61,11 @@ public class StatDeviceServiceImpl implements StatDeviceService {
                 while (true) {
                     logStatNum++;
                     LogStat logStat = logStatAdapter.getByMd5Key(md5Key);
+                    LOGGER.info("source logStat={}", JSON.toJSONString(logStat));
                     if (logStat == null) {
                         logStat = StatConvertHandler.initDataStat(dataLog);
                         logStat.setMd5Key(md5Key);
                         logStat.setDevicePrsDayNum(logStat.getDevicePrsDayNum() + 1);
-                        if (isQueryCount(logStat.getCreateTime(), now)) {
-                            DataLogRequest dataLogRequest = getDataLogRequestByLogStat(logStat);
-                            //加工日期维度设备上传总数   日期过期后，数值固定
-                            long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
-                            LOGGER.info("{}  的加工设备累计上传数量为：{}", logStat.getMd5Key(), deviceUpdDayNum);
-                            if (deviceUpdDayNum > 0) {
-                                logStat.setDeviceUpdDayNum(deviceUpdDayNum);
-                            }
-                        }
                         if (logStat.getGroupId() == GroupType.DB.VALUE || logStat.getGroupId() == GroupType.LW.VALUE) {
                             ChannelInfo channelInfo = null;
                             try {
@@ -85,6 +77,7 @@ public class StatDeviceServiceImpl implements StatDeviceService {
                                 logStat.setLaowuId(channelInfo.getLaowuId());
                             }
                         }
+                        LOGGER.info("target logStat={}", JSON.toJSONString(logStat));
                         int num = logStatAdapter.insert(logStat);
                         if (num == 1) {
                             LOGGER.info("LogStat insert success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
@@ -96,15 +89,6 @@ public class StatDeviceServiceImpl implements StatDeviceService {
                         }
                     } else {
                         logStat.setDevicePrsDayNum(logStat.getDevicePrsDayNum() + 1);
-                        if (isQueryCount(logStat.getCreateTime(), now)) {
-                            DataLogRequest dataLogRequest = getDataLogRequestByLogStat(logStat);
-                            //加工日期维度设备上传总数   日期过期后，数值固定
-                            long deviceUpdDayNum = dataLogQueryService.queryDeviceUpdDayNum(dataLogRequest);
-                            LOGGER.info("{}  的加工设备累计上传数量为：{}", logStat.getMd5Key(), deviceUpdDayNum);
-                            if (deviceUpdDayNum > 0) {
-                                logStat.setDeviceUpdDayNum(deviceUpdDayNum);
-                            }
-                        }
                         int num = logStatAdapter.update(logStat);
                         if (num == 1) {
                             LOGGER.info("LogStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
@@ -119,6 +103,7 @@ public class StatDeviceServiceImpl implements StatDeviceService {
             }
             if (StringUtils.isNotBlank(dataLog.getBatchCode())) {
                 List<Long> productIdList = batchProductRefAdapter.queryProductIdList(dataLog.getBatchCode());
+                LOGGER.info("BatchCode={},productIdList={}", dataLog.getBatchCode(), JSON.toJSONString(productIdList));
                 if (CollectionUtils.isNotEmpty(productIdList)) {
                     for (Long productId : productIdList) {
                         String productMd5Key = StatConvertHandler.getMd5KeyForProductStat(dataLog, productId);
@@ -127,38 +112,24 @@ public class StatDeviceServiceImpl implements StatDeviceService {
                             while (true) {
                                 productStatNum++;
                                 ProductStat productStat = productStatAdapter.getByMd5Key(productMd5Key);
+                                LOGGER.info("source productStat={}", JSON.toJSONString(productStat));
                                 if (productStat == null) {
                                     productStat = StatConvertHandler.initProductStat(dataLog, productId);
                                     productStat.setMd5Key(productMd5Key);
                                     productStat.setProductPrsDayNum(productStat.getProductPrsDayNum() + 1);
-                                    if (isQueryCount(productStat.getCreateTime(), now)) {
-                                        DataLogRequest request = getDataLogRequestByProductStat(productStat);
-                                        long productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
-                                        LOGGER.info("{} 的加工设备累计上传数量为{}", productStat.getMd5Key(), productUpdDayNum);
-                                        if (productUpdDayNum > 0) {
-                                            productStat.setProductUpdDayNum(productUpdDayNum);
-                                        }
-                                        int num = productStatAdapter.insert(productStat);
-                                        if (num == 1) {
-                                            LOGGER.info("ProductStat insert success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
-                                            break;
-                                        }
-                                        if (productStatNum == 10) {
-                                            LOGGER.info("ProductStat insert failure,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
-                                            break;
-                                        }
+                                    LOGGER.info("target productStat={}", JSON.toJSONString(productStat));
+                                    int num = productStatAdapter.insert(productStat);
+                                    if (num == 1) {
+                                        LOGGER.info("ProductStat insert success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
+                                        break;
+                                    }
+                                    if (productStatNum == 10) {
+                                        LOGGER.info("ProductStat insert failure,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));
+                                        break;
                                     }
                                 } else {
                                     productStat.setProductPrsDayNum(productStat.getProductPrsDayNum() + 1);
-                                    if (isQueryCount(productStat.getCreateTime(), now)) {
-                                        DataLogRequest request = getDataLogRequestByProductStat(productStat);
-                                        long productUpdDayNum = dataLogQueryService.queryProductUpdDayNum(request);
-                                        LOGGER.info("{} 的加工设备累计上传数量为{}", productStat.getMd5Key(), productUpdDayNum);
-                                        if (productUpdDayNum > 0) {
-                                            productStat.setProductUpdDayNum(productUpdDayNum);
-                                        }
-                                    }
-
+                                    LOGGER.info("target productStat={}", JSON.toJSONString(productStat));
                                     int num = productStatAdapter.update(productStat);
                                     if (num == 1) {
                                         LOGGER.info("ProductStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(dataLog));

@@ -3,6 +3,7 @@ package com.ifhz.core.adapter;
 import com.ifhz.core.service.imei.bean.DataLogResult;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 类描述
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface ImeiQueryAdapter {
 
-    public int insertBatch(List<String> list);
+    public int insertBatch(Set<String> set);
 
     public List<DataLogResult> queryListByImeiList(String tableName);
 

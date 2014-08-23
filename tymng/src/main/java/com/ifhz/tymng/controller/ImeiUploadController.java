@@ -72,10 +72,6 @@ public class ImeiUploadController {
         }
         try {
             Date processDate = DateFormatUtils.parse(processDateStr, "yyyy-MM-dd");
-            if (!checkProcessDate(processDate)) {
-                result.put("ret", false);
-                result.put("errorMsg", "日期选择无效，请重新选择");
-            }
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);

@@ -3,6 +3,7 @@ package com.ifhz.core.service.imei.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
 import com.ifhz.core.adapter.ImeiQueryAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.po.ChannelInfo;
@@ -24,6 +25,7 @@ import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -51,15 +53,15 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
     @Log
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public List<DataLogResult> queryListByImeiList(List<String> imeiList) {
+    public List<DataLogResult> queryListByImeiList(Set<String> imeiSet) {
         Date now = new Date();
         List<String> tableNameList = splitTableService.getTableNameList(now);
-        imeiQueryAdapter.insertBatch(imeiList);
-        LOGGER.info("queryImeiList = {}", JSON.toJSONString(imeiQueryAdapter.queryImeiList()));
-        List<DataLogResult> result = getDataLogResultList(tableNameList);
-        LOGGER.info("DataLogResult={}", result);
-        if (CollectionUtils.isNotEmpty(result)) {
-            for (DataLogResult dataLogResult : result) {
+        imeiQueryAdapter.insertBatch(imeiSet);
+        List<DataLogResult> dataLogResultList = getDataLogResultList(tableNameList);
+        LOGGER.info("DataLogResult={}", dataLogResultList);
+        Set<String> tempSet = Sets.newHashSet();
+        if (CollectionUtils.isNotEmpty(dataLogResultList)) {
+            for (DataLogResult dataLogResult : dataLogResultList) {
                 if (StringUtils.isNotBlank(dataLogResult.getUa()) && dataLogResult.getGroupId() != null) {
                     ModelInfo modelInfo = null;
                     try {
@@ -68,12 +70,12 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                         LOGGER.error("getByUaAndGrouId error", e);
                     }
                     if (modelInfo != null && StringUtils.isNotBlank(modelInfo.getModelName())) {
-                        dataLogResult.setModelName(modelInfo.getModelName());
+                        dataLogResult.setModelName(modelInfo.getModelName() + "(" + dataLogResult.getUa() + ")");
                     } else {
-                        dataLogResult.setModelName("未知");
+                        dataLogResult.setModelName("未知(" + dataLogResult.getUa() + ")");
                     }
                 } else {
-                    dataLogResult.setModelName("未知");
+                    dataLogResult.setModelName("未知(" + dataLogResult.getUa() + ")");
                 }
                 Long channelId = dataLogResult.getChannelId();
                 if (channelId != null) {
@@ -91,12 +93,25 @@ public class ImeiQueryServiceImpl implements ImeiQueryService {
                 } else {
                     dataLogResult.setModelName("未知");
                 }
+                tempSet.add(dataLogResult.getImei());
             }
             //重新排序
-            result = Ordering.from(new DataLogResultByProcessTime()).sortedCopy(result);
+            dataLogResultList = Ordering.from(new DataLogResultByProcessTime()).sortedCopy(dataLogResultList);
         }
-        LOGGER.info("DataLogResult={}", result);
-        return result == null ? Lists.<DataLogResult>newArrayList() : result;
+        if (CollectionUtils.isEmpty(dataLogResultList)) {
+            dataLogResultList = Lists.newArrayList();
+        }
+        for (String imei : imeiSet) {
+            if (!tempSet.contains(imei)) {
+                DataLogResult temp = new DataLogResult();
+                temp.setImei(imei);
+                dataLogResultList.add(temp);
+            }
+        }
+
+
+        LOGGER.info("dataLogResultList={}", JSON.toJSONString(dataLogResultList));
+        return dataLogResultList;
     }
 
     @Log

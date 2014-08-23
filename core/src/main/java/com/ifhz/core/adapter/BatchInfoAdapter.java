@@ -23,4 +23,6 @@ public interface BatchInfoAdapter {
     public int delete(BatchInfo record);
 
     public Long getSeqByGroupId(Long groupId);
+
+    public BatchInfo queryByGroupIdAndBatchCode(Long groupId, String batchCode);
 }

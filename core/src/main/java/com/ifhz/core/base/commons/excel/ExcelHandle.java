@@ -2,6 +2,7 @@ package com.ifhz.core.base.commons.excel;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +19,7 @@ import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 类描述
@@ -27,11 +29,11 @@ import java.util.List;
  */
 public class ExcelHandle {
     private static final int MaxRowSize = 3000;
-    private static final int MaxImeiRowSize = 10000;
+    private static final int MaxImeiRowSize = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelHandle.class);
 
-    public static List<String> readImeiListFromExcel(String excelFilePath) throws Exception {
-        List<String> result = Lists.newArrayList();
+    public static Set<String> readImeiListFromExcel(String excelFilePath) throws Exception {
+        Set<String> result = Sets.newHashSet();
         Workbook wkbook = null;
         try {
             wkbook = new XSSFWorkbook(new FileInputStream(excelFilePath));
@@ -66,7 +68,7 @@ public class ExcelHandle {
         }
         //获取第一个表格!
         Sheet sheet = wkbook.getSheetAt(0);
-        int maxRow = (MaxRowSize > sheet.getLastRowNum() ? sheet.getLastRowNum() : MaxImeiRowSize);
+        int maxRow = (MaxImeiRowSize > sheet.getLastRowNum() ? sheet.getLastRowNum() : MaxImeiRowSize);
         for (int rowNum = 0; rowNum <= maxRow; rowNum++) {
             Row row = sheet.getRow(rowNum);
             if (row == null) {
@@ -76,7 +78,7 @@ public class ExcelHandle {
             try {
                 DataLog dataLog = new DataLog();
                 String imei = getCellValue(row.getCell(0));
-                if (StringUtils.containsIgnoreCase(imei, "手机IMEI")) {
+                if (StringUtils.containsIgnoreCase(imei, "IMEI")) {
                     continue;
                 }
                 String ua = getCellValue(row.getCell(1));

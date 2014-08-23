@@ -3,6 +3,9 @@ package com.ifhz.core.service.imei.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
+import com.ifhz.core.adapter.BatchInfoAdapter;
+import com.ifhz.core.adapter.DeviceInfoAdapter;
+import com.ifhz.core.adapter.ModelInfoAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.codec.CodecUtils;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
@@ -47,9 +50,14 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     private TaskExecutor taskExecutor;
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
+    @Resource(name = "deviceInfoAdapter")
+    private DeviceInfoAdapter deviceInfoAdapter;
+    @Resource(name = "modelInfoAdapter")
+    private ModelInfoAdapter modelInfoAdapter;
+    @Resource(name = "batchInfoAdapter")
+    private BatchInfoAdapter batchInfoAdapter;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
-
     @Log
     public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
@@ -70,7 +78,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                             try {
                                 apiUploadService.saveDeviceDataLog(dataLog);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                LOGGER.error("saveDeviceDataLog error", e);
                             }
                         } else {
                             LOGGER.info("数据转换失败：{}", line);
@@ -128,8 +136,12 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                         dataLog.setChannelId(channelId);
                         dataLog.setGroupId(channelInfo.getGroupId());
                         dataLog.setDeviceUploadTime(new Date());
-
-                        ImeiStatus status = apiUploadService.saveDeviceDataLog(dataLog);
+                        ImeiStatus status;
+                        if (validExcelData(dataLog)) {
+                            status = apiUploadService.saveDeviceDataLog(dataLog);
+                        } else {
+                            status = ImeiStatus.Invalid;
+                        }
                         if (status != null) {
                             if (result.containsKey(status)) {
                                 Integer count = result.get(status);
@@ -156,6 +168,35 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
         if (StringUtils.isNotBlank(filePath)) {
             taskExecutor.execute(new AsyncProcessCsvTask(filePath, channelId, processDate));
         }
+    }
+
+
+    @Log
+    private boolean validExcelData(DataLog dataLog) {
+        //验证非法数据
+        if (StringUtils.isBlank(dataLog.getImei())) {
+            return false;
+        }
+        if (StringUtils.isBlank(dataLog.getUa())) {
+            return false;
+        }
+        if (StringUtils.isBlank(dataLog.getBatchCode())) {
+            return false;
+        }
+        if (StringUtils.isBlank(dataLog.getDeviceCode())) {
+            return false;
+        }
+        if (modelInfoAdapter.getByGroupIdAndUa(dataLog.getGroupId(), dataLog.getUa()) == null) {
+            return false;
+        }
+        if (batchInfoAdapter.queryByGroupIdAndBatchCode(dataLog.getGroupId(), dataLog.getBatchCode()) == null) {
+            return false;
+        }
+        if (deviceInfoAdapter.queryByDeviceCode(dataLog.getDeviceCode()) == null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Log
