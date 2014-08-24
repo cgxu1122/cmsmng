@@ -221,36 +221,36 @@
                         </a>
                     </div>
                 </shiro:hasPermission>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="hzfmng_help_menu">
+            <div title="辅助功能" style="overflow: auto;">
+                <shiro:hasPermission name="hzfmng_help_queryimei">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('查询Imei','<%=basePath%>/hzfmng/imeiQuery/index','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>查询Imei</span>
+                        </a>
+                    </div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="hzfmng_help_menu">
-                    <div title="辅助功能" style="overflow: auto;">
-                        <shiro:hasPermission name="hzfmng_help_queryimei">
-                            <div class="nav-item">
-                                <a href="javascript:addTab('查询Imei','<%=basePath%>/hzfmng/imeiQuery/index','menu_icon_datadeal')">
-                                    <span class="menu_icon_datadeal"></span>
-                                    <span>查询Imei</span>
-                                </a>
-                            </div>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="hzfmng_help_uploadimei">
-                            <div class="nav-item">
-                                <a href="javascript:addTab('上传Imei','<%=basePath%>/hzfmng/imeiUpload/index','menu_icon_datadeal')">
-                                    <span class="menu_icon_datadeal"></span>
-                                    <span>上传Imei</span>
-                                </a>
-                            </div>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="hzfmng_help_uploadzip">
-                            <div class="nav-item">
-                                <a href="javascript:addTab('上传Zip文件','<%=basePath%>/hzfmng/zipUpload/index','menu_icon_datadeal')">
-                                    <span class="menu_icon_datadeal"></span>
-                                    <span>上传Zip文件</span>
-                                </a>
-                            </div>
-                        </shiro:hasPermission>
+                <shiro:hasPermission name="hzfmng_help_uploadimei">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('上传Imei','<%=basePath%>/hzfmng/imeiUpload/index','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>上传Imei</span>
+                        </a>
+                    </div>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="hzfmng_help_uploadzip">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('上传Zip文件','<%=basePath%>/hzfmng/zipUpload/index','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>上传Zip文件</span>
+                        </a>
                     </div>
                 </shiro:hasPermission>
             </div>
+        </shiro:hasPermission>
     </div>
 </div>
 <div region="center">
