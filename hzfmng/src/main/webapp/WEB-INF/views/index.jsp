@@ -221,14 +221,6 @@
                         </a>
                     </div>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="partnerquery_qt">
-                    <div class="nav-item">
-                        <a href="javascript:addTab('其他渠道安装','<%=basePath%>/hzfmng/partnerQuery/indexQT','menu_icon_datadeal')">
-                            <span class="menu_icon_datadeal"></span>
-                            <span>劳务渠道</span>
-                        </a>
-                    </div>
-                </shiro:hasPermission>
                 <shiro:hasPermission name="hzfmng_help_menu">
                     <div title="辅助功能" style="overflow: auto;">
                         <shiro:hasPermission name="hzfmng_help_queryimei">

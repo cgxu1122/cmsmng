@@ -156,13 +156,13 @@ Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	20010	,	200	,'查询Imei'			,'hzfmng_help_queryimei'			,'',	2	,	SYSDATE	);
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	20011	,	200	,'上传Imei'			,'hzfmng_help_uploadimei'			,'',	2	,	SYSDATE	);
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	20012	,	200	,'上传Zip文件'		,'hzfmng_help_uploadzip'			,'',	2	,	SYSDATE	);
-Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	300		,	2	,'合作方查询'		,'partnerquery_menu'				,'',	1	,	SYSDATE	);
-Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30010	,	300	,'天音渠道'			,'partnerquery_ty'					,'',	2	,	SYSDATE	);
+Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	300		,	2	,'合作方查询'		   ,'partnerquery_menu'				,'',	1	,	SYSDATE	);
+Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30010	,	300	,'天音渠道'			  ,'partnerquery_ty'					,'',	2	,	SYSDATE	);
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30011	,	300	,'地包渠道安装'		,'partnerquery_db_process'			,'',	2	,	SYSDATE	);
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30012	,	300	,'地包渠道到达'		,'partnerquery_db_arrival'			,'',	2	,	SYSDATE	);
-Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30013	,	300	,'合作方安装'		,'partnerquery_cphzf_process'		,'',	2	,	SYSDATE	);
-Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30014	,	300	,'合作方到达'		,'partnerquery_cphzf_arrival'		,'',	2	,	SYSDATE	);
-Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30015	,	300	,'劳务渠道'			,'partnerquery_lw'					,'',	2	,	SYSDATE	);
+Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30013	,	300	,'合作方安装'		     ,'partnerquery_cphzf_process'		,'',	2	,	SYSDATE	);
+Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30014	,	300	,'合作方到达'		     ,'partnerquery_cphzf_arrival'		,'',	2	,	SYSDATE	);
+Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30015	,	300	,'劳务渠道'			    ,'partnerquery_lw'					,'',	2	,	SYSDATE	);
 
 insert into TY_ROLE_RESOURCE_REF (ID, ROLE_ID, RESOURCE_ID, CREATE_TIME) values (SEQ_ROLE_RESOURCE_REF.NEXTVAL, 1, 1		, SYSDATE);
 insert into TY_ROLE_RESOURCE_REF (ID, ROLE_ID, RESOURCE_ID, CREATE_TIME) values (SEQ_ROLE_RESOURCE_REF.NEXTVAL, 1, 10		, SYSDATE);
