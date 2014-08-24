@@ -17,6 +17,8 @@ public interface ProductInfoMapper {
 
     public List<ProductInfo> queryByVo(Pagination page, @Param(value = "record") ProductInfo record);
 
+    public List<ProductInfo> queryByVoForStat(Pagination page, @Param(value = "record") ProductInfo record);
+
     public List<ProductInfo> queryByBatchId(Long batchId);
 
     public int insert(ProductInfo record);

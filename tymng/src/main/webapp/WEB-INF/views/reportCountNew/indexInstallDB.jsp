@@ -77,7 +77,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',2)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',3)>" + value + "</a>";
                         }
                     }
                 },

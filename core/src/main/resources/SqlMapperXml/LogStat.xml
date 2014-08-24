@@ -167,6 +167,7 @@
         <if test="record.channelIdCondition != null">
             and CHANNEL_ID in (${record.channelIdCondition})
         </if>
+        order by PROCESS_DATE desc
     </select>
 
 
@@ -206,6 +207,7 @@
         <if test="record.channelIdCondition != null">
             and CHANNEL_ID in (${record.channelIdCondition})
         </if>
+        order by PROCESS_DATE desc
     </select>
 
 
@@ -253,6 +255,7 @@
             and CHANNEL_ID in (${record.channelIdCondition})
         </if>
         group by UA,GROUP_ID,CHANNEL_ID,PROCESS_DATE
+        order by PROCESS_DATE desc
     </select>
 
 
@@ -295,5 +298,6 @@
         <if test="channelIdCondition != null">
             and CHANNEL_ID in (${channelIdCondition})
         </if>
+        order by PROCESS_DATE desc
     </select>
 </mapper>

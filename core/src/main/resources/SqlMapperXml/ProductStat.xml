@@ -129,6 +129,7 @@
             and stat.PROCESS_DATE <= #{record.endDate}
             ]]>
         </if>
+        order by stat.PROCESS_DATE desc
     </select>
 
     <select id="querySumByVo" resultMap="ProductStatResultMap">
@@ -169,7 +170,7 @@
             ]]>
         </if>
         group by stat.PRODUCT_ID,stat.GROUP_ID,stat.UA,stat.PROCESS_DATE
-
+        order by stat.PROCESS_DATE desc
     </select>
 
     <select id="queryCountByVO" parameterType="com.ifhz.core.po.ProductStat" resultMap="ProductStatResultMap">
@@ -205,6 +206,7 @@
             and PROCESS_DATE <= #{endDate}
             ]]>
         </if>
+        order by stat.PROCESS_DATE desc
     </select>
 
     <select id="getById" resultMap="ProductStatResultMap">

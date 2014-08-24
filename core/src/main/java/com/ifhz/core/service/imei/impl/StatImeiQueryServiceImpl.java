@@ -43,9 +43,6 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
         List<String> tableNameList = Lists.newArrayList();
         if (request.getType() == ImeiQueryType.Day_Device_Process) {
             tableNameList = splitTableService.getListFromDate2Now(request.getProcessDate());
-        } else if (request.getType() == ImeiQueryType.Day_Device_Upload) {
-            String tableName = splitTableService.getCurrentTableName(request.getProcessDate());
-            tableNameList = Lists.newArrayList(tableName);
         } else if (request.getType() == ImeiQueryType.Day_Counter_Upload) {
             tableNameList = splitTableService.getListFromDate2Now(request.getProcessDate());
         }
@@ -86,9 +83,6 @@ public class StatImeiQueryServiceImpl implements StatImeiQueryService {
         List<String> tableNameList = Lists.newArrayList();
         if (request.getType() == ImeiQueryType.Day_Device_Process) {
             tableNameList = splitTableService.getListFromDate2Now(request.getProcessDate());
-        } else if (request.getType() == ImeiQueryType.Day_Device_Upload) {
-            String tableName = splitTableService.getCurrentTableName(request.getProcessDate());
-            tableNameList = Lists.newArrayList(tableName);
         } else if (request.getType() == ImeiQueryType.Day_Counter_Upload) {
             tableNameList = splitTableService.getListFromDate2Now(request.getProcessDate());
         }

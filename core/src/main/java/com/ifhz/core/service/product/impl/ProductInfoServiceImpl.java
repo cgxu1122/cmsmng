@@ -40,6 +40,12 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Override
     @Log
+    public List<ProductInfo> queryByVoForStat(Pagination page, ProductInfo record) {
+        return productInfoAdapter.queryByVoForStat(page, record);
+    }
+
+    @Override
+    @Log
     public int insert(ProductInfo record) {
         return productInfoAdapter.insert(record);
     }

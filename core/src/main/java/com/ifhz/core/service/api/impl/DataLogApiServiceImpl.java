@@ -53,8 +53,10 @@ public class DataLogApiServiceImpl implements DataLogApiService {
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updateCounterData(DataLog record) {
-        Date now = new Date();
-        String tableName = splitTableService.getCurrentTableName(now);
+        if (record.getCounterUploadTime() == null) {
+            record.setCounterUploadTime(new Date());
+        }
+        String tableName = splitTableService.getCurrentTableName(record.getDeviceUploadTime());
         if (StringUtils.isNotBlank(tableName)) {
             record.setTableName(tableName);
             return dataLogAdapter.updateCounterData(record);

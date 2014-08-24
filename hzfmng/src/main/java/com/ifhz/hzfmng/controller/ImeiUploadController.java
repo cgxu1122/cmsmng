@@ -86,6 +86,7 @@ public class ImeiUploadController {
         if (channelInfo == null) {
             result.put("ret", false);
             result.put("errorMsg", "非仓库用户不允许执行此操作，请联系管理员");
+            return result;
         }
         try {
             Date processDate = DateFormatUtils.parse(processDateStr, "yyyy-MM-dd");

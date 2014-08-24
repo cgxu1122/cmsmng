@@ -18,6 +18,7 @@ public class ProductInfo {
 
     private String productNameCondition;
     private String partnerName;
+    private Long userId;
 
     private boolean hasAuth = false;
 
@@ -107,5 +108,13 @@ public class ProductInfo {
 
     public void setHasAuth(boolean hasAuth) {
         this.hasAuth = hasAuth;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

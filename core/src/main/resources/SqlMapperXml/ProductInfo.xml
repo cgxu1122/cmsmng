@@ -100,6 +100,39 @@
         order by pi.UPDATE_TIME DESC
     </select>
 
+    <select id="queryByVoForStat" parameterType="com.ifhz.core.po.ProductInfo" resultMap="ProductInfoResultMap">
+        select pi.*,pi2.PARTNER_NAME from
+        <include refid="TABLE_NAME"/>
+        pi
+        LEFT OUTER JOIN TY_PARTNER_INFO pi2 ON pi.PARTNER_ID = pi2.PARTNER_ID
+        where 1=1
+        <if test="record.productName != null and record.productName != ''">
+            and pi.PRODUCT_NAME = #{record.productName}
+        </if>
+        <if test="record.productNameCondition != null and record.productNameCondition != ''">
+            and pi.PRODUCT_NAME LIKE concat(concat('%', #{record.productNameCondition}),'%' )
+        </if>
+        <if test="record.partnerId != null and record.partnerId != ''">
+            and pi.PARTNER_ID = #{record.partnerId}
+        </if>
+        <if test="record.queryDataSource != null and record.queryDataSource != ''">
+            and pi.QUERY_DATA_SOURCE = #{record.queryDataSource}
+        </if>
+        <if test="record.queryStartTime != null and record.queryStartTime != ''">
+            <![CDATA[
+            and pi.QUERY_START_TIME <= #{record.queryStartTime}
+            ]]>
+        </if>
+        <if test="record.active != null and record.active != ''">
+            and pi.ACTIVE = #{record.active}
+        </if>
+        <if test="record.userId != null">
+            and exists (select tmp.PRODUCT_ID from TY_USER_PRODUCT_REF tmp where tmp.USER_ID = #{record.userId} and
+            tmp.PRODUCT_ID = pi.PRODUCT_ID )
+        </if>
+        order by pi.UPDATE_TIME DESC
+    </select>
+
 
     <select id="queryAllList" resultMap="ProductInfoResultMap">
         select pi.*,pi2.PARTNER_NAME from

@@ -80,7 +80,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',2)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
                         }
                     }
                 }
@@ -196,7 +196,7 @@ function showProductDialog() {
         fitColumns: true,
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/productInfo/list',
+        url: '<%=basePath%>/tymng/productInfo/viewList',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,

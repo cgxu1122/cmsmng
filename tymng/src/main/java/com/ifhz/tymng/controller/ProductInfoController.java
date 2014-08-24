@@ -5,6 +5,7 @@ import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.AdminRoleType;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.PartnerInfo;
 import com.ifhz.core.po.ProductInfo;
@@ -62,6 +63,38 @@ public class ProductInfoController extends BaseController {
         pi.setActive(JcywConstants.ACTIVE_Y);
         pi.setProductNameCondition(productNameCondition);
         List<ProductInfo> list = productInfoService.queryByVo(page, pi);
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+
+    /**
+     * 报表查询中按产品查询中的 产品列表展示
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/viewList", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject viewList(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String productNameCondition = request.getParameter("productNameCondition");
+        ProductInfo pi = new ProductInfo();
+        AdminRoleType type = CurrentUserUtil.getAdminRoleType();
+        if (type == AdminRoleType.DWHZ) {
+            pi.setUserId(CurrentUserUtil.getUserId());
+        }
+        pi.setProductNameCondition(productNameCondition);
+        List<ProductInfo> list = productInfoService.queryByVoForStat(page, pi);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
         result.put("rows", list);

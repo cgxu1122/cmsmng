@@ -15,6 +15,8 @@ public interface ProductInfoService {
 
     public List<ProductInfo> queryByVo(Pagination page, ProductInfo record);
 
+    public List<ProductInfo> queryByVoForStat(Pagination page, ProductInfo record);
+
     public int insert(ProductInfo record);
 
     public int update(ProductInfo record);

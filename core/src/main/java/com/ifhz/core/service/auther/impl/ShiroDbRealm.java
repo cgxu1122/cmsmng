@@ -128,6 +128,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
                     type = AdminRoleType.Admin;
                 } else if (role.getRootId().longValue() == AdminRoleType.MngMan.rootId) {// 负责人
                     type = AdminRoleType.MngMan;
+                } else if (role.getRootId().longValue() == AdminRoleType.DWHZ.rootId) {//对外合作组
+                    type = AdminRoleType.DWHZ;
                 }
 
                 ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getLoginName(), user.getRealName(), role.getRoleId(), role.getRoleName(), type);

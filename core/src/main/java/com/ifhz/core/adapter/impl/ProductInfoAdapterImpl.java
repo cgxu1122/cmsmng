@@ -35,6 +35,12 @@ public class ProductInfoAdapterImpl implements ProductInfoAdapter {
     }
 
     @Override
+    public List<ProductInfo> queryByVoForStat(Pagination page, ProductInfo record) {
+        List<ProductInfo> result = productInfoMapper.queryByVoForStat(page, record);
+        return result == null ? Lists.<ProductInfo>newArrayList() : result;
+    }
+
+    @Override
     public int insert(ProductInfo record) {
         record.setCreateTime(new Date());
         return productInfoMapper.insert(record);

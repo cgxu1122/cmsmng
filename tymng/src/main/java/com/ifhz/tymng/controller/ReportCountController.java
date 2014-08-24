@@ -485,8 +485,8 @@ public class ReportCountController extends BaseController {
         StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
         if ("1".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
-        } else if ("2".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
+//        } else if ("2".equals(queryType)) {
+//            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
         } else if ("3".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
             statImeiRequest.setActive(QueryActive.Total);
