@@ -17,6 +17,8 @@ import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
+import com.ifhz.core.service.stat.LogInstallStatService;
+import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.service.stat.StatCounterService;
 import com.ifhz.core.service.stat.StatDeviceService;
 import com.ifhz.core.service.stat.constants.CounterActive;
@@ -53,6 +55,10 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     private StatCounterService statCounterService;
     @Resource(name = "statDeviceService")
     private StatDeviceService statDeviceService;
+    @Resource(name = "logInstallStatService")
+    private LogInstallStatService logInstallStatService;
+    @Resource(name = "productInstallStatService")
+    private ProductInstallStatService productInstallStatService;
 
     //手机imei|手机ua|手机到达状态
     @Override
@@ -77,32 +83,36 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     LOGGER.info("计数器数据执行更新操作");
                     dataLogApiService.updateCounterData(dataLog);
                     type = TempLogType.UnStat;
+                    CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
+                    LOGGER.info("CounterTempLog中没有找到对应数据，CounterTempLog={},DataLog={}", JSON.toJSONString(counterTempLog), JSON.toJSONString(po));
+                    if (counterTempLog == null) {
+                        CounterTempLog tempLog = new CounterTempLog();
+                        tempLog.setImei(po.getImei());
+                        tempLog.setUa(ModelHandler.translateUa(po.getUa()));
+                        tempLog.setCreateTime(po.getCounterUploadTime());
+                        tempLog.setActive(po.getActive());
+                        tempLog.setType(type.value);
+
+                        int num = counterTempLogAdapter.insert(tempLog);
+                        if (num == 1) {
+                            LOGGER.info("CounterTempLog保存成功-DataLog={}", JSON.toJSONString(po));
+                            if (type == TempLogType.UnStat) {
+                                //异步统计到达数据
+//                                statCounterService.updateStat(dataLog);
+                                logInstallStatService.statLogInstallForArrive(po);
+                                productInstallStatService.statProductInstallForArrive(po);
+                                counterTempLogAdapter.update(po.getImei(), TempLogType.Done.value);
+                            }
+                        } else {
+                            LOGGER.info("CounterTempLog保存失败-DataLog={}", JSON.toJSONString(po));
+                            return false;
+                        }
+                    } else {
+                        LOGGER.info("CounterTempLog中已经存在,忽略此数据-DataLog={}", JSON.toJSONString(po));
+                    }
                 } else {
                     LOGGER.info("计数器数据已经到达过，程序结束");
                 }
-            }
-            CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
-            LOGGER.info("CounterTempLog中没有找到对应数据，CounterTempLog={},DataLog={}", JSON.toJSONString(counterTempLog), JSON.toJSONString(po));
-            if (counterTempLog == null) {
-                CounterTempLog tempLog = new CounterTempLog();
-                tempLog.setImei(po.getImei());
-                tempLog.setUa(ModelHandler.translateUa(po.getUa()));
-                tempLog.setCreateTime(po.getCounterUploadTime());
-                tempLog.setActive(po.getActive());
-                tempLog.setType(type.value);
-
-                int num = counterTempLogAdapter.insert(tempLog);
-                if (num == 1) {
-                    if (type == TempLogType.UnStat) {
-                        //异步统计到达数据
-                        statCounterService.updateStat(dataLog);
-                    }
-                } else {
-                    LOGGER.info("CounterTempLog保存失败-DataLog={}", JSON.toJSONString(po));
-                    return false;
-                }
-            } else {
-                LOGGER.info("CounterTempLog中已经存在,忽略此数据-DataLog={}", JSON.toJSONString(po));
             }
         }
 
@@ -138,15 +148,12 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     if (po.getBatchCode() == null) {
                         po.setBatchCode("");
                     }
-                    if (StringUtils.isBlank(po.getDeviceCode())) {
-                        po.setDeviceCode("未知");
-                    }
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");
                     int num = dataLogApiService.insertDeviceData(po);
-//                    taskExecutor.execute(new StatDeviceRunnable(po));
                     if (num == 1) {
-                        statDeviceService.updateStat(po);
+                        logInstallStatService.statLogInstall(po);
+                        productInstallStatService.statProductInstall(po);
                         return ImeiStatus.Success;
                     } else {
                         return ImeiStatus.Failure;

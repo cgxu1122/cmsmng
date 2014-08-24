@@ -10,8 +10,7 @@ import java.util.Date;
  * Time: 15:41
  */
 public class ProductArriveStatTemp implements Serializable {
-    private static final long serialVersionUID = -4143436775333915831L;
-
+    private static final long serialVersionUID = -3551096761354681538L;
     private Long id;
     private Long productId;
     private Long channelId;
@@ -36,15 +35,15 @@ public class ProductArriveStatTemp implements Serializable {
     /**
      * 设备当天到达-替换总数
      */
-    private Long invalidReplaceNum = 0L;
+    private Long replaceNum = 0L;
     /**
      * 设备当天到达-卸载总数
      */
-    private Long invalidUninstallNum = 0L;
+    private Long uninstallNum = 0L;
     /**
      * 设备当天到达-无效卸载+替换总数
      */
-    private Long invalidUnAndReNum = 0L;
+    private Long unAndReNum = 0L;
 
 
     private String md5Key;
@@ -139,28 +138,28 @@ public class ProductArriveStatTemp implements Serializable {
         this.invalidNum = invalidNum;
     }
 
-    public Long getInvalidReplaceNum() {
-        return invalidReplaceNum;
+    public Long getReplaceNum() {
+        return replaceNum;
     }
 
-    public void setInvalidReplaceNum(Long invalidReplaceNum) {
-        this.invalidReplaceNum = invalidReplaceNum;
+    public void setReplaceNum(Long replaceNum) {
+        this.replaceNum = replaceNum;
     }
 
-    public Long getInvalidUninstallNum() {
-        return invalidUninstallNum;
+    public Long getUninstallNum() {
+        return uninstallNum;
     }
 
-    public void setInvalidUninstallNum(Long invalidUninstallNum) {
-        this.invalidUninstallNum = invalidUninstallNum;
+    public void setUninstallNum(Long uninstallNum) {
+        this.uninstallNum = uninstallNum;
     }
 
-    public Long getInvalidUnAndReNum() {
-        return invalidUnAndReNum;
+    public Long getUnAndReNum() {
+        return unAndReNum;
     }
 
-    public void setInvalidUnAndReNum(Long invalidUnAndReNum) {
-        this.invalidUnAndReNum = invalidUnAndReNum;
+    public void setUnAndReNum(Long unAndReNum) {
+        this.unAndReNum = unAndReNum;
     }
 
     public String getMd5Key() {

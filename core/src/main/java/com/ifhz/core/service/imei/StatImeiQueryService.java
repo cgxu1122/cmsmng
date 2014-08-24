@@ -16,4 +16,6 @@ public interface StatImeiQueryService {
     public List<StatImeiResult> queryImeiListFromLog(StatImeiRequest request);
 
     public List<StatImeiResult> queryImeiListFromProduct(StatImeiRequest request);
+
+
 }

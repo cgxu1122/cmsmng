@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.stat.ArriveImeiMapper">
+
+    <select id="queryInstallListFormLog" resultType="java.lang.String">
+        select IMEI
+        from ${tableName}
+        where UA = #{ua}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            and DEVICE_CODE = #{deviceCode}
+        </if>
+        <choose>
+            <when test="type == 1">
+                and PROCESS_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 2">
+                and DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 3">
+                and PROCESS_TIME between #{startTime} and #{endTime}
+                <if test="activeType != null">
+                    <choose>
+                        <when test="activeType == 1">
+                            and ACTIVE != 0
+                        </when>
+                        <when test="activeType == 2">
+                            and ACTIVE = 1
+                        </when>
+                        <when test="activeType == 3">
+                            and ACTIVE in (2,3,4)
+                        </when>
+                        <when test="activeType == 4">
+                            and ACTIVE = 2
+                        </when>
+                        <when test="activeType == 5">
+                            and ACTIVE = 3
+                        </when>
+                        <when test="activeType == 6">
+                            and ACTIVE = 4
+                        </when>
+                        <otherwise>
+
+                        </otherwise>
+                    </choose>
+                </if>
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+    <select id="queryInstallListFormProduct" resultType="java.lang.String">
+        select log.IMEI
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.UA = #{ua}
+        <if test="groupId != null">
+            and log.GROUP_ID = #{groupId}
+        </if>
+        <choose>
+            <when test="type == 1">
+                and log.PROCESS_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 2">
+                and log.DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 3">
+                and log.PROCESS_TIME between #{startTime} and #{endTime}
+                <if test="activeType != null">
+                    <choose>
+                        <when test="activeType == 1">
+                            and ACTIVE != 0
+                        </when>
+                        <when test="activeType == 2">
+                            and ACTIVE = 1
+                        </when>
+                        <when test="activeType == 3">
+                            and ACTIVE in (2,3,4)
+                        </when>
+                        <when test="activeType == 4">
+                            and ACTIVE = 2
+                        </when>
+                        <when test="activeType == 5">
+                            and ACTIVE = 3
+                        </when>
+                        <when test="activeType == 6">
+                            and ACTIVE = 4
+                        </when>
+                        <otherwise>
+
+                        </otherwise>
+                    </choose>
+                </if>
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="queryArriveListFormLog" resultType="java.lang.String">
+        select IMEI
+        from ${tableName}
+        where UA = #{ua}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            and DEVICE_CODE = #{deviceCode}
+        </if>
+        <choose>
+            <when test="type == 1">
+                and PROCESS_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 2">
+                and DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 3">
+                and PROCESS_TIME between #{startTime} and #{endTime}
+                <if test="activeType != null">
+                    <choose>
+                        <when test="activeType == 1">
+                            and ACTIVE != 0
+                        </when>
+                        <when test="activeType == 2">
+                            and ACTIVE = 1
+                        </when>
+                        <when test="activeType == 3">
+                            and ACTIVE in (2,3,4)
+                        </when>
+                        <when test="activeType == 4">
+                            and ACTIVE = 2
+                        </when>
+                        <when test="activeType == 5">
+                            and ACTIVE = 3
+                        </when>
+                        <when test="activeType == 6">
+                            and ACTIVE = 4
+                        </when>
+                        <otherwise>
+
+                        </otherwise>
+                    </choose>
+                </if>
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+    <select id="queryArriveListFormProduct" resultType="java.lang.String">
+        select log.IMEI
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.UA = #{ua}
+        <if test="groupId != null">
+            and log.GROUP_ID = #{groupId}
+        </if>
+        <choose>
+            <when test="type == 1">
+                and log.PROCESS_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 2">
+                and log.DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
+            </when>
+            <when test="type == 3">
+                and log.PROCESS_TIME between #{startTime} and #{endTime}
+                <if test="activeType != null">
+                    <choose>
+                        <when test="activeType == 1">
+                            and ACTIVE != 0
+                        </when>
+                        <when test="activeType == 2">
+                            and ACTIVE = 1
+                        </when>
+                        <when test="activeType == 3">
+                            and ACTIVE in (2,3,4)
+                        </when>
+                        <when test="activeType == 4">
+                            and ACTIVE = 2
+                        </when>
+                        <when test="activeType == 5">
+                            and ACTIVE = 3
+                        </when>
+                        <when test="activeType == 6">
+                            and ACTIVE = 4
+                        </when>
+                        <otherwise>
+
+                        </otherwise>
+                    </choose>
+                </if>
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

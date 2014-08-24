@@ -109,25 +109,19 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
             if (dataLog != null) {
                 if (isUpdateDataLog) {
                     if (dataLog.getCounterUploadTime() == null) {
-                        dataLog.setCounterUploadTime(tempLog.getCreateTime());
+                        dataLog.setCounterUploadTime(new Date());
                         dataLog.setActive(tempLog.getActive());
                     }
                     //更新流水表数据
-                    dataLogApiService.updateCounterData(dataLog);
-                    //统计到达数据
-                    statCounterService.updateStat(dataLog);
-                } else {
-                    if (dataLog.getCounterUploadTime() == null) {
-                        dataLog.setCounterUploadTime(tempLog.getCreateTime());
-                        dataLog.setActive(tempLog.getActive());
-                        //更新流水表数据
-                        dataLogApiService.updateCounterData(dataLog);
+                    int num = dataLogApiService.updateCounterData(dataLog);
+                    if (num == 1) {
+                        //统计到达数据
+                        statCounterService.updateStat(dataLog);
                     }
+                } else {
                     //统计到达数据
                     statCounterService.updateStat(dataLog);
                 }
-
-
             }
         }
         LOGGER.info("processCounterTempLog -------end,isUpdateDataLog={},tempLog={}", isUpdateDataLog, JSON.toJSONString(tempLog));

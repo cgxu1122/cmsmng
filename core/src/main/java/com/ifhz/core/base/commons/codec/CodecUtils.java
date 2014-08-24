@@ -36,7 +36,7 @@ public final class CodecUtils {
 
 */
         ////手机imei|手机ua|到达状态
-        String imei1 = "DB11111|8729|1";
+        String imei1 = "352956061737216|SM-G3588V|1";
         String imei2 = "DB11112|8729|2";
         String imei3 = "DB11113|8729|3";
         String imei10 = "DB11114|8729|4";

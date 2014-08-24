@@ -75,7 +75,7 @@ public class ImeiUploadController {
             LOGGER.info("用户上传Imei安装文件fileName={} ----------开始处理", originFileName);
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
-            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", toFilePath);
+            LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", originFileName, toFilePath);
             Map<ImeiStatus, Integer> map = imeiUploadService.processImeiExcelData(toFilePath, channelId, processDate);
             if (MapUtils.isNotEmpty(map)) {
                 for (Map.Entry<ImeiStatus, Integer> entry : map.entrySet()) {

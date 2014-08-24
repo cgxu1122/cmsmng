@@ -42,7 +42,7 @@
     </insert>
 
     <select id="queryTotalCount" resultType="long">
-    select count(0)
+        select count(0)
         from
         <include refid="TABLE_NAME"/>
         where create_time between #{startTime} and #{endTime}
@@ -70,6 +70,9 @@
         update
         <include refid="TABLE_NAME"/>
         set type = #{type}
+        <if test="type == 2">
+            ,create_time = SYSDATE
+        </if>
         where IMEI = #{imei}
     </update>
 

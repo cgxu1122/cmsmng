@@ -79,7 +79,7 @@ public class ApkInfoServiceImpl implements ApkInfoService {
                     int result = packageApkRefAdapter.delete(packageApkRef);
                     if (result != 0) {
                         PubChlModRef ref = new PubChlModRef();
-                        ref.setGroupId(packageApkRef.getPackageId());
+                        ref.setPackageId(packageApkRef.getPackageId());
                         ref.setUpdateTime(new Date());
                         pubChlModRefAdapter.updateByPackageId(ref);
                     }

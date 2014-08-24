@@ -1,5 +1,6 @@
 package com.ifhz.core.po.stat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,8 +9,9 @@ import java.util.Date;
  * Date: 2014/8/23
  * Time: 15:23
  */
-public class LogArriveStatTemp {
+public class LogArriveStatTemp implements Serializable {
 
+    private static final long serialVersionUID = -5563370406332506576L;
     private Long id;
     private String ua;
     private String modelName;
@@ -18,6 +20,7 @@ public class LogArriveStatTemp {
     private Date arriveDate;
     private Long laowuId;
     private Date createTime;
+
     /**
      * 设备当天到达总数
      */
@@ -33,15 +36,15 @@ public class LogArriveStatTemp {
     /**
      * 设备当天到达-替换总数
      */
-    private Long invalidReplaceNum = 0L;
+    private Long replaceNum = 0L;
     /**
      * 设备当天到达-卸载总数
      */
-    private Long invalidUninstallNum = 0L;
+    private Long uninstallNum = 0L;
     /**
      * 设备当天到达-无效卸载+替换总数
      */
-    private Long invalidUnAndReNum = 0L;
+    private Long unAndReNum = 0L;
 
 
     private String md5Key;
@@ -129,28 +132,36 @@ public class LogArriveStatTemp {
         this.invalidNum = invalidNum;
     }
 
-    public Long getInvalidReplaceNum() {
-        return invalidReplaceNum;
+    public Date getArriveDate() {
+        return arriveDate;
     }
 
-    public void setInvalidReplaceNum(Long invalidReplaceNum) {
-        this.invalidReplaceNum = invalidReplaceNum;
+    public void setArriveDate(Date arriveDate) {
+        this.arriveDate = arriveDate;
     }
 
-    public Long getInvalidUninstallNum() {
-        return invalidUninstallNum;
+    public Long getReplaceNum() {
+        return replaceNum;
     }
 
-    public void setInvalidUninstallNum(Long invalidUninstallNum) {
-        this.invalidUninstallNum = invalidUninstallNum;
+    public void setReplaceNum(Long replaceNum) {
+        this.replaceNum = replaceNum;
     }
 
-    public Long getInvalidUnAndReNum() {
-        return invalidUnAndReNum;
+    public Long getUninstallNum() {
+        return uninstallNum;
     }
 
-    public void setInvalidUnAndReNum(Long invalidUnAndReNum) {
-        this.invalidUnAndReNum = invalidUnAndReNum;
+    public void setUninstallNum(Long uninstallNum) {
+        this.uninstallNum = uninstallNum;
+    }
+
+    public Long getUnAndReNum() {
+        return unAndReNum;
+    }
+
+    public void setUnAndReNum(Long unAndReNum) {
+        this.unAndReNum = unAndReNum;
     }
 
     public String getMd5Key() {
@@ -167,14 +178,6 @@ public class LogArriveStatTemp {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public Date getArriveDate() {
-        return arriveDate;
-    }
-
-    public void setArriveDate(Date arriveDate) {
-        this.arriveDate = arriveDate;
     }
 
     public String getActive() {
