@@ -95,13 +95,13 @@ public class ApiUploadServiceImpl implements ApiUploadService {
 
                         int num = counterTempLogAdapter.insert(tempLog);
                         if (num == 1) {
-                            LOGGER.info("CounterTempLog保存成功-DataLog={}", JSON.toJSONString(po));
+                            LOGGER.info("CounterTempLog保存成功-DataLog={}", JSON.toJSONString(dataLog));
                             if (type == TempLogType.UnStat) {
                                 //异步统计到达数据
 //                                statCounterService.updateStat(dataLog);
-                                logInstallStatService.statLogInstallForArrive(po);
-                                productInstallStatService.statProductInstallForArrive(po);
-                                counterTempLogAdapter.update(po.getImei(), TempLogType.Done.value);
+                                logInstallStatService.statLogInstallForArrive(dataLog);
+                                productInstallStatService.statProductInstallForArrive(dataLog);
+                                counterTempLogAdapter.update(dataLog.getImei(), TempLogType.Done.value);
                             }
                         } else {
                             LOGGER.info("CounterTempLog保存失败-DataLog={}", JSON.toJSONString(po));

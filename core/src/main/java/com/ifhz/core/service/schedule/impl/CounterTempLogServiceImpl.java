@@ -10,7 +10,8 @@ import com.ifhz.core.po.CounterTempLog;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.schedule.CounterTempLogService;
-import com.ifhz.core.service.stat.StatCounterService;
+import com.ifhz.core.service.stat.LogInstallStatService;
+import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -36,8 +37,10 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
     private CounterTempLogAdapter counterTempLogAdapter;
     @Resource(name = "dataLogApiService")
     private DataLogApiService dataLogApiService;
-    @Resource(name = "statCounterService")
-    private StatCounterService statCounterService;
+    @Resource(name = "productInstallStatService")
+    private ProductInstallStatService productInstallStatService;
+    @Resource(name = "logInstallStatService")
+    private LogInstallStatService logInstallStatService;
 
     @Override
     @Log
@@ -116,11 +119,13 @@ public class CounterTempLogServiceImpl implements CounterTempLogService {
                     int num = dataLogApiService.updateCounterData(dataLog);
                     if (num == 1) {
                         //统计到达数据
-                        statCounterService.updateStat(dataLog);
+                        logInstallStatService.statLogInstallForArrive(dataLog);
+                        productInstallStatService.statProductInstallForArrive(dataLog);
                     }
                 } else {
                     //统计到达数据
-                    statCounterService.updateStat(dataLog);
+                    logInstallStatService.statLogInstallForArrive(dataLog);
+                    productInstallStatService.statProductInstallForArrive(dataLog);
                 }
             }
         }
