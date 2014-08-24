@@ -221,6 +221,7 @@
                         </a>
                     </div>
                 </shiro:hasPermission>
+                </shiro:hasPermission>
                 <shiro:hasPermission name="hzfmng_help_menu">
                     <div title="辅助功能" style="overflow: auto;">
                         <shiro:hasPermission name="hzfmng_help_queryimei">
@@ -250,7 +251,6 @@
                     </div>
                 </shiro:hasPermission>
             </div>
-        </shiro:hasPermission>
     </div>
 </div>
 <div region="center">
