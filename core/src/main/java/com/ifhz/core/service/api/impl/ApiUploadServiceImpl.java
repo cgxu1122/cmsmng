@@ -145,8 +145,8 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     } else {
                         po.setUa(ModelHandler.translateUa(po.getUa()));
                     }
-                    if (po.getBatchCode() == null) {
-                        po.setBatchCode("");
+                    if (StringUtils.isBlank(po.getBatchCode())) {
+                        po.setBatchCode("未知");
                     }
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");

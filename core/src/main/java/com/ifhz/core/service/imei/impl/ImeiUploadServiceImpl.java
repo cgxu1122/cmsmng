@@ -58,6 +58,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     private BatchInfoAdapter batchInfoAdapter;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
+
     @Log
     public Map<ImeiStatus, Integer> processCsvData(String filePath, Long channelId, Date processDate) {
         LOGGER.info("解析CSV文件:{}--------------------开始", filePath);
@@ -131,27 +132,28 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
             if (CollectionUtils.isNotEmpty(dataLogList)) {
                 ChannelInfo channelInfo = channelInfoCacheService.getByChannelId(channelId);
                 for (DataLog dataLog : dataLogList) {
+                    ImeiStatus status;
                     try {
                         dataLog.setProcessTime(processDate);
                         dataLog.setChannelId(channelId);
                         dataLog.setGroupId(channelInfo.getGroupId());
                         dataLog.setDeviceUploadTime(new Date());
-                        ImeiStatus status;
                         if (validExcelData(dataLog)) {
                             status = apiUploadService.saveDeviceDataLog(dataLog);
                         } else {
                             status = ImeiStatus.Invalid;
                         }
-                        if (status != null) {
-                            if (result.containsKey(status)) {
-                                Integer count = result.get(status);
-                                result.put(status, count + 1);
-                            } else {
-                                result.put(status, 1);
-                            }
-                        }
                     } catch (Exception e) {
                         LOGGER.info("process Row ===>DataLog", e);
+                        status = ImeiStatus.Failure;
+                    }
+                    if (status != null) {
+                        if (result.containsKey(status)) {
+                            Integer count = result.get(status);
+                            result.put(status, count + 1);
+                        } else {
+                            result.put(status, 1);
+                        }
                     }
                 }
             }

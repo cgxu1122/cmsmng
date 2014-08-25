@@ -74,7 +74,12 @@
     <div>
         <table>
             <tr>
-                <td>
+                <td align="left" colspan="3">
+                    <font color="red">注意：Excel文件中的Imei最大值为3000</font>
+                </td>
+            </tr>
+            <tr>
+            <td>
                     <form id="fm" method="post" enctype="multipart/form-data" novalidate>
                         <input type="file" name="excelFile"/>
                     </form>

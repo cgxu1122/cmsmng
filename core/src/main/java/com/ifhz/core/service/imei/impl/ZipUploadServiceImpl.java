@@ -1,6 +1,8 @@
 package com.ifhz.core.service.imei.impl;
 
 import com.google.common.collect.Maps;
+import com.ifhz.core.adapter.BatchInfoAdapter;
+import com.ifhz.core.adapter.ModelInfoAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.codec.OtherCodecUtils;
 import com.ifhz.core.po.ChannelInfo;
@@ -44,12 +46,14 @@ public class ZipUploadServiceImpl implements ZipUploadService {
 
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
-
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
-
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
+    private ModelInfoAdapter modelInfoAdapter;
+    @Resource(name = "batchInfoAdapter")
+    private BatchInfoAdapter batchInfoAdapter;
+
 
     @Log
     @Override
@@ -80,32 +84,40 @@ public class ZipUploadServiceImpl implements ZipUploadService {
                             String fileContent = FileUtils.readFileToString(new File(storeTempFilePath), "UTF-8");
                             if (StringUtils.isNotBlank(fileContent)) {
                                 String content = OtherCodecUtils.decode(fileContent);
+                                LOGGER.info("xmlContent={}", content);
                                 stream.processAnnotations(XmlBean.class);
                                 XmlBean bean = (XmlBean) stream.fromXML(content.trim());
                                 if (bean != null) {
+                                    ImeiStatus status = null;
                                     try {
                                         DataLog dataLog = new DataLog();
                                         dataLog.setImei(bean.getImei());
                                         dataLog.setUa(ModelHandler.translateUa(bean.getUa()));
                                         dataLog.setProcessTime(processDate);
                                         dataLog.setChannelId(channelId);
-                                        dataLog.setBatchCode(getBatchCode(bean));
+                                        String batchCode = getBatchCode(bean);
+                                        dataLog.setBatchCode(batchCode);
                                         dataLog.setDeviceCode("手工安装");
                                         dataLog.setDeviceUploadTime(new Date());
                                         if (channelInfo != null) {
                                             dataLog.setGroupId(channelInfo.getGroupId());
                                         }
-                                        ImeiStatus status = apiUploadService.saveDeviceDataLog(dataLog);
-                                        if (status != null) {
-                                            if (result.containsKey(status)) {
-                                                Integer count = result.get(status);
-                                                result.put(status, count + 1);
-                                            } else {
-                                                result.put(status, 1);
-                                            }
+                                        if (validExcelData(dataLog)) {
+                                            status = apiUploadService.saveDeviceDataLog(dataLog);
+                                        } else {
+                                            status = ImeiStatus.Invalid;
                                         }
                                     } catch (Exception e) {
                                         LOGGER.error("saveDeviceDataLog error", e);
+                                        status = ImeiStatus.Failure;
+                                    }
+                                    if (status != null) {
+                                        if (result.containsKey(status)) {
+                                            Integer count = result.get(status);
+                                            result.put(status, count + 1);
+                                        } else {
+                                            result.put(status, 1);
+                                        }
                                     }
                                 }
                             }
@@ -127,6 +139,28 @@ public class ZipUploadServiceImpl implements ZipUploadService {
         }
 
         return result;
+    }
+
+    @Log
+    private boolean validExcelData(DataLog dataLog) {
+        //验证非法数据
+        if (StringUtils.isBlank(dataLog.getImei())) {
+            return false;
+        }
+        if (StringUtils.isBlank(dataLog.getUa())) {
+            return false;
+        }
+        if (StringUtils.isBlank(dataLog.getBatchCode())) {
+            return false;
+        }
+        if (StringUtils.isBlank(dataLog.getDeviceCode())) {
+            return false;
+        }
+        if (batchInfoAdapter.queryByGroupIdAndBatchCode(dataLog.getGroupId(), dataLog.getBatchCode()) == null) {
+            return false;
+        }
+
+        return true;
     }
 
 
