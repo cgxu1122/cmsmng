@@ -55,7 +55,12 @@
                 </tr>
                 <tr>
                     <td align="left" colspan="2">
-                        <font color="red" id="datetagmsg"></font>
+                        <font color="red">注意：Zip包中的文件的最大值为1000</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="2">
+                    <font color="red" id="datetagmsg"></font>
                     </td>
                 </tr>
                 <tr>
