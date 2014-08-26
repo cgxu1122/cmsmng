@@ -32,8 +32,20 @@
     </resultMap>
 
     <select id="queryByPackageId" parameterType="long" resultMap="PackageApkRefResultMap">
-        select * from
+        select
+        ref.ID as ID,
+        ref.PACKAGE_ID as PACKAGE_ID,
+        ref.APK_ID as APK_ID,
+        apk.APK_NAME as APK_NAME,
+        ref.AUTO_RUN as AUTO_RUN,
+        ref.DESKTOP_ICON as DESKTOP_ICON,
+        ref.SORT as SORT,
+        ref.APK_TYPE as APK_TYPE,
+        ref.CREATE_TIME as CREATE_TIME
+        from
         <include refid="TABLE_NAME"/>
+        ref inner join TY_APK_INFO apk
+        on ref.APK_ID = apk.APK_ID
         where PACKAGE_ID = #{packageId}
         order by sort
     </select>
