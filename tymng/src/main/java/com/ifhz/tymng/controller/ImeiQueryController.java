@@ -73,6 +73,12 @@ public class ImeiQueryController {
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             LOGGER.info("用户上传imei查询文件fileName={},保存到本地成功,路径为{}", toFilePath);
+            boolean checkRowNum = ExcelHandle.checkRowNumFromExcel(toFilePath, ExcelHandle.Type.ImeiList);
+            if (!checkRowNum) {
+                result.put("ret", false);
+                result.put("errorMsg", "Excel文件最大支持3000条,请上传正确的文件");
+                return result;
+            }
             Set<String> imeiSet = ExcelHandle.readImeiListFromExcel(toFilePath);
             LOGGER.info("用户上传imei查询文件fileName={},从Excel解析imeiSet={}", JSON.toJSONString(imeiSet));
             List<DataLogResult> dataLogResultList = imeiQueryService.queryListByImeiList(imeiSet);

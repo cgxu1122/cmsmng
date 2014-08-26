@@ -32,6 +32,10 @@ public class ExcelHandle {
     private static final int MaxImeiRowSize = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelHandle.class);
 
+    public enum Type {
+        ImeiList, ImeiData;
+    }
+
     public static Set<String> readImeiListFromExcel(String excelFilePath) throws Exception {
         Set<String> result = Sets.newHashSet();
         Workbook wkbook = null;
@@ -56,6 +60,30 @@ public class ExcelHandle {
 
         return result;
     }
+
+    public static boolean checkRowNumFromExcel(String excelFilePath, Type type) throws Exception {
+        Workbook wkbook = null;
+        try {
+            wkbook = new XSSFWorkbook(new FileInputStream(excelFilePath));
+        } catch (Exception ex) {
+            wkbook = new HSSFWorkbook(new FileInputStream(excelFilePath));
+        }
+        Sheet sheet = wkbook.getSheetAt(0);
+        if (sheet == null) return false;
+        int lastRowNum = sheet.getLastRowNum();
+        if (type == Type.ImeiData) {
+            if (lastRowNum == 0 || lastRowNum > MaxImeiRowSize) {
+                return false;
+            }
+        } else {
+            if (lastRowNum == 0 || lastRowNum > MaxRowSize) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 
     public static List<DataLog> readImeiDataFromExcel(String excelFilePath) throws Exception {
@@ -132,8 +160,11 @@ public class ExcelHandle {
     }
 
     public static void main(String[] args) throws Exception {
-        String path = "C:\\Users\\chenggang.xu.QUNARSERVERS\\Downloads\\ImeiUploadFile.xls";
-        List<DataLog> list = readImeiDataFromExcel(path);
+        String path = "D:\\imei.xlsx";
+        path = "D:\\imei - 副本 - 副本.xlsx";
+        boolean list = checkRowNumFromExcel(path, Type.ImeiData);
+        System.out.println(JSON.toJSONString(list));
+        list = checkRowNumFromExcel(path, Type.ImeiList);
         System.out.println(JSON.toJSONString(list));
     }
 }

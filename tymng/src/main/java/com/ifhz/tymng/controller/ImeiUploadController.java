@@ -2,6 +2,7 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.commons.date.DateFormatUtils;
+import com.ifhz.core.base.commons.excel.ExcelHandle;
 import com.ifhz.core.progress.ProgressModel;
 import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.cache.LocalDirCacheService;
@@ -76,6 +77,12 @@ public class ImeiUploadController {
             String newFileName = localDirCacheService.getLocalFileName(originFileName);
             String toFilePath = localDirCacheService.storeTempFile(file.getInputStream(), newFileName);
             LOGGER.info("用户上传Imei安装文件fileName={},保存到本地成功,路径为{}", originFileName, toFilePath);
+            boolean checkRowNum = ExcelHandle.checkRowNumFromExcel(toFilePath, ExcelHandle.Type.ImeiData);
+            if (!checkRowNum) {
+                result.put("ret", false);
+                result.put("errorMsg", "Excel文件最大支持1000条,请上传正确的文件");
+                return result;
+            }
             Map<ImeiStatus, Integer> map = imeiUploadService.processImeiExcelData(toFilePath, channelId, processDate);
             if (MapUtils.isNotEmpty(map)) {
                 for (Map.Entry<ImeiStatus, Integer> entry : map.entrySet()) {
