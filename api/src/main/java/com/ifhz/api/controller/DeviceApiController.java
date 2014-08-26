@@ -167,7 +167,11 @@ public class DeviceApiController {
                     } else if (i == 3) {
                         result.setDeviceCode(StringUtils.trimToEmpty(value));
                     } else if (i == 4) {
-                        result.setBatchCode(StringUtils.trimToEmpty(value));
+                        String batchCode = StringUtils.trimToEmpty(value);
+                        if (StringUtils.isBlank(batchCode)) {
+                            batchCode = "-";
+                        }
+                        result.setBatchCode(batchCode);
                     } else if (i == 5) {
                         String processTimeStamp = StringUtils.trimToEmpty(value);
                         if (StringUtils.isNotBlank(processTimeStamp)) {
