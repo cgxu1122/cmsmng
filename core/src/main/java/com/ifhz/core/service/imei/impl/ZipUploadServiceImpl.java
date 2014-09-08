@@ -2,9 +2,9 @@ package com.ifhz.core.service.imei.impl;
 
 import com.google.common.collect.Maps;
 import com.ifhz.core.adapter.BatchInfoAdapter;
-import com.ifhz.core.adapter.ModelInfoAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.codec.OtherCodecUtils;
+import com.ifhz.core.base.commons.xml.JAXBUtil;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.service.api.ApiUploadService;
@@ -13,8 +13,9 @@ import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.imei.ZipUploadService;
-import com.ifhz.core.service.imei.bean.XmlBean;
-import com.thoughtworks.xstream.XStream;
+import com.ifhz.core.service.imei.bean.PreInstall;
+import com.ifhz.core.service.imei.bean.PreInstallSet;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +44,8 @@ import java.util.zip.ZipInputStream;
 public class ZipUploadServiceImpl implements ZipUploadService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ZipUploadServiceImpl.class);
+    private static final String Xml_Prefix = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><list>";
+    private static final String Xml_Suffix = "</list>";
 
     @Resource(name = "localDirCacheService")
     private LocalDirCacheService localDirCacheService;
@@ -50,7 +53,6 @@ public class ZipUploadServiceImpl implements ZipUploadService {
     private ChannelInfoCacheService channelInfoCacheService;
     @Resource(name = "apiUploadService")
     private ApiUploadService apiUploadService;
-    private ModelInfoAdapter modelInfoAdapter;
     @Resource(name = "batchInfoAdapter")
     private BatchInfoAdapter batchInfoAdapter;
 
@@ -59,7 +61,6 @@ public class ZipUploadServiceImpl implements ZipUploadService {
     @Override
     public Map<ImeiStatus, Integer> processFile(String filePath, Long channelId, Date processDate) {
         Map<ImeiStatus, Integer> result = Maps.newHashMap();
-        XStream stream = new XStream();
         if (StringUtils.isBlank(filePath) || channelId == null || processDate == null) {
             return result;
         }
@@ -85,38 +86,40 @@ public class ZipUploadServiceImpl implements ZipUploadService {
                             if (StringUtils.isNotBlank(fileContent)) {
                                 String content = OtherCodecUtils.decode(fileContent);
                                 LOGGER.info("xmlContent={}", content);
-                                stream.processAnnotations(XmlBean.class);
-                                XmlBean bean = (XmlBean) stream.fromXML(content.trim());
-                                if (bean != null) {
-                                    ImeiStatus status = null;
-                                    try {
-                                        DataLog dataLog = new DataLog();
-                                        dataLog.setImei(bean.getImei());
-                                        dataLog.setUa(ModelHandler.translateUa(bean.getUa()));
-                                        dataLog.setProcessTime(processDate);
-                                        dataLog.setChannelId(channelId);
-                                        String batchCode = getBatchCode(bean);
-                                        dataLog.setBatchCode(batchCode);
-                                        dataLog.setDeviceCode("手工安装");
-                                        dataLog.setDeviceUploadTime(new Date());
-                                        if (channelInfo != null) {
-                                            dataLog.setGroupId(channelInfo.getGroupId());
+                                content = Xml_Prefix + content + Xml_Suffix;
+                                PreInstallSet preInstallSet = JAXBUtil.unmarshalXmlStr(PreInstallSet.class, content);
+                                if (preInstallSet != null && CollectionUtils.isNotEmpty(preInstallSet.getPreInstallSet())) {
+                                    for (PreInstall bean : preInstallSet.getPreInstallSet()) {
+                                        ImeiStatus status = null;
+                                        try {
+                                            DataLog dataLog = new DataLog();
+                                            dataLog.setImei(bean.getImei());
+                                            dataLog.setUa(ModelHandler.translateUa(bean.getUa()));
+                                            dataLog.setProcessTime(processDate);
+                                            dataLog.setChannelId(channelId);
+                                            String batchCode = getBatchCode(bean);
+                                            dataLog.setBatchCode(batchCode);
+                                            dataLog.setDeviceCode("手工安装");
+                                            dataLog.setDeviceUploadTime(new Date());
+                                            if (channelInfo != null) {
+                                                dataLog.setGroupId(channelInfo.getGroupId());
+                                            }
+                                            if (validExcelData(dataLog)) {
+                                                status = apiUploadService.saveDeviceDataLog(dataLog);
+                                            } else {
+                                                status = ImeiStatus.Invalid;
+                                            }
+                                        } catch (Exception e) {
+                                            LOGGER.error("saveDeviceDataLog error", e);
+                                            status = ImeiStatus.Failure;
                                         }
-                                        if (validExcelData(dataLog)) {
-                                            status = apiUploadService.saveDeviceDataLog(dataLog);
-                                        } else {
-                                            status = ImeiStatus.Invalid;
-                                        }
-                                    } catch (Exception e) {
-                                        LOGGER.error("saveDeviceDataLog error", e);
-                                        status = ImeiStatus.Failure;
-                                    }
-                                    if (status != null) {
-                                        if (result.containsKey(status)) {
-                                            Integer count = result.get(status);
-                                            result.put(status, count + 1);
-                                        } else {
-                                            result.put(status, 1);
+                                        if (status != null) {
+                                            if (result.containsKey(status)) {
+                                                Integer count = result.get(status);
+                                                result.put(status, count + 1);
+                                            } else {
+                                                result.put(status, 1);
+                                            }
                                         }
                                     }
                                 }
@@ -165,7 +168,7 @@ public class ZipUploadServiceImpl implements ZipUploadService {
 
 
     @Log
-    private String getBatchCode(XmlBean bean) {
+    private String getBatchCode(PreInstall bean) {
         String result = "";
         if (bean != null) {
             String apkName;

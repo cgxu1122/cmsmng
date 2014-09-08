@@ -9,6 +9,7 @@ import javax.xml.bind.Marshaller;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 
 
@@ -41,6 +42,19 @@ public final class JAXBUtil {
             return (T) context.createUnmarshaller().unmarshal(reader);
         } catch (Exception e) {
             throw new RuntimeException("Failed to unmarshal object for class:" + clazz + " xml:" + xmlInClassPath, e);
+        } finally {
+            Closeables.closeQuietly(reader);
+        }
+    }
+
+    public static <T> T unmarshalXmlStr(Class<T> clazz, String xmlDoc) {
+        StringReader reader = null;
+        try {
+            reader = new StringReader(xmlDoc);
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            return (T) context.createUnmarshaller().unmarshal(reader);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to unmarshal object for class:" + clazz + " xmlDoc:" + xmlDoc, e);
         } finally {
             Closeables.closeQuietly(reader);
         }
