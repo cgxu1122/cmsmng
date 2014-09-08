@@ -10,8 +10,11 @@ import com.ifhz.core.po.DataLog;
  */
 public interface ProductInstallStatService {
 
-    public boolean statProductInstall(DataLog record);
-
+    public boolean statProductProcess(DataLog record);
 
     public boolean statProductInstallForArrive(DataLog record);
+
+    public boolean statProductInstall(DataLog record);
+
+    public boolean statProductArrive(DataLog record);
 }

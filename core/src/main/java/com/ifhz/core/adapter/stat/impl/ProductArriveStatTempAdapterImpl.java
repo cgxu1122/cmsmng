@@ -1,7 +1,6 @@
 package com.ifhz.core.adapter.stat.impl;
 
 import com.ifhz.core.adapter.stat.ProductArriveStatTempAdapter;
-import com.ifhz.core.constants.Active;
 import com.ifhz.core.mapper.stat.ProductArriveStatTempMapper;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
 
@@ -17,19 +16,7 @@ public class ProductArriveStatTempAdapterImpl implements ProductArriveStatTempAd
 
     @Override
     public int insert(ProductArriveStatTemp record) {
-        record.setActive(Active.Y.dbValue);
         return productArriveStatTempMapper.insert(record);
-    }
-
-    @Override
-    public int update(ProductArriveStatTemp record) {
-        return productArriveStatTempMapper.update(record);
-    }
-
-    @Override
-    public int updateByManual(ProductArriveStatTemp record) {
-        record.setActive(Active.N.dbValue);
-        return productArriveStatTempMapper.update(record);
     }
 
     @Override

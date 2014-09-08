@@ -45,7 +45,6 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
                     while (true) {
                         count++;
                         int num = 0;
-                        boolean isInsert = false;
                         ProductArriveStat productArriveStat = productArriveStatAdapter.getByMd5Key(md5Key);
                         LOGGER.info("source productArriveStat={}", JSON.toJSONString(productArriveStat));
                         if (productArriveStat == null) {
@@ -65,7 +64,6 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
                                 productArriveStat.setInvalidNum(productArriveStat.getInvalidNum() + 1);
                                 productArriveStat.setUnAndReNum(productArriveStat.getUnAndReNum() + 1);
                             }
-                            isInsert = true;
                             try {
                                 LOGGER.info("target productArriveStat={}", JSON.toJSONString(productArriveStat));
                                 num = productArriveStatAdapter.insert(productArriveStat);
@@ -93,7 +91,6 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
 
                         if (num == 1) {
                             LOGGER.info("ProductArriveStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(record));
-                            productArriveStatTempService.asyncData(productArriveStat, isInsert);
                             break;
                         }
                         if (count == 10) {

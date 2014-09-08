@@ -12,9 +12,5 @@ public interface LogArriveStatTempAdapter {
 
     public int insert(LogArriveStatTemp record);
 
-    public int update(LogArriveStatTemp record);
-
-    public int updateByManual(LogArriveStatTemp record);
-
     public LogArriveStatTemp getById(Long id);
 }

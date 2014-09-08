@@ -28,27 +28,6 @@ public class ProductArriveStatTemp implements Serializable {
      * 设备当天到达-有效总数
      */
     private Long validNum = 0L;
-    /**
-     * 设备当天到达-无效总数
-     */
-    private Long invalidNum = 0L;
-    /**
-     * 设备当天到达-替换总数
-     */
-    private Long replaceNum = 0L;
-    /**
-     * 设备当天到达-卸载总数
-     */
-    private Long uninstallNum = 0L;
-    /**
-     * 设备当天到达-无效卸载+替换总数
-     */
-    private Long unAndReNum = 0L;
-
-
-    private String md5Key;
-    private Integer version;
-    private String active;
 
     public Long getId() {
         return id;
@@ -128,61 +107,5 @@ public class ProductArriveStatTemp implements Serializable {
 
     public void setValidNum(Long validNum) {
         this.validNum = validNum;
-    }
-
-    public Long getInvalidNum() {
-        return invalidNum;
-    }
-
-    public void setInvalidNum(Long invalidNum) {
-        this.invalidNum = invalidNum;
-    }
-
-    public Long getReplaceNum() {
-        return replaceNum;
-    }
-
-    public void setReplaceNum(Long replaceNum) {
-        this.replaceNum = replaceNum;
-    }
-
-    public Long getUninstallNum() {
-        return uninstallNum;
-    }
-
-    public void setUninstallNum(Long uninstallNum) {
-        this.uninstallNum = uninstallNum;
-    }
-
-    public Long getUnAndReNum() {
-        return unAndReNum;
-    }
-
-    public void setUnAndReNum(Long unAndReNum) {
-        this.unAndReNum = unAndReNum;
-    }
-
-    public String getMd5Key() {
-        return md5Key;
-    }
-
-    public void setMd5Key(String md5Key) {
-        this.md5Key = md5Key;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public String getActive() {
-        return active;
-    }
-
-    public void setActive(String active) {
-        this.active = active;
     }
 }

@@ -12,8 +12,6 @@ public interface LogArriveStatTempMapper {
 
     public int insert(LogArriveStatTemp record);
 
-    public int update(LogArriveStatTemp record);
-
     public LogArriveStatTemp getById(Long id);
 
 }

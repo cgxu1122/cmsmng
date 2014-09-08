@@ -12,7 +12,5 @@ public interface ProductArriveStatTempMapper {
 
     public int insert(ProductArriveStatTemp record);
 
-    public int update(ProductArriveStatTemp record);
-
     public ProductArriveStatTemp getById(Long id);
 }

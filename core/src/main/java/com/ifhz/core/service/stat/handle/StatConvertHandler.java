@@ -6,6 +6,7 @@ import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.po.stat.ProductInstallStat;
 
 import java.util.Date;
 
@@ -109,6 +110,51 @@ public class StatConvertHandler {
         productStat.setVersion(0);
 
         return productStat;
+    }
+
+    /**
+     * MD5加密 UA + GrroupId + productId + ProcessTime
+     * 产品数据统计表中 数据加密 表中唯一
+     *
+     * @param dataLog
+     * @param productId
+     * @return
+     */
+    public static String getMd5KeyForProductInstallStat(DataLog dataLog, Long productId) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(dataLog.getUa());
+        buffer.append(",");
+        buffer.append(dataLog.getChannelId());
+        buffer.append(",");
+        buffer.append(productId);
+        buffer.append(",");
+        buffer.append(DateFormatUtils.formatDate(dataLog.getProcessTime(), GlobalConstants.DATE_FORMAT_DPT));
+
+        return DesencryptUtils.md5Str(buffer.toString());
+
+    }
+
+    public static ProductInstallStat initProductInstallStat(DataLog dataLog, Long productId) {
+        ProductInstallStat result = new ProductInstallStat();
+        result.setUa(dataLog.getUa());
+        result.setModelName(dataLog.getModelName());
+        result.setProductId(productId);
+        result.setGroupId(dataLog.getGroupId());
+        result.setChannelId(dataLog.getChannelId());
+        result.setInstallDate(dataLog.getProcessTime());
+        result.setBatchCode(dataLog.getBatchCode());
+        result.setCreateTime(new Date());
+
+        result.setInstallTotalNum(0L);
+        result.setTotalNum(0L);
+        result.setValidNum(0L);
+        result.setInvalidNum(0L);
+        result.setReplaceNum(0L);
+        result.setUninstallNum(0L);
+        result.setUnAndReNum(0L);
+        result.setVersion(0);
+
+        return result;
     }
 
     public static long getPageNum(long totalCount, long pageSize) {

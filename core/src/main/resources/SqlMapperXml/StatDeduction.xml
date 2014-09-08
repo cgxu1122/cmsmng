@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.stat.StatDeductionMapper">
+    <!--
+create table TY_STAT_DEDUCTION  (
+   ID                   NUMBER(15)                      not null,
+   CHANNEL_ID          NUMBER(15)                     not null,
+   GROUP_ID             NUMBER(15)                     not null,
+   TYPE                 NUMBER(5)                      default 1,
+   BASIC_NUM            NUMBER(15)                     default 0,
+   PERCENTAGE           NUMBER(15)                     default 0,
+   CREATE_TIME          DATE                           default SYSDATE,
+   UPDATE_TIME          DATE                           default SYSDATE,
+   constraint PK_TY_STAT_DEDUCTION primary key (ID)
+);
+    -->
+
+
+    <sql id="TABLE_NAME">TY_STAT_DEDUCTION</sql>
+    <sql id="CommonFieldSql">
+        ID,
+        CHANNEL_ID,
+        GROUP_ID,
+        TYPE,
+        BASIC_NUM,
+        PERCENTAGE,
+        CREATE_TIME,
+        UPDATE_TIME
+    </sql>
+
+    <resultMap id="StatDeductionResultMap" type="com.ifhz.core.po.stat.StatDeduction">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
+        <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
+        <result column="TYPE" property="type" jdbcType="INTEGER"/>
+        <result column="BASIC_NUM" property="basicNum" jdbcType="INTEGER"/>
+        <result column="PERCENTAGE" property="percentage" jdbcType="DOUBLE"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getById" parameterType="long" resultMap="StatDeductionResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id}
+    </select>
+
+    <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.stat.StatDeduction">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_STAT_DEDUCTION.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        (
+        <include refid="CommonFieldSql"/>
+        )
+        values
+        (
+        SEQ_STAT_DEDUCTION.NEXTVAL,
+        #{channelId,jdbcType=BIGINT},
+        #{groupId,jdbcType=BIGINT},
+        #{type,jdbcType=INTEGER},
+        #{basicNum,jdbcType=INTEGER},
+        #{percentage,jdbcType=DOUBLE},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ifhz.core.po.stat.StatDeduction">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="basicNum != null">
+                BASIC_NUM = #{basicNum},
+            </if>
+            <if test="percentage != null">
+                PERCENTAGE = #{percentage},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+</mapper>

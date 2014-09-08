@@ -1,7 +1,6 @@
 package com.ifhz.core.service.stat;
 
 import com.ifhz.core.po.DataLog;
-import com.ifhz.core.po.stat.ProductArriveStat;
 
 /**
  * 类描述
@@ -12,6 +11,4 @@ import com.ifhz.core.po.stat.ProductArriveStat;
 public interface ProductArriveStatTempService {
 
     public boolean statTempProductArrive(DataLog record);
-
-    public boolean asyncData(ProductArriveStat record, boolean isInsert);
 }

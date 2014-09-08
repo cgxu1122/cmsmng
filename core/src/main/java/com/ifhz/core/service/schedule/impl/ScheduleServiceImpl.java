@@ -163,4 +163,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         LOGGER.info("deleteCounterTempLog --------------------------end");
     }
 
+    @Override
+    public void syncLogActiveTemp() {
+        LOGGER.info("syncLogActiveTemp ------------------------start");
+        Date date = DateFormatUtils.addDay(new Date(), -1);
+        Date startTime = DateHandler.getStartTimeForMinute(date);
+        Date endTime = DateHandler.getEndTime(date);
+        LOGGER.info("syncLogActiveTemp ------------------------end");
+    }
+
+    @Override
+    public void syncProductActiveTemp() {
+        LOGGER.info("syncProductActiveTemp ------------------------start");
+        LOGGER.info("syncProductActiveTemp ------------------------end");
+    }
+
 }

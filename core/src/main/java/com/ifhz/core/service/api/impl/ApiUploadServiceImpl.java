@@ -153,7 +153,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     int num = dataLogApiService.insertDeviceData(po);
                     if (num == 1) {
                         logInstallStatService.statLogInstall(po);
-                        productInstallStatService.statProductInstall(po);
+                        productInstallStatService.statProductProcess(po);
                         return ImeiStatus.Success;
                     } else {
                         return ImeiStatus.Failure;

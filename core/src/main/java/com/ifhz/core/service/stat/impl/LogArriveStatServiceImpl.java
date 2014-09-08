@@ -37,7 +37,6 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
             LOGGER.info("LogArriveStat md5Key={}", md5Key);
             int count = 0;
             while (true) {
-                boolean isInsert = false;
                 count++;
                 int num = 0;
                 LogArriveStat logArriveStat = logArriveStatAdapter.getByMd5Key(md5Key);
@@ -59,7 +58,6 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
                         logArriveStat.setInvalidNum(logArriveStat.getInvalidNum() + 1);
                         logArriveStat.setUnAndReNum(logArriveStat.getUnAndReNum() + 1);
                     }
-                    isInsert = true;
                     try {
                         LOGGER.info("target logArriveStat={}", JSON.toJSONString(logArriveStat));
                         num = logArriveStatAdapter.insert(logArriveStat);
@@ -87,7 +85,6 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
 
                 if (num == 1) {
                     LOGGER.info("LogArriveStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(record));
-                    logArriveStatTempService.asyncData(logArriveStat, isInsert);
                     break;
                 } else {
                     LOGGER.info("LogArriveStat update failure,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(record));

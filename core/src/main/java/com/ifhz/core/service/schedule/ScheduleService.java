@@ -17,4 +17,8 @@ public interface ScheduleService {
     public void fetchWdjData();
 
     public void deleteCounterTempLog();
+
+    public void syncLogActiveTemp();
+
+    public void syncProductActiveTemp();
 }

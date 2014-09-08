@@ -50,14 +50,6 @@ public class ArriveStatConvertHandler {
         logArriveStatTemp.setArriveDate(record.getArriveDate());
         logArriveStatTemp.setCreateTime(record.getCreateTime());
 
-        logArriveStatTemp.setTotalNum(record.getTotalNum());
-        logArriveStatTemp.setValidNum(record.getValidNum());
-        logArriveStatTemp.setInvalidNum(record.getInvalidNum());
-        logArriveStatTemp.setReplaceNum(record.getReplaceNum());
-        logArriveStatTemp.setUninstallNum(record.getUninstallNum());
-        logArriveStatTemp.setUnAndReNum(record.getUnAndReNum());
-        logArriveStatTemp.setVersion(record.getVersion());
-
         return logArriveStatTemp;
     }
 
@@ -136,14 +128,6 @@ public class ArriveStatConvertHandler {
         result.setChannelId(record.getChannelId());
         result.setArriveDate(record.getArriveDate());
         result.setCreateTime(record.getCreateTime());
-
-        result.setTotalNum(record.getTotalNum());
-        result.setValidNum(record.getValidNum());
-        result.setInvalidNum(record.getInvalidNum());
-        result.setReplaceNum(record.getReplaceNum());
-        result.setUninstallNum(record.getUninstallNum());
-        result.setUnAndReNum(record.getUnAndReNum());
-        result.setVersion(record.getVersion());
 
         return result;
     }

@@ -12,14 +12,7 @@
         LAOWU_ID,
         CREATE_TIME,
         TOTAL_NUM,
-        VALID_NUM,
-        INVALID_NUM,
-        REPLACE_NUM,
-        UNINSTALL_NUM,
-        UN_AND_RE_NUM,
-        MD5_KEY,
-        VERSION,
-        ACTIVE
+        VALID_NUM
     </sql>
 
     <resultMap id="LogArriveStatTempResultMap" type="com.ifhz.core.po.stat.LogArriveStatTemp">
@@ -33,14 +26,6 @@
 
         <result column="TOTAL_NUM" property="totalNum" jdbcType="BIGINT"/>
         <result column="VALID_NUM" property="validNum" jdbcType="BIGINT"/>
-        <result column="INVALID_NUM" property="invalidNum" jdbcType="BIGINT"/>
-        <result column="REPLACE_NUM" property="replaceNum" jdbcType="BIGINT"/>
-        <result column="UNINSTALL_NUM" property="uninstallNum" jdbcType="BIGINT"/>
-        <result column="UN_AND_RE_NUM" property="unAndReNum" jdbcType="BIGINT"/>
-
-        <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
-        <result column="VERSION" property="version" jdbcType="BIGINT"/>
-        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
     </resultMap>
 
 
@@ -60,49 +45,9 @@
         #{laowuId,jdbcType=BIGINT},
         #{createTime,jdbcType=TIMESTAMP},
         #{totalNum,jdbcType=BIGINT},
-        #{validNum,jdbcType=BIGINT},
-        #{invalidNum,jdbcType=BIGINT},
-        #{replaceNum,jdbcType=BIGINT},
-        #{uninstallNum,jdbcType=BIGINT},
-        #{unAndReNum,jdbcType=BIGINT},
-        #{md5Key,jdbcType=VARCHAR},
-        #{version,jdbcType=BIGINT},
-        #{active,jdbcType=VARCHAR}
+        #{validNum,jdbcType=BIGINT}
         )
     </insert>
-
-    <update id="update" parameterType="com.ifhz.core.po.stat.LogArriveStatTemp">
-        update
-        <include refid="TABLE_NAME"/>
-        <set>
-            <if test="version != null">
-                VERSION = #{version},
-            </if>
-            <if test="totalNum != null and totalNum != 0">
-                TOTAL_NUM = #{totalNum},
-            </if>
-            <if test="validNum != null and validNum != 0">
-                VALID_NUM = #{validNum},
-            </if>
-            <if test="invalidNum != null and invalidNum != 0">
-                INVALID_NUM = #{invalidNum},
-            </if>
-            <if test="replaceNum != null and replaceNum != 0">
-                REPLACE_NUM = #{replaceNum},
-            </if>
-            <if test="uninstallNum != null and uninstallNum != 0">
-                UNINSTALL_NUM = #{uninstallNum},
-            </if>
-            <if test="unAndReNum != null  and unAndReNum != 0">
-                UN_AND_RE_NUM = #{unAndReNum},
-            </if>
-            <if test="active != null  and active != ''">
-                ACTIVE = #{active},
-            </if>
-        </set>
-        where ID = #{id}
-    </update>
-
 
     <select id="getById" parameterType="long" resultMap="LogArriveStatTempResultMap">
         select
@@ -111,5 +56,4 @@
         <include refid="TABLE_NAME"/>
         where ID = #{id}
     </select>
-
 </mapper>

@@ -51,7 +51,7 @@ create table TY_SETTLE_INFO  (
     </select>
 
     <insert id="insert" keyProperty="id" parameterType="com.ifhz.core.po.SettleInfo">
-        <selectKey resultType="long" keyProperty="apkId">
+        <selectKey resultType="long" keyProperty="settleId">
             SELECT SEQ_SETTLE_INFO.CURRVAL FROM DUAL
         </selectKey>
         insert into

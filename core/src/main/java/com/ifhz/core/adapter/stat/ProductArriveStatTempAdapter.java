@@ -12,9 +12,5 @@ public interface ProductArriveStatTempAdapter {
 
     public int insert(ProductArriveStatTemp record);
 
-    public int update(ProductArriveStatTemp record);
-
-    public int updateByManual(ProductArriveStatTemp record);
-
     public ProductArriveStatTemp getById(Long id);
 }
