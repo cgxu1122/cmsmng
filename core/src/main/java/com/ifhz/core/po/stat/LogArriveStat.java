@@ -16,7 +16,7 @@ public class LogArriveStat implements Serializable {
     private String modelName;
     private Long groupId;
     private Long channelId;
-    private Date arriveDate;
+    private Date statDate;
     private Long laowuId;
     private Date createTime;
 
@@ -90,12 +90,12 @@ public class LogArriveStat implements Serializable {
         this.channelId = channelId;
     }
 
-    public Date getArriveDate() {
-        return arriveDate;
+    public Date getStatDate() {
+        return statDate;
     }
 
-    public void setArriveDate(Date arriveDate) {
-        this.arriveDate = arriveDate;
+    public void setStatDate(Date statDate) {
+        this.statDate = statDate;
     }
 
     public Long getLaowuId() {

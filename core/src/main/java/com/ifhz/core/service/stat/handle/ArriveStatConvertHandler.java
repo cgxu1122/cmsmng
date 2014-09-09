@@ -25,7 +25,7 @@ public class ArriveStatConvertHandler {
         logArriveStat.setUa(dataLog.getUa());
         logArriveStat.setModelName(dataLog.getModelName());
         logArriveStat.setChannelId(dataLog.getChannelId());
-        logArriveStat.setArriveDate(dataLog.getCounterUploadTime());
+        logArriveStat.setStatDate(dataLog.getCounterUploadTime());
         logArriveStat.setGroupId(dataLog.getGroupId());
         logArriveStat.setCreateTime(new Date());
 
@@ -47,7 +47,7 @@ public class ArriveStatConvertHandler {
         logArriveStatTemp.setModelName(record.getModelName());
         logArriveStatTemp.setChannelId(record.getChannelId());
         logArriveStatTemp.setGroupId(record.getGroupId());
-        logArriveStatTemp.setArriveDate(record.getArriveDate());
+        logArriveStatTemp.setStatDate(record.getStatDate());
         logArriveStatTemp.setCreateTime(record.getCreateTime());
 
         return logArriveStatTemp;
@@ -103,7 +103,7 @@ public class ArriveStatConvertHandler {
         productArriveStat.setProductId(productId);
         productArriveStat.setGroupId(dataLog.getGroupId());
         productArriveStat.setChannelId(dataLog.getChannelId());
-        productArriveStat.setArriveDate(dataLog.getCounterUploadTime());
+        productArriveStat.setStatDate(dataLog.getCounterUploadTime());
         productArriveStat.setCreateTime(new Date());
 
         productArriveStat.setTotalNum(0L);
@@ -126,7 +126,7 @@ public class ArriveStatConvertHandler {
         result.setProductId(record.getProductId());
         result.setGroupId(record.getGroupId());
         result.setChannelId(record.getChannelId());
-        result.setArriveDate(record.getArriveDate());
+        result.setStatDate(record.getStatDate());
         result.setCreateTime(record.getCreateTime());
 
         return result;

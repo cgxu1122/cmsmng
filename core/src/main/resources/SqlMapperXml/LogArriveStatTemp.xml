@@ -8,7 +8,7 @@
         GROUP_ID,
         CHANNEL_ID,
         UA,
-        ARRIVE_DATE,
+        STAT_DATE,
         LAOWU_ID,
         CREATE_TIME,
         TOTAL_NUM,
@@ -20,7 +20,7 @@
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
-        <result column="ARRIVE_DATE" property="arriveDate" jdbcType="DATE"/>
+        <result column="STAT_DATE" property="statDate" jdbcType="DATE"/>
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
@@ -41,7 +41,7 @@
         #{groupId,jdbcType=BIGINT},
         #{channelId,jdbcType=BIGINT},
         #{ua,jdbcType=VARCHAR},
-        #{arriveDate,jdbcType=DATE},
+        #{statDate,jdbcType=DATE},
         #{laowuId,jdbcType=BIGINT},
         #{createTime,jdbcType=TIMESTAMP},
         #{totalNum,jdbcType=BIGINT},

@@ -141,7 +141,7 @@ public class StatConvertHandler {
         result.setProductId(productId);
         result.setGroupId(dataLog.getGroupId());
         result.setChannelId(dataLog.getChannelId());
-        result.setInstallDate(dataLog.getProcessTime());
+        result.setStatDate(dataLog.getProcessTime());
         result.setBatchCode(dataLog.getBatchCode());
         result.setCreateTime(new Date());
 

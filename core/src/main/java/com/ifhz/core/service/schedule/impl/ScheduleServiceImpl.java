@@ -175,6 +175,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void syncProductActiveTemp() {
         LOGGER.info("syncProductActiveTemp ------------------------start");
+        Date date = DateFormatUtils.addDay(new Date(), -1);
+        Date startTime = DateHandler.getStartTimeForMinute(date);
+        Date endTime = DateHandler.getEndTime(date);
         LOGGER.info("syncProductActiveTemp ------------------------end");
     }
 

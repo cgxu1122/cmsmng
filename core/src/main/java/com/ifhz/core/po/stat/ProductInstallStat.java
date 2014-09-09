@@ -18,7 +18,7 @@ public class ProductInstallStat implements Serializable {
     private Long groupId;
     private String ua;
     private String modelName;
-    private Date installDate;
+    private Date statDate;
     private Date createTime;
 
 
@@ -101,12 +101,12 @@ public class ProductInstallStat implements Serializable {
         this.modelName = modelName;
     }
 
-    public Date getInstallDate() {
-        return installDate;
+    public Date getStatDate() {
+        return statDate;
     }
 
-    public void setInstallDate(Date installDate) {
-        this.installDate = installDate;
+    public void setStatDate(Date statDate) {
+        this.statDate = statDate;
     }
 
     public Date getCreateTime() {

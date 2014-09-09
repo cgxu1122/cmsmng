@@ -9,7 +9,7 @@
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="UA" property="ua" jdbcType="VARCHAR"/>
-        <result column="ARRIVE_DATE" property="arriveDate" jdbcType="DATE"/>
+        <result column="STAT_DATE" property="statDate" jdbcType="DATE"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
         <result column="INSTALL_TOTAL_NUM" property="installTotalNum" jdbcType="BIGINT"/>
@@ -36,7 +36,7 @@
         GROUP_ID,
         CHANNEL_ID,
         UA,
-        ARRIVE_DATE,
+        STAT_DATE,
         CREATE_TIME,
         INSTALL_TOTAL_NUM,
         TOTAL_NUM,
@@ -53,7 +53,7 @@
         #{groupId,jdbcType=BIGINT},
         #{channelId,jdbcType=BIGINT},
         #{ua,jdbcType=VARCHAR},
-        #{arriveDate,jdbcType=DATE},
+        #{statDate,jdbcType=DATE},
         #{createTime,jdbcType=TIMESTAMP},
         #{installTotalNum,jdbcType=BIGINT},
         #{totalNum,jdbcType=BIGINT},
