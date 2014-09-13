@@ -18,15 +18,14 @@ public class ProductArriveStatTemp implements Serializable {
     private String ua;
     private Date statDate;
     private Date createTime;
-
-    /**
-     * 设备当天到达总数
-     */
-    private Long totalNum = 0L;
     /**
      * 设备当天到达-有效总数
      */
     private Long validNum = 0L;
+    /**
+     * 设备当天到达-有效总数
+     */
+    private Long invalidNum = 0L;
 
     private String modelName;
     private String channelName;
@@ -115,14 +114,6 @@ public class ProductArriveStatTemp implements Serializable {
         this.createTime = createTime;
     }
 
-    public Long getTotalNum() {
-        return totalNum;
-    }
-
-    public void setTotalNum(Long totalNum) {
-        this.totalNum = totalNum;
-    }
-
     public Long getValidNum() {
         return validNum;
     }
@@ -153,5 +144,13 @@ public class ProductArriveStatTemp implements Serializable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public Long getInvalidNum() {
+        return invalidNum;
+    }
+
+    public void setInvalidNum(Long invalidNum) {
+        this.invalidNum = invalidNum;
     }
 }

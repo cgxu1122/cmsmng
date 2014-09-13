@@ -5,13 +5,17 @@ import com.ifhz.core.adapter.stat.LogArriveStatTempAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.constants.GroupEnums;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.stat.LogArriveStat;
 import com.ifhz.core.po.stat.LogArriveStatTemp;
+import com.ifhz.core.po.stat.StatDeduction;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.LogArriveStatTempService;
+import com.ifhz.core.service.stat.StatDeductionService;
+import com.ifhz.core.service.stat.handle.DeductionHandler;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -42,6 +46,8 @@ public class LogArriveStatTempServiceImpl implements LogArriveStatTempService {
     private ModelInfoCacheService modelInfoCacheService;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
+    @Resource
+    private StatDeductionService statDeductionService;
 
     @Override
     @Log
@@ -137,19 +143,8 @@ public class LogArriveStatTempServiceImpl implements LogArriveStatTempService {
 
     @Override
     @Log
-    public int insert(LogArriveStat logArriveStat) {
-        LogArriveStatTemp result = new LogArriveStatTemp();
-        result.setId(logArriveStat.getId());
-        result.setChannelId(logArriveStat.getChannelId());
-        result.setGroupId(logArriveStat.getGroupId());
-        result.setUa(logArriveStat.getUa());
-        result.setCreateTime(logArriveStat.getCreateTime());
-        result.setLaowuId(logArriveStat.getLaowuId());
-        result.setStatDate(logArriveStat.getStatDate());
-        result.setTotalNum(logArriveStat.getTotalNum());
-        result.setValidNum(logArriveStat.getValidNum());
-
-        return logArriveStatTempAdapter.insert(result);
+    public int insert(LogArriveStatTemp logArriveStatTemp) {
+        return logArriveStatTempAdapter.insert(logArriveStatTemp);
     }
 
     @Override
@@ -168,7 +163,15 @@ public class LogArriveStatTempServiceImpl implements LogArriveStatTempService {
                 if (CollectionUtils.isNotEmpty(logArriveStatList)) {
                     for (LogArriveStat logArriveStat : logArriveStatList) {
                         try {
-                            insert(logArriveStat);
+                            if (GroupEnums.DB.value == logArriveStat.getGroupId() || GroupEnums.QT.value == logArriveStat.getGroupId()) {
+                                StatDeduction statDeduction = statDeductionService.getByChannelId(logArriveStat.getChannelId());
+                                if (statDeduction != null) {
+                                    LogArriveStatTemp logArriveStatTemp = DeductionHandler.initLogArriveStatTemp(logArriveStat, statDeduction);
+                                    insert(logArriveStatTemp);
+                                }
+                            } else {
+                                continue;
+                            }
                         } catch (Exception e) {
                             LOGGER.error("insert LogArriveStatTemp error", e);
                         }

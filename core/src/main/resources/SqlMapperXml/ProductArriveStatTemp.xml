@@ -12,8 +12,8 @@
         <result column="STAT_DATE" property="statDate" jdbcType="DATE"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
-        <result column="TOTAL_NUM" property="totalNum" jdbcType="BIGINT"/>
         <result column="VALID_NUM" property="validNum" jdbcType="BIGINT"/>
+        <result column="INVALID_NUM" property="invalidNum" jdbcType="BIGINT"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.ifhz.core.po.stat.ProductArriveStatTemp">
@@ -27,8 +27,8 @@
         UA,
         STAT_DATE,
         CREATE_TIME,
-        TOTAL_NUM,
-        VALID_NUM
+        VALID_NUM,
+        INVALID_NUM
         ) values (
         #{id,jdbcType=BIGINT},
         #{productId,jdbcType=BIGINT},
@@ -37,8 +37,8 @@
         #{ua,jdbcType=VARCHAR},
         #{statDate,jdbcType=DATE},
         #{createTime,jdbcType=TIMESTAMP},
-        #{totalNum,jdbcType=BIGINT},
-        #{validNum,jdbcType=BIGINT}
+        #{validNum,jdbcType=BIGINT},
+        #{invalidNum,jdbcType=BIGINT}
         )
     </insert>
 
@@ -92,8 +92,8 @@
         CHANNEL_ID,
         UA,
         PROCESS_DATE,
-        sum(stat.TOTAL_NUM) TOTAL_NUM,
-        sum(stat.VALID_NUM) VALID_NUM
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM,
         from
         <include refid="TABLE_NAME"/>
         where 1=1
@@ -135,8 +135,8 @@
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStatTemp"
             resultMap="BaseResultMap">
         select
-        sum(stat.TOTAL_NUM) TOTAL_NUM,
-        sum(stat.VALID_NUM) VALID_NUM
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1

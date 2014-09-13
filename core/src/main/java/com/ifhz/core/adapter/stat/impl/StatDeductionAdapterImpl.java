@@ -5,6 +5,7 @@ import com.ifhz.core.adapter.stat.StatDeductionAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.stat.StatDeductionMapper;
 import com.ifhz.core.po.stat.StatDeduction;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -36,6 +37,15 @@ public class StatDeductionAdapterImpl implements StatDeductionAdapter {
     @Override
     public StatDeduction getById(Long id) {
         return statDeductionMapper.getById(id);
+    }
+
+    @Override
+    public StatDeduction getByChannelId(Long channelId) {
+        List<StatDeduction> list = statDeductionMapper.getByChannelId(channelId);
+        if (CollectionUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
     }
 
     @Override

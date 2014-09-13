@@ -54,6 +54,11 @@ drop sequence SEQ_USER;
 
 drop sequence SEQ_USER_PRODUCT_REF;
 
+drop sequence SEQ_STAT_DEDUCTION;
+drop sequence SEQ_LOG_ARRIVE_STAT;
+drop sequence SEQ_PRODUCT_INSTALL_STAT;
+drop sequence SEQ_PRODUCT_ARRIVE_STAT;
+
 create sequence SEQ_APK_INFO;
 
 create sequence SEQ_BATCH_INFO;
@@ -102,6 +107,12 @@ create sequence SEQ_PUB_CHL_MOD_REF;
 create sequence SEQ_SETTLE_INFO;
 
 create sequence SEQ_USER_PRODUCT_REF;
+
+create sequence SEQ_STAT_DEDUCTION;
+create sequence SEQ_LOG_ARRIVE_STAT;
+
+create sequence SEQ_PRODUCT_INSTALL_STAT;
+create sequence SEQ_PRODUCT_ARRIVE_STAT;
 
 create sequence SEQ_CHANNEL_GROUP start with 10000 increment by 1 cache 20;
 

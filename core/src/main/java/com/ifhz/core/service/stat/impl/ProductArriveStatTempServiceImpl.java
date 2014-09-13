@@ -5,15 +5,19 @@ import com.ifhz.core.adapter.stat.ProductArriveStatTempAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
+import com.ifhz.core.constants.GroupEnums;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.ProductInfo;
 import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
+import com.ifhz.core.po.stat.StatDeduction;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.cache.ProductInfoCacheService;
 import com.ifhz.core.service.stat.ProductArriveStatTempService;
+import com.ifhz.core.service.stat.StatDeductionService;
+import com.ifhz.core.service.stat.handle.DeductionHandler;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -46,21 +50,14 @@ public class ProductArriveStatTempServiceImpl implements ProductArriveStatTempSe
     private ProductInfoCacheService productInfoCacheService;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
+    @Resource
+    private StatDeductionService statDeductionService;
+
 
     @Override
     @Log
-    public int insert(ProductArriveStat productArriveStat) {
-        ProductArriveStatTemp result = new ProductArriveStatTemp();
-        result.setId(productArriveStat.getId());
-        result.setChannelId(productArriveStat.getChannelId());
-        result.setGroupId(productArriveStat.getGroupId());
-        result.setUa(productArriveStat.getUa());
-        result.setCreateTime(productArriveStat.getCreateTime());
-        result.setStatDate(productArriveStat.getStatDate());
-        result.setTotalNum(productArriveStat.getTotalNum());
-        result.setValidNum(productArriveStat.getValidNum());
-
-        return productArriveStatTempAdapter.insert(result);
+    public int insert(ProductArriveStatTemp productArriveStatTemp) {
+        return productArriveStatTempAdapter.insert(productArriveStatTemp);
     }
 
     @Override
@@ -79,7 +76,15 @@ public class ProductArriveStatTempServiceImpl implements ProductArriveStatTempSe
                 if (CollectionUtils.isNotEmpty(productArriveStatList)) {
                     for (ProductArriveStat productArriveStat : productArriveStatList) {
                         try {
-                            insert(productArriveStat);
+                            if (GroupEnums.DB.value == productArriveStat.getGroupId() || GroupEnums.QT.value == productArriveStat.getGroupId()) {
+                                StatDeduction statDeduction = statDeductionService.getByChannelId(productArriveStat.getChannelId());
+                                if (statDeduction != null) {
+                                    ProductArriveStatTemp productArriveStatTemp = DeductionHandler.initProductArriveStatTemp(productArriveStat, statDeduction);
+                                    insert(productArriveStatTemp);
+                                }
+                            } else {
+                                continue;
+                            }
                         } catch (Exception e) {
                             LOGGER.error("insert ProductArriveStatTemp error", e);
                         }

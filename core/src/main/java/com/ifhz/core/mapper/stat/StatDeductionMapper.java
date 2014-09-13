@@ -20,5 +20,7 @@ public interface StatDeductionMapper {
 
     public StatDeduction getById(Long id);
 
+    public List<StatDeduction> getByChannelId(Long id);
+
     public List<StatDeduction> queryByVo(Pagination pagination, @Param("record") StatDeduction record);
 }

@@ -2,6 +2,10 @@ drop table TY_PRODUCT_INSTALL_STAT cascade constraints;
 drop table TY_PRODUCT_ARRIVE_STAT cascade constraints;
 drop table TY_LOG_ARRIVE_STAT cascade constraints;
 drop table TY_STAT_DEDUCTION cascade constraints;
+drop sequence SEQ_STAT_DEDUCTION;
+drop sequence SEQ_LOG_ARRIVE_STAT;
+drop sequence SEQ_PRODUCT_INSTALL_STAT;
+drop sequence SEQ_PRODUCT_ARRIVE_STAT;
 
 /*==============================================================*/
 /* Table: TY_PRODUCT_INSTALL_STAT                                */
@@ -83,8 +87,8 @@ create table TY_LOG_ARRIVE_STAT_TEMP  (
    CHANNEL_ID           NUMBER(15)                      not null,
    STAT_DATE            DATE                            not null,
    LAOWU_ID             NUMBER(15),
-   TOTAL_NUM            NUMBER(15)                     default 0,
    VALID_NUM            NUMBER(15)                     default 0,
+   INVALID_NUM          NUMBER(15)                     default 0,
    CREATE_TIME          DATE                           default SYSDATE,
    constraint TY_LOG_ARRIVE_STAT_TEMP primary key (ID)
 );
@@ -100,8 +104,8 @@ create table TY_PRODUCT_ARRIVE_STAT_TEMP  (
    GROUP_ID             NUMBER(15)                      not null,
    UA                   VARCHAR2(100)                   not null,
    STAT_DATE           DATE                            not null,
-   TOTAL_NUM            NUMBER(15)                     default 0,
    VALID_NUM            NUMBER(15)                     default 0,
+   INVALID_NUM          NUMBER(15)                     default 0,
    CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_PRODUCT_ARRIVE_STAT_TEMP primary key (ID)
 );
@@ -136,3 +140,10 @@ comment on column TY_STAT_DEDUCTION.CREATE_TIME is
 '创建时间';
 comment on column TY_STAT_DEDUCTION.UPDATE_TIME is
 '修改时间';
+
+
+
+create sequence SEQ_STAT_DEDUCTION;
+create sequence SEQ_LOG_ARRIVE_STAT;
+create sequence SEQ_PRODUCT_INSTALL_STAT;
+create sequence SEQ_PRODUCT_ARRIVE_STAT;

@@ -1,7 +1,6 @@
 package com.ifhz.core.service.stat;
 
 import com.ifhz.core.base.page.Pagination;
-import com.ifhz.core.po.stat.LogArriveStat;
 import com.ifhz.core.po.stat.LogArriveStatTemp;
 
 import java.util.Date;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public interface LogArriveStatTempService {
 
-    public int insert(LogArriveStat logArriveStat);
+    public int insert(LogArriveStatTemp logArriveStatTemp);
 
     public boolean syncLogArriveStat(Date startTime, Date endTime);
 

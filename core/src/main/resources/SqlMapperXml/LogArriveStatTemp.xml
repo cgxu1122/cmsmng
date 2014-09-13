@@ -11,8 +11,8 @@
         STAT_DATE,
         LAOWU_ID,
         CREATE_TIME,
-        TOTAL_NUM,
-        VALID_NUM
+        VALID_NUM,
+        INVALID_NUM
     </sql>
 
     <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.LogArriveStatTemp">
@@ -24,8 +24,8 @@
         <result column="LAOWU_ID" property="laowuId" jdbcType="BIGINT"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
 
-        <result column="TOTAL_NUM" property="totalNum" jdbcType="BIGINT"/>
         <result column="VALID_NUM" property="validNum" jdbcType="BIGINT"/>
+        <result column="INVALID_NUM" property="invalidNum" jdbcType="BIGINT"/>
     </resultMap>
 
 
@@ -44,8 +44,8 @@
         #{statDate,jdbcType=DATE},
         #{laowuId,jdbcType=BIGINT},
         #{createTime,jdbcType=TIMESTAMP},
-        #{totalNum,jdbcType=BIGINT},
-        #{validNum,jdbcType=BIGINT}
+        #{validNum,jdbcType=BIGINT},
+        #{invalidNum,jdbcType=BIGINT}
         )
     </insert>
 
@@ -99,12 +99,8 @@
         GROUP_ID,
         CHANNEL_ID,
         STAT_DATE,
-        sum(stat.TOTAL_NUM) TOTAL_NUM,
         sum(stat.VALID_NUM) VALID_NUM,
-        sum(stat.INVALID_NUM) INVALID_NUM,
-        sum(stat.REPLACE_NUM) REPLACE_NUM,
-        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
-        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        sum(stat.INVALID_NUM) INVALID_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1
@@ -141,12 +137,8 @@
 
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.LogArriveStatTemp" resultMap="BaseResultMap">
         select
-        sum(stat.TOTAL_NUM) TOTAL_NUM,
         sum(stat.VALID_NUM) VALID_NUM,
-        sum(stat.INVALID_NUM) INVALID_NUM,
-        sum(stat.REPLACE_NUM) REPLACE_NUM,
-        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
-        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        sum(stat.INVALID_NUM) INVALID_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1

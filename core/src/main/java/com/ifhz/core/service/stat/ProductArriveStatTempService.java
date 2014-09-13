@@ -1,7 +1,6 @@
 package com.ifhz.core.service.stat;
 
 import com.ifhz.core.base.page.Pagination;
-import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
 
 import java.util.Date;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 public interface ProductArriveStatTempService {
 
-    public int insert(ProductArriveStat productArriveStat);
+    public int insert(ProductArriveStatTemp productArriveStatTemp);
 
     public boolean syncProductArriveStat(Date startTime, Date endTime);
 

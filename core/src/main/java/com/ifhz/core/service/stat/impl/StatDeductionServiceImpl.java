@@ -40,6 +40,11 @@ public class StatDeductionServiceImpl implements StatDeductionService {
     }
 
     @Override
+    public StatDeduction getByChannelId(Long channelId) {
+        return statDeductionAdapter.getByChannelId(channelId);
+    }
+
+    @Override
     public List<StatDeduction> queryByVo(Pagination pagination, StatDeduction record) {
         return statDeductionAdapter.queryByVo(pagination, record);
     }

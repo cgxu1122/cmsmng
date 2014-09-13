@@ -21,13 +21,13 @@ public class LogArriveStatTemp implements Serializable {
     private Date createTime;
 
     /**
-     * 设备当天到达总数
-     */
-    private Long totalNum = 0L;
-    /**
      * 设备当天到达-有效总数
      */
     private Long validNum = 0L;
+    /**
+     * 设备当天到达-有效总数
+     */
+    private Long invalidNum = 0L;
 
     private String modelName;
     private String channelName;
@@ -107,12 +107,12 @@ public class LogArriveStatTemp implements Serializable {
         this.createTime = createTime;
     }
 
-    public Long getTotalNum() {
-        return totalNum;
+    public Long getInvalidNum() {
+        return invalidNum;
     }
 
-    public void setTotalNum(Long totalNum) {
-        this.totalNum = totalNum;
+    public void setInvalidNum(Long invalidNum) {
+        this.invalidNum = invalidNum;
     }
 
     public Long getValidNum() {

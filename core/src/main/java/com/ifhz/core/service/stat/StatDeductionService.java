@@ -19,5 +19,7 @@ public interface StatDeductionService {
 
     public StatDeduction getById(Long id);
 
+    public StatDeduction getByChannelId(Long channelId);
+
     public List<StatDeduction> queryByVo(Pagination pagination, StatDeduction record);
 }
