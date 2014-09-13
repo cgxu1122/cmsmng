@@ -22,6 +22,8 @@ public class ProductInstallStat implements Serializable {
     private Date createTime;
 
 
+    private Long partnerId;
+
     private Long installTotalNum = 0L;
     /**
      * 设备到达总数
@@ -195,5 +197,13 @@ public class ProductInstallStat implements Serializable {
 
     public void setBatchCode(String batchCode) {
         this.batchCode = batchCode;
+    }
+
+    public Long getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(Long partnerId) {
+        this.partnerId = partnerId;
     }
 }

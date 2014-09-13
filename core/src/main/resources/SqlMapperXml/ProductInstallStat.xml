@@ -111,4 +111,33 @@
         <include refid="TABLE_NAME"/>
         where MD5_KEY = #{md5Key}
     </select>
+
+    <select id="queryByVo" resultMap="ProductInstallStatResultMap">
+        select
+        stat.*
+        from TY_PRODUCT_STAT stat
+        where 1=1
+        <if test="record.partnerId != null and record.partnerId != ''">
+            and exists (select info.PRODUCT_ID from TY_PRODUCT_INFO info where PARTNER_ID = #{record.partnerId} and
+            info.QUERY_DATA_SOURCE= 'Y' and info.PRODUCT_ID = stat.PRODUCT_ID)
+        </if>
+        <if test="record.groupId != null and record.groupId != ''">
+            and stat.GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.productId != null and record.productId != ''">
+            and stat.PRODUCT_ID = #{record.productId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and stat.UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and stat.PROCESS_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and stat.PROCESS_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        order by stat.PROCESS_DATE desc
+    </select>
 </mapper>

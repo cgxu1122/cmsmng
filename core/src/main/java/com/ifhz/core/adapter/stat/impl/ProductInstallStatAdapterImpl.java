@@ -1,11 +1,13 @@
 package com.ifhz.core.adapter.stat.impl;
 
 import com.ifhz.core.adapter.stat.ProductInstallStatAdapter;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.stat.ProductInstallStatMapper;
 import com.ifhz.core.po.stat.ProductInstallStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 类描述
@@ -37,5 +39,10 @@ public class ProductInstallStatAdapterImpl implements ProductInstallStatAdapter 
     @Override
     public ProductInstallStat getByMd5Key(String md5Key) {
         return productInstallStatMapper.getByMd5Key(md5Key);
+    }
+
+    @Override
+    public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record) {
+        return null;
     }
 }

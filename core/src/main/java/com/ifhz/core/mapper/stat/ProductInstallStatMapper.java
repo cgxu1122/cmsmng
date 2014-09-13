@@ -1,6 +1,10 @@
 package com.ifhz.core.mapper.stat;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.ProductInstallStat;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -17,4 +21,6 @@ public interface ProductInstallStatMapper {
     public ProductInstallStat getById(Long id);
 
     public ProductInstallStat getByMd5Key(String md5Key);
+
+    public List<ProductInstallStat> queryByVo(Pagination pagination, @Param("record") ProductInstallStat record);
 }
