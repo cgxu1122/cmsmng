@@ -221,7 +221,7 @@
     </bean>
 
     <bean id="productArriveStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper..stat.ProductArriveStatMapper"/>
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.ProductArriveStatMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
