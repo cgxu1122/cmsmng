@@ -3,15 +3,19 @@ package com.ifhz.core.service.stat.impl;
 import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.stat.LogArriveStatAdapter;
 import com.ifhz.core.base.annotation.Log;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.stat.LogArriveStat;
 import com.ifhz.core.service.stat.LogArriveStatService;
-import com.ifhz.core.service.stat.LogArriveStatTempService;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.service.stat.handle.ArriveStatConvertHandler;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 类描述
@@ -19,20 +23,24 @@ import org.slf4j.LoggerFactory;
  * Date: 2014/8/24
  * Time: 19:52
  */
+@Service
 public class LogArriveStatServiceImpl implements LogArriveStatService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogArriveStatServiceImpl.class);
-
-
+    @Resource
     private LogArriveStatAdapter logArriveStatAdapter;
-    private LogArriveStatTempService logArriveStatTempService;
+
+    @Override
+    @Log
+    public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record) {
+        return null;
+    }
 
     @Log
     @Override
     public boolean statLogArrive(DataLog record) {
         LOGGER.info("statLogArrive Stat ---------开始");
         if (record != null) {
-            //TODO md5Key 新规则
             String md5Key = StatConvertHandler.getMd5KeyForLogStat(record);
             LOGGER.info("LogArriveStat md5Key={}", md5Key);
             int count = 0;
@@ -99,4 +107,5 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
 
         return true;
     }
+
 }

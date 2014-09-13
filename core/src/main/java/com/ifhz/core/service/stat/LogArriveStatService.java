@@ -1,6 +1,10 @@
 package com.ifhz.core.service.stat;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.po.stat.LogArriveStat;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -11,4 +15,6 @@ import com.ifhz.core.po.DataLog;
 public interface LogArriveStatService {
 
     public boolean statLogArrive(DataLog record);
+
+    public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record);
 }

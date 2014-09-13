@@ -5,6 +5,7 @@ import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.adapter.stat.ProductInstallStatAdapter;
 import com.ifhz.core.base.annotation.Log;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.po.stat.ProductInstallStat;
@@ -38,8 +39,16 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
     private ProductStatAdapter productStatAdapter;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
-    //    @Resource(name = "productInstallStatAdapter")
+    @Resource
     private ProductInstallStatAdapter productInstallStatAdapter;
+
+
+    @Override
+    @Log
+    public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record) {
+        return null;
+    }
+
 
     @Log
     @Override
@@ -203,6 +212,7 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
         return true;
     }
 
+    @Override
     @Log
     public boolean statProductArrive(DataLog record) {
         LOGGER.info("statProductArrive Stat ---------开始");
@@ -254,4 +264,5 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
 
         return false;
     }
+
 }

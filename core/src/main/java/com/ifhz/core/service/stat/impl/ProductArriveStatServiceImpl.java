@@ -4,17 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.BatchProductRefAdapter;
 import com.ifhz.core.adapter.stat.ProductArriveStatAdapter;
 import com.ifhz.core.base.annotation.Log;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.service.stat.ProductArriveStatService;
-import com.ifhz.core.service.stat.ProductArriveStatTempService;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.service.stat.handle.ArriveStatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,13 +25,23 @@ import java.util.List;
  * Date: 2014/8/24
  * Time: 19:52
  */
+@Service
 public class ProductArriveStatServiceImpl implements ProductArriveStatService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductArriveStatServiceImpl.class);
 
+    @Resource
     private BatchProductRefAdapter batchProductRefAdapter;
+    @Resource
     private ProductArriveStatAdapter productArriveStatAdapter;
-    private ProductArriveStatTempService productArriveStatTempService;
+
+
+    @Override
+    @Log
+    public List<ProductArriveStat> queryByVo(Pagination pagination, ProductArriveStat record) {
+        return null;
+    }
+
 
     @Log
     @Override
@@ -105,4 +117,5 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
 
         return true;
     }
+
 }

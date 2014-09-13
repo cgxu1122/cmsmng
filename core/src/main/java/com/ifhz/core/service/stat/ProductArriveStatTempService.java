@@ -1,6 +1,9 @@
 package com.ifhz.core.service.stat;
 
-import com.ifhz.core.po.DataLog;
+import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.stat.ProductArriveStatTemp;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -10,5 +13,9 @@ import com.ifhz.core.po.DataLog;
  */
 public interface ProductArriveStatTempService {
 
-    public boolean statTempProductArrive(DataLog record);
+    public int insert(ProductArriveStatTemp productArriveStatTemp);
+
+    public boolean syncProductArriveStat();
+
+    public List<ProductArriveStatTemp> queryByVo(Pagination pagination, ProductArriveStatTemp record);
 }
