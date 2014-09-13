@@ -13,7 +13,6 @@ public class LogArriveStat implements Serializable {
     private static final long serialVersionUID = -1433623945960045448L;
     private Long id;
     private String ua;
-    private String modelName;
     private Long groupId;
     private Long channelId;
     private Date statDate;
@@ -49,6 +48,12 @@ public class LogArriveStat implements Serializable {
 
     private String md5Key;
     private Integer version;
+
+
+    private String modelName;
+    private String channelName;
+    private String groupName;
+    private String channelIdCondition;
 
     public Long getId() {
         return id;
@@ -176,5 +181,29 @@ public class LogArriveStat implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getChannelIdCondition() {
+        return channelIdCondition;
+    }
+
+    public void setChannelIdCondition(String channelIdCondition) {
+        this.channelIdCondition = channelIdCondition;
     }
 }

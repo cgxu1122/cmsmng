@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.stat.ProductArriveStatTempAdapter;
+import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
@@ -27,6 +28,7 @@ public class ProductArriveStatTempServiceImpl implements ProductArriveStatTempSe
     private ProductArriveStatTempAdapter productArriveStatTempAdapter;
 
     @Override
+    @Log
     public int insert(ProductArriveStat productArriveStat) {
         ProductArriveStatTemp result = new ProductArriveStatTemp();
         result.setId(productArriveStat.getId());
@@ -42,21 +44,25 @@ public class ProductArriveStatTempServiceImpl implements ProductArriveStatTempSe
     }
 
     @Override
+    @Log
     public boolean syncProductArriveStat() {
         return false;
     }
 
     @Override
+    @Log
     public List<ProductArriveStatTemp> queryByVo(Pagination pagination, ProductArriveStatTemp record) {
         return productArriveStatTempAdapter.queryByVo(pagination, record);
     }
 
     @Override
+    @Log
     public List<ProductArriveStatTemp> querySumByVo(Pagination pagination, ProductArriveStatTemp record) {
         return productArriveStatTempAdapter.querySumByVo(pagination, record);
     }
 
     @Override
+    @Log
     public ProductArriveStatTemp queryCountByVo(ProductArriveStatTemp record) {
         return productArriveStatTempAdapter.queryCountByVo(record);
     }

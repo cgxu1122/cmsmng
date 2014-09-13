@@ -17,4 +17,6 @@ public interface LogArriveStatService {
     public boolean statLogArrive(DataLog record);
 
     public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record);
+
+    public LogArriveStat queryCountByVo(LogArriveStat record);
 }

@@ -14,7 +14,6 @@ public class LogArriveStatTemp implements Serializable {
     private static final long serialVersionUID = -5563370406332506576L;
     private Long id;
     private String ua;
-    private String modelName;
     private Long groupId;
     private Long channelId;
     private Date statDate;
@@ -30,6 +29,9 @@ public class LogArriveStatTemp implements Serializable {
      */
     private Long validNum = 0L;
 
+    private String modelName;
+    private String channelName;
+    private String groupName;
 
     public Long getId() {
         return id;
@@ -109,5 +111,21 @@ public class LogArriveStatTemp implements Serializable {
 
     public void setStatDate(Date statDate) {
         this.statDate = statDate;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

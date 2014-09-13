@@ -14,10 +14,13 @@ import java.util.List;
  */
 public interface LogArriveStatTempService {
 
-    public List<LogArriveStatTemp> queryByVo(Pagination pagination, LogArriveStatTemp record);
-
     public int insert(LogArriveStat logArriveStat);
 
     public boolean syncLogArriveStat();
 
+    public List<LogArriveStatTemp> queryByVo(Pagination pagination, LogArriveStatTemp record);
+
+    public List<LogArriveStatTemp> querySumByVo(Pagination pagination, LogArriveStatTemp record);
+
+    public LogArriveStatTemp queryCountByVo(LogArriveStatTemp record);
 }
