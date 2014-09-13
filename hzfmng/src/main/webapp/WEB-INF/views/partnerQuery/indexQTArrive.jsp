@@ -22,7 +22,7 @@
             var ua = $('#ua').val();
             $('#dg').datagrid({
                 url: "<%=basePath%>/hzfmng/partnerQuery/listLogArriveStatTemp",
-                queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua}
+                queryParams: {groupId: 3, startDate: startDate, endDate: endDate, ua: ua}
             });
         }
 
@@ -34,7 +34,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listLogArriveStatTemp',
-                queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
+                queryParams: {groupId: 3, startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 pageSize: 100,
@@ -75,7 +75,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/modelInfo/list',
-                queryParams: {groupId: 2},
+                queryParams: {groupId: 3},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
                 rownumbers: true,
@@ -96,7 +96,7 @@
             var value = $('#searchModelValue').val();
             $('#modeldg').datagrid({
                 url: "<%=basePath%>/hzfmng/modelInfo/list",
-                queryParams: {modelNameCondition: value, groupId: 2}
+                queryParams: {modelNameCondition: value, groupId: 3}
             });
         }
         function selectModel(ua, modelName) {
@@ -162,7 +162,7 @@
             var ua = $('#ua').val();
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportArriveTempData?groupId=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportArriveTempData?groupId=3&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

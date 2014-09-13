@@ -11,6 +11,8 @@ import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.PartnerInfo;
 import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.po.stat.LogArriveStatTemp;
+import com.ifhz.core.po.stat.ProductArriveStatTemp;
 import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
@@ -22,7 +24,9 @@ import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.partner.PartnerInfoService;
 import com.ifhz.core.service.product.ProductInfoService;
+import com.ifhz.core.service.stat.LogArriveStatTempService;
 import com.ifhz.core.service.stat.LogStatQueryService;
+import com.ifhz.core.service.stat.ProductArriveStatTempService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -57,6 +61,10 @@ public class PartnerQueryController extends BaseController {
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
+    private LogArriveStatTempService logArriveStatTempService;
+    @Autowired
+    private ProductArriveStatTempService productArriveStatTempService;
+    @Autowired
     private ProductStatQueryService productStatQueryService;
     @Autowired
     private ProductInfoService productInfoService;
@@ -81,6 +89,11 @@ public class PartnerQueryController extends BaseController {
     @RequestMapping("/indexDBArrive")
     public ModelAndView indexDBArrive(HttpServletRequest request) {
         return new ModelAndView("partnerQuery/indexDBArrive");
+    }
+
+    @RequestMapping("/indexQTArrive")
+    public ModelAndView indexQTArrive(HttpServletRequest request) {
+        return new ModelAndView("partnerQuery/indexQTArrive");
     }
 
     @RequestMapping("/indexCP")
@@ -480,5 +493,201 @@ public class PartnerQueryController extends BaseController {
             statImeiRequest.setActive(QueryActive.UnAndRe);
         }
         return statImeiRequest;
+    }
+
+
+    @RequestMapping(value = "/listLogArriveStatTemp", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listLogArriveStatTemp(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String ua = request.getParameter("ua");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
+        LogArriveStatTemp logArriveStatTemp = new LogArriveStatTemp();
+        if (StringUtils.isNotEmpty(groupId)) {
+            logArriveStatTemp.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(ua)) {
+            logArriveStatTemp.setUa(ua.trim());
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            logArriveStatTemp.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            logArriveStatTemp.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+        if (channelInfo != null) {
+            logArriveStatTemp.setChannelId(channelInfo.getChannelId());
+        }
+        List<LogArriveStatTemp> list = logArriveStatTempService.queryByVo(page, logArriveStatTemp);
+        if (CollectionUtils.isNotEmpty(list)) {
+            LogArriveStatTemp countLogArriveStatTemp = logArriveStatTempService.queryCountByVo(logArriveStatTemp);
+            list.add(countLogArriveStatTemp);
+        }
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/exportArriveTempData", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject exportArriveTempData(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        String ua = request.getParameter("ua");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
+        try {
+            LogArriveStatTemp logArriveStatTemp = new LogArriveStatTemp();
+            if (StringUtils.isNotEmpty(groupId)) {
+                logArriveStatTemp.setGroupId(Long.parseLong(groupId));
+            }
+            if (StringUtils.isNotEmpty(ua)) {
+                logArriveStatTemp.setUa(ua.trim());
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                logArriveStatTemp.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                logArriveStatTemp.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
+            if (channelInfo != null) {
+                logArriveStatTemp.setChannelId(channelInfo.getChannelId());
+            }
+            List<LogArriveStatTemp> list = logArriveStatTempService.queryByVo(null, logArriveStatTemp);
+            if (CollectionUtils.isNotEmpty(list)) {
+                LogArriveStatTemp countLogArriveStatTemp = logArriveStatTempService.queryCountByVo(logArriveStatTemp);
+                list.add(countLogArriveStatTemp);
+            }
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("deviceCode", "设备编码");
+            titleMap.put("channelName", "仓库名称");
+            titleMap.put("modelName", "机型名称");
+            titleMap.put("validNum", "有效到达数量");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/listProductArriveStatTemp", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listProductArriveStatTemp(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String productId = request.getParameter("productId");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        ProductArriveStatTemp productArriveStatTemp = new ProductArriveStatTemp();
+        if (StringUtils.isNotEmpty(productId)) {
+            productArriveStatTemp.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            productArriveStatTemp.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            productArriveStatTemp.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+        if (partnerInfo != null) {
+            productArriveStatTemp.setPartnerId(partnerInfo.getPartnerId());
+            productArriveStatTemp.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+        }
+        List<ProductArriveStatTemp> list = productArriveStatTempService.querySumByVo(page, productArriveStatTemp);
+        if (CollectionUtils.isNotEmpty(list)) {
+            ProductArriveStatTemp countProductArriveStatTemp = productArriveStatTempService.queryCountByVo(productArriveStatTemp);
+            list.add(countProductArriveStatTemp);
+            if (partnerInfo != null) {
+                for (ProductArriveStatTemp productStat1 : list) {
+                    if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
+                        productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
+                    } else {
+                        productStat1.setQueryImeiSource("Y");
+                    }
+                }
+            }
+        }
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/exportProductArriveTempData", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject exportProductArriveTempData(HttpServletRequest request, HttpServletResponse response) {
+        String productId = request.getParameter("productId");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
+        JSONObject result = new JSONObject();
+        try {
+            ProductArriveStatTemp productArriveStatTemp = new ProductArriveStatTemp();
+            if (StringUtils.isNotEmpty(productId)) {
+                productArriveStatTemp.setProductId(Long.parseLong(productId));
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                productArriveStatTemp.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                productArriveStatTemp.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
+            if (partnerInfo != null) {
+                productArriveStatTemp.setPartnerId(partnerInfo.getPartnerId());
+                productArriveStatTemp.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+            }
+            List<ProductArriveStatTemp> list = productArriveStatTempService.querySumByVo(null, productArriveStatTemp);
+            if (CollectionUtils.isNotEmpty(list)) {
+                ProductArriveStatTemp countProductArriveStatTemp = productArriveStatTempService.queryCountByVo(productArriveStatTemp);
+                list.add(countProductArriveStatTemp);
+            }
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("modelName", "机型名称");
+            titleMap.put("validNum", "有效装机数量");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
+        }
+
+        return result;
     }
 }

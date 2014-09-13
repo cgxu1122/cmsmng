@@ -22,7 +22,7 @@
             var endDate = $('#endDate').datebox('getValue');
             var productId = $('#productId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/hzfmng/partnerQuery/listProductStat",
+                url: "<%=basePath%>/hzfmng/partnerQuery/listProductArriveStatTemp",
                 queryParams: {productId: productId, startDate: startDate, endDate: endDate}
             });
         }
@@ -34,7 +34,7 @@
                 fitColumns: true,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/hzfmng/partnerQuery/listProductStat',
+                url: '<%=basePath%>/hzfmng/partnerQuery/listProductArriveStatTemp',
                 queryParams: {startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -53,7 +53,7 @@
                         },
                         {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
-                        {field: 'prsActiveTotalNum', title: '累计到达数量', align: 'center', width: 200,
+                        {field: 'validNum', title: '有效装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 if (row.processDate == null) {
                                     return value;
@@ -162,7 +162,7 @@
             var productId = $('#productId').val();
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportProductData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportProductArriveTempData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

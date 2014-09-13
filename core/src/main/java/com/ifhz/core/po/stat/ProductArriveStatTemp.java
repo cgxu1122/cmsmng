@@ -35,6 +35,25 @@ public class ProductArriveStatTemp implements Serializable {
     private Date startDate;
     private Date endDate;
 
+    private Long partnerId;
+    private String queryImeiSource;
+
+    public String getQueryImeiSource() {
+        return queryImeiSource;
+    }
+
+    public void setQueryImeiSource(String queryImeiSource) {
+        this.queryImeiSource = queryImeiSource;
+    }
+
+    public Long getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(Long partnerId) {
+        this.partnerId = partnerId;
+    }
+
     public Date getEndDate() {
         return endDate;
     }
