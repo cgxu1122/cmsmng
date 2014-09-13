@@ -36,7 +36,6 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
 
-
     @Override
     @Log
     public ChannelInfo getById(Long id) {
@@ -70,10 +69,11 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
                 user.setRoleId(UserConstants.TY_QUERY);
             } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(record.getGroupId())) {
                 user.setRoleId(UserConstants.DB_QUERY);
+            } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.equals(record.getGroupId())) {
+                user.setRoleId(UserConstants.QT_QUERY);
             } else if (JcywConstants.CHANNEL_GROUP_LW_ID_4.equals(record.getGroupId())) {
                 user.setRoleId(UserConstants.LW_QUERY);
             }
-
             sysUserService.insert(user);
             record.setUserId(user.getUserId());
         }
