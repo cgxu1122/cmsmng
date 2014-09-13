@@ -9,6 +9,8 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
+import com.ifhz.core.po.stat.LogArriveStat;
+import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.po.stat.ProductInstallStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
@@ -18,7 +20,9 @@ import com.ifhz.core.service.imei.bean.ImeiQueryType;
 import com.ifhz.core.service.imei.bean.QueryActive;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
+import com.ifhz.core.service.stat.LogArriveStatService;
 import com.ifhz.core.service.stat.LogStatQueryService;
+import com.ifhz.core.service.stat.ProductArriveStatService;
 import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -48,7 +52,11 @@ public class ReportCountNewController extends BaseController {
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
+    private LogArriveStatService logArriveStatService;
+    @Autowired
     private ProductInstallStatService productInstallStatService;
+    @Autowired
+    private ProductArriveStatService productArriveStatService;
     @Autowired
     private LocalDirCacheService localDirCacheService;
     @Autowired
@@ -185,10 +193,10 @@ public class ReportCountNewController extends BaseController {
         if (StringUtils.isNotEmpty(channelIdCondition)) {
             logStat.setChannelIdCondition(channelIdCondition);
             list = logStatQueryService.queryByVo(page, logStat);
-        } else {//如果是地包渠道的负责人登录，则进行数据过滤
-            if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+        } else {//如果是地包或其他渠道的负责人登录，则进行数据过滤
+            if ((JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) || JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) && CurrentUserUtil.isManager()) {
                 ChannelInfo ci = new ChannelInfo();
-                ci.setGroupId(JcywConstants.CHANNEL_GROUP_DB_ID_2);
+                ci.setGroupId(Long.parseLong(groupId));
                 ci.setActive(JcywConstants.ACTIVE_Y);
                 ci.setMngId(CurrentUserUtil.getUserId());
                 List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
@@ -286,7 +294,7 @@ public class ReportCountNewController extends BaseController {
                 } else {//如果是地包渠道的负责人登录，则进行数据过滤
                     if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
                         ChannelInfo ci = new ChannelInfo();
-                        ci.setGroupId(JcywConstants.CHANNEL_GROUP_DB_ID_2);
+                        ci.setGroupId(Long.parseLong(groupId));
                         ci.setActive(JcywConstants.ACTIVE_Y);
                         ci.setMngId(CurrentUserUtil.getUserId());
                         List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
@@ -313,7 +321,31 @@ public class ReportCountNewController extends BaseController {
                 titleMap.put("prsInvalidReplaceNum", "替换数量");
                 titleMap.put("prsInvalidUninstallNum", "卸载数量");
                 titleMap.put("prsInvalidUnAndReNum", "卸载并替换数量");
-                list = logStatQueryService.queryByVo(page, logStat);
+                if (StringUtils.isNotEmpty(channelIdCondition)) {
+                    logStat.setChannelIdCondition(channelIdCondition);
+                    list = logStatQueryService.queryByVo(page, logStat);
+                } else {//如果是其他渠道的负责人登录，则进行数据过滤
+                    if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+                        ChannelInfo ci = new ChannelInfo();
+                        ci.setGroupId(Long.parseLong(groupId));
+                        ci.setActive(JcywConstants.ACTIVE_Y);
+                        ci.setMngId(CurrentUserUtil.getUserId());
+                        List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
+                        channelIdCondition = "";
+                        if (CollectionUtils.isNotEmpty(channelInfoList)) {
+                            for (ChannelInfo channelInfo : channelInfoList) {
+                                channelIdCondition += channelInfo.getChannelId() + ",";
+                            }
+                            if (channelIdCondition.endsWith(",")) {
+                                channelIdCondition = channelIdCondition.substring(0, channelIdCondition.length() - 1);
+                            }
+                            logStat.setChannelIdCondition(channelIdCondition);
+                            list = logStatQueryService.queryByVo(page, logStat);
+                        }
+                    } else {
+                        list = logStatQueryService.queryByVo(page, logStat);
+                    }
+                }
             }
             if (CollectionUtils.isNotEmpty(list)) {
                 LogStat countLogStat = logStatQueryService.queryCountByVo(logStat);
@@ -419,8 +451,9 @@ public class ReportCountNewController extends BaseController {
             titleMap.put("modelName", "机型名称");
             titleMap.put("productName", "产品名称");
             titleMap.put("groupName", "渠道组织");
-            titleMap.put("productPrsDayNum", "装机数量");
-            titleMap.put("prsActiveTotalNum", "装机到达数量");
+            titleMap.put("channelName", "渠道名称");
+            titleMap.put("installTotalNum", "装机数量");
+            titleMap.put("totalNum", "装机到达数量");
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
             String localFilePath = localDirCacheService.getExcelTempPath();
@@ -584,4 +617,359 @@ public class ReportCountNewController extends BaseController {
         return statImeiRequest;
     }
 
+
+    @RequestMapping(value = "/listStoreLogArriveStat", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listStoreLogArriveStat(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String ua = request.getParameter("ua");
+        String channelId = request.getParameter("channelId");
+        String channelIdCondition = request.getParameter("channelIdCondition");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
+        LogArriveStat logArriveStat = new LogArriveStat();
+        if (StringUtils.isNotEmpty(groupId)) {
+            logArriveStat.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(channelId)) {
+            logArriveStat.setChannelId(Long.parseLong(channelId));
+        }
+        if (StringUtils.isNotEmpty(ua)) {
+            logArriveStat.setUa(ua.trim());
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            logArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            logArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(channelIdCondition)) {
+            logArriveStat.setChannelIdCondition(channelIdCondition);
+        }
+        List<LogArriveStat> list = logArriveStatService.queryByVo(page, logArriveStat);
+        if (CollectionUtils.isNotEmpty(list)) {
+            LogArriveStat countLogArriveStat = logArriveStatService.queryCountByVo(logArriveStat);
+            list.add(countLogArriveStat);
+        }
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/listLogArriveStat", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listLogArriveStat(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String ua = request.getParameter("ua");
+        String channelId = request.getParameter("channelId");
+        String channelIdCondition = request.getParameter("channelIdCondition");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String groupId = request.getParameter("groupId");
+        LogArriveStat logArriveStat = new LogArriveStat();
+        if (StringUtils.isNotEmpty(groupId)) {
+            logArriveStat.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(channelId)) {
+            logArriveStat.setChannelId(Long.parseLong(channelId));
+        }
+        if (StringUtils.isNotEmpty(ua)) {
+            logArriveStat.setUa(ua.trim());
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            logArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            logArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+
+        List<LogArriveStat> list = new ArrayList<LogArriveStat>();
+        if (StringUtils.isNotEmpty(channelIdCondition)) {
+            logArriveStat.setChannelIdCondition(channelIdCondition);
+            list = logArriveStatService.queryByVo(page, logArriveStat);
+        } else {//如果是地包或其他渠道的负责人登录，则进行数据过滤
+            if ((JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) || JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) && CurrentUserUtil.isManager()) {
+                ChannelInfo ci = new ChannelInfo();
+                ci.setGroupId(Long.parseLong(groupId));
+                ci.setActive(JcywConstants.ACTIVE_Y);
+                ci.setMngId(CurrentUserUtil.getUserId());
+                List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
+                channelIdCondition = "";
+                if (CollectionUtils.isNotEmpty(channelInfoList)) {
+                    for (ChannelInfo channelInfo : channelInfoList) {
+                        channelIdCondition += channelInfo.getChannelId() + ",";
+                    }
+                    if (channelIdCondition.endsWith(",")) {
+                        channelIdCondition = channelIdCondition.substring(0, channelIdCondition.length() - 1);
+                    }
+                    logArriveStat.setChannelIdCondition(channelIdCondition);
+                    list = logArriveStatService.queryByVo(page, logArriveStat);
+                }
+            } else {
+                list = logArriveStatService.queryByVo(page, logArriveStat);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(list)) {
+            LogArriveStat countLogArriveStat = logArriveStatService.queryCountByVo(logArriveStat);
+            list.add(countLogArriveStat);
+        }
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/exportArriveData", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject exportArriveData(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        try {
+            String ua = request.getParameter("ua");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            String groupId = request.getParameter("groupId");
+            String channelId = request.getParameter("channelId");
+            String channelIdCondition = request.getParameter("channelIdCondition");
+            LogArriveStat logArriveStat = new LogArriveStat();
+            if (StringUtils.isNotEmpty(groupId)) {
+                logArriveStat.setGroupId(Long.parseLong(groupId));
+            }
+            if (StringUtils.isNotEmpty(channelId)) {
+                logArriveStat.setChannelId(Long.parseLong(channelId));
+            }
+            if (StringUtils.isNotEmpty(ua)) {
+                logArriveStat.setUa(ua.trim());
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                logArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                logArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(channelIdCondition)) {
+                logArriveStat.setChannelIdCondition(channelIdCondition);
+            }
+            String exportType = request.getParameter("exportType");
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("modelName", "机型全称");
+            titleMap.put("channelName", "仓库名称");
+
+            List<LogArriveStat> list = new ArrayList<LogArriveStat>();
+            Pagination page = new Pagination();
+            page.setCurrentPage(1);
+            page.setPageSize(Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX)));
+            if ("1".equals(exportType)) {//天音渠道装机查询
+                titleMap.put("totalNum", "累计到达数量");
+                titleMap.put("validNum", "有效到达数量");
+                titleMap.put("invalidNum", "无效到达数量");
+                titleMap.put("replaceNum", "替换数量");
+                titleMap.put("uninstallNum", "卸载数量");
+                titleMap.put("unAndReNum", "卸载并替换数量");
+                list = logArriveStatService.queryByVo(page, logArriveStat);
+            } else if ("2".equals(exportType)) {//地包渠道装机查询
+                titleMap.put("totalNum", "累计到达数量");
+                titleMap.put("validNum", "有效到达数量");
+                titleMap.put("invalidNum", "无效到达数量");
+                titleMap.put("replaceNum", "替换数量");
+                titleMap.put("uninstallNum", "卸载数量");
+                titleMap.put("unAndReNum", "卸载并替换数量");
+                if (StringUtils.isNotEmpty(channelIdCondition)) {
+                    logArriveStat.setChannelIdCondition(channelIdCondition);
+                    list = logArriveStatService.queryByVo(page, logArriveStat);
+                } else {//如果是地包渠道的负责人登录，则进行数据过滤
+                    if ((JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) && CurrentUserUtil.isManager()) {
+                        ChannelInfo ci = new ChannelInfo();
+                        ci.setGroupId(Long.parseLong(groupId));
+                        ci.setActive(JcywConstants.ACTIVE_Y);
+                        ci.setMngId(CurrentUserUtil.getUserId());
+                        List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
+                        channelIdCondition = "";
+                        if (CollectionUtils.isNotEmpty(channelInfoList)) {
+                            for (ChannelInfo channelInfo : channelInfoList) {
+                                channelIdCondition += channelInfo.getChannelId() + ",";
+                            }
+                            if (channelIdCondition.endsWith(",")) {
+                                channelIdCondition = channelIdCondition.substring(0, channelIdCondition.length() - 1);
+                            }
+                            logArriveStat.setChannelIdCondition(channelIdCondition);
+                            list = logArriveStatService.queryByVo(page, logArriveStat);
+                        }
+                    } else {
+                        list = logArriveStatService.queryByVo(page, logArriveStat);
+                    }
+                }
+            } else if ("3".equals(exportType)) {//其他渠道装机查询
+                titleMap.put("totalNum", "累计到达数量");
+                titleMap.put("validNum", "有效到达数量");
+                titleMap.put("invalidNum", "无效到达数量");
+                titleMap.put("replaceNum", "替换数量");
+                titleMap.put("uninstallNum", "卸载数量");
+                titleMap.put("unAndReNum", "卸载并替换数量");
+                if (StringUtils.isNotEmpty(channelIdCondition)) {
+                    logArriveStat.setChannelIdCondition(channelIdCondition);
+                    list = logArriveStatService.queryByVo(page, logArriveStat);
+                } else {//如果是其他渠道的负责人登录，则进行数据过滤
+                    if ((JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) && CurrentUserUtil.isManager()) {
+                        ChannelInfo ci = new ChannelInfo();
+                        ci.setGroupId(Long.parseLong(groupId));
+                        ci.setActive(JcywConstants.ACTIVE_Y);
+                        ci.setMngId(CurrentUserUtil.getUserId());
+                        List<ChannelInfo> channelInfoList = channelInfoService.queryByVo(null, ci);
+                        channelIdCondition = "";
+                        if (CollectionUtils.isNotEmpty(channelInfoList)) {
+                            for (ChannelInfo channelInfo : channelInfoList) {
+                                channelIdCondition += channelInfo.getChannelId() + ",";
+                            }
+                            if (channelIdCondition.endsWith(",")) {
+                                channelIdCondition = channelIdCondition.substring(0, channelIdCondition.length() - 1);
+                            }
+                            logArriveStat.setChannelIdCondition(channelIdCondition);
+                            list = logArriveStatService.queryByVo(page, logArriveStat);
+                        }
+                    } else {
+                        list = logArriveStatService.queryByVo(page, logArriveStat);
+                    }
+                }
+            }
+            if (CollectionUtils.isNotEmpty(list)) {
+                LogArriveStat countLogArriveStat = logArriveStatService.queryCountByVo(logArriveStat);
+                logArriveStat.setModelName("合计:");
+                list.add(countLogArriveStat);
+            }
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/listProductArriveStat", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listProductArriveStat(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String ua = request.getParameter("ua");
+        String productId = request.getParameter("productId");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        String channelIdCondition = request.getParameter("channelIdCondition");
+        ProductArriveStat productArriveStat = new ProductArriveStat();
+        if (StringUtils.isNotEmpty(channelIdCondition)) {
+            productArriveStat.setChannelIdCondition(channelIdCondition);
+        }
+        if (StringUtils.isNotEmpty(productId)) {
+            productArriveStat.setProductId(Long.parseLong(productId));
+        }
+        if (StringUtils.isNotEmpty(ua)) {
+            productArriveStat.setUa(ua.trim());
+        }
+        if (StringUtils.isNotEmpty(startDate)) {
+            productArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            productArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+        }
+        List<ProductArriveStat> list = productArriveStatService.queryByVo(page, productArriveStat);
+        if (CollectionUtils.isNotEmpty(list)) {
+            ProductArriveStat countProductArriveStat = productArriveStatService.queryCountByVo(productArriveStat);
+            list.add(countProductArriveStat);
+        } else {
+            list = new ArrayList<ProductArriveStat>();
+        }
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
+    @RequestMapping(value = "/exportProductArriveData", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject exportProductArriveData(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject result = new JSONObject();
+        try {
+            String ua = request.getParameter("ua");
+            String productId = request.getParameter("productId");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            String channelIdCondition = request.getParameter("channelIdCondition");
+            ProductInstallStat productInstallStat = new ProductInstallStat();
+            if (StringUtils.isNotEmpty(channelIdCondition)) {
+                productInstallStat.setChannelIdCondition(channelIdCondition);
+            }
+            if (StringUtils.isNotEmpty(productId)) {
+                productInstallStat.setProductId(Long.parseLong(productId));
+            }
+            if (StringUtils.isNotEmpty(ua)) {
+                productInstallStat.setUa(ua.trim());
+            }
+            if (StringUtils.isNotEmpty(startDate)) {
+                productInstallStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                productInstallStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            Pagination page = new Pagination();
+            page.setCurrentPage(1);
+            page.setPageSize(Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX)));
+            List<ProductInstallStat> list = productInstallStatService.queryByVo(page, productInstallStat);
+            if (CollectionUtils.isNotEmpty(list)) {
+                ProductInstallStat countProductInstallStat = productInstallStatService.queryCountByVo(productInstallStat);
+                list.add(countProductInstallStat);
+            }
+            BaseExportModel exportModel = new BaseExportModel();
+            Map<String, String> titleMap = new LinkedHashMap<String, String>();
+            titleMap.put("processDate", "日期");
+            titleMap.put("modelName", "机型名称");
+            titleMap.put("productName", "产品名称");
+            titleMap.put("groupName", "渠道组织");
+            titleMap.put("channelName", "渠道名称");
+            titleMap.put("totalNum", "累计到达数量");
+            titleMap.put("validNum", "有效到达数量");
+            titleMap.put("invalidNum", "无效到达数量");
+            titleMap.put("replaceNum", "替换数量");
+            titleMap.put("uninstallNum", "卸载数量");
+            titleMap.put("unAndReNum", "卸载并替换数量");
+            exportModel.setTitleMap(titleMap);
+            exportModel.setDataList(list);
+            String localFilePath = localDirCacheService.getExcelTempPath();
+            ExportDataUtil.writeData(exportModel, new File(localFilePath));
+            result.put("ret", true);
+            result.put("path", localFilePath);
+        } catch (Exception e) {
+            result.put("ret", false);
+            result.put("errorMsg", "文件导出失败，请重试或者联系管理员");
+            LOGGER.error("exportData", e);
+        }
+
+        return result;
+    }
 }

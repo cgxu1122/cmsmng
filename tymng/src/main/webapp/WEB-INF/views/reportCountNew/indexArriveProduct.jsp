@@ -14,19 +14,18 @@ $(document).ready(function () {
     $("#endDate").datebox({
         value: getCurrrentDateStr()
     });
-    var data = $('#groupId').combobox('getData');
-    $("#groupId").combobox('select', data[0].value);
     initPage();
 });
 function searchEvt() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var groupId = $('#groupId').combobox('getValue');
+    var channelIdCondition = $('#channelIdCondition').val();
+
     var productId = $('#productId').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/tymng/reportCountNew/listProductStat",
-        queryParams: {groupId: groupId, startDate: startDate, endDate: endDate, ua: ua, productId: productId}
+        url: "<%=basePath%>/tymng/reportCountNew/listProductArriveStat",
+        queryParams: {channelIdCondition: channelIdCondition, startDate: startDate, endDate: endDate, ua: ua, productId: productId}
     });
 }
 
@@ -35,7 +34,7 @@ function resetEvt() {
     $('#modelName').val("");
     $('#productId').val("");
     $('#productName').val("");
-    $("#groupId").combobox('select', "");
+    $("#channelIdCondition").val("");
 }
 
 function initPage() {
@@ -45,7 +44,7 @@ function initPage() {
         fitColumns: true,
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/reportCountNew/listProductStat',
+        url: '<%=basePath%>/tymng/reportCountNew/listProductArriveStat',
         queryParams: {startDate: startDate, endDate: endDate},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -54,7 +53,7 @@ function initPage() {
         rownumbers: true,
         columns: [
             [
-                {field: 'processDate', title: '日期', align: 'center', width: 200,
+                {field: 'statDate', title: '日期', align: 'center', width: 200,
                     formatter: function (value) {
                         if (value == null) {
                             return "合计"
@@ -66,21 +65,58 @@ function initPage() {
                 {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                 {field: 'productName', title: '产品名称', align: 'center', width: 200},
                 {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
-                {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
+                {field: 'channelName', title: '渠道名称', align: 'center', width: 200},
+                {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',1)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsActiveTotalNum', title: '装机到达数量', align: 'center', width: 200,
+                {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.groupId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',2)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',4)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',5)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',6)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',7)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'unAndReNum', title: '卸载并替换数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',8)>" + value + "</a>";
                         }
                     }
                 }
@@ -90,18 +126,18 @@ function initPage() {
 }
 
 
-var processDateCur;
+var statDateCur;
 var uaCur;
-var groupIdCur;
+var channelIdCur;
 var modelNameCur;
 var groupNameCur;
 var productIdCur;
 var productNameCur;
 var queryTypeCur;
-function showIMEIDialog(processDate, ua, groupId, modelName, groupName, productId, productName, queryType) {
-    processDateCur = processDate;
+function showIMEIDialog(statDate, ua, channelId, modelName, groupName, productId, productName, queryType) {
+    statDateCur = statDate;
     uaCur = ua;
-    groupIdCur = groupId;
+    channelIdCur = channelId;
     modelNameCur = modelName;
     groupNameCur = groupName;
     productIdCur = productId;
@@ -115,14 +151,14 @@ function showIMEIDialog(processDate, ua, groupId, modelName, groupName, productI
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/reportCountNew/listImei',
-        queryParams: {processDate: processDate, ua: ua, groupId: groupId, modelName: modelName, groupName: groupName, productId: productId, productName: productName, queryType: queryType},
+        queryParams: {processDate: statDate, ua: ua, channelId: channelId, modelName: modelName, groupName: groupName, productId: productId, productName: productName, queryType: queryType},
         loadMsg: '数据加载中请稍后……',
         rownumbers: true,
         columns: [
             [
-                {field: 'processDate', title: '日期', align: 'center', width: 150,
+                {field: 'statDate', title: '日期', align: 'center', width: 150,
                     formatter: function (value) {
-                        return new Date(parseFloat(processDateCur)).formate("yyyy-MM-dd");
+                        return new Date(parseFloat(statDateCur)).formate("yyyy-MM-dd");
                     }
                 },
                 {field: 'modelName', title: '机型名称', align: 'center', width: 150},
@@ -136,7 +172,7 @@ function showIMEIDialog(processDate, ua, groupId, modelName, groupName, productI
 function exportImeiEvt() {
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCountNew/exportImei?exportType=3&processDate=" + processDateCur + "&ua=" + uaCur + "&groupId=" + groupIdCur + "&modelName=" + modelNameCur + "&groupName=" + groupNameCur + "&productId=" + productIdCur + "&productName=" + productNameCur + "&queryType=" + queryTypeCur,
+        url: "<%=basePath%>/tymng/reportCountNew/exportImei?exportType=3&processDate=" + statDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&groupName=" + groupNameCur + "&productId=" + productIdCur + "&productName=" + productNameCur + "&queryType=" + queryTypeCur,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -196,7 +232,7 @@ function showProductDialog() {
         fitColumns: true,
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/productInfo/list',
+        url: '<%=basePath%>/tymng/productInfo/viewList',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -225,15 +261,80 @@ function selectProduct(productId, productName) {
     $("#productId").val(productId);
     $('#productdlg').dialog('close');
 }
+
+function showChannelDialog() {
+    $('#channeldlg').dialog('open').dialog('setTitle', '选择仓库');
+    $('#channeldg').datagrid({
+        width: 'auto',
+        height: 'auto',
+        fitColumns: true,
+        striped: true,
+        url: '<%=basePath%>/tymng/channelInfo/listAll',
+        queryParams: {},
+        loadMsg: '数据加载中请稍后……',
+        pagination: true,
+        rownumbers: true,
+        idField: 'channelId',
+        columns: [
+            [
+                {field: 'groupName', title: '渠道组织', align: 'center', width: 150},
+                {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
+                {field: 'channelId', hidden: 'true'},
+                {field: 'ck', checkbox: true}
+            ]
+        ]
+    });
+}
+function searchChannelEvt() {
+    var groupIdTY = $('#groupIdTY').is(':checked');
+    var groupIdDB = $('#groupIdDB').is(':checked');
+    var groupIdQT = $('#groupIdQT').is(':checked');
+    var groupIds = "";
+    if (groupIdTY) {
+        groupIds += "1";
+    }
+    if (groupIdDB) {
+        if (groupIds == "") {
+            groupIds += "2";
+        } else {
+            groupIds += ",2";
+        }
+    }
+    if (groupIdQT) {
+        if (groupIds == "") {
+            groupIds += "3";
+        } else {
+            groupIds += ",3";
+        }
+    }
+    var value = $('#searchChannelValue').val();
+    $('#channeldg').datagrid({
+        url: "<%=basePath%>/tymng/channelInfo/listAll",
+        queryParams: {channelNameCondition: value, groupIds: groupIds}
+    });
+}
+function selectChannel(channelId, channelName) {
+    var ids = [];
+    var names = [];
+    var rows = $('#channeldg').datagrid('getSelections');
+    for (var i = 0; i < rows.length; i++) {
+        ids.push(rows[i].channelId);
+        names.push(rows[i].channelName);
+    }
+    $("#channelName").val(names.join(','));
+    $("#channelIdCondition").val(ids.join(','));
+    $('#channeldlg').dialog('close')
+}
+
 function exportData() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var groupId = $('#groupId').combobox('getValue');
+    var channelIdCondition = $('#channelIdCondition').val();
     var productId = $('#productId').val();
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCountNew/exportProductData?groupId=" + groupId + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId,
+        url: "<%=basePath%>/tymng/reportCountNew/exportProductArriveData?channelIdCondition=" + channelIdCondition + "&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&productId=" + productId,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -263,12 +364,9 @@ function exportData() {
                     <input type="hidden" name="ua" id="ua"/>
                 </td>
                 <td>
-                    <select class="easyui-combobox" name="groupId" id="groupId" style="width:150px;">
-                        <option value="">全部渠道组</option>
-                        <option value="1">天音渠道</option>
-                        <option value="2">地包渠道</option>
-                        <option value="3">其他渠道</option>
-                    </select>
+                    <input type="text" name="channelName" id="channelName" placeholder="选择仓库" readonly="readonly"
+                           onclick="showChannelDialog()"/>
+                    <input type="hidden" name="channelIdCondition" id="channelIdCondition"/>
                 </td>
                 <td>
                     <input type="text" name="startDate" id="startDate" placeholder="开始时间"/>
@@ -340,6 +438,42 @@ function exportData() {
 <div id="productdlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#productdlg').dialog('close')">关闭</a>
+</div>
+<div id="channeldlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true"
+     data-options="iconCls:'icon-save',resizable:true"
+     buttons="#channeldlg-buttons">
+    <div>
+        <div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="groupIdTY" id="groupIdTY" checked="checked"/>天音渠道
+                    </td>
+                    <td>
+                        <input type="checkbox" name="groupIdDB" id="groupIdDB" checked="checked"/>地包渠道
+                    </td>
+                    <td>
+                        <input type="checkbox" name="groupIdQT" id="groupIdQT" checked="checked"/>其他渠道
+                    </td>
+                    <td>
+                        <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="仓库名称"/>
+                    </td>
+                    <td align="center">
+                        <a id="searchChannelBtn" href="javascript:void(0)" class="easyui-linkbutton"
+                           iconCls="icon-search"
+                           onclick="searchChannelEvt()">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="channeldg"></div>
+</div>
+<div id="channeldlg-buttons" style="text-align: center;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
+       onclick="javascript:selectChannel();">确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>
 </div>
 <div id="imeidlg" class="easyui-dialog" style="width:600px;height:400px;padding:10px 20px" closed="true"
      data-options="iconCls:'icon-save',resizable:true"

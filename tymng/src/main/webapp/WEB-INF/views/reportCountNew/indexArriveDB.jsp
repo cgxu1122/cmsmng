@@ -20,11 +20,10 @@ function searchEvt() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var deviceCode = $('#deviceCode').val();
     var channelIdCondition = $('#channelIdCondition').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/tymng/reportCountNew/listLogStat",
-        queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua, deviceCode: deviceCode, channelIdCondition: channelIdCondition}
+        url: "<%=basePath%>/tymng/reportCountNew/listLogArriveStat",
+        queryParams: {groupId: 2, startDate: startDate, endDate: endDate, ua: ua, channelIdCondition: channelIdCondition}
     });
 }
 
@@ -32,7 +31,6 @@ function resetEvt() {
     $('#ua').val("");
     $('#modelName').val("");
     $('#channelName').val("");
-    $('#deviceCode').val("");
     $('#channelIdCondition').val("");
 }
 
@@ -43,7 +41,7 @@ function initPage() {
         fitColumns: true,
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/reportCountNew/listLogStat',
+        url: '<%=basePath%>/tymng/reportCountNew/listLogArriveStat',
         queryParams: {groupId: 2, startDate: startDate, endDate: endDate},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -62,67 +60,57 @@ function initPage() {
                 },
                 {field: 'channelName', title: '渠道商名称', align: 'center', width: 200},
                 {field: 'modelName', title: '机型全称', align: 'center', width: 200},
-                {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
-                {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
+                {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',1)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',3)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsActiveTotalNum', title: '装机到达数量', align: 'center', width: 200,
+                {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',2)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',4)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
+                {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',4)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',5)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
+                {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',5)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',6)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
+                {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',6)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',7)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
+                {field: 'unAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',7)>" + value + "</a>";
-                        }
-                    }
-                },
-                {field: 'prsInvalidUnAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        if (row.processDate == null) {
-                            return value;
-                        } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "','" + row.deviceCode + "',8)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',8)>" + value + "</a>";
                         }
                     }
                 }
@@ -136,15 +124,13 @@ var uaCur;
 var channelIdCur;
 var modelNameCur;
 var channelNameCur;
-var deviceCodeCur;
 var queryTypeCur;
-function showIMEIDialog(processDate, ua, channelId, modelName, channelName, deviceCode, queryType) {
+function showIMEIDialog(processDate, ua, channelId, modelName, channelName, queryType) {
     processDateCur = processDate;
     uaCur = ua;
     channelIdCur = channelId;
     modelNameCur = modelName;
     channelNameCur = channelName;
-    deviceCodeCur = deviceCode;
     queryTypeCur = queryType;
     $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表,只显示前1000条，查看全部Imei请导出');
     $('#imeidg').datagrid({
@@ -154,7 +140,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, channelName, devi
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/reportCountNew/listImei',
-        queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, channelName: channelName, deviceCode: deviceCode, queryType: queryType},
+        queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, channelName: channelName, queryType: queryType},
         loadMsg: '数据加载中请稍后……',
         rownumbers: true,
         columns: [
@@ -166,7 +152,6 @@ function showIMEIDialog(processDate, ua, channelId, modelName, channelName, devi
                 },
                 {field: 'modelName', title: '机型名称', align: 'center', width: 150},
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
-                {field: 'deviceCode', title: '设备编码', align: 'center', width: 150},
                 {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
             ]
         ]
@@ -175,7 +160,7 @@ function showIMEIDialog(processDate, ua, channelId, modelName, channelName, devi
 function exportImeiEvt() {
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCountNew/exportImei?exportType=2&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&deviceCode=" + deviceCodeCur + "&queryType=" + queryTypeCur,
+        url: "<%=basePath%>/tymng/reportCountNew/exportImei?exportType=2&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&channelName=" + channelNameCur + "&queryType=" + queryTypeCur,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -186,43 +171,6 @@ function exportImeiEvt() {
             }
         }
     });
-}
-
-function showDeviceDialog() {
-    $('#devicedlg').dialog('open').dialog('setTitle', '选择设备');
-    $('#devicedg').datagrid({
-        width: 'auto',
-        height: 'auto',
-        fitColumns: true,
-        striped: true,
-        singleSelect: true,
-        url: '<%=basePath%>/tymng/deviceInfo/list',
-        queryParams: {groupId: 2},
-        loadMsg: '数据加载中请稍后……',
-        pagination: true,
-        rownumbers: true,
-        columns: [
-            [
-                {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
-                {field: 'action', title: '操作', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        return "<a href='javascript:void(0)' onclick=javascript:selectDevice('" + row.deviceCode + "')>选择</a>";
-                    }
-                }
-            ]
-        ]
-    });
-}
-function searchDeviceEvt() {
-    var value = $('#searchDeviceValue').val();
-    $('#devicedg').datagrid({
-        url: "<%=basePath%>/tymng/deviceInfo/list",
-        queryParams: {deviceCodeCondition: value, groupId: 2}
-    });
-}
-function selectDevice(deviceCode) {
-    $("#deviceCode").val(deviceCode);
-    $('#devicedlg').dialog('close');
 }
 function showModelDialog() {
     $('#modeldlg').dialog('open').dialog('setTitle', '选择机型');
@@ -307,11 +255,10 @@ function exportData() {
     var startDate = $('#startDate').datebox('getValue');
     var endDate = $('#endDate').datebox('getValue');
     var ua = $('#ua').val();
-    var deviceCode = $('#deviceCode').val();
     var channelIdCondition = $('#channelIdCondition').val();
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCountNew/exportData?groupId=2&exportType=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelIdCondition=" + channelIdCondition + "&deviceCode=" + deviceCode,
+        url: "<%=basePath%>/tymng/reportCountNew/exportArriveData?groupId=2&exportType=2&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelIdCondition=" + channelIdCondition,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
@@ -330,10 +277,6 @@ function exportData() {
     <div>
         <table>
             <tr>
-                <td>
-                    <input type="text" name="deviceCode" id="deviceCode" placeholder="选择设备" readonly="readonly"
-                           onclick="showDeviceDialog()"/>
-                </td>
                 <td>
                     <input type="text" name="modelName" id="modelName" placeholder="选择机型" readonly="readonly"
                            onclick="showModelDialog()"/>

@@ -54,6 +54,24 @@ public class LogArriveStat implements Serializable {
     private String channelName;
     private String groupName;
     private String channelIdCondition;
+    private Date startDate;
+    private Date endDate;
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
     public Long getId() {
         return id;
