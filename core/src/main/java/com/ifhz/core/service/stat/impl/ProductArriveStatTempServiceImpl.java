@@ -1,11 +1,14 @@
 package com.ifhz.core.service.stat.impl;
 
 import com.ifhz.core.adapter.stat.ProductArriveStatTempAdapter;
-import com.ifhz.core.po.DataLog;
+import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.stat.ProductArriveStatTemp;
 import com.ifhz.core.service.stat.ProductArriveStatTempService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -21,8 +24,17 @@ public class ProductArriveStatTempServiceImpl implements ProductArriveStatTempSe
     private ProductArriveStatTempAdapter productArriveStatTempAdapter;
 
     @Override
-    public boolean statTempProductArrive(DataLog record) {
-        //TODO
+    public int insert(ProductArriveStatTemp productArriveStatTemp) {
+        return 0;
+    }
+
+    @Override
+    public boolean syncProductArriveStat() {
         return false;
+    }
+
+    @Override
+    public List<ProductArriveStatTemp> queryByVo(Pagination pagination, ProductArriveStatTemp record) {
+        return null;
     }
 }
