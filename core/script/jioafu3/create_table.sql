@@ -116,7 +116,7 @@ create table TY_STAT_DEDUCTION  (
    GROUP_ID             NUMBER(15)                     not null,
    TYPE                 NUMBER(5)                      default 1,
    BASIC_NUM            NUMBER(15),
-   PERCENTAGE           NUMBER(15,2),
+   PERCENTAGE           NUMBER(10),
    CREATE_TIME          DATE                           default SYSDATE,
    UPDATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_STAT_DEDUCTION primary key (ID)
