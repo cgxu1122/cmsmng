@@ -28,5 +28,5 @@ public interface ProductArriveStatAdapter {
 
     public long queryTotalCount(Date startTime, Date endTime);
 
-    public List<ProductArriveStat> queryStatList(Date startTime, Date endTime);
+    public List<ProductArriveStat> queryStatList(Pagination pagination, Date startTime, Date endTime);
 }

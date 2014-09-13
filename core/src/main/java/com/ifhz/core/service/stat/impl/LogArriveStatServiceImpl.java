@@ -4,12 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.ifhz.core.adapter.stat.LogArriveStatAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.constants.GroupEnums;
+import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.DataLog;
+import com.ifhz.core.po.ModelInfo;
 import com.ifhz.core.po.stat.LogArriveStat;
+import com.ifhz.core.service.cache.ChannelInfoCacheService;
+import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.LogArriveStatService;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.service.stat.handle.ArriveStatConvertHandler;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,11 +36,55 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogArriveStatServiceImpl.class);
     @Resource
     private LogArriveStatAdapter logArriveStatAdapter;
+    @Resource
+    private ModelInfoCacheService modelInfoCacheService;
+    @Resource(name = "channelInfoCacheService")
+    private ChannelInfoCacheService channelInfoCacheService;
 
     @Override
     @Log
     public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record) {
-        return logArriveStatAdapter.queryByVo(pagination, record);
+        List<LogArriveStat> result = logArriveStatAdapter.queryByVo(pagination, record);
+        if (CollectionUtils.isNotEmpty(result)) {
+            for (LogArriveStat logArriveStat : result) {
+                String ua = logArriveStat.getUa();
+                if (StringUtils.isNotEmpty(ua)) {
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, logArriveStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
+                    if (modelInfo != null) {
+                        logArriveStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
+                    } else {
+                        logArriveStat.setModelName("未知(" + ua + ")");
+                    }
+                } else {
+                    logArriveStat.setModelName("未知()");
+                }
+                if (logArriveStat.getGroupId() != null) {
+                    logArriveStat.setGroupName(GroupEnums.fromByValue(logArriveStat.getGroupId()).name);
+                }
+
+                Long channelId = logArriveStat.getChannelId();
+                if (channelId != null) {
+                    ChannelInfo channelInfo = null;
+                    try {
+                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    } catch (Exception e) {
+                        LOGGER.error("getByChannelId error", e);
+                    }
+                    if (channelInfo != null) {
+                        logArriveStat.setChannelName(channelInfo.getChannelName());
+                    } else {
+                        logArriveStat.setModelName("未知");
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override

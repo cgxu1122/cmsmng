@@ -136,4 +136,48 @@ public class ScheduleBakController {
 
         return result;
     }
+
+    @RequestMapping(value = "/syncLogActiveTemp.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject syncLogArriveTemp(@RequestParam(value = "startTime", required = true) String startTime,
+                                 @RequestParam(value = "endTime", required = true) String endTime) {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
+            Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.syncLogActiveTemp(startDate, endDate);
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("syncLogArriveTemp error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/syncProductActiveTemp.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject syncProductActiveTemp(@RequestParam(value = "startTime", required = true) String startTime,
+                                     @RequestParam(value = "endTime", required = true) String endTime) {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            Date startDate = DateFormatUtils.parse(startTime, GlobalConstants.DATE_FORMAT_DPT);
+            Date endDate = DateFormatUtils.parse(endTime, GlobalConstants.DATE_FORMAT_DPT);
+            scheduleBakService.syncProductActiveTemp(startDate, endDate);
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("syncProductActiveTemp error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
 }

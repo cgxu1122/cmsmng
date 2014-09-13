@@ -28,5 +28,5 @@ public interface LogArriveStatAdapter {
 
     public long queryTotalCount(Date startTime, Date endTime);
 
-    public List<LogArriveStat> queryStatList(Date startTime, Date endTime);
+    public List<LogArriveStat> queryStatList(Pagination pagination, Date startTime, Date endTime);
 }

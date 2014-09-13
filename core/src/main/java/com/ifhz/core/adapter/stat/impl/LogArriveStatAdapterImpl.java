@@ -61,7 +61,7 @@ public class LogArriveStatAdapterImpl implements LogArriveStatAdapter {
     }
 
     @Override
-    public List<LogArriveStat> queryStatList(Date startTime, Date endTime) {
-        return logArriveStatMapper.queryStatList(startTime, endTime);
+    public List<LogArriveStat> queryStatList(Pagination pagination, Date startTime, Date endTime) {
+        return logArriveStatMapper.queryStatList(pagination, startTime, endTime);
     }
 }

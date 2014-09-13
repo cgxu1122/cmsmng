@@ -30,7 +30,8 @@ public interface ProductArriveStatMapper {
     public long queryTotalCount(@Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);
 
-    public List<ProductArriveStat> queryStatList(@Param(value = "startTime") Date startTime,
+    public List<ProductArriveStat> queryStatList(Pagination pagination,
+                                                 @Param(value = "startTime") Date startTime,
                                                  @Param(value = "endTime") Date endTime);
 
 }

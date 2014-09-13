@@ -19,4 +19,9 @@ public interface ScheduleBakService {
     public void fetchWdjData(Date date);
 
     public void resetStat(Date date);
+
+
+    public void syncLogActiveTemp(Date startTime, Date endTime);
+
+    public void syncProductActiveTemp(Date startTime, Date endTime);
 }

@@ -7,6 +7,8 @@ import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.schedule.CounterTempLogService;
 import com.ifhz.core.service.schedule.ScheduleService;
+import com.ifhz.core.service.stat.LogArriveStatTempService;
+import com.ifhz.core.service.stat.ProductArriveStatTempService;
 import com.ifhz.core.service.stat.StatTaskService;
 import com.ifhz.core.service.stat.handle.DateHandler;
 import com.ifhz.core.service.wdj.WdjDataQueryService;
@@ -37,6 +39,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     private StatTaskService statTaskService;
     @Resource(name = "dictInfoCacheService")
     private DictInfoCacheService dictInfoCacheService;
+    @Resource
+    private LogArriveStatTempService logArriveStatTempService;
+    @Resource
+    private ProductArriveStatTempService productArriveStatTempService;
 
     @Override
     @Log
@@ -164,21 +170,20 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Log
     public void syncLogActiveTemp() {
-        LOGGER.info("syncLogActiveTemp ------------------------start");
         Date date = DateFormatUtils.addDay(new Date(), -1);
         Date startTime = DateHandler.getStartTimeForMinute(date);
         Date endTime = DateHandler.getEndTime(date);
-        LOGGER.info("syncLogActiveTemp ------------------------end");
+        logArriveStatTempService.syncLogArriveStat(startTime, endTime);
     }
 
     @Override
     public void syncProductActiveTemp() {
-        LOGGER.info("syncProductActiveTemp ------------------------start");
         Date date = DateFormatUtils.addDay(new Date(), -1);
         Date startTime = DateHandler.getStartTimeForMinute(date);
         Date endTime = DateHandler.getEndTime(date);
-        LOGGER.info("syncProductActiveTemp ------------------------end");
+        productArriveStatTempService.syncProductArriveStat(startTime, endTime);
     }
 
 }

@@ -30,6 +30,7 @@ public interface LogArriveStatMapper {
     public long queryTotalCount(@Param(value = "startTime") Date startTime,
                                 @Param(value = "endTime") Date endTime);
 
-    public List<LogArriveStat> queryStatList(@Param(value = "startTime") Date startTime,
+    public List<LogArriveStat> queryStatList(Pagination pagination,
+                                             @Param(value = "startTime") Date startTime,
                                              @Param(value = "endTime") Date endTime);
 }

@@ -3,6 +3,8 @@ package com.ifhz.core.service.schedule.impl;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.schedule.CounterTempLogService;
 import com.ifhz.core.service.schedule.ScheduleBakService;
+import com.ifhz.core.service.stat.LogArriveStatTempService;
+import com.ifhz.core.service.stat.ProductArriveStatTempService;
 import com.ifhz.core.service.stat.StatTaskService;
 import com.ifhz.core.service.stat.handle.DateHandler;
 import com.ifhz.core.service.wdj.WdjDataQueryService;
@@ -31,6 +33,10 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     private CounterTempLogService counterTempLogService;
     @Resource(name = "statTaskService")
     private StatTaskService statTaskService;
+    @Resource
+    private LogArriveStatTempService logArriveStatTempService;
+    @Resource
+    private ProductArriveStatTempService productArriveStatTempService;
 
     @Log
     private boolean isCrossDay(Date startTime, Date endTime) {
@@ -111,5 +117,23 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     @Log
     public void resetStat(Date date) {
 
+    }
+
+    @Override
+    public void syncLogActiveTemp(Date startTime, Date endTime) {
+        try {
+            logArriveStatTempService.syncLogArriveStat(startTime, endTime);
+        } catch (Exception e) {
+            LOGGER.error("syncLogActiveTemp error", e);
+        }
+    }
+
+    @Override
+    public void syncProductActiveTemp(Date startTime, Date endTime) {
+        try {
+            productArriveStatTempService.syncProductArriveStat(startTime, endTime);
+        } catch (Exception e) {
+            LOGGER.error("syncProductActiveTemp error", e);
+        }
     }
 }

@@ -16,7 +16,6 @@ public class ProductArriveStatTemp implements Serializable {
     private Long channelId;
     private Long groupId;
     private String ua;
-    private String modelName;
     private Date statDate;
     private Date createTime;
 
@@ -28,6 +27,11 @@ public class ProductArriveStatTemp implements Serializable {
      * 设备当天到达-有效总数
      */
     private Long validNum = 0L;
+
+    private String modelName;
+    private String channelName;
+    private String productName;
+    private String groupName;
 
     public Long getId() {
         return id;
@@ -107,5 +111,29 @@ public class ProductArriveStatTemp implements Serializable {
 
     public void setValidNum(Long validNum) {
         this.validNum = validNum;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

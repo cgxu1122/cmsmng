@@ -42,9 +42,9 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
     @Resource
     private ProductInstallStatAdapter productInstallStatAdapter;
     @Resource
-    private ModelInfoCacheService modelInfoCacheService;
-    @Resource
     private ProductInfoCacheService productInfoCacheService;
+    @Resource
+    private ModelInfoCacheService modelInfoCacheService;
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
 

@@ -60,7 +60,7 @@ public class ProductArriveStatAdapterImpl implements ProductArriveStatAdapter {
     }
 
     @Override
-    public List<ProductArriveStat> queryStatList(Date startTime, Date endTime) {
-        return productArriveStatMapper.queryStatList(startTime, endTime);
+    public List<ProductArriveStat> queryStatList(Pagination pagination, Date startTime, Date endTime) {
+        return productArriveStatMapper.queryStatList(pagination, startTime, endTime);
     }
 }
