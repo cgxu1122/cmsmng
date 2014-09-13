@@ -22,6 +22,7 @@ public class StatDeduction implements Serializable {
     private Date updateTime;
 
     private String channelNameCondition;
+    private String channelName;
 
     public Long getId() {
         return id;
@@ -93,5 +94,13 @@ public class StatDeduction implements Serializable {
 
     public void setChannelNameCondition(String channelNameCondition) {
         this.channelNameCondition = channelNameCondition;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 }

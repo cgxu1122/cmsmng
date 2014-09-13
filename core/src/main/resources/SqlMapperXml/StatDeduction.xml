@@ -37,6 +37,8 @@ create table TY_STAT_DEDUCTION  (
         <result column="PERCENTAGE" property="percentage" jdbcType="DOUBLE"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+
+        <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getById" parameterType="long" resultMap="BaseResultMap">
@@ -88,7 +90,15 @@ create table TY_STAT_DEDUCTION  (
 
     <select id="queryByVo" resultMap="BaseResultMap">
         select
-        <include refid="CommonFieldSql"/>
+        deduction.ID,
+        deduction.CHANNEL_ID,
+        deduction.GROUP_ID,
+        deduction.TYPE,
+        deduction.BASIC_NUM,
+        deduction.PERCENTAGE,
+        deduction.CREATE_TIME,
+        deduction.UPDATE_TIME,
+        channel.CHANNEL_NAME
         from
         <include refid="TABLE_NAME"/>
         deduction
