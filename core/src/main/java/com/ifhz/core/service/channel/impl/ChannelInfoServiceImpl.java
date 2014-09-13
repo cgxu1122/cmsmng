@@ -1,6 +1,7 @@
 package com.ifhz.core.service.channel.impl;
 
 import com.ifhz.core.adapter.ChannelInfoAdapter;
+import com.ifhz.core.adapter.stat.StatDeductionAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.commons.anthrity.UserConstants;
 import com.ifhz.core.base.commons.constants.JcywConstants;
@@ -8,9 +9,11 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.po.stat.StatDeduction;
 import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
+import com.ifhz.core.service.channel.handle.StatDeductionHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -35,6 +38,8 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
 
     @Resource(name = "channelInfoCacheService")
     private ChannelInfoCacheService channelInfoCacheService;
+    @Resource
+    private StatDeductionAdapter statDeductionAdapter;
 
     @Override
     @Log
@@ -77,7 +82,20 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
             sysUserService.insert(user);
             record.setUserId(user.getUserId());
         }
-        return channelInfoAdapter.insert(record);
+        int result = channelInfoAdapter.insert(record);
+        if (result == 1) {
+            StatDeduction statDeduction = null;
+            if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(record.getGroupId())) {
+                statDeduction = StatDeductionHandler.initStatDeductionForDB(record);
+            } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.equals(record.getGroupId())) {
+                statDeduction = StatDeductionHandler.initStatDeductionForQT(record);
+            }
+            if (statDeduction != null) {
+                statDeductionAdapter.insert(statDeduction);
+            }
+        }
+
+        return result;
     }
 
     @Override

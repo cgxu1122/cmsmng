@@ -1,8 +1,7 @@
-package com.ifhz.core.mapper.stat;
+package com.ifhz.core.service.stat;
 
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.StatDeduction;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,9 +9,9 @@ import java.util.List;
  * 类描述
  * User: chenggangxu@sohu-inc.com
  * Date: 2014/9/9
- * Time: 0:37
+ * Time: 0:38
  */
-public interface StatDeductionMapper {
+public interface StatDeductionService {
 
     public int insert(StatDeduction record);
 
@@ -20,5 +19,5 @@ public interface StatDeductionMapper {
 
     public StatDeduction getById(Long id);
 
-    public List<StatDeduction> queryByVo(Pagination pagination, @Param("record") StatDeduction record);
+    public List<StatDeduction> queryByVo(Pagination pagination, StatDeduction record);
 }

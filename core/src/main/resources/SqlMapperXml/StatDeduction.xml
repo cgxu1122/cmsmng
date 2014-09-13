@@ -28,7 +28,7 @@ create table TY_STAT_DEDUCTION  (
         UPDATE_TIME
     </sql>
 
-    <resultMap id="StatDeductionResultMap" type="com.ifhz.core.po.stat.StatDeduction">
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.StatDeduction">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
@@ -39,7 +39,7 @@ create table TY_STAT_DEDUCTION  (
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="getById" parameterType="long" resultMap="StatDeductionResultMap">
+    <select id="getById" parameterType="long" resultMap="BaseResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
@@ -85,4 +85,27 @@ create table TY_STAT_DEDUCTION  (
         </set>
         where ID = #{id}
     </update>
+
+    <select id="queryByVo" resultMap="BaseResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        deduction
+        inner join TY_CHANNEL_INFO channel
+        on deduction.CHANNEL_ID = channel.ID
+        where 1=1
+        <if test="record.channelId != null">
+            and channel.ID in (${record.channelId})
+        </if>
+
+        <if test="record.groupId != null and record.groupId != ''">
+            and channel.GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.channelNameCondition != null and record.channelNameCondition != ''">
+            and channel.CHANNEL_NAME LIKE concat(concat('%',#{record.channelNameCondition}),'%' )
+        </if>
+
+        order by UPDATE_TIME desc
+    </select>
 </mapper>
