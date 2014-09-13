@@ -23,4 +23,6 @@ public interface ProductArriveStatMapper {
     public ProductArriveStat getByMd5Key(String md5Key);
 
     public List<ProductArriveStat> queryByVo(Pagination pagination, @Param("record") ProductArriveStat record);
+
+    public ProductArriveStat queryCountByVo(ProductArriveStat record);
 }

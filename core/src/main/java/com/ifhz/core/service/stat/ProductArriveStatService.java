@@ -18,4 +18,6 @@ public interface ProductArriveStatService {
 
 
     public List<ProductArriveStat> queryByVo(Pagination pagination, ProductArriveStat record);
+
+    public ProductArriveStat queryCountByVo(ProductArriveStat record);
 }

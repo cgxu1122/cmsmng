@@ -47,4 +47,114 @@
         <include refid="TABLE_NAME"/>
         where ID = #{id}
     </select>
+
+    <select id="queryByVo" resultMap="ProductArriveStatTempResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.partnerId != null and record.partnerId != ''">
+            and exists (
+            select info.PRODUCT_ID from TY_PRODUCT_INFO info
+            where PARTNER_ID = #{record.partnerId}
+            and info.QUERY_DATA_SOURCE= 'Y'
+            and info.PRODUCT_ID = PRODUCT_ID
+            )
+        </if>
+        <if test="record.channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+
+        <if test="record.productId != null and record.productId != ''">
+            and PRODUCT_ID = #{record.productId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        order by STAT_DATE desc
+    </select>
+
+    <select id="querySumByVo" resultMap="ProductArriveStatTempResultMap">
+        select
+        PRODUCT_ID,
+        GROUP_ID,
+        CHANNEL_ID,
+        UA,
+        PROCESS_DATE,
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.partnerId != null and record.partnerId != ''">
+            and exists (
+            select info.PRODUCT_ID from TY_PRODUCT_INFO info
+            where PARTNER_ID = #{partnerId}
+            and info.QUERY_DATA_SOURCE= 'Y'
+            and info.PRODUCT_ID = PRODUCT_ID
+            )
+        </if>
+        <if test="record.channelId != null">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
+        <if test="record.productId != null and record.productId != ''">
+            and PRODUCT_ID = #{record.productId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        group by PRODUCT_ID,GROUP_ID,CHANNEL_ID,UA,STAT_DATE
+        order by STAT_DATE desc
+    </select>
+
+
+    <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStatTemp"
+            resultMap="ProductArriveStatTempResultMap">
+        select
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="partnerId != null and partnerId != ''">
+            and exists (
+            select info.PRODUCT_ID from TY_PRODUCT_INFO info
+            where PARTNER_ID = #{partnerId}
+            and info.QUERY_DATA_SOURCE= 'Y'
+            and info.PRODUCT_ID = PRODUCT_ID
+            )
+        </if>
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="productId != null and productId != ''">
+            and PRODUCT_ID = #{productId}
+        </if>
+        <if test="ua != null and ua != ''">
+            and UA = #{ua}
+        </if>
+        <if test="startDate != null">
+            and STAT_DATE >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{endDate}
+            ]]>
+        </if>
+    </select>
 </mapper>

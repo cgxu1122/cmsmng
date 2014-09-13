@@ -45,4 +45,9 @@ public class ProductArriveStatAdapterImpl implements ProductArriveStatAdapter {
     public List<ProductArriveStat> queryByVo(Pagination pagination, ProductArriveStat record) {
         return productArriveStatMapper.queryByVo(pagination, record);
     }
+
+    @Override
+    public ProductArriveStat queryCountByVo(ProductArriveStat record) {
+        return productArriveStatMapper.queryCountByVo(record);
+    }
 }

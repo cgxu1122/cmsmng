@@ -102,6 +102,11 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
         return result;
     }
 
+    @Override
+    public ProductArriveStat queryCountByVo(ProductArriveStat record) {
+        return productArriveStatAdapter.queryCountByVo(record);
+    }
+
 
     @Log
     @Override

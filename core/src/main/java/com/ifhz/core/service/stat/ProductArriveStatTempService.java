@@ -1,6 +1,7 @@
 package com.ifhz.core.service.stat;
 
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
 
 import java.util.List;
@@ -13,9 +14,13 @@ import java.util.List;
  */
 public interface ProductArriveStatTempService {
 
-    public int insert(ProductArriveStatTemp productArriveStatTemp);
+    public int insert(ProductArriveStat productArriveStat);
 
     public boolean syncProductArriveStat();
 
     public List<ProductArriveStatTemp> queryByVo(Pagination pagination, ProductArriveStatTemp record);
+
+    public List<ProductArriveStatTemp> querySumByVo(Pagination pagination, ProductArriveStatTemp record);
+
+    public ProductArriveStatTemp queryCountByVo(ProductArriveStatTemp record);
 }

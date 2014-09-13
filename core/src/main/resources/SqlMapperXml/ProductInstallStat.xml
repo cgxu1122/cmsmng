@@ -144,4 +144,40 @@
         </if>
         order by STAT_DATE desc
     </select>
+
+
+    <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductInstallStat"
+            resultMap="ProductInstallStatResultMap">
+        select
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM,
+        sum(stat.REPLACE_NUM) REPLACE_NUM,
+        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
+        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="channelIdList != null">
+            and CHANNEL_ID in
+            <foreach item="item" index="index" collection="channelIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="productId != null and productId != ''">
+            and PRODUCT_ID = #{productId}
+        </if>
+        <if test="ua != null and ua != ''">
+            and UA = #{ua}
+        </if>
+        <if test="startDate != null">
+            and STAT_DATE >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{endDate}
+            ]]>
+        </if>
+    </select>
 </mapper>
