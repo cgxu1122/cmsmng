@@ -63,4 +63,9 @@ public class ProductInfoAdapterImpl implements ProductInfoAdapter {
     public List<ProductInfo> queryAllList() {
         return productInfoMapper.queryAllList();
     }
+
+    @Override
+    public Date getMaxQueryDateByPartnerId(Long partnerId) {
+        return productInfoMapper.getMaxQueryDateByPartnerId(partnerId);
+    }
 }

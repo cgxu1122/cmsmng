@@ -21,6 +21,7 @@ import com.ifhz.core.service.imei.bean.QueryActive;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.partner.PartnerInfoService;
+import com.ifhz.core.service.product.ProductInfoService;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductStatQueryService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
@@ -57,6 +58,8 @@ public class PartnerQueryController extends BaseController {
     private LogStatQueryService logStatQueryService;
     @Autowired
     private ProductStatQueryService productStatQueryService;
+    @Autowired
+    private ProductInfoService productInfoService;
     @Autowired
     private StatImeiQueryService statImeiQueryService;
     @Autowired
@@ -250,7 +253,7 @@ public class PartnerQueryController extends BaseController {
         PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
         if (partnerInfo != null) {
             productStat.setPartnerId(partnerInfo.getPartnerId());
-            productStat.setStartDate(productStatQueryService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+            productStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
         }
         List<ProductStat> list = productStatQueryService.querySumByVo(page, productStat);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -294,7 +297,7 @@ public class PartnerQueryController extends BaseController {
             PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
             if (partnerInfo != null) {
                 productStat.setPartnerId(partnerInfo.getPartnerId());
-                productStat.setStartDate(productStatQueryService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+                productStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
             }
             List<ProductStat> list = productStatQueryService.querySumByVo(null, productStat);
             if (CollectionUtils.isNotEmpty(list)) {

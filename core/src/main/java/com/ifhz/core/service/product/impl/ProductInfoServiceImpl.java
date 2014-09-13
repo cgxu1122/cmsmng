@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,5 +65,15 @@ public class ProductInfoServiceImpl implements ProductInfoService {
             productInfoCacheService.remove(record.getProductId());
         }
         return ret;
+    }
+
+    @Override
+    @Log
+    public Date getMaxQueryDateByPartnerId(Long partnerId) {
+        Date date = productInfoAdapter.getMaxQueryDateByPartnerId(partnerId);
+        if (date == null) {
+            date = new Date();
+        }
+        return date;
     }
 }

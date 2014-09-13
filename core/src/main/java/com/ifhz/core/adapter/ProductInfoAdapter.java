@@ -4,6 +4,7 @@ package com.ifhz.core.adapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductInfo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,4 +26,6 @@ public interface ProductInfoAdapter {
     public int delete(ProductInfo record);
 
     public List<ProductInfo> queryAllList();
+
+    public Date getMaxQueryDateByPartnerId(Long partnerId);
 }

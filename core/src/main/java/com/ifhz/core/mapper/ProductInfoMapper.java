@@ -5,6 +5,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ProductInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +29,6 @@ public interface ProductInfoMapper {
     public int delete(ProductInfo record);
 
     public List<ProductInfo> queryAllList();
+
+    public Date getMaxQueryDateByPartnerId(Long partnerId);
 }
