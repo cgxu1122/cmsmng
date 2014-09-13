@@ -2,6 +2,7 @@ package com.ifhz.core.po.stat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类描述
@@ -21,8 +22,6 @@ public class ProductInstallStat implements Serializable {
     private Date statDate;
     private Date createTime;
 
-
-    private Long partnerId;
 
     private Long installTotalNum = 0L;
     /**
@@ -54,6 +53,8 @@ public class ProductInstallStat implements Serializable {
     private String md5Key;
     private Integer version;
     private String batchCode;
+    private Long partnerId;
+    private List<Long> channelIdList;
 
     public Long getId() {
         return id;
@@ -205,5 +206,13 @@ public class ProductInstallStat implements Serializable {
 
     public void setPartnerId(Long partnerId) {
         this.partnerId = partnerId;
+    }
+
+    public List<Long> getChannelIdList() {
+        return channelIdList;
+    }
+
+    public void setChannelIdList(List<Long> channelIdList) {
+        this.channelIdList = channelIdList;
     }
 }
