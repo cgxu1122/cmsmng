@@ -6,10 +6,12 @@ import com.ifhz.core.adapter.ProductStatAdapter;
 import com.ifhz.core.adapter.stat.ProductInstallStatAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.base.page.Pagination;
-import com.ifhz.core.po.DataLog;
-import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.constants.GroupEnums;
+import com.ifhz.core.po.*;
 import com.ifhz.core.po.stat.ProductInstallStat;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
+import com.ifhz.core.service.cache.ModelInfoCacheService;
+import com.ifhz.core.service.cache.ProductInfoCacheService;
 import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.service.stat.handle.StatConvertHandler;
@@ -37,16 +39,67 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
     private BatchProductRefAdapter batchProductRefAdapter;
     @Resource(name = "productStatAdapter")
     private ProductStatAdapter productStatAdapter;
-    @Resource(name = "channelInfoCacheService")
-    private ChannelInfoCacheService channelInfoCacheService;
     @Resource
     private ProductInstallStatAdapter productInstallStatAdapter;
+    @Resource
+    private ModelInfoCacheService modelInfoCacheService;
+    @Resource
+    private ProductInfoCacheService productInfoCacheService;
+    @Resource(name = "channelInfoCacheService")
+    private ChannelInfoCacheService channelInfoCacheService;
 
 
     @Override
     @Log
     public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record) {
-        return null;
+        List<ProductInstallStat> result = productInstallStatAdapter.queryByVo(pagination, record);
+        if (CollectionUtils.isNotEmpty(result)) {
+            for (ProductInstallStat productInstallStat : result) {
+                String ua = productInstallStat.getUa();
+                if (StringUtils.isNotEmpty(ua)) {
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productInstallStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
+                    if (modelInfo != null) {
+                        productInstallStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
+                    } else {
+                        productInstallStat.setModelName("未知(" + ua + ")");
+                    }
+                } else {
+                    productInstallStat.setModelName("未知()");
+                }
+                if (productInstallStat.getGroupId() != null) {
+                    productInstallStat.setGroupName(GroupEnums.fromByValue(productInstallStat.getGroupId()).name);
+                }
+
+                Long channelId = productInstallStat.getChannelId();
+                if (channelId != null) {
+                    ChannelInfo channelInfo = null;
+                    try {
+                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
+                    } catch (Exception e) {
+                        LOGGER.error("getByChannelId error", e);
+                    }
+                    if (channelInfo != null) {
+                        productInstallStat.setChannelName(channelInfo.getChannelName());
+                    } else {
+                        productInstallStat.setModelName("未知");
+                    }
+                }
+
+                if (productInstallStat.getProductId() != null) {
+                    ProductInfo productInfo = productInfoCacheService.getById(productInstallStat.getProductId());
+                    if (productInfo != null) {
+                        productInstallStat.setProductName(productInfo.getProductName());
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
 
