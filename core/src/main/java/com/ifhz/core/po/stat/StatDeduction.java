@@ -17,7 +17,7 @@ public class StatDeduction implements Serializable {
     private Long groupId;
     private Integer type;
     private Integer basicNum;
-    private Double percentage;
+    private Integer percentage;
     private Date createTime;
     private Date updateTime;
 
@@ -64,11 +64,11 @@ public class StatDeduction implements Serializable {
         this.basicNum = basicNum;
     }
 
-    public Double getPercentage() {
+    public Integer getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Double percentage) {
+    public void setPercentage(Integer percentage) {
         this.percentage = percentage;
     }
 
