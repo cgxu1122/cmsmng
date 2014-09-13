@@ -43,6 +43,6 @@ public class ProductInstallStatAdapterImpl implements ProductInstallStatAdapter 
 
     @Override
     public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record) {
-        return null;
+        return productInstallStatMapper.queryByVo(pagination, record);
     }
 }

@@ -22,6 +22,7 @@ public class ChannelInfo {
     private Date createTime;
     private Date updateTime;
 
+    private String groupIds;//供查询用,多选渠道组情况
     private String channelNameCondition;
     private String groupName;
     private String laowuName;
@@ -31,6 +32,14 @@ public class ChannelInfo {
     private String contact;
     private String phone;
     private String mngName;
+
+    public String getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(String groupIds) {
+        this.groupIds = groupIds;
+    }
 
     public String getMngName() {
         return mngName;

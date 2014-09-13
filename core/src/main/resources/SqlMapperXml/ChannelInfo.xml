@@ -134,6 +134,9 @@
         <if test="record.channelNameCondition != null and record.channelNameCondition != ''">
             and ci.CHANNEL_NAME LIKE concat(concat('%',#{record.channelNameCondition}),'%' )
         </if>
+        <if test="record.groupIds != null and record.groupIds != ''">
+            and ci.GROUP_ID IN (${record.groupIds})
+        </if>
         <if test="record.leaf != null and record.leaf != ''">
             and ci.LEAF = #{record.leaf}
         </if>

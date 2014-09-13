@@ -121,15 +121,8 @@
             info.QUERY_DATA_SOURCE= 'Y' and info.PRODUCT_ID = PRODUCT_ID)
         </if>
 
-        <!--<if test="record.channelIdList != null">
-            and CHANNEL_ID in
-            <foreach item="item" index="index" collection="channelIdList" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        -->
-        <if test="channelIdCondition != null">
-            and CHANNEL_ID in (${record.channelIdCondition})
+        <if test="record.channelIdCondition != null">
+        and CHANNEL_ID in (${record.channelIdCondition})
         </if>
 
         <if test="record.productId != null and record.productId != ''">

@@ -190,10 +190,16 @@ public class ChannelInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String groupId = request.getParameter("groupId");
+        String groupIds = request.getParameter("groupIds");
         String channelNameCondition = request.getParameter("channelNameCondition");
         ChannelInfo ci = new ChannelInfo();
         ci.setActive(JcywConstants.ACTIVE_Y);
-        ci.setGroupId(Long.parseLong(groupId));
+        if (StringUtils.isNotEmpty(groupId)) {
+            ci.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(groupIds)) {
+            ci.setGroupIds(groupIds);
+        }
         if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
         //如果是地包渠道的负责人登录，则进行数据过滤
         if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {

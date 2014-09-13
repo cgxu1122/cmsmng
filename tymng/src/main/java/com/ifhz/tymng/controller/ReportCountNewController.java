@@ -9,7 +9,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
-import com.ifhz.core.po.ProductStat;
+import com.ifhz.core.po.stat.ProductInstallStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
@@ -19,7 +19,7 @@ import com.ifhz.core.service.imei.bean.QueryActive;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.stat.LogStatQueryService;
-import com.ifhz.core.service.stat.ProductStatQueryService;
+import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +48,7 @@ public class ReportCountNewController extends BaseController {
     @Autowired
     private LogStatQueryService logStatQueryService;
     @Autowired
-    private ProductStatQueryService productStatQueryService;
+    private ProductInstallStatService productInstallStatService;
     @Autowired
     private LocalDirCacheService localDirCacheService;
     @Autowired
@@ -335,9 +335,9 @@ public class ReportCountNewController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/listProductStat", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/listProductInstallStat", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject listProductStat(HttpServletRequest request) {
+    public JSONObject listProductInstallStat(HttpServletRequest request) {
         /**分页*/
         String pageNum = request.getParameter("page");
         String pageSize = request.getParameter("rows");
@@ -349,27 +349,29 @@ public class ReportCountNewController extends BaseController {
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-        String groupId = request.getParameter("groupId");
-        ProductStat productStat = new ProductStat();
-        if (StringUtils.isNotEmpty(groupId)) {
-            productStat.setGroupId(Long.parseLong(groupId));
+        String channelIdCondition = request.getParameter("channelIdCondition");
+        ProductInstallStat productInstallStat = new ProductInstallStat();
+        if (StringUtils.isNotEmpty(channelIdCondition)) {
+            productInstallStat.setChannelIdCondition(channelIdCondition);
         }
         if (StringUtils.isNotEmpty(productId)) {
-            productStat.setProductId(Long.parseLong(productId));
+            productInstallStat.setProductId(Long.parseLong(productId));
         }
         if (StringUtils.isNotEmpty(ua)) {
-            productStat.setUa(ua.trim());
+            productInstallStat.setUa(ua.trim());
         }
         if (StringUtils.isNotEmpty(startDate)) {
-            productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            productInstallStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         if (StringUtils.isNotEmpty(endDate)) {
-            productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            productInstallStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
-        List<ProductStat> list = productStatQueryService.queryByVo(page, productStat);
+        List<ProductInstallStat> list = productInstallStatService.queryByVo(page, productInstallStat);
         if (CollectionUtils.isNotEmpty(list)) {
-            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
-            list.add(countProductStat);
+            ProductInstallStat countProductInstallStat = productInstallStatService.queryCountByVo(productInstallStat);
+            list.add(countProductInstallStat);
+        } else {
+            list = new ArrayList<ProductInstallStat>();
         }
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -386,30 +388,30 @@ public class ReportCountNewController extends BaseController {
             String productId = request.getParameter("productId");
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
-            String groupId = request.getParameter("groupId");
-            ProductStat productStat = new ProductStat();
-            if (StringUtils.isNotEmpty(groupId)) {
-                productStat.setGroupId(Long.parseLong(groupId));
+            String channelIdCondition = request.getParameter("channelIdCondition");
+            ProductInstallStat productInstallStat = new ProductInstallStat();
+            if (StringUtils.isNotEmpty(channelIdCondition)) {
+                productInstallStat.setChannelIdCondition(channelIdCondition);
             }
             if (StringUtils.isNotEmpty(productId)) {
-                productStat.setProductId(Long.parseLong(productId));
+                productInstallStat.setProductId(Long.parseLong(productId));
             }
             if (StringUtils.isNotEmpty(ua)) {
-                productStat.setUa(ua.trim());
+                productInstallStat.setUa(ua.trim());
             }
             if (StringUtils.isNotEmpty(startDate)) {
-                productStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+                productInstallStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
             }
             if (StringUtils.isNotEmpty(endDate)) {
-                productStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+                productInstallStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
             }
             Pagination page = new Pagination();
             page.setCurrentPage(1);
             page.setPageSize(Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX)));
-            List<ProductStat> list = productStatQueryService.queryByVo(page, productStat);
+            List<ProductInstallStat> list = productInstallStatService.queryByVo(page, productInstallStat);
             if (CollectionUtils.isNotEmpty(list)) {
-                ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
-                list.add(countProductStat);
+                ProductInstallStat countProductInstallStat = productInstallStatService.queryCountByVo(productInstallStat);
+                list.add(countProductInstallStat);
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();

@@ -102,6 +102,11 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
         return result;
     }
 
+    @Override
+    public ProductInstallStat queryCountByVo(ProductInstallStat record) {
+        return new ProductInstallStat();
+    }
+
 
     @Log
     @Override
