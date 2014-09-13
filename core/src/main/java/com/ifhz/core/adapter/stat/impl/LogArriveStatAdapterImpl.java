@@ -54,4 +54,14 @@ public class LogArriveStatAdapterImpl implements LogArriveStatAdapter {
     public LogArriveStat queryCountByVo(LogArriveStat record) {
         return logArriveStatMapper.queryCountByVo(record);
     }
+
+    @Override
+    public long queryTotalCount(Date startTime, Date endTime) {
+        return logArriveStatMapper.queryTotalCount(startTime, endTime);
+    }
+
+    @Override
+    public List<LogArriveStat> queryStatList(Date startTime, Date endTime) {
+        return logArriveStatMapper.queryStatList(startTime, endTime);
+    }
 }

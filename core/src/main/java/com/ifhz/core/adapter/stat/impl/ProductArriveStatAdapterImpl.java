@@ -8,6 +8,7 @@ import com.ifhz.core.po.stat.ProductArriveStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,5 +52,15 @@ public class ProductArriveStatAdapterImpl implements ProductArriveStatAdapter {
     @Override
     public ProductArriveStat queryCountByVo(ProductArriveStat record) {
         return productArriveStatMapper.queryCountByVo(record);
+    }
+
+    @Override
+    public long queryTotalCount(Date startTime, Date endTime) {
+        return productArriveStatMapper.queryTotalCount(startTime, endTime);
+    }
+
+    @Override
+    public List<ProductArriveStat> queryStatList(Date startTime, Date endTime) {
+        return productArriveStatMapper.queryStatList(startTime, endTime);
     }
 }

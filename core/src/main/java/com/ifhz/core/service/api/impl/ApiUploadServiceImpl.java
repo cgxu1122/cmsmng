@@ -17,10 +17,7 @@ import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.api.bean.ImeiStatus;
 import com.ifhz.core.service.api.handle.ModelHandler;
 import com.ifhz.core.service.cache.ChannelInfoCacheService;
-import com.ifhz.core.service.stat.LogInstallStatService;
-import com.ifhz.core.service.stat.ProductInstallStatService;
-import com.ifhz.core.service.stat.StatCounterService;
-import com.ifhz.core.service.stat.StatDeviceService;
+import com.ifhz.core.service.stat.*;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.vo.DeviceResultVo;
 import org.apache.commons.collections.MapUtils;
@@ -59,6 +56,10 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     private LogInstallStatService logInstallStatService;
     @Resource(name = "productInstallStatService")
     private ProductInstallStatService productInstallStatService;
+    @Resource
+    private LogArriveStatService logArriveStatService;
+    @Resource
+    private ProductArriveStatService productArriveStatService;
 
     //手机imei|手机ua|手机到达状态
     @Override
@@ -97,10 +98,11 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                         if (num == 1) {
                             LOGGER.info("CounterTempLog保存成功-DataLog={}", JSON.toJSONString(dataLog));
                             if (type == TempLogType.UnStat) {
-                                //异步统计到达数据
-//                                statCounterService.updateStat(dataLog);
+                                //统计到达数据
                                 logInstallStatService.statLogInstallForArrive(dataLog);
-                                productInstallStatService.statProductInstallForArrive(dataLog);
+                                logArriveStatService.statLogArrive(dataLog);
+                                productInstallStatService.statProductArrive(dataLog);
+                                productArriveStatService.statProductArrive(dataLog);
                                 counterTempLogAdapter.update(dataLog.getImei(), TempLogType.Done.value);
                             }
                         } else {
@@ -153,7 +155,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     int num = dataLogApiService.insertDeviceData(po);
                     if (num == 1) {
                         logInstallStatService.statLogInstall(po);
-                        productInstallStatService.statProductProcess(po);
+                        productInstallStatService.statProductInstall(po);
                         return ImeiStatus.Success;
                     } else {
                         return ImeiStatus.Failure;

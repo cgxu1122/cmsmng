@@ -23,4 +23,6 @@ public interface ProductInstallStatMapper {
     public ProductInstallStat getByMd5Key(String md5Key);
 
     public List<ProductInstallStat> queryByVo(Pagination pagination, @Param("record") ProductInstallStat record);
+
+    public ProductInstallStat queryCountByVo(ProductInstallStat record);
 }

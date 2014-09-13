@@ -22,4 +22,6 @@ public interface ProductInstallStatAdapter {
     public ProductInstallStat getByMd5Key(String md5Key);
 
     public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record);
+
+    public ProductInstallStat queryCountByVo(ProductInstallStat record);
 }

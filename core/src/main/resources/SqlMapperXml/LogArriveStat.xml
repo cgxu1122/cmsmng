@@ -193,4 +193,19 @@
             ]]>
         </if>
     </select>
+
+    <select id="queryTotalCount" resultType="long">
+        select count(0)
+        from
+        <include refid="TABLE_NAME"/>
+        where create_time between #{startTime} and #{endTime}
+    </select>
+
+    <select id="queryStatList" resultMap="BaseResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where create_time between #{startTime} and #{endTime}
+    </select>
 </mapper>

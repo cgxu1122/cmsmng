@@ -47,4 +47,9 @@ public class ProductInstallStatAdapterImpl implements ProductInstallStatAdapter 
         List<ProductInstallStat> result = productInstallStatMapper.queryByVo(pagination, record);
         return result == null ? Lists.<ProductInstallStat>newArrayList() : result;
     }
+
+    @Override
+    public ProductInstallStat queryCountByVo(ProductInstallStat record) {
+        return productInstallStatMapper.queryCountByVo(record);
+    }
 }

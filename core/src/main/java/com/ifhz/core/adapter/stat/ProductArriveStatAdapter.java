@@ -3,6 +3,7 @@ package com.ifhz.core.adapter.stat;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.ProductArriveStat;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,4 +25,8 @@ public interface ProductArriveStatAdapter {
     public List<ProductArriveStat> queryByVo(Pagination pagination, ProductArriveStat record);
 
     public ProductArriveStat queryCountByVo(ProductArriveStat record);
+
+    public long queryTotalCount(Date startTime, Date endTime);
+
+    public List<ProductArriveStat> queryStatList(Date startTime, Date endTime);
 }

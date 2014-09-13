@@ -4,6 +4,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.ProductArriveStat;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,4 +26,11 @@ public interface ProductArriveStatMapper {
     public List<ProductArriveStat> queryByVo(Pagination pagination, @Param("record") ProductArriveStat record);
 
     public ProductArriveStat queryCountByVo(ProductArriveStat record);
+
+    public long queryTotalCount(@Param(value = "startTime") Date startTime,
+                                @Param(value = "endTime") Date endTime);
+
+    public List<ProductArriveStat> queryStatList(@Param(value = "startTime") Date startTime,
+                                                 @Param(value = "endTime") Date endTime);
+
 }
