@@ -82,7 +82,12 @@
                 <value>classpath:SqlMapperXml/SysRole.xml</value>
                 <value>classpath:SqlMapperXml/SysRoleResRef.xml</value>
                 <value>classpath:SqlMapperXml/SysUser.xml</value>
-                <value>classpath:SqlMapperXml/SysUserProductRef.xml</value>
+                <value>classpath:SqlMapperXml/LogArriveStat.xml</value>
+                <value>classpath:SqlMapperXml/LogArriveStatTemp.xml</value>
+                <value>classpath:SqlMapperXml/ProductArriveStat.xml</value>
+                <value>classpath:SqlMapperXml/ProductArriveStatTemp.xml</value>
+                <value>classpath:SqlMapperXml/ProductInstallStat.xml</value>
+                <value>classpath:SqlMapperXml/StatDeduction.xml</value>
             </list>
         </property>
     </bean>
@@ -198,9 +203,34 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.SysRoleResRefMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
-    <bean id="sysResourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="com.ifhz.core.mapper.SysResourceMapper"/>
+    <bean id="logArriveStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.LogArriveStatMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+
+    <bean id="logArriveStatTempMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.LogArriveStatTempMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="productArriveStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper..stat.ProductArriveStatMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="productArriveStatTempMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.ProductArriveStatTempMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="productInstallStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.ProductInstallStatMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="statDeductionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.StatDeductionMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
 
 </beans>

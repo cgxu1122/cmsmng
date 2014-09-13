@@ -1,6 +1,9 @@
 package com.ifhz.core.mapper.stat;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.StatDeduction;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -15,4 +18,6 @@ public interface StatDeductionMapper {
     public int update(StatDeduction record);
 
     public StatDeduction getById(Long id);
+
+    public List<StatDeduction> queryByVo(Pagination pagination, StatDeduction record);
 }

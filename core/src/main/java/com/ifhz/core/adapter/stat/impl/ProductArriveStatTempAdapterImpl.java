@@ -3,6 +3,9 @@ package com.ifhz.core.adapter.stat.impl;
 import com.ifhz.core.adapter.stat.ProductArriveStatTempAdapter;
 import com.ifhz.core.mapper.stat.ProductArriveStatTempMapper;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
 
 /**
  * 类描述
@@ -10,8 +13,10 @@ import com.ifhz.core.po.stat.ProductArriveStatTemp;
  * Date: 2014/8/24
  * Time: 19:51
  */
+@Repository
 public class ProductArriveStatTempAdapterImpl implements ProductArriveStatTempAdapter {
 
+    @Resource
     private ProductArriveStatTempMapper productArriveStatTempMapper;
 
     @Override

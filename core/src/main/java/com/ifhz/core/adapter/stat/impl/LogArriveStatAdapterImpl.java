@@ -3,7 +3,9 @@ package com.ifhz.core.adapter.stat.impl;
 import com.ifhz.core.adapter.stat.LogArriveStatAdapter;
 import com.ifhz.core.mapper.stat.LogArriveStatMapper;
 import com.ifhz.core.po.stat.LogArriveStat;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -12,8 +14,10 @@ import java.util.Date;
  * Date: 2014/8/24
  * Time: 19:52
  */
+@Repository("logArriveStatAdapter")
 public class LogArriveStatAdapterImpl implements LogArriveStatAdapter {
 
+    @Resource
     private LogArriveStatMapper logArriveStatMapper;
 
     @Override

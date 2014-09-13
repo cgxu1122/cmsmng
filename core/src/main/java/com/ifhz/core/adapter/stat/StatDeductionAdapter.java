@@ -1,5 +1,10 @@
 package com.ifhz.core.adapter.stat;
 
+import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.stat.StatDeduction;
+
+import java.util.List;
+
 /**
  * 类描述
  * User: chenggangxu@sohu-inc.com
@@ -7,4 +12,12 @@ package com.ifhz.core.adapter.stat;
  * Time: 0:38
  */
 public interface StatDeductionAdapter {
+
+    public int insert(StatDeduction record);
+
+    public int update(StatDeduction record);
+
+    public StatDeduction getById(Long id);
+
+    public List<StatDeduction> queryByVo(Pagination pagination, StatDeduction record);
 }
