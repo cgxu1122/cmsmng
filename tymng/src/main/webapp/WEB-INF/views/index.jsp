@@ -208,6 +208,26 @@
         </shiro:hasPermission>
     </div>
 </shiro:hasPermission>
+<shiro:hasPermission name="stat_deduction_menu">
+    <div title="扣量功能" selected="true" style="overflow: auto;">
+        <shiro:hasPermission name="deduction_db">
+            <div class="nav-item">
+                <a href="javascript:addTab('地包渠道扣量功能','<%=basePath%>/tymng/statDeduction/indexDB','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>地包渠道扣量功能</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="deduction_qt">
+            <div class="nav-item">
+                <a href="javascript:addTab('其他渠道扣量功能','<%=basePath%>/tymng/statDeduction/indexQT','menu_icon_datadeal')">
+                    <span class="menu_icon_datadeal"></span>
+                    <span>其他渠道扣量功能</span>
+                </a>
+            </div>
+        </shiro:hasPermission>
+    </div>
+</shiro:hasPermission>
 <shiro:hasPermission name="model_menu">
     <div title="机型管理" style="overflow: auto;">
         <shiro:hasPermission name="model_ty">
