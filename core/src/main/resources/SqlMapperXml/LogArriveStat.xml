@@ -21,7 +21,7 @@
         VERSION
     </sql>
 
-    <resultMap id="LogArriveStatResultMap" type="com.ifhz.core.po.stat.LogArriveStat">
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.LogArriveStat">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
@@ -102,7 +102,7 @@
     </update>
 
 
-    <select id="getById" parameterType="long" resultMap="LogArriveStatResultMap">
+    <select id="getById" parameterType="long" resultMap="BaseResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
@@ -110,11 +110,87 @@
         where ID = #{id}
     </select>
 
-    <select id="getByMd5Key" resultMap="LogArriveStatResultMap">
+    <select id="getByMd5Key" resultMap="BaseResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
         where Md5_KEY = #{md5Key}
+    </select>
+
+    <select id="queryByVo" resultMap="BaseResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+
+        <if test="record.channelIdCondition != null">
+            and CHANNEL_ID in (${record.channelIdCondition})
+        </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
+
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and LAOWU_ID = #{record.laowuId}
+        </if>
+
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        order by STAT_DATE desc
+    </select>
+
+
+    <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.LogArriveStat"
+            resultMap="BaseResultMap">
+        select
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM,
+        sum(stat.REPLACE_NUM) REPLACE_NUM,
+        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
+        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+
+        <if test="record.channelIdCondition != null">
+            and CHANNEL_ID in (${record.channelIdCondition})
+        </if>
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
+
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and LAOWU_ID = #{record.laowuId}
+        </if>
+
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
     </select>
 </mapper>

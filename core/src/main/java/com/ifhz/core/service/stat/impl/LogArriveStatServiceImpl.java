@@ -33,7 +33,12 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
     @Override
     @Log
     public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record) {
-        return null;
+        return logArriveStatAdapter.queryByVo(pagination, record);
+    }
+
+    @Override
+    public LogArriveStat queryCountByVo(LogArriveStat record) {
+        return logArriveStatAdapter.queryCountByVo(record);
     }
 
     @Log

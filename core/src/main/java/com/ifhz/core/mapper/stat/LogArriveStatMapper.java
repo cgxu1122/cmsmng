@@ -1,6 +1,10 @@
 package com.ifhz.core.mapper.stat;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.LogArriveStat;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -17,4 +21,8 @@ public interface LogArriveStatMapper {
     public LogArriveStat getById(Long id);
 
     public LogArriveStat getByMd5Key(String md5Key);
+
+    public List<LogArriveStat> queryByVo(Pagination pagination, @Param("record") LogArriveStat record);
+
+    public LogArriveStat queryCountByVo(LogArriveStat record);
 }

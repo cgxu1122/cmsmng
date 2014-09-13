@@ -1,6 +1,9 @@
 package com.ifhz.core.adapter.stat;
 
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.LogArriveStat;
+
+import java.util.List;
 
 /**
  * 类描述
@@ -17,4 +20,8 @@ public interface LogArriveStatAdapter {
     public LogArriveStat getById(Long id);
 
     public LogArriveStat getByMd5Key(String md5Key);
+
+    public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record);
+
+    public LogArriveStat queryCountByVo(LogArriveStat record);
 }

@@ -30,8 +30,19 @@ public class LogArriveStatTempServiceImpl implements LogArriveStatTempService {
     @Override
     @Log
     public List<LogArriveStatTemp> queryByVo(Pagination pagination, LogArriveStatTemp record) {
+        return logArriveStatTempAdapter.queryByVo(pagination, record);
+    }
 
-        return null;
+    @Override
+    @Log
+    public List<LogArriveStatTemp> querySumByVo(Pagination pagination, LogArriveStatTemp record) {
+        return logArriveStatTempAdapter.querySumByVo(pagination, record);
+    }
+
+    @Override
+    @Log
+    public LogArriveStatTemp queryCountByVo(LogArriveStatTemp record) {
+        return logArriveStatTempAdapter.queryCountByVo(record);
     }
 
     @Override

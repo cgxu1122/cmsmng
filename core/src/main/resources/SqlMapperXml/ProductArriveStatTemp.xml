@@ -3,7 +3,7 @@
 <mapper namespace="com.ifhz.core.mapper.stat.ProductArriveStatTempMapper">
     <sql id="TABLE_NAME">TY_PRODUCT_ARRIVE_STAT_TEMP</sql>
 
-    <resultMap id="ProductArriveStatTempResultMap" type="com.ifhz.core.po.stat.ProductArriveStatTemp">
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.ProductArriveStatTemp">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
@@ -42,13 +42,13 @@
         )
     </insert>
 
-    <select id="getById" resultMap="ProductArriveStatTempResultMap">
+    <select id="getById" resultMap="BaseResultMap">
         select * from
         <include refid="TABLE_NAME"/>
         where ID = #{id}
     </select>
 
-    <select id="queryByVo" resultMap="ProductArriveStatTempResultMap">
+    <select id="queryByVo" resultMap="BaseResultMap">
         select * from
         <include refid="TABLE_NAME"/>
         where 1=1
@@ -62,6 +62,10 @@
         </if>
         <if test="record.channelId != null">
             and CHANNEL_ID = #{channelId}
+        </if>
+
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
         </if>
 
         <if test="record.productId != null and record.productId != ''">
@@ -81,7 +85,7 @@
         order by STAT_DATE desc
     </select>
 
-    <select id="querySumByVo" resultMap="ProductArriveStatTempResultMap">
+    <select id="querySumByVo" resultMap="BaseResultMap">
         select
         PRODUCT_ID,
         GROUP_ID,
@@ -104,6 +108,11 @@
         <if test="record.channelId != null">
             and CHANNEL_ID = #{record.channelId}
         </if>
+
+        <if test="groupId != null and groupId != ''">
+            and GROUP_ID = #{groupId}
+        </if>
+
         <if test="record.productId != null and record.productId != ''">
             and PRODUCT_ID = #{record.productId}
         </if>
@@ -124,7 +133,7 @@
 
 
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStatTemp"
-            resultMap="ProductArriveStatTempResultMap">
+            resultMap="BaseResultMap">
         select
         sum(stat.TOTAL_NUM) TOTAL_NUM,
         sum(stat.VALID_NUM) VALID_NUM

@@ -122,7 +122,7 @@
         </if>
 
         <if test="record.channelIdCondition != null">
-        and CHANNEL_ID in (${record.channelIdCondition})
+            and CHANNEL_ID in (${record.channelIdCondition})
         </if>
 
         <if test="record.productId != null and record.productId != ''">
@@ -155,14 +155,8 @@
         from
         <include refid="TABLE_NAME"/>
         where 1=1
-        <!--<if test="channelIdList != null">
-            and CHANNEL_ID in
-            <foreach item="item" index="index" collection="channelIdList" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>-->
         <if test="channelIdCondition != null">
-            and CHANNEL_ID in (${record.channelIdCondition})
+            and CHANNEL_ID in (${channelIdCondition})
         </if>
 
         <if test="productId != null and productId != ''">

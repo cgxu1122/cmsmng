@@ -1,5 +1,6 @@
 package com.ifhz.core.adapter.stat.impl;
 
+import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.stat.ProductArriveStatTempAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.stat.ProductArriveStatTempMapper;
@@ -38,7 +39,8 @@ public class ProductArriveStatTempAdapterImpl implements ProductArriveStatTempAd
 
     @Override
     public List<ProductArriveStatTemp> querySumByVo(Pagination pagination, ProductArriveStatTemp record) {
-        return productArriveStatTempMapper.querySumByVo(pagination, record);
+        List<ProductArriveStatTemp> result = productArriveStatTempMapper.queryByVo(pagination, record);
+        return result == null ? Lists.<ProductArriveStatTemp>newArrayList() : result;
     }
 
     @Override

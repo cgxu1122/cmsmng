@@ -1,12 +1,15 @@
 package com.ifhz.core.adapter.stat.impl;
 
+import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.stat.LogArriveStatAdapter;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.stat.LogArriveStatMapper;
 import com.ifhz.core.po.stat.LogArriveStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类描述
@@ -39,5 +42,16 @@ public class LogArriveStatAdapterImpl implements LogArriveStatAdapter {
     @Override
     public LogArriveStat getByMd5Key(String md5Key) {
         return logArriveStatMapper.getByMd5Key(md5Key);
+    }
+
+    @Override
+    public List<LogArriveStat> queryByVo(Pagination pagination, LogArriveStat record) {
+        List<LogArriveStat> result = logArriveStatMapper.queryByVo(pagination, record);
+        return result == null ? Lists.<LogArriveStat>newArrayList() : result;
+    }
+
+    @Override
+    public LogArriveStat queryCountByVo(LogArriveStat record) {
+        return logArriveStatMapper.queryCountByVo(record);
     }
 }

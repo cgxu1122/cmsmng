@@ -15,7 +15,7 @@
         VALID_NUM
     </sql>
 
-    <resultMap id="LogArriveStatTempResultMap" type="com.ifhz.core.po.stat.LogArriveStatTemp">
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.LogArriveStatTemp">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
@@ -29,7 +29,7 @@
     </resultMap>
 
 
-    <insert id="insert" parameterType="com.ifhz.core.po.stat.LogArriveStatTemp">
+    <insert id="insert" parameterType="com.ifhz.core.po.stat.BaseResultMap">
         insert into
         <include refid="TABLE_NAME"/>
         (
@@ -49,11 +49,133 @@
         )
     </insert>
 
-    <select id="getById" parameterType="long" resultMap="LogArriveStatTempResultMap">
+    <select id="getById" parameterType="long" resultMap="BaseResultMap">
         select
         <include refid="CommonFieldSql"/>
         from
         <include refid="TABLE_NAME"/>
         where ID = #{id}
+    </select>
+
+    <select id="queryByVo" resultMap="BaseResultMap">
+        select
+        <include refid="CommonFieldSql"/>
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.channelId != null and record.channelId != ''">
+            and CHANNEL_ID in (
+            select CHANNEL_ID from TY_CHANNEL_INFO
+            START WITH CHANNEL_ID = #{record.channelId}
+            CONNECT BY prior CHANNEL_ID = PARENT_ID
+            )
+        </if>
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and LAOWU_ID = #{record.laowuId}
+        </if>
+
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        order by STAT_DATE desc
+    </select>
+
+
+    <select id="querySumByVo" resultMap="BaseResultMap">
+        select
+        UA,
+        GROUP_ID,
+        CHANNEL_ID,
+        STAT_DATE,
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM,
+        sum(stat.REPLACE_NUM) REPLACE_NUM,
+        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
+        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="channelId != null and channelId != ''">
+            and CHANNEL_ID in (
+            select CHANNEL_ID from TY_CHANNEL_INFO
+            START WITH CHANNEL_ID = #{channelId}
+            CONNECT BY prior CHANNEL_ID = PARENT_ID
+            )
+        </if>
+        <if test="groupId != null and groupId != ''">
+            and GROUP_ID = #{groupId}
+        </if>
+
+        <if test="laowuId != null and laowuId != ''">
+            and LAOWU_ID = #{laowuId}
+        </if>
+
+        <if test="ua != null and ua != ''">
+            and UA = #{ua}
+        </if>
+        <if test="startDate != null">
+            and STAT_DATE >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{endDate}
+            ]]>
+        </if>
+        group by UA,GROUP_ID,CHANNEL_ID,PROCESS_DATE
+        order by STAT_DATE desc
+    </select>
+
+
+    <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.LogArriveStatTemp" resultMap="BaseResultMap">
+        select
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM,
+        sum(stat.REPLACE_NUM) REPLACE_NUM,
+        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
+        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="channelId != null and channelId != ''">
+            and CHANNEL_ID in (
+            select CHANNEL_ID from TY_CHANNEL_INFO
+            START WITH CHANNEL_ID = #{channelId}
+            CONNECT BY prior CHANNEL_ID = PARENT_ID
+            )
+        </if>
+        <if test="groupId != null and groupId != ''">
+            and GROUP_ID = #{groupId}
+        </if>
+
+        <if test="laowuId != null and laowuId != ''">
+            and LAOWU_ID = #{laowuId}
+        </if>
+
+        <if test="ua != null and ua != ''">
+            and UA = #{ua}
+        </if>
+        <if test="startDate != null">
+            and STAT_DATE >= #{startDate}
+        </if>
+        <if test="endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{endDate}
+            ]]>
+        </if>
+        order by STAT_DATE desc
     </select>
 </mapper>

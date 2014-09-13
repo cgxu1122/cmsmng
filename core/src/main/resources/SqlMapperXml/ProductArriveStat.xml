@@ -3,7 +3,7 @@
 <mapper namespace="com.ifhz.core.mapper.stat.ProductArriveStatMapper">
     <sql id="TABLE_NAME">TY_PRODUCT_ARRIVE_STAT</sql>
 
-    <resultMap id="ProductArriveStatResultMap" type="com.ifhz.core.po.stat.ProductArriveStat">
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.ProductArriveStat">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
@@ -94,24 +94,28 @@
         and VERSION = #{version}
     </update>
 
-    <select id="getById" resultMap="ProductArriveStatResultMap">
+    <select id="getById" resultMap="BaseResultMap">
         select * from
         <include refid="TABLE_NAME"/>
         where ID = #{id}
     </select>
 
-    <select id="getByMd5Key" resultMap="ProductArriveStatResultMap">
+    <select id="getByMd5Key" resultMap="BaseResultMap">
         select * from
         <include refid="TABLE_NAME"/>
         where MD5_KEY = #{md5Key}
     </select>
 
-    <select id="queryByVo" resultMap="ProductArriveStatResultMap">
+    <select id="queryByVo" resultMap="BaseResultMap">
         select * from
         <include refid="TABLE_NAME"/>
         where 1=1
         <if test="record.channelIdCondition != null">
             and CHANNEL_ID in (${record.channelIdCondition})
+        </if>
+
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
         </if>
 
         <if test="record.productId != null and record.productId != ''">
@@ -132,7 +136,7 @@
     </select>
 
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStat"
-            resultMap="ProductArriveStatResultMap">
+            resultMap="BaseResultMap">
         select
         sum(stat.TOTAL_NUM) TOTAL_NUM,
         sum(stat.VALID_NUM) VALID_NUM,
@@ -144,7 +148,11 @@
         <include refid="TABLE_NAME"/>
         where 1=1
         <if test="channelIdCondition != null">
-            and CHANNEL_ID in (${record.channelIdCondition})
+            and CHANNEL_ID in (${channelIdCondition})
+        </if>
+
+        <if test="groupId != null and groupId != ''">
+            and GROUP_ID = #{groupId}
         </if>
 
         <if test="productId != null and productId != ''">

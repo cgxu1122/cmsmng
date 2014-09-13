@@ -1,5 +1,6 @@
 package com.ifhz.core.adapter.stat.impl;
 
+import com.google.common.collect.Lists;
 import com.ifhz.core.adapter.stat.ProductArriveStatAdapter;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.mapper.stat.ProductArriveStatMapper;
@@ -43,7 +44,8 @@ public class ProductArriveStatAdapterImpl implements ProductArriveStatAdapter {
 
     @Override
     public List<ProductArriveStat> queryByVo(Pagination pagination, ProductArriveStat record) {
-        return productArriveStatMapper.queryByVo(pagination, record);
+        List<ProductArriveStat> result = productArriveStatMapper.queryByVo(pagination, record);
+        return result == null ? Lists.<ProductArriveStat>newArrayList() : result;
     }
 
     @Override
