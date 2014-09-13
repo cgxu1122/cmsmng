@@ -23,7 +23,7 @@ function searchEvt() {
     var channelId = $('#channelId').val();
     var channelIdCondition = $('#channelIdCondition').val();
     $('#dg').datagrid({
-        url: "<%=basePath%>/tymng/reportCountNew/listStoreLogStat",
+        url: "<%=basePath%>/tymng/reportCountNew/listStoreLogArriveStat",
         queryParams: {groupId: 1, startDate: startDate, endDate: endDate, ua: ua, channelId: channelId, channelIdCondition: channelIdCondition}
     });
 }
@@ -42,7 +42,7 @@ function initPage() {
     $('#dg').datagrid({
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/reportCountNew/listStoreLogStat',
+        url: '<%=basePath%>/tymng/reportCountNew/listStoreLogArriveStat',
         queryParams: {groupId: 1, startDate: startDate, endDate: endDate},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -62,25 +62,16 @@ function initPage() {
                 },
                 {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
-                {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
+                {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',1)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',3)>" + value + "</a>";
                         }
                     }
                 },
-                {field: 'prsActiveTotalNum', title: '装机到达数量', align: 'center', width: 200,
-                    formatter: function (value, row, index) {
-                        if (row.processDate == null) {
-                            return value;
-                        } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',2)>" + value + "</a>";
-                        }
-                    }
-                },
-                {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
+                {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -89,7 +80,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
+                {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -98,7 +89,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
+                {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -107,7 +98,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
+                {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -116,7 +107,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsInvalidUnAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
+                {field: 'unAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -269,7 +260,7 @@ function exportData() {
     var channelIdCondition = $('#channelIdCondition').val();
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCountNew/exportData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelIdCondition=" + channelIdCondition,
+        url: "<%=basePath%>/tymng/reportCountNew/exportArriveData?groupId=1&exportType=1&startDate=" + startDate + "&endDate=" + endDate + "&ua=" + ua + "&channelIdCondition=" + channelIdCondition,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');
