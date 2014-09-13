@@ -175,49 +175,57 @@
             <div title="合作方查询后台" style="overflow: auto;">
                 <shiro:hasPermission name="partnerquery_ty">
                     <div class="nav-item">
-                        <a href="javascript:addTab('天音渠道查询','<%=basePath%>/hzfmng/partnerQuery/indexTY','menu_icon_datadeal')">
+                        <a href="javascript:addTab('天音渠道安装查询','<%=basePath%>/hzfmng/partnerQuery/indexTY','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>天音渠道</span>
+                            <span>天音渠道安装查询</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_db_process">
                     <div class="nav-item">
-                        <a href="javascript:addTab('地包渠道安装','<%=basePath%>/hzfmng/partnerQuery/indexDB','menu_icon_datadeal')">
+                        <a href="javascript:addTab('地包渠道安装查询','<%=basePath%>/hzfmng/partnerQuery/indexDB','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>地包渠道安装</span>
+                            <span>地包渠道安装查询</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_db_arrival">
                     <div class="nav-item">
-                        <a href="javascript:addTab('地包渠道到达','<%=basePath%>/hzfmng/partnerQuery/indexDBArrive','menu_icon_datadeal')">
+                        <a href="javascript:addTab('地包渠道到达查询','<%=basePath%>/hzfmng/partnerQuery/indexDBArrive','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>地包渠道到达</span>
+                            <span>地包渠道到达查询</span>
+                        </a>
+                    </div>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="partnerquery_qt_arrival">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('其他渠道到达查询','<%=basePath%>/hzfmng/partnerQuery/indexQTArrive','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>其他渠道到达查询</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_cphzf_process">
                     <div class="nav-item">
-                        <a href="javascript:addTab('合作方安装','<%=basePath%>/hzfmng/partnerQuery/indexCP','menu_icon_datadeal')">
+                        <a href="javascript:addTab('合作方安装查询','<%=basePath%>/hzfmng/partnerQuery/indexCP','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>合作方安装</span>
+                            <span>合作方安装查询</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_cphzf_arrival">
                     <div class="nav-item">
-                        <a href="javascript:addTab('合作方到达','<%=basePath%>/hzfmng/partnerQuery/indexCPArrive','menu_icon_datadeal')">
+                        <a href="javascript:addTab('合作方到达查询','<%=basePath%>/hzfmng/partnerQuery/indexCPArrive','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>合作方到达</span>
+                            <span>合作方到达查询</span>
                         </a>
                     </div>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_lw">
                     <div class="nav-item">
-                        <a href="javascript:addTab('劳务渠道查询','<%=basePath%>/hzfmng/partnerQuery/indexLW','menu_icon_datadeal')">
+                        <a href="javascript:addTab('劳务渠道安装查询','<%=basePath%>/hzfmng/partnerQuery/indexLW','menu_icon_datadeal')">
                             <span class="menu_icon_datadeal"></span>
-                            <span>劳务渠道</span>
+                            <span>劳务渠道安装查询</span>
                         </a>
                     </div>
                 </shiro:hasPermission>

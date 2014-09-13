@@ -103,10 +103,10 @@ create table TY_STAT_DEDUCTION  (
         <include refid="TABLE_NAME"/>
         deduction
         inner join TY_CHANNEL_INFO channel
-        on deduction.CHANNEL_ID = channel.ID
+        on deduction.CHANNEL_ID = channel.CHANNEL_ID
         where 1=1
         <if test="record.channelId != null">
-            and channel.ID in (${record.channelId})
+            and channel.CHANNEL_ID in (${record.channelId})
         </if>
 
         <if test="record.groupId != null and record.groupId != ''">

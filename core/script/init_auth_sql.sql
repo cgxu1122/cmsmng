@@ -165,6 +165,7 @@ Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30013	,	300	,'合作方安装查询'		,'partnerquery_cphzf_process'		,'',	2	,	SYSDATE	);
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30014	,	300	,'合作方到达查询'		,'partnerquery_cphzf_arrival'		,'',	2	,	SYSDATE	);
 Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30015	,	300	,'劳务渠道安装查询'			,'partnerquery_lw'					,'',	2	,	SYSDATE	);
+Insert into TY_RESOURCE (RESOURCE_ID,PARENT_ID,RES_NAME,RES_URL,FULL_PATH,LEVELS,CREATE_TIME) values (	30015	,	300	,'其他渠道到达查询'			,'partnerquery_qt_arrival'					,'',	2	,	SYSDATE	);
 
 
 insert into TY_ROLE (ROLE_ID, ROLE_NAME, PARENT_ID, FULL_PATH, LEVELS,ROOT_ID, CREATE_TIME,UPDATE_TIME, CAN_DEL) values (1, '超级管理员'	, -1, '1'	, 1,	1, 	SYSDATE, SYSDATE, 0);
