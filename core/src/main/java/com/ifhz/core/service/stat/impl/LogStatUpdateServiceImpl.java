@@ -26,7 +26,6 @@ public class LogStatUpdateServiceImpl implements LogStatUpdateService {
     @Resource(name = "logStatAdapter")
     private LogStatAdapter logStatAdapter;
 
-
     @Override
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)

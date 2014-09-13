@@ -7,6 +7,7 @@ import com.ifhz.core.service.stat.ProductArriveStatTempService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * Date: 2014/8/24
  * Time: 19:51
  */
+@Service
 public class ProductArriveStatTempServiceImpl implements ProductArriveStatTempService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductArriveStatTempServiceImpl.class);

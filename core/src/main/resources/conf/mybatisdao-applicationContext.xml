@@ -203,6 +203,13 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.SysRoleResRefMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+
+    <bean id="sysResourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.SysResourceMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+
     <bean id="logArriveStatMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.stat.LogArriveStatMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>

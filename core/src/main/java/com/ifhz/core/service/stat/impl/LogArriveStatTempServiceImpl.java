@@ -27,7 +27,6 @@ public class LogArriveStatTempServiceImpl implements LogArriveStatTempService {
     @Resource
     private LogArriveStatTempAdapter logArriveStatTempAdapter;
 
-
     @Override
     @Log
     public List<LogArriveStatTemp> queryByVo(Pagination pagination, LogArriveStatTemp record) {
