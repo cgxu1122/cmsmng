@@ -56,6 +56,11 @@ public class ChannelInfoController extends BaseController {
             }
             return new ModelAndView("channelInfo/indexDB", result);
         } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
+            result.put("userType", "admin");
+            //如果是地包渠道的负责人登录，则进行数据过滤
+            if (CurrentUserUtil.isManager()) {
+                result.put("userType", "manager");
+            }
             return new ModelAndView("channelInfo/indexQT", result);
         } else if (JcywConstants.CHANNEL_GROUP_LW_ID_4.toString().equals(groupId)) {
             return new ModelAndView("channelInfo/indexLW", result);
@@ -95,6 +100,10 @@ public class ChannelInfoController extends BaseController {
         if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
+        //如果是其他渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(null, ci);
         if (list != null && list.size() > 0) {
             for (ChannelInfo channelInfo : list) {
@@ -123,6 +132,10 @@ public class ChannelInfoController extends BaseController {
         ci.setParentId(JcywConstants.CHANNEL_ROOT_PARENT_ID);
         //如果是地包渠道的负责人登录，则进行数据过滤
         if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        //如果是其他渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
         JSONObject jo = new JSONObject();
@@ -186,6 +199,10 @@ public class ChannelInfoController extends BaseController {
         if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
+        //如果是其他渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -246,6 +263,10 @@ public class ChannelInfoController extends BaseController {
         if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
+        //如果是其他渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
         List<ChannelInfo> list = channelInfoService.queryByVo(page, ci);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
@@ -267,19 +288,17 @@ public class ChannelInfoController extends BaseController {
         } else if (StringUtils.isEmpty(channelName) || channelName.length() > 50) {
             errorMsg = "请正确输入名称！";
         }
-        if (!JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {//其他渠道不需要验证用户名和密码
-            if (StringUtils.isEmpty(username) || username.length() > 50) {
-                errorMsg = "请正确输入用户名！";
-            } else if (StringUtils.isEmpty(password) || password.length() > 50) {
-                errorMsg = "请正确输入用户密码！";
-            }
-            if (!PatternUtils.verifyLoginName(username)) {
-                errorMsg = "用户名包含非法字符，请正确输入用户名";
-            }
-            SysUser user = sysUserService.getByLoginName(username);
-            if (user != null) {
-                errorMsg = "用户名重复，请重新输入！";
-            }
+        if (StringUtils.isEmpty(username) || username.length() > 50) {
+            errorMsg = "请正确输入用户名！";
+        } else if (StringUtils.isEmpty(password) || password.length() > 50) {
+            errorMsg = "请正确输入用户密码！";
+        }
+        if (!PatternUtils.verifyLoginName(username)) {
+            errorMsg = "用户名包含非法字符，请正确输入用户名";
+        }
+        SysUser user = sysUserService.getByLoginName(username);
+        if (user != null) {
+            errorMsg = "用户名重复，请重新输入！";
         }
         JSONObject result = new JSONObject();
         if (!StringUtils.isEmpty(errorMsg)) {
@@ -310,11 +329,23 @@ public class ChannelInfoController extends BaseController {
                 return result;
             }
         }
+        //如果是系统管理员添加其他一级渠道，则mngId为必选项
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && !CurrentUserUtil.isManager() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
+            if (StringUtils.isEmpty(mngId)) {
+                errorMsg = "请选择负责人！";
+                result.put("errorMsg", errorMsg);
+                return result;
+            }
+        }
         if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {
             ci.setMngId(Long.parseLong(mngId));
         }
         //如果是负责人添加地包一级渠道，则mngId为当前登录人
         if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        //如果是负责人添加其他一级渠道，则mngId为当前登录人
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager() && StringUtils.isNotEmpty(parentId) && JcywConstants.CHANNEL_ROOT_PARENT_ID == Long.parseLong(parentId)) {
             ci.setMngId(CurrentUserUtil.getUserId());
         }
         if (!StringUtils.isEmpty(parentId)) {//如果有父级数据则添加上parentId，并且更改父级机构叶子节点属性
@@ -340,6 +371,12 @@ public class ChannelInfoController extends BaseController {
         if (JcywConstants.CHANNEL_GROUP_LW_ID_4.equals(groupId)) {
             ci.setType(JcywConstants.CHANNEL_TYPE_L);
         } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.equals(groupId)) {
+            if (JcywConstants.CHANNEL_ROOT_PARENT_ID == ci.getParentId()) {
+                ci.setType(JcywConstants.CHANNEL_TYPE_M);//主渠道
+            } else {
+                ci.setType(JcywConstants.CHANNEL_TYPE_C);//主渠道
+            }
+        } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.equals(groupId)) {
             if (JcywConstants.CHANNEL_ROOT_PARENT_ID == ci.getParentId()) {
                 ci.setType(JcywConstants.CHANNEL_TYPE_M);//主渠道
             } else {

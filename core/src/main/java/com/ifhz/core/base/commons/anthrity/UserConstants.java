@@ -18,6 +18,7 @@ public class UserConstants {
     public static final int USER_STATUS_DISABLE = 2; //禁用
 
     //用户角色
+    public static final long QT_QUERY = 12l;//其他渠道查询用户角色
     public static final long LW_QUERY = 11l;//普通用户角色
     public static final long DB_QUERY = 9l; //负责人角色
     public static final long TY_QUERY = 8l; //管理员角色
