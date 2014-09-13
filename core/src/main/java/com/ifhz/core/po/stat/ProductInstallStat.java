@@ -18,7 +18,6 @@ public class ProductInstallStat implements Serializable {
     private Long channelId;
     private Long groupId;
     private String ua;
-    private String modelName;
     private Date statDate;
     private Date createTime;
 
@@ -52,6 +51,12 @@ public class ProductInstallStat implements Serializable {
 
     private String md5Key;
     private Integer version;
+
+    private String modelName;
+    private String channelName;
+    private String productName;
+    private String groupName;
+
     private String batchCode;
     private Long partnerId;
     private List<Long> channelIdList;
@@ -214,5 +219,29 @@ public class ProductInstallStat implements Serializable {
 
     public void setChannelIdList(List<Long> channelIdList) {
         this.channelIdList = channelIdList;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

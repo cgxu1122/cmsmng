@@ -105,4 +105,32 @@
         <include refid="TABLE_NAME"/>
         where MD5_KEY = #{md5Key}
     </select>
+
+    <select id="queryByVo" resultMap="ProductArriveStatResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.channelIdList != null">
+            and CHANNEL_ID in
+            <foreach item="item" index="index" collection="channelIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="record.productId != null and record.productId != ''">
+            and PRODUCT_ID = #{record.productId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        order by STAT_DATE desc
+    </select>
 </mapper>
