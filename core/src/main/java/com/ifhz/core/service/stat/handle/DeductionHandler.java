@@ -30,6 +30,7 @@ public final class DeductionHandler {
         ProductArriveStatTemp result = new ProductArriveStatTemp();
         result.setId(record.getId());
         result.setChannelId(record.getChannelId());
+        result.setProductId(record.getProductId());
         result.setGroupId(record.getGroupId());
         result.setUa(record.getUa());
         result.setCreateTime(record.getCreateTime());

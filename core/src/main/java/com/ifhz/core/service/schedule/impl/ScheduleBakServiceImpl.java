@@ -120,6 +120,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void syncLogActiveTemp(Date startTime, Date endTime) {
         try {
             logArriveStatTempService.syncLogArriveStat(startTime, endTime);
@@ -129,6 +130,7 @@ public class ScheduleBakServiceImpl implements ScheduleBakService {
     }
 
     @Override
+    @Log
     public void syncProductActiveTemp(Date startTime, Date endTime) {
         try {
             productArriveStatTempService.syncProductArriveStat(startTime, endTime);
