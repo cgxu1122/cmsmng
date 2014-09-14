@@ -62,6 +62,16 @@ public class ProductInstallStat implements Serializable {
     private Date startDate;
     private Date endDate;
 
+    private String queryImeiSource;
+
+    public String getQueryImeiSource() {
+        return queryImeiSource;
+    }
+
+    public void setQueryImeiSource(String queryImeiSource) {
+        this.queryImeiSource = queryImeiSource;
+    }
+
     public Date getStartDate() {
         return startDate;
     }

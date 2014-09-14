@@ -53,7 +53,7 @@
                         },
                         {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
-                        {field: 'validNum', title: '有效装机数量', align: 'center', width: 200,
+                        {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 if (row.processDate == null) {
                                     return value;
@@ -64,7 +64,7 @@
                                 }
                             }
                         },
-                        {field: 'invalidNum', title: '无效装机数量', align: 'center', width: 200,
+                        {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 if (row.processDate == null) {
                                     return value;

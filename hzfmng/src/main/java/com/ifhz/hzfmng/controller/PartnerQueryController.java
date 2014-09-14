@@ -10,9 +10,9 @@ import com.ifhz.core.constants.GlobalConstants;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.PartnerInfo;
-import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.po.stat.LogArriveStatTemp;
 import com.ifhz.core.po.stat.ProductArriveStatTemp;
+import com.ifhz.core.po.stat.ProductInstallStat;
 import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
@@ -27,7 +27,7 @@ import com.ifhz.core.service.product.ProductInfoService;
 import com.ifhz.core.service.stat.LogArriveStatTempService;
 import com.ifhz.core.service.stat.LogStatQueryService;
 import com.ifhz.core.service.stat.ProductArriveStatTempService;
-import com.ifhz.core.service.stat.ProductStatQueryService;
+import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -65,7 +65,7 @@ public class PartnerQueryController extends BaseController {
     @Autowired
     private ProductArriveStatTempService productArriveStatTempService;
     @Autowired
-    private ProductStatQueryService productStatQueryService;
+    private ProductInstallStatService productInstallStatService;
     @Autowired
     private ProductInfoService productInfoService;
     @Autowired
@@ -253,7 +253,7 @@ public class PartnerQueryController extends BaseController {
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-        ProductStat productStat = new ProductStat();
+        ProductInstallStat productStat = new ProductInstallStat();
         if (StringUtils.isNotEmpty(productId)) {
             productStat.setProductId(Long.parseLong(productId));
         }
@@ -268,12 +268,12 @@ public class PartnerQueryController extends BaseController {
             productStat.setPartnerId(partnerInfo.getPartnerId());
             productStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
         }
-        List<ProductStat> list = productStatQueryService.querySumByVo(page, productStat);
+        List<ProductInstallStat> list = productInstallStatService.querySumByVo(page, productStat);
         if (CollectionUtils.isNotEmpty(list)) {
-            ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
+            ProductInstallStat countProductStat = productInstallStatService.queryCountByVo(productStat);
             list.add(countProductStat);
             if (partnerInfo != null) {
-                for (ProductStat productStat1 : list) {
+                for (ProductInstallStat productStat1 : list) {
                     if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
                         productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
                     } else {
@@ -297,7 +297,7 @@ public class PartnerQueryController extends BaseController {
         String groupId = request.getParameter("groupId");
         JSONObject result = new JSONObject();
         try {
-            ProductStat productStat = new ProductStat();
+            ProductInstallStat productStat = new ProductInstallStat();
             if (StringUtils.isNotEmpty(productId)) {
                 productStat.setProductId(Long.parseLong(productId));
             }
@@ -312,9 +312,9 @@ public class PartnerQueryController extends BaseController {
                 productStat.setPartnerId(partnerInfo.getPartnerId());
                 productStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
             }
-            List<ProductStat> list = productStatQueryService.querySumByVo(null, productStat);
+            List<ProductInstallStat> list = productInstallStatService.querySumByVo(null, productStat);
             if (CollectionUtils.isNotEmpty(list)) {
-                ProductStat countProductStat = productStatQueryService.queryCountByVo(productStat);
+                ProductInstallStat countProductStat = productInstallStatService.queryCountByVo(productStat);
                 list.add(countProductStat);
             }
             BaseExportModel exportModel = new BaseExportModel();
