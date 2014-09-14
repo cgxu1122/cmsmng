@@ -100,4 +100,43 @@ public class ScheduleController {
 
         return result;
     }
+
+
+    @RequestMapping(value = "/syncLogActiveTemp.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject syncLogArriveTemp() {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            scheduleService.syncLogActiveTemp();
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("syncLogArriveTemp error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
+    @RequestMapping(value = "/syncProductActiveTemp.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject syncProductActiveTemp() {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            scheduleService.syncProductActiveTemp();
+            result.put("ret", true);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("syncProductActiveTemp error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
 }
