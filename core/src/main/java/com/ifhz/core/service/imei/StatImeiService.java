@@ -11,9 +11,7 @@ import java.util.List;
  * Date: 2014/9/13
  * Time: 22:05
  */
-public interface TymngStatImeiService {
+public interface StatImeiService {
 
-    public List<StatImeiResult> queryImeiListFromLog(StatImeiRequest request);
-
-    public List<StatImeiResult> queryImeiListFromProduct(StatImeiRequest request);
+    public List<StatImeiResult> queryImeiList(StatImeiRequest request);
 }

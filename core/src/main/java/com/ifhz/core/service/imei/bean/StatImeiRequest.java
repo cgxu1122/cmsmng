@@ -25,13 +25,20 @@ public class StatImeiRequest implements Serializable {
     private String groupName;
     private String productName;
     private String modelName;
+    private Long totalCount;
+    private boolean exportQuery;
 
-    public StatImeiRequest(@Nonnull ImeiQueryType type) {
+    public StatImeiRequest(@Nonnull ImeiQueryType type, @Nonnull boolean exportQuery) {
         this.type = type;
+        this.exportQuery = exportQuery;
     }
 
     public ImeiQueryType getType() {
         return type;
+    }
+
+    public boolean isExportQuery() {
+        return exportQuery;
     }
 
     public Long getChannelId() {
@@ -120,5 +127,13 @@ public class StatImeiRequest implements Serializable {
 
     public void setModelName(String modelName) {
         this.modelName = modelName;
+    }
+
+    public Long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
     }
 }

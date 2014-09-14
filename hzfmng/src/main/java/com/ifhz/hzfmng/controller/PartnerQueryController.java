@@ -17,7 +17,7 @@ import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
-import com.ifhz.core.service.imei.StatImeiQueryService;
+import com.ifhz.core.service.imei.StatImeiService;
 import com.ifhz.core.service.imei.bean.ImeiQueryType;
 import com.ifhz.core.service.imei.bean.QueryActive;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
@@ -69,7 +69,7 @@ public class PartnerQueryController extends BaseController {
     @Autowired
     private ProductInfoService productInfoService;
     @Autowired
-    private StatImeiQueryService statImeiQueryService;
+    private StatImeiService statImeiService;
     @Autowired
     private LocalDirCacheService localDirCacheService;
     @Autowired
@@ -372,12 +372,7 @@ public class PartnerQueryController extends BaseController {
         statImeiRequest.setChannelName(channelName);
         statImeiRequest.setModelName(modelName);
         statImeiRequest.setUa(ua);
-        List<StatImeiResult> list;
-        if (StringUtils.isNotEmpty(productId)) {
-            list = statImeiQueryService.queryImeiListFromProduct(statImeiRequest);
-        } else {
-            list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-        }
+        List<StatImeiResult> list = statImeiService.queryImeiList(statImeiRequest);
         result.put("rows", list);
         return result;
     }
@@ -441,12 +436,7 @@ public class PartnerQueryController extends BaseController {
             statImeiRequest.setUa(ua);
             statImeiRequest.setDeviceCode(deviceCode);
             statImeiRequest.setModelName(modelName);
-            List<StatImeiResult> list;
-            if (StringUtils.isNotEmpty(productId)) {
-                list = statImeiQueryService.queryImeiListFromProduct(statImeiRequest);
-            } else {
-                list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-            }
+            List<StatImeiResult> list = statImeiService.queryImeiList(statImeiRequest);
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
             titleMap.put("processDate", "日期");
@@ -472,7 +462,7 @@ public class PartnerQueryController extends BaseController {
         if ("1".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
         } else if ("2".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
+//            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
         } else if ("3".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
             statImeiRequest.setActive(QueryActive.Total);

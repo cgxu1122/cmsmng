@@ -11,7 +11,7 @@ import com.ifhz.core.po.ProductStat;
 import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
-import com.ifhz.core.service.imei.StatImeiQueryService;
+import com.ifhz.core.service.imei.StatImeiService;
 import com.ifhz.core.service.imei.bean.ImeiQueryType;
 import com.ifhz.core.service.imei.bean.QueryActive;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
@@ -49,7 +49,7 @@ public class ReportCountController extends BaseController {
     @Autowired
     private LocalDirCacheService localDirCacheService;
     @Autowired
-    private StatImeiQueryService statImeiQueryService;
+    private StatImeiService statImeiService;
 
     @RequestMapping("/indexStore")
     public ModelAndView indexTY(HttpServletRequest request) {
@@ -393,12 +393,7 @@ public class ReportCountController extends BaseController {
         statImeiRequest.setProductName(productName);
         statImeiRequest.setGroupName(groupName);
         statImeiRequest.setUa(ua);
-        List<StatImeiResult> list;
-        if (StringUtils.isNotEmpty(productId)) {
-            list = statImeiQueryService.queryImeiListFromProduct(statImeiRequest);
-        } else {
-            list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-        }
+        List<StatImeiResult> list = statImeiService.queryImeiList(statImeiRequest);
         JSONObject result = new JSONObject();
         result.put("rows", list);
         return result;
@@ -440,12 +435,7 @@ public class ReportCountController extends BaseController {
             statImeiRequest.setProductName(productName);
             statImeiRequest.setGroupName(groupName);
             statImeiRequest.setUa(ua);
-            List<StatImeiResult> list;
-            if (StringUtils.isNotEmpty(productId)) {
-                list = statImeiQueryService.queryImeiListFromProduct(statImeiRequest);
-            } else {
-                list = statImeiQueryService.queryImeiListFromLog(statImeiRequest);
-            }
+            List<StatImeiResult> list = statImeiService.queryImeiList(statImeiRequest);
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
             String exportType = request.getParameter("exportType");

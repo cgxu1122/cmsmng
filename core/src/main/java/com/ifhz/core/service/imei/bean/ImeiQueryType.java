@@ -8,9 +8,18 @@ package com.ifhz.core.service.imei.bean;
  */
 public enum ImeiQueryType {
 
-    Day_Device_Process(1),
-    Day_Device_Upload(2),
-    Day_Counter_Upload(3);
+//    Day_Device_Process(1),
+//    Day_Counter_Upload(3),
+
+    Log_Install(10),
+    Log_Install_Arrive(11),
+    Log_Arrive(12),
+    Log_Arrive_Temp(13),
+
+    Product_Install(14),
+    Product_Install_Arrive(15),
+    Product_Arrive(16),
+    Product_Arrive_Temp(17);
 
     public final int value;
 
