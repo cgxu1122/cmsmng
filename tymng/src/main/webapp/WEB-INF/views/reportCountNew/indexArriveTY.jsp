@@ -52,7 +52,7 @@ function initPage() {
         fitColumns: true,
         columns: [
             [
-                {field: 'processDate', title: '日期', align: 'center', width: 200,
+                {field: 'statDate', title: '日期', align: 'center', width: 200,
                     formatter: function (value) {
                         if (value == null) {
                             return "合计"
@@ -64,55 +64,55 @@ function initPage() {
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
                 {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',21)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',21)>" + value + "</a>";
                         }
                     }
                 },
                 {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',22)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',22)>" + value + "</a>";
                         }
                     }
                 },
                 {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',23)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',23)>" + value + "</a>";
                         }
                     }
                 },
                 {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',24)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',24)>" + value + "</a>";
                         }
                     }
                 },
                 {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',25)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',25)>" + value + "</a>";
                         }
                     }
                 },
                 {field: 'unAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
-                        if (row.processDate == null) {
+                        if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',26)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',26)>" + value + "</a>";
                         }
                     }
                 }
