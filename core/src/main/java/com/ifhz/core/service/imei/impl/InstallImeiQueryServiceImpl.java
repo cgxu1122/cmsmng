@@ -2,7 +2,7 @@ package com.ifhz.core.service.imei.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.ifhz.core.adapter.DataLogAdapter;
+import com.ifhz.core.adapter.DataLogImeiAdapter;
 import com.ifhz.core.base.annotation.Log;
 import com.ifhz.core.service.imei.InstallImeiQueryService;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,16 +30,16 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     private static final ExecutorService executor = Executors.newFixedThreadPool(256);
 
     @Resource
-    private DataLogAdapter dataLogAdapter;
+    private DataLogImeiAdapter dataLogImeiAdapter;
 
     @Override
     @Log
     public List<String> getLogInstall(List<Map<String, Object>> paramList) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<LogImeiTask> taskList = Lists.newArrayList();
+            List<LogInstallTask> taskList = Lists.newArrayList();
             for (Map<String, Object> param : paramList) {
-                taskList.add(new LogImeiTask(param));
+                taskList.add(new LogInstallTask(param));
             }
             List<Future<List<String>>> futureResult = Lists.newArrayList();
             try {
@@ -70,9 +70,9 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     public List<String> getLogInstallArrive(List<Map<String, Object>> paramList) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<LogImeiTask> taskList = Lists.newArrayList();
+            List<LogInstallArriveTask> taskList = Lists.newArrayList();
             for (Map<String, Object> param : paramList) {
-                taskList.add(new LogImeiTask(param));
+                taskList.add(new LogInstallArriveTask(param));
             }
             List<Future<List<String>>> futureResult = Lists.newArrayList();
             try {
@@ -103,28 +103,11 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     public List<String> getLogArrive(List<Map<String, Object>> paramList) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<LogImeiTask> taskList = Lists.newArrayList();
             for (Map<String, Object> param : paramList) {
-                taskList.add(new LogImeiTask(param));
-            }
-            List<Future<List<String>>> futureResult = Lists.newArrayList();
-            try {
-                futureResult = executor.invokeAll(taskList);
-                if (CollectionUtils.isNotEmpty(futureResult)) {
-                    for (Future<List<String>> future : futureResult) {
-                        List<String> ret = null;
-                        try {
-                            ret = future.get(10, TimeUnit.SECONDS);
-                        } catch (Exception e) {
-                            LOGGER.error("DeviceProcessTask future result error", e);
-                        }
-                        if (CollectionUtils.isNotEmpty(ret)) {
-                            result.addAll(ret);
-                        }
-                    }
+                List<String> imeiList = dataLogImeiAdapter.getLogArriveTemp(param);
+                if (CollectionUtils.isNotEmpty(imeiList)) {
+                    result.addAll(imeiList);
                 }
-            } catch (Exception e) {
-                LOGGER.error("Execute DeviceProcessTask error", e);
             }
         }
 
@@ -137,10 +120,17 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
             for (Map<String, Object> param : paramList) {
-                List<String> imeiList = dataLogAdapter.getLogImeiList(param);
+                List<String> imeiList = dataLogImeiAdapter.getLogArriveTemp(param);
                 if (CollectionUtils.isNotEmpty(imeiList)) {
                     result.addAll(imeiList);
                 }
+            }
+        }
+        //截断
+        if (CollectionUtils.isNotEmpty(result)) {
+            int size = result.size();
+            if (totalCount > 0 && size > totalCount.intValue()) {
+                result = result.subList(0, totalCount.intValue());
             }
         }
 
@@ -152,9 +142,9 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     public List<String> getProductInstall(List<Map<String, Object>> paramList) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<ProductImeiTask> taskList = Lists.newArrayList();
+            List<ProductInstallTask> taskList = Lists.newArrayList();
             for (Map<String, Object> param : paramList) {
-                taskList.add(new ProductImeiTask(param));
+                taskList.add(new ProductInstallTask(param));
             }
             List<Future<List<String>>> futureResult = Lists.newArrayList();
             try {
@@ -185,9 +175,9 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     public List<String> getProductInstallArrive(List<Map<String, Object>> paramList) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<ProductImeiTask> taskList = Lists.newArrayList();
+            List<ProductInstallArriveTask> taskList = Lists.newArrayList();
             for (Map<String, Object> param : paramList) {
-                taskList.add(new ProductImeiTask(param));
+                taskList.add(new ProductInstallArriveTask(param));
             }
             List<Future<List<String>>> futureResult = Lists.newArrayList();
             try {
@@ -218,28 +208,11 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     public List<String> getProductArrive(List<Map<String, Object>> paramList) {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
-            List<ProductImeiTask> taskList = Lists.newArrayList();
             for (Map<String, Object> param : paramList) {
-                taskList.add(new ProductImeiTask(param));
-            }
-            List<Future<List<String>>> futureResult = Lists.newArrayList();
-            try {
-                futureResult = executor.invokeAll(taskList);
-                if (CollectionUtils.isNotEmpty(futureResult)) {
-                    for (Future<List<String>> future : futureResult) {
-                        List<String> ret = null;
-                        try {
-                            ret = future.get(10, TimeUnit.SECONDS);
-                        } catch (Exception e) {
-                            LOGGER.error("DeviceProcessTask future result error", e);
-                        }
-                        if (CollectionUtils.isNotEmpty(ret)) {
-                            result.addAll(ret);
-                        }
-                    }
+                List<String> imeiList = dataLogImeiAdapter.getProductArrive(param);
+                if (CollectionUtils.isNotEmpty(imeiList)) {
+                    result.addAll(imeiList);
                 }
-            } catch (Exception e) {
-                LOGGER.error("Execute DeviceProcessTask error", e);
             }
         }
 
@@ -252,10 +225,17 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
         List<String> result = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(paramList)) {
             for (Map<String, Object> param : paramList) {
-                List<String> imeiList = dataLogAdapter.getProductImeiList(param);
+                List<String> imeiList = dataLogImeiAdapter.getProductArriveTemp(param);
                 if (CollectionUtils.isNotEmpty(imeiList)) {
                     result.addAll(imeiList);
                 }
+            }
+        }
+        //截断
+        if (CollectionUtils.isNotEmpty(result)) {
+            int size = result.size();
+            if (totalCount > 0 && size > totalCount.intValue()) {
+                result = result.subList(0, totalCount.intValue());
             }
         }
 
@@ -263,10 +243,10 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
     }
 
 
-    private class LogImeiTask implements Callable<List<String>> {
+    private class LogInstallTask implements Callable<List<String>> {
         private final Map<String, Object> params;
 
-        private LogImeiTask(Map<String, Object> params) {
+        private LogInstallTask(Map<String, Object> params) {
             this.params = params;
         }
 
@@ -275,17 +255,35 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
             LOGGER.info("params={}", JSON.toJSONString(params));
             List<String> result = null;
             if (MapUtils.isNotEmpty(params)) {
-                result = dataLogAdapter.getLogImeiList(params);
+                result = dataLogImeiAdapter.getLogInstall(params);
+            }
+            return result == null ? Lists.<String>newArrayList() : result;
+        }
+    }
+
+    private class LogInstallArriveTask implements Callable<List<String>> {
+        private final Map<String, Object> params;
+
+        private LogInstallArriveTask(Map<String, Object> params) {
+            this.params = params;
+        }
+
+        @Override
+        public List<String> call() throws Exception {
+            LOGGER.info("params={}", JSON.toJSONString(params));
+            List<String> result = null;
+            if (MapUtils.isNotEmpty(params)) {
+                result = dataLogImeiAdapter.getLogInstallArrive(params);
             }
             return result == null ? Lists.<String>newArrayList() : result;
         }
     }
 
 
-    private class ProductImeiTask implements Callable<List<String>> {
+    private class ProductInstallTask implements Callable<List<String>> {
         private final Map<String, Object> params;
 
-        private ProductImeiTask(Map<String, Object> params) {
+        private ProductInstallTask(Map<String, Object> params) {
             this.params = params;
         }
 
@@ -294,7 +292,25 @@ public class InstallImeiQueryServiceImpl implements InstallImeiQueryService {
             LOGGER.info("params={}", JSON.toJSONString(params));
             List<String> result = null;
             if (MapUtils.isNotEmpty(params)) {
-                result = dataLogAdapter.getProductImeiList(params);
+                result = dataLogImeiAdapter.getProductInstall(params);
+            }
+            return result == null ? Lists.<String>newArrayList() : result;
+        }
+    }
+
+    private class ProductInstallArriveTask implements Callable<List<String>> {
+        private final Map<String, Object> params;
+
+        private ProductInstallArriveTask(Map<String, Object> params) {
+            this.params = params;
+        }
+
+        @Override
+        public List<String> call() throws Exception {
+            LOGGER.info("params={}", JSON.toJSONString(params));
+            List<String> result = null;
+            if (MapUtils.isNotEmpty(params)) {
+                result = dataLogImeiAdapter.getLogInstallArrive(params);
             }
             return result == null ? Lists.<String>newArrayList() : result;
         }

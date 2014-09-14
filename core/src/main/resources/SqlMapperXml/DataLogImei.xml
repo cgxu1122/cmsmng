@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.DataLogImeiMapper">
+
+    <select id="getLogInstall" resultType="java.lang.String">
+        select IMEI
+        from ${tableName}
+        where UA = #{ua}
+        and PROCESS_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            and DEVICE_CODE = #{deviceCode}
+        </if>
+    </select>
+
+    <select id="getLogInstallArrive" resultType="java.lang.String">
+        select IMEI
+        from ${tableName}
+        where UA = #{ua}
+        and PROCESS_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="deviceCode != null and deviceCode != ''">
+            and DEVICE_CODE = #{deviceCode}
+        </if>
+        <if test="activeType != null">
+            <choose>
+                <when test="activeType == 1">
+                    and ACTIVE != 0
+                </when>
+                <when test="activeType == 2">
+                    and ACTIVE = 1
+                </when>
+                <when test="activeType == 3">
+                    and ACTIVE in (2,3,4)
+                </when>
+                <when test="activeType == 4">
+                    and ACTIVE = 2
+                </when>
+                <when test="activeType == 5">
+                    and ACTIVE = 3
+                </when>
+                <when test="activeType == 6">
+                    and ACTIVE = 4
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getLogArrive" resultType="java.lang.String">
+        select IMEI
+        from ${tableName}
+        where UA = #{ua}
+        and COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="activeType != null">
+            <choose>
+                <when test="activeType == 1">
+                    and ACTIVE != 0
+                </when>
+                <when test="activeType == 2">
+                    and ACTIVE = 1
+                </when>
+                <when test="activeType == 3">
+                    and ACTIVE in (2,3,4)
+                </when>
+                <when test="activeType == 4">
+                    and ACTIVE = 2
+                </when>
+                <when test="activeType == 5">
+                    and ACTIVE = 3
+                </when>
+                <when test="activeType == 6">
+                    and ACTIVE = 4
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getLogArriveTemp" resultType="java.lang.String">
+        select IMEI
+        from ${tableName}
+        where UA = #{ua}
+        and COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="activeType != null">
+            <choose>
+                <when test="activeType == 1">
+                    and ACTIVE != 0
+                </when>
+                <when test="activeType == 2">
+                    and ACTIVE = 1
+                </when>
+                <when test="activeType == 3">
+                    and ACTIVE in (2,3,4)
+                </when>
+                <when test="activeType == 4">
+                    and ACTIVE = 2
+                </when>
+                <when test="activeType == 5">
+                    and ACTIVE = 3
+                </when>
+                <when test="activeType == 6">
+                    and ACTIVE = 4
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+
+    <select id="getProductInstall" resultType="java.lang.String">
+        select log.IMEI
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.UA = #{ua}
+        and log.PROCESS_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+    </select>
+
+    <select id="getProductInstallArrive" resultType="java.lang.String">
+        select log.IMEI
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.UA = #{ua}
+        and log.PROCESS_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="activeType != null">
+            <choose>
+                <when test="activeType == 1">
+                    and ACTIVE != 0
+                </when>
+                <when test="activeType == 2">
+                    and ACTIVE = 1
+                </when>
+                <when test="activeType == 3">
+                    and ACTIVE in (2,3,4)
+                </when>
+                <when test="activeType == 4">
+                    and ACTIVE = 2
+                </when>
+                <when test="activeType == 5">
+                    and ACTIVE = 3
+                </when>
+                <when test="activeType == 6">
+                    and ACTIVE = 4
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="getProductArrive" resultType="java.lang.String">
+        select log.IMEI
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.UA = #{ua}
+        and log.COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="activeType != null">
+            <choose>
+                <when test="activeType == 1">
+                    and ACTIVE != 0
+                </when>
+                <when test="activeType == 2">
+                    and ACTIVE = 1
+                </when>
+                <when test="activeType == 3">
+                    and ACTIVE in (2,3,4)
+                </when>
+                <when test="activeType == 4">
+                    and ACTIVE = 2
+                </when>
+                <when test="activeType == 5">
+                    and ACTIVE = 3
+                </when>
+                <when test="activeType == 6">
+                    and ACTIVE = 4
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+
+    <select id="getProductArriveTemp" resultType="java.lang.String">
+        select log.IMEI
+        from ${tableName} log
+        where exists (select ref.BATCH_CODE from TY_BATCH_PRODUCT_REF ref where ref.PRODUCT_ID = #{productId} and
+        ref.BATCH_CODE = log.BATCH_CODE)
+        and log.UA = #{ua}
+        and log.COUNTER_UPLOAD_TIME between #{startTime} and #{endTime}
+        <if test="channelId != null">
+            and CHANNEL_ID = #{channelId}
+        </if>
+        <if test="activeType != null">
+            <choose>
+                <when test="activeType == 1">
+                    and ACTIVE != 0
+                </when>
+                <when test="activeType == 2">
+                    and ACTIVE = 1
+                </when>
+                <when test="activeType == 3">
+                    and ACTIVE in (2,3,4)
+                </when>
+                <when test="activeType == 4">
+                    and ACTIVE = 2
+                </when>
+                <when test="activeType == 5">
+                    and ACTIVE = 3
+                </when>
+                <when test="activeType == 6">
+                    and ACTIVE = 4
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+</mapper>

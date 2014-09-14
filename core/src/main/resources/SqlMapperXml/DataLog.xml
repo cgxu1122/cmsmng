@@ -123,9 +123,6 @@
             <when test="type == 1">
                 and PROCESS_TIME between #{startTime} and #{endTime}
             </when>
-            <when test="type == 2">
-                and DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
-            </when>
             <when test="type == 3">
                 and PROCESS_TIME between #{startTime} and #{endTime}
                 <if test="activeType != null">
@@ -173,9 +170,6 @@
         <choose>
             <when test="type == 1">
                 and log.PROCESS_TIME between #{startTime} and #{endTime}
-            </when>
-            <when test="type == 2">
-                and log.DEVICE_UPLOAD_TIME between #{startTime} and #{endTime}
             </when>
             <when test="type == 3">
                 and log.PROCESS_TIME between #{startTime} and #{endTime}

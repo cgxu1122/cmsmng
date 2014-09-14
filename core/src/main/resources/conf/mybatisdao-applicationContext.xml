@@ -76,6 +76,7 @@
                 <value>classpath:SqlMapperXml/ImeiTemp.xml</value>
                 <value>classpath:SqlMapperXml/CounterTempLog.xml</value>
                 <value>classpath:SqlMapperXml/DataLog.xml</value>
+                <value>classpath:SqlMapperXml/DataLogImei.xml</value>
                 <value>classpath:SqlMapperXml/LogStat.xml</value>
                 <value>classpath:SqlMapperXml/ProductStat.xml</value>
                 <value>classpath:SqlMapperXml/SysResource.xml</value>
@@ -139,6 +140,12 @@
         <property name="mapperInterface" value="com.ifhz.core.mapper.DataLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
+
+    <bean id="dataLogImeiMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.DataLogImeiMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
     <bean id="counterTempLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.CounterTempLogMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
