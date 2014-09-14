@@ -3,8 +3,8 @@
 <mapper namespace="com.ifhz.core.mapper.stat.ProductInstallStatMapper">
     <sql id="TABLE_NAME">TY_PRODUCT_INSTALL_STAT</sql>
 
-    <resultMap id="ProductInstallStatResultMap" type="com.ifhz.core.po.stat.ProductInstallStat">
-        <id column="ID" property="id" jdbcType="BIGINT"/>
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.stat.ProductInstallStat">
+    <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR"/>
         <result column="GROUP_ID" property="groupId" jdbcType="BIGINT"/>
         <result column="CHANNEL_ID" property="channelId" jdbcType="BIGINT"/>
@@ -100,20 +100,20 @@
         and VERSION = #{version}
     </update>
 
-    <select id="getById" resultMap="ProductInstallStatResultMap">
-        select * from
+    <select id="getById" resultMap="BaseResultMap">
+    select * from
         <include refid="TABLE_NAME"/>
         where ID = #{id}
     </select>
 
-    <select id="getByMd5Key" resultMap="ProductInstallStatResultMap">
-        select * from
+    <select id="getByMd5Key" resultMap="BaseResultMap">
+    select * from
         <include refid="TABLE_NAME"/>
         where MD5_KEY = #{md5Key}
     </select>
 
-    <select id="queryByVo" resultMap="ProductInstallStatResultMap">
-        select * from
+    <select id="queryByVo" resultMap="BaseResultMap">
+    select * from
         <include refid="TABLE_NAME"/>
         where 1=1
         <if test="record.partnerId != null and record.partnerId != ''">
@@ -144,8 +144,8 @@
 
 
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductInstallStat"
-            resultMap="ProductInstallStatResultMap">
-        select
+            resultMap="BaseResultMap">
+    select
         sum(INSTALL_TOTAL_NUM) INSTALL_TOTAL_NUM,
         sum(TOTAL_NUM) TOTAL_NUM,
         sum(VALID_NUM) VALID_NUM,
