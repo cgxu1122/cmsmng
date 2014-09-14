@@ -50,7 +50,6 @@
                                 return new Date(value).formate("yyyy-MM-dd");
                             }
                         },
-                        {field: 'deviceCode', title: '设备编码', align: 'center', width: 200},
                         {field: 'channelName', title: '仓库名称', align: 'center', width: 300},
                         {field: 'modelName', title: '机型名称', align: 'center', width: 200},
                         {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,

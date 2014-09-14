@@ -55,7 +55,7 @@
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
                         {field: 'installTotalNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                if (row.processDate == null) {
+                                if (row.statDate == null) {
                                     return value;
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
@@ -125,7 +125,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName, groupId: groupId},
+                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -144,7 +144,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&groupId=" + groupIdCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

@@ -55,7 +55,7 @@
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
                         {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                if (row.processDate == null) {
+                                if (row.statDate == null) {
                                     return value;
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
@@ -66,7 +66,7 @@
                         },
                         {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
-                                if (row.processDate == null) {
+                                if (row.statDate == null) {
                                     return value;
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
