@@ -24,5 +24,7 @@ public interface ProductInstallStatMapper {
 
     public List<ProductInstallStat> queryByVo(Pagination pagination, @Param("record") ProductInstallStat record);
 
+    public List<ProductInstallStat> querySumByVo(Pagination pagination, @Param("record") ProductInstallStat record);
+
     public ProductInstallStat queryCountByVo(ProductInstallStat record);
 }

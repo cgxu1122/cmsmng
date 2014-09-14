@@ -103,6 +103,43 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
     }
 
     @Override
+    public List<ProductInstallStat> querySumByVo(Pagination pagination, ProductInstallStat record) {
+        List<ProductInstallStat> result = productInstallStatAdapter.querySumByVo(pagination, record);
+        if (CollectionUtils.isNotEmpty(result)) {
+            for (ProductInstallStat productInstallStat : result) {
+                String ua = productInstallStat.getUa();
+                if (StringUtils.isNotEmpty(ua)) {
+                    ModelInfo modelInfo = null;
+                    try {
+                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productInstallStat.getGroupId());
+                    } catch (Exception e) {
+                        LOGGER.error("getByUaAndGrouId error", e);
+                    }
+                    if (modelInfo != null) {
+                        productInstallStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
+                    } else {
+                        productInstallStat.setModelName("未知(" + ua + ")");
+                    }
+                } else {
+                    productInstallStat.setModelName("未知()");
+                }
+                if (productInstallStat.getGroupId() != null) {
+                    productInstallStat.setGroupName(GroupEnums.fromByValue(productInstallStat.getGroupId()).name);
+                }
+
+                if (productInstallStat.getProductId() != null) {
+                    ProductInfo productInfo = productInfoCacheService.getById(productInstallStat.getProductId());
+                    if (productInfo != null) {
+                        productInstallStat.setProductName(productInfo.getProductName());
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public ProductInstallStat queryCountByVo(ProductInstallStat record) {
         return productInstallStatAdapter.queryCountByVo(record);
     }

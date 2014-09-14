@@ -88,12 +88,10 @@
     <select id="querySumByVo" resultMap="BaseResultMap">
         select
         PRODUCT_ID,
-        GROUP_ID,
-        CHANNEL_ID,
         UA,
-        PROCESS_DATE,
-        sum(stat.VALID_NUM) VALID_NUM,
-        sum(stat.INVALID_NUM) INVALID_NUM,
+        STAT_DATE,
+        sum(VALID_NUM) VALID_NUM,
+        sum(INVALID_NUM) INVALID_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1
@@ -127,7 +125,7 @@
             and STAT_DATE <= #{record.endDate}
             ]]>
         </if>
-        group by PRODUCT_ID,GROUP_ID,CHANNEL_ID,UA,STAT_DATE
+        group by PRODUCT_ID,UA,STAT_DATE
         order by STAT_DATE desc
     </select>
 
@@ -135,8 +133,8 @@
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStatTemp"
             resultMap="BaseResultMap">
         select
-        sum(stat.VALID_NUM) VALID_NUM,
-        sum(stat.INVALID_NUM) INVALID_NUM
+        sum(VALID_NUM) VALID_NUM,
+        sum(INVALID_NUM) INVALID_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1

@@ -24,5 +24,7 @@ public interface ProductInstallStatService {
 
     public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record);
 
+    public List<ProductInstallStat> querySumByVo(Pagination pagination, ProductInstallStat record);
+
     public ProductInstallStat queryCountByVo(ProductInstallStat record);
 }

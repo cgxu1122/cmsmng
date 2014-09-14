@@ -49,6 +49,12 @@ public class ProductInstallStatAdapterImpl implements ProductInstallStatAdapter 
     }
 
     @Override
+    public List<ProductInstallStat> querySumByVo(Pagination pagination, ProductInstallStat record) {
+        List<ProductInstallStat> result = productInstallStatMapper.querySumByVo(pagination, record);
+        return result == null ? Lists.<ProductInstallStat>newArrayList() : result;
+    }
+
+    @Override
     public ProductInstallStat queryCountByVo(ProductInstallStat record) {
         return productInstallStatMapper.queryCountByVo(record);
     }

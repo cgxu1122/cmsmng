@@ -138,12 +138,12 @@
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStat"
             resultMap="BaseResultMap">
         select
-        sum(stat.TOTAL_NUM) TOTAL_NUM,
-        sum(stat.VALID_NUM) VALID_NUM,
-        sum(stat.INVALID_NUM) INVALID_NUM,
-        sum(stat.REPLACE_NUM) REPLACE_NUM,
-        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
-        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
+        sum(TOTAL_NUM) TOTAL_NUM,
+        sum(VALID_NUM) VALID_NUM,
+        sum(INVALID_NUM) INVALID_NUM,
+        sum(REPLACE_NUM) REPLACE_NUM,
+        sum(UNINSTALL_NUM) UNINSTALL_NUM,
+        sum(UN_AND_RE_NUM) UN_AND_RE_NUM
         from
         <include refid="TABLE_NAME"/>
         where 1=1
