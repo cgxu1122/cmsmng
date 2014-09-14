@@ -21,7 +21,7 @@ public class DataLogAdapterImplTest extends BaseTest {
 
     @Test
     public void testGetLogImeiList() throws Exception {
-        StatImeiRequest request = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        StatImeiRequest request = new StatImeiRequest(ImeiQueryType.Log_Install, false);
         request.setDeviceCode("Device24");
         Date processDate = DateFormatUtils.parse("2014-06-06", "yyyy-MM-dd");
         request.setProcessDate(processDate);
