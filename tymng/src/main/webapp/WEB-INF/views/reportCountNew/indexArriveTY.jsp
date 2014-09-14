@@ -67,7 +67,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',3)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',21)>" + value + "</a>";
                         }
                     }
                 },
@@ -76,7 +76,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',4)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',22)>" + value + "</a>";
                         }
                     }
                 },
@@ -85,7 +85,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',5)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',23)>" + value + "</a>";
                         }
                     }
                 },
@@ -94,7 +94,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',6)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',24)>" + value + "</a>";
                         }
                     }
                 },
@@ -103,7 +103,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',7)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',25)>" + value + "</a>";
                         }
                     }
                 },
@@ -112,7 +112,7 @@ function initPage() {
                         if (row.processDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',8)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.channelName + "',26)>" + value + "</a>";
                         }
                     }
                 }

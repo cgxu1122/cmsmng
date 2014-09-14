@@ -43,7 +43,7 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'processDate', title: '日期', align: 'center', width: 200,
+                        {field: 'statDate', title: '日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 if (value == null) {
                                     return "合计"
@@ -53,14 +53,14 @@
                         },
                         {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
-                        {field: 'productPrsDayNum', title: '装机数量', align: 'center', width: 200,
+                        {field: 'installTotalNum', title: '装机数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 if (row.processDate == null) {
                                     return value;
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "')>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "')>" + value + "</a>";
                                 }
                             }
                         }

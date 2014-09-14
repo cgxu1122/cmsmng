@@ -484,7 +484,7 @@ public class ReportCountNewController extends BaseController {
         String productId = request.getParameter("productId");
         String productName = request.getParameter("productName");
         String queryType = request.getParameter("queryType");
-        StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType);
+        StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, false);
         if (StringUtils.isNotEmpty(processDate)) {
             statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
         }
@@ -526,7 +526,7 @@ public class ReportCountNewController extends BaseController {
             String productId = request.getParameter("productId");
             String productName = request.getParameter("productName");
             String queryType = request.getParameter("queryType");
-            StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType);
+            StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, true);
             if (StringUtils.isNotEmpty(processDate)) {
                 statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
             }
@@ -582,27 +582,68 @@ public class ReportCountNewController extends BaseController {
         return result;
     }
 
-    private StatImeiRequest getStatImeiRequestByQueryType(String queryType) {
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+    private StatImeiRequest getStatImeiRequestByQueryType(String queryType, Boolean expertType) {
+        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, expertType);
         if ("1".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, expertType);
         } else if ("3".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Total);
         } else if ("4".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Valid);
         } else if ("5".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Invalid);
         } else if ("6".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Replace);
         } else if ("7".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Uninstall);
         } else if ("8".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.UnAndRe);
+        } else if ("11".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install, expertType);
+        } else if ("12".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Total);
+        } else if ("21".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Total);
+        } else if ("22".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Valid);
+        } else if ("23".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Invalid);
+        } else if ("24".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Replace);
+        } else if ("25".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Uninstall);
+        } else if ("26".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.UnAndRe);
+        } else if ("31".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Total);
+        } else if ("32".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Valid);
+        } else if ("33".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Invalid);
+        } else if ("34".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Replace);
+        } else if ("35".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Uninstall);
+        } else if ("36".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.UnAndRe);
         }
         return statImeiRequest;

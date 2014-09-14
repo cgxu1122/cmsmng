@@ -71,7 +71,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',31)>" + value + "</a>";
                         }
                     }
                 },
@@ -80,7 +80,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',4)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',32)>" + value + "</a>";
                         }
                     }
                 },
@@ -89,7 +89,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',5)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',33)>" + value + "</a>";
                         }
                     }
                 },
@@ -98,7 +98,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',6)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',34)>" + value + "</a>";
                         }
                     }
                 },
@@ -107,7 +107,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',7)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',35)>" + value + "</a>";
                         }
                     }
                 },
@@ -116,7 +116,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',8)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',36)>" + value + "</a>";
                         }
                     }
                 }

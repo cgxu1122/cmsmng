@@ -1,6 +1,8 @@
 drop table TY_PRODUCT_INSTALL_STAT cascade constraints;
 drop table TY_PRODUCT_ARRIVE_STAT cascade constraints;
+drop table TY_PRODUCT_ARRIVE_STAT_TEMP cascade constraints;
 drop table TY_LOG_ARRIVE_STAT cascade constraints;
+drop table TY_LOG_ARRIVE_STAT_TEMP cascade constraints;
 drop table TY_STAT_DEDUCTION cascade constraints;
 drop sequence SEQ_STAT_DEDUCTION;
 drop sequence SEQ_LOG_ARRIVE_STAT;

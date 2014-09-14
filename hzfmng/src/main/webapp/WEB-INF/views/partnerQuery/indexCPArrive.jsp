@@ -43,7 +43,7 @@
                 rownumbers: true,
                 columns: [
                     [
-                        {field: 'processDate', title: '日期', align: 'center', width: 200,
+                        {field: 'statDate', title: '日期', align: 'center', width: 200,
                             formatter: function (value) {
                                 if (value == null) {
                                     return "合计"
@@ -60,7 +60,18 @@
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.processDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "')>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "','" + value + "',11)>" + value + "</a>";
+                                }
+                            }
+                        },
+                        {field: 'invalidNum', title: '无效装机数量', align: 'center', width: 200,
+                            formatter: function (value, row, index) {
+                                if (row.processDate == null) {
+                                    return value;
+                                } else if (row.queryImeiSource == 'N') {
+                                    return value;
+                                } else {
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "','" + value + "',12)>" + value + "</a>";
                                 }
                             }
                         }
@@ -111,12 +122,16 @@
         var productIdCur;
         var modelNameCur;
         var groupIdCur;
-        function showIMEIDialog(processDate, ua, productId, modelName, groupId) {
+        var countCur;
+        var queryTypeCur;
+        function showIMEIDialog(processDate, ua, productId, modelName, groupId, count, queryType) {
             processDateCur = processDate;
             uaCur = ua;
             productIdCur = productId;
             modelNameCur = modelName;
             groupIdCur = groupId;
+            countCur = count;
+            queryTypeCur = queryType;
             $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表,只显示前1000条，查看全部Imei请导出');
             $('#imeidg').datagrid({
                 width: 'auto',
@@ -125,7 +140,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName, groupId: groupId, queryType: 3},
+                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName, groupId: groupId, count: count, queryType: queryType},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -144,7 +159,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?queryType=3&userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&groupId=" + groupIdCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?queryType=3&userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&groupId=" + groupIdCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

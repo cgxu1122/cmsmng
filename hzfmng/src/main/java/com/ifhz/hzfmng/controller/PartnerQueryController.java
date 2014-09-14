@@ -352,9 +352,10 @@ public class PartnerQueryController extends BaseController {
         String modelName = request.getParameter("modelName");
         String ua = request.getParameter("ua");
         String queryType = request.getParameter("queryType");
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+        String count = request.getParameter("count");
+        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, false);
         if (StringUtils.isNotEmpty(queryType)) {
-            statImeiRequest = getStatImeiRequestByQueryType(queryType);
+            statImeiRequest = getStatImeiRequestByQueryType(queryType, false);
         }
         if (StringUtils.isNotEmpty(processDate)) {
             statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
@@ -367,6 +368,9 @@ public class PartnerQueryController extends BaseController {
         }
         if (StringUtils.isNotEmpty(groupId)) {
             statImeiRequest.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(count)) {
+            statImeiRequest.setTotalCount(Long.parseLong(count));
         }
         statImeiRequest.setDeviceCode(deviceCode);
         statImeiRequest.setChannelName(channelName);
@@ -391,6 +395,7 @@ public class PartnerQueryController extends BaseController {
             String deviceCode = request.getParameter("deviceCode");
             String modelName = request.getParameter("modelName");
             String userType = request.getParameter("userType");
+            String count = request.getParameter("count");
             if ("lw".equals(userType)) {
                 if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
                     ChannelInfo channelInfo = channelInfoService.getChannelInfoByUserId(CurrentUserUtil.getUserId());
@@ -417,9 +422,9 @@ public class PartnerQueryController extends BaseController {
                 }
             }
             String queryType = request.getParameter("queryType");
-            StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+            StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, true);
             if (StringUtils.isNotEmpty(queryType)) {
-                statImeiRequest = getStatImeiRequestByQueryType(queryType);
+                statImeiRequest = getStatImeiRequestByQueryType(queryType, true);
             }
             if (StringUtils.isNotEmpty(processDate)) {
                 statImeiRequest.setProcessDate(new Date(Long.parseLong(processDate)));
@@ -432,6 +437,9 @@ public class PartnerQueryController extends BaseController {
             }
             if (StringUtils.isNotEmpty(groupId)) {
                 statImeiRequest.setGroupId(Long.parseLong(groupId));
+            }
+            if (StringUtils.isNotEmpty(count)) {
+                statImeiRequest.setTotalCount(Long.parseLong(count));
             }
             statImeiRequest.setUa(ua);
             statImeiRequest.setDeviceCode(deviceCode);
@@ -457,30 +465,22 @@ public class PartnerQueryController extends BaseController {
         return result;
     }
 
-    private StatImeiRequest getStatImeiRequestByQueryType(String queryType) {
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+    private StatImeiRequest getStatImeiRequestByQueryType(String queryType, Boolean expertType) {
+        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, expertType);
         if ("1".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
-        } else if ("2".equals(queryType)) {
-//            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
-        } else if ("3".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
-            statImeiRequest.setActive(QueryActive.Total);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, expertType);
         } else if ("4".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive_Temp, expertType);
             statImeiRequest.setActive(QueryActive.Valid);
         } else if ("5".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive_Temp, expertType);
             statImeiRequest.setActive(QueryActive.Invalid);
-        } else if ("6".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
-            statImeiRequest.setActive(QueryActive.Replace);
-        } else if ("7".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
-            statImeiRequest.setActive(QueryActive.Uninstall);
-        } else if ("8".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
-            statImeiRequest.setActive(QueryActive.UnAndRe);
+        } else if ("11".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive_Temp, expertType);
+            statImeiRequest.setActive(QueryActive.Valid);
+        } else if ("12".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive_Temp, expertType);
+            statImeiRequest.setActive(QueryActive.Invalid);
         }
         return statImeiRequest;
     }

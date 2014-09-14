@@ -71,7 +71,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',1)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',11)>" + value + "</a>";
                         }
                     }
                 },
@@ -80,7 +80,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',3)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',12)>" + value + "</a>";
                         }
                     }
                 }

@@ -12,8 +12,6 @@ import com.ifhz.core.service.cache.LocalDirCacheService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.service.export.model.BaseExportModel;
 import com.ifhz.core.service.imei.StatImeiService;
-import com.ifhz.core.service.imei.bean.ImeiQueryType;
-import com.ifhz.core.service.imei.bean.QueryActive;
 import com.ifhz.core.service.imei.bean.StatImeiRequest;
 import com.ifhz.core.service.imei.bean.StatImeiResult;
 import com.ifhz.core.service.stat.LogStatQueryService;
@@ -472,9 +470,9 @@ public class ReportCountController extends BaseController {
     }
 
     private StatImeiRequest getStatImeiRequestByQueryType(String queryType) {
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+       /* StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install,true);
         if ("1".equals(queryType)) {
-            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Process);
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install);
 //        } else if ("2".equals(queryType)) {
 //            statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Device_Upload);
         } else if ("3".equals(queryType)) {
@@ -495,7 +493,8 @@ public class ReportCountController extends BaseController {
         } else if ("8".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Day_Counter_Upload);
             statImeiRequest.setActive(QueryActive.UnAndRe);
-        }
-        return statImeiRequest;
+        }*/
+        LOGGER.info("此方法不支持");
+        return null;
     }
 }
