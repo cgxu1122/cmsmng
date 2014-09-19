@@ -609,6 +609,21 @@ public class ReportCountNewController extends BaseController {
         } else if ("12".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Total);
+        } else if ("13".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Valid);
+        } else if ("14".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Invalid);
+        } else if ("15".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Replace);
+        } else if ("16".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.Uninstall);
+        } else if ("17".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Install_Arrive, expertType);
+            statImeiRequest.setActive(QueryActive.UnAndRe);
         } else if ("21".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive, expertType);
             statImeiRequest.setActive(QueryActive.Total);

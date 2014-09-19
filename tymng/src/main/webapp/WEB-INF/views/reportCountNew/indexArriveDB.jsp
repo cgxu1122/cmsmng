@@ -58,8 +58,8 @@ function initPage() {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'channelName', title: '渠道商名称', align: 'center', width: 200},
                 {field: 'modelName', title: '机型全称', align: 'center', width: 200},
+                {field: 'channelName', title: '渠道商名称', align: 'center', width: 200},
                 {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {

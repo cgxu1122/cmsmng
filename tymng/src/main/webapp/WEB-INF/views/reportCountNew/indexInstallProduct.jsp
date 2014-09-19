@@ -83,6 +83,51 @@ function initPage() {
                             return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',12)>" + value + "</a>";
                         }
                     }
+                },
+                {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',13)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',14)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',15)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',16)>" + value + "</a>";
+                        }
+                    }
+                },
+                {field: 'unAndReNum', title: '卸载及替换数量', align: 'center', width: 200,
+                    formatter: function (value, row, index) {
+                        if (row.statDate == null) {
+                            return value;
+                        } else {
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',17)>" + value + "</a>";
+                        }
+                    }
                 }
             ]
         ]
