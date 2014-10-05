@@ -60,7 +60,7 @@ function initPage() {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'modelName', title: '机型名称', align: 'center', width: 200},
+                {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
                 {field: 'devicePrsDayNum', title: '装机数量', align: 'center', width: 200,
                     formatter: function (value, row, index) {
@@ -80,7 +80,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsActiveValidNum', title: '有效到达数量', align: 'center', width: 200,
+                {field: 'prsActiveValidNum', title: '有效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -89,7 +89,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsActiveInvalidNum', title: '无效到达数量', align: 'center', width: 200,
+                {field: 'prsActiveInvalidNum', title: '无效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -98,7 +98,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsInvalidReplaceNum', title: '替换数量', align: 'center', width: 200,
+                {field: 'prsInvalidReplaceNum', title: '替换', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -107,7 +107,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsInvalidUninstallNum', title: '卸载数量', align: 'center', width: 200,
+                {field: 'prsInvalidUninstallNum', title: '卸载', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;
@@ -116,7 +116,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'prsInvalidUnAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
+                {field: 'prsInvalidUnAndReNum', title: '替换加卸载', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.processDate == null) {
                             return value;

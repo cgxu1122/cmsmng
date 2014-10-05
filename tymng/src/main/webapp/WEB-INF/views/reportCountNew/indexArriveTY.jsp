@@ -60,9 +60,9 @@ function initPage() {
                         return new Date(value).formate("yyyy-MM-dd");
                     }
                 },
-                {field: 'modelName', title: '机型名称', align: 'center', width: 200},
+                {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                 {field: 'channelName', title: '仓库名称', align: 'center', width: 200},
-                {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
+                {field: 'totalNum', title: '累计到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -71,7 +71,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
+                {field: 'validNum', title: '有效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -80,7 +80,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
+                {field: 'invalidNum', title: '无效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -89,7 +89,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
+                {field: 'replaceNum', title: '替换', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -98,7 +98,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
+                {field: 'uninstallNum', title: '卸载', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -107,7 +107,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'unAndReNum', title: '替换加卸载数量', align: 'center', width: 200,
+                {field: 'unAndReNum', title: '替换加卸载', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;

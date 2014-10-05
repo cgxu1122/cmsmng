@@ -62,11 +62,11 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'modelName', title: '机型名称', align: 'center', width: 200},
+                {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                 {field: 'productName', title: '产品名称', align: 'center', width: 200},
                 {field: 'groupName', title: '渠道组织', align: 'center', width: 200},
                 {field: 'channelName', title: '渠道名称', align: 'center', width: 200},
-                {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
+                {field: 'totalNum', title: '累计到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -75,7 +75,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
+                {field: 'validNum', title: '有效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -84,7 +84,8 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
+                {field: 'deductionValidNum', title: '有效扣量', align: 'center', width: 150},
+                {field: 'invalidNum', title: '无效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -93,7 +94,8 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'replaceNum', title: '替换数量', align: 'center', width: 200,
+                {field: 'deductionInvalidNum', title: '无效扣量', align: 'center', width: 150},
+                {field: 'replaceNum', title: '替换', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -102,7 +104,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'uninstallNum', title: '卸载数量', align: 'center', width: 200,
+                {field: 'uninstallNum', title: '卸载', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;
@@ -111,7 +113,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'unAndReNum', title: '卸载并替换数量', align: 'center', width: 200,
+                {field: 'unAndReNum', title: '卸载并替换', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
                             return value;

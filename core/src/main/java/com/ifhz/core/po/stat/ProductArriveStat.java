@@ -45,6 +45,15 @@ public class ProductArriveStat implements Serializable {
      */
     private Long unAndReNum = 0L;
 
+    /**
+     * 设备当天到达-扣量有效总数
+     */
+    private Long deductionValidNum = 0L;
+    /**
+     * 设备当天到达-扣量无效总数
+     */
+    private Long deductionInvalidNum = 0L;
+
 
     private String md5Key;
     private Integer version;
@@ -60,6 +69,22 @@ public class ProductArriveStat implements Serializable {
     private String channelIdCondition;
     private Date startDate;
     private Date endDate;
+
+    public Long getDeductionValidNum() {
+        return deductionValidNum;
+    }
+
+    public void setDeductionValidNum(Long deductionValidNum) {
+        this.deductionValidNum = deductionValidNum;
+    }
+
+    public Long getDeductionInvalidNum() {
+        return deductionInvalidNum;
+    }
+
+    public void setDeductionInvalidNum(Long deductionInvalidNum) {
+        this.deductionInvalidNum = deductionInvalidNum;
+    }
 
     public Date getEndDate() {
         return endDate;
