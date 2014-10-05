@@ -18,7 +18,7 @@
     <entry key="aapt.work.dir">/sa/soft/adt-bundle-linux-x86_64-20140624/sdk/build-tools/android-4.4W</entry>
     <entry key="host.prefix">http://download.dfstock4g.com</entry>
     <entry key="db.basic.num">40</entry>
-    <entry key="qt.basic.num">50</entry>
+    <entry key="qt.basic.num">30</entry>
     <entry key="db.percentage">10</entry>
     <entry key="qt.percentage">10</entry>
 </properties>
