@@ -108,6 +108,19 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
         }
+        if (StringUtils.startsWith(type, "3")) {
+            ApkInfo temp = new ApkInfo();
+            temp.setType("3");
+            Pagination page = new Pagination();
+            page.setCurrentPage(1);
+            page.setPageSize(2);
+            List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
+            if (CollectionUtils.isNotEmpty(list)) {
+                result.put("errorMsg", "安装进度Apk已经存在，不允许新增");
+                return result;
+            }
+        }
+
         try {
             String storeLocalFilePath = localDirCacheService.storeApkFile(file.getInputStream(), originFileName);
             if (StringUtils.isBlank(storeLocalFilePath)) {
@@ -172,10 +185,29 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
         }
+        if (StringUtils.startsWith(type, "3")) {
+            ApkInfo temp = new ApkInfo();
+            temp.setType("3");
+            Pagination page = new Pagination();
+            page.setCurrentPage(1);
+            page.setPageSize(2);
+            List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
+            if (CollectionUtils.isNotEmpty(list)) {
+                result.put("errorMsg", "安装进度Apk已经存在，不允许新增");
+                return result;
+            }
+        }
         ApkInfo apkInfo = apkInfoService.getById(apkId);
         if (apkInfo == null) {
             result.put("errorMsg", "数据已被删除，请刷新!");
             return result;
+        }
+
+        if (StringUtils.startsWith(type, "3")) {
+            if (!StringUtils.equalsIgnoreCase(apkInfo.getType(), type)) {
+                result.put("errorMsg", "不允许将其他类型Apk修改为安装进度Apk，请新增安装进度Apk");
+                return result;
+            }
         }
 
         try {
@@ -250,6 +282,10 @@ public class ApkInfoController extends BaseController {
             if (ai == null) {
                 result.put("errorMsg", "数据已被其他人操作，请刷新!");
             } else {
+                if (StringUtils.startsWith(ai.getType(), "3")) {
+                    result.put("errorMsg", "不允许删除安装进度Apk");
+                    return result;
+                }
                 apkInfoService.delete(ai);
                 result.put("msg", "删除成功!");
             }

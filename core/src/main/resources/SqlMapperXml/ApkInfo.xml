@@ -140,6 +140,9 @@
         <if test="record.active != null and record.active != ''">
             and ACTIVE = #{record.active}
         </if>
+        <if test="record.type != null and record.type != ''">
+            and TYPE = #{record.type}
+        </if>
         order by UPDATE_TIME desc
     </select>
 

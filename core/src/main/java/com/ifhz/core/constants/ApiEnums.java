@@ -45,4 +45,30 @@ public final class ApiEnums {
             return null;
         }
     }
+
+    public static enum ApkVoType {
+        Normal(0, "1"),
+        Counter(1, "2"),
+        Install(2, "3");
+
+        public int VALUE;
+        public String TYPE;
+
+        ApkVoType(int VALUE, String TYPE) {
+            this.VALUE = VALUE;
+            this.TYPE = TYPE;
+        }
+
+        public static int getfromType(String type) {
+            if (StringUtils.isNotBlank(type)) {
+                for (ApkVoType temp : ApkVoType.values()) {
+                    if (StringUtils.equalsIgnoreCase(type, temp.TYPE)) {
+                        return temp.VALUE;
+                    }
+                }
+            }
+
+            return 0;
+        }
+    }
 }

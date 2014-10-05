@@ -106,12 +106,14 @@
                         {field: 'apkName', title: '产品名称', align: 'center', width: 150},
                         {field: 'softName', title: '软件名称', align: 'center', width: 200},
                         {field: 'downloadUrl', title: '下载路径', align: 'center', width: 400},
-                        {field: 'type', title: '是否计数器', align: 'center', width: 80,
+                        {field: 'type', title: 'apk类型', align: 'center', width: 80,
                             formatter: function (value) {
-                                if ("2" == value) {
-                                    return "是";
-                                } else if ("1" == value) {
-                                    return "否";
+                                if ("1" == value) {
+                                    return "普通Apk";
+                                } else if ("2" == value) {
+                                    return "计数器Apk";
+                                } else if ("3" == value) {
+                                    return "安装进度Apk";
                                 }
                                 return "";
                             }
@@ -181,10 +183,11 @@
             <input type="file" name="file"/>
         </div>
         <div class="fitem">
-            <label>是否计数器:</label>
+            <label>Apk类型:</label>
             <select class="easyui-combobox" name="type" id="type" style="width:150px;">
-                <option value="1">否</option>
-                <option value="2">是</option>
+                <option value="1">普通Apk</option>
+                <option value="2">计数器Apk</option>
+                <option value="3">安装进度Apk</option>
             </select>
         </div>
     </form>
@@ -211,10 +214,11 @@
             <input type="file" name="file"/>
         </div>
         <div class="fitem">
-            <label>是否计数器:</label>
+            <label>Apk类型:</label>
             <select class="easyui-combobox" name="type" id="upType" style="width:150px;">
-                <option value="1">否</option>
-                <option value="2">是</option>
+                <option value="1">普通Apk</option>
+                <option value="2">计数器Apk</option>
+                <option value="3">安装进度Apk</option>
             </select>
         </div>
 </div>

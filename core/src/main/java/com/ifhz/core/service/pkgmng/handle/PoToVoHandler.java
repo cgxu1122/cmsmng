@@ -45,9 +45,8 @@ public final class PoToVoHandler {
                     packageApkVos.add(packageApkVo);
                 }
             }
+
             vo.setApkList(packageApkVos);
-
-
         }
 
         return vo;
@@ -76,7 +75,7 @@ public final class PoToVoHandler {
         vo.setApkId(info.getApkId());
         vo.setMd5value(info.getMd5Value());
         vo.setPath(info.getDownloadUrl());
-        vo.setType(ApiEnums.UpdateType.Add.VALUE);
+        vo.setType(ApiEnums.ApkVoType.getfromType(info.getType().trim()));
         vo.setPackagePath(info.getPackagePath());
 
         return vo;

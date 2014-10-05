@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.ifhz.core.adapter.*;
 import com.ifhz.core.base.annotation.Log;
+import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.constants.Active;
 import com.ifhz.core.constants.ApiEnums;
 import com.ifhz.core.po.*;
@@ -165,6 +166,7 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
             paramList.addAll(commonPkgIdList);
         }
 
+
         if (CollectionUtils.isNotEmpty(paramList)) {
             List<ApkInfo> apkInfoList = apkInfoAdapter.queryListByApkIdList(paramList, startTime, endTime);
             if (CollectionUtils.isNotEmpty(apkInfoList)) {
@@ -176,6 +178,19 @@ public class PackageUpgradeServiceImpl implements PackageUpgradeService {
                         }
                     }
                 }
+            }
+        }
+
+        Pagination pagination = new Pagination();
+        pagination.setCurrentPage(1);
+        pagination.setPageSize(2);
+        ApkInfo apkInfo = new ApkInfo();
+        apkInfo.setType("3");
+        List<ApkInfo> progressApkInfoList = apkInfoAdapter.queryByVo(pagination, apkInfo);
+        if (CollectionUtils.isNotEmpty(progressApkInfoList)) {
+            ApkVo vo = PoToVoHandler.translateApkVo(progressApkInfoList.get(0));
+            if (vo != null) {
+                result.add(vo);
             }
         }
 
