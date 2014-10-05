@@ -182,8 +182,8 @@
             <label><font color="red">*</font>上传文件:</label>
             <input type="file" name="file"/>
         </div>
-        <div class="fitem">
-            <label>Apk类型:</label>
+        <div class="fitem" style="margin-left:3px">
+            <label><font color="red">*</font>Apk类型:</label>
             <select class="easyui-combobox" name="type" id="type" style="width:150px;">
                 <option value="1">普通Apk</option>
                 <option value="2">计数器Apk</option>
@@ -213,8 +213,8 @@
             <label><font color="red">*</font>上传文件:</label>
             <input type="file" name="file"/>
         </div>
-        <div class="fitem">
-            <label>Apk类型:</label>
+        <div class="fitem" style="margin-left:3px">
+            <label><font color="red">*</font>Apk类型:</label>
             <select class="easyui-combobox" name="type" id="upType" style="width:150px;">
                 <option value="1">普通Apk</option>
                 <option value="2">计数器Apk</option>

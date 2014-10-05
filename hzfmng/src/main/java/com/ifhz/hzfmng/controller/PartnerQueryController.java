@@ -568,6 +568,7 @@ public class PartnerQueryController extends BaseController {
             titleMap.put("channelName", "仓库名称");
             titleMap.put("modelName", "机型名称");
             titleMap.put("validNum", "有效到达数量");
+            titleMap.put("invalidNum", "无效到达数量");
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
             String localFilePath = localDirCacheService.getExcelTempPath();

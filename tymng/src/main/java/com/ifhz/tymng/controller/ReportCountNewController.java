@@ -813,7 +813,7 @@ public class ReportCountNewController extends BaseController {
             String exportType = request.getParameter("exportType");
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
-            titleMap.put("processDate", "日期");
+            titleMap.put("statDate", "日期");
             titleMap.put("modelName", "机型全称");
             titleMap.put("channelName", "仓库名称");
 

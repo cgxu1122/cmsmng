@@ -37,6 +37,12 @@ public class ApkInfoAdapterImpl implements ApkInfoAdapter {
     }
 
     @Override
+    public List<ApkInfo> queryChooseListByVo(Pagination page, ApkInfo record) {
+        List<ApkInfo> result = apkInfoMapper.queryChooseListByVo(page, record);
+        return result == null ? Lists.<ApkInfo>newArrayList() : result;
+    }
+
+    @Override
     public int insert(ApkInfo record) {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());

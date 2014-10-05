@@ -80,6 +80,34 @@ public class ApkInfoController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "/chooseList", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject chooseList(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String apkNameCondition = request.getParameter("apkNameCondition");
+        ApkInfo bi = new ApkInfo();
+        bi.setActive(JcywConstants.ACTIVE_Y);
+        bi.setApkNameCondition(apkNameCondition);
+        List<ApkInfo> list = apkInfoService.queryChooseListByVo(page, bi);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (ApkInfo apkInfo : list) {
+                if (StringUtils.isNotBlank(apkInfo.getDownloadUrl())) {
+                    apkInfo.setDownloadUrl(HostsHandle.getHostPrefix() + apkInfo.getDownloadUrl());
+                }
+            }
+        }
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
     @RequestMapping(value = "/insert", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject insert(@RequestParam(value = "file", required = true) MultipartFile file,
@@ -116,7 +144,7 @@ public class ApkInfoController extends BaseController {
             page.setPageSize(2);
             List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
             if (CollectionUtils.isNotEmpty(list)) {
-                result.put("errorMsg", "安装进度Apk已经存在，不允许新增");
+                result.put("errorMsg", "安装进度Apk已经存在，系统内只允许存在一个。");
                 return result;
             }
         }
@@ -185,18 +213,7 @@ public class ApkInfoController extends BaseController {
             result.put("errorMsg", "产品名称重复，请重新输入！");
             return result;
         }
-        if (StringUtils.startsWith(type, "3")) {
-            ApkInfo temp = new ApkInfo();
-            temp.setType("3");
-            Pagination page = new Pagination();
-            page.setCurrentPage(1);
-            page.setPageSize(2);
-            List<ApkInfo> list = apkInfoService.queryByVo(page, temp);
-            if (CollectionUtils.isNotEmpty(list)) {
-                result.put("errorMsg", "安装进度Apk已经存在，不允许新增");
-                return result;
-            }
-        }
+
         ApkInfo apkInfo = apkInfoService.getById(apkId);
         if (apkInfo == null) {
             result.put("errorMsg", "数据已被删除，请刷新!");
@@ -205,7 +222,7 @@ public class ApkInfoController extends BaseController {
 
         if (StringUtils.startsWith(type, "3")) {
             if (!StringUtils.equalsIgnoreCase(apkInfo.getType(), type)) {
-                result.put("errorMsg", "不允许将其他类型Apk修改为安装进度Apk，请新增安装进度Apk");
+                result.put("errorMsg", "不允许将其他类型Apk修改为安装进度Apk，如有必要请新增[安装进度Apk]");
                 return result;
             }
         }

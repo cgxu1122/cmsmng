@@ -146,6 +146,26 @@
         order by UPDATE_TIME desc
     </select>
 
+    <select id="queryChooseListByVo" parameterType="com.ifhz.core.po.ApkInfo" resultMap="ApkInfoResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        and TYPE != '3'
+        <if test="record.apkName != null and record.apkName != ''">
+            and APK_NAME = #{record.apkName}
+        </if>
+        <if test="record.apkNameCondition != null and record.apkNameCondition != ''">
+            and APK_NAME LIKE concat(concat('%',#{record.apkNameCondition}),'%' )
+        </if>
+        <if test="record.softName != null and record.softName != ''">
+            and SOFT_NAME = #{record.softName}
+        </if>
+        <if test="record.active != null and record.active != ''">
+            and ACTIVE = #{record.active}
+        </if>
+        order by UPDATE_TIME desc
+    </select>
+
 
     <!-- 查询需要更新apkLib集合 -->
     <select id="queryUpgradeList" resultMap="ApkInfoResultMap">

@@ -51,6 +51,11 @@ public class ApkInfoServiceImpl implements ApkInfoService {
     }
 
     @Override
+    public List<ApkInfo> queryChooseListByVo(Pagination page, ApkInfo record) {
+        return apkInfoAdapter.queryChooseListByVo(page, record);
+    }
+
+    @Override
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(ApkInfo record) {

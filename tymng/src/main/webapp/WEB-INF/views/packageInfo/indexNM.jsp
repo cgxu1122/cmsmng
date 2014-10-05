@@ -252,7 +252,7 @@ function showApkDialog(type) {
         fitColumns: true,
         striped: true,
         singleSelect: true,
-        url: '<%=basePath%>/tymng/apkInfo/list',
+        url: '<%=basePath%>/tymng/apkInfo/chooseList',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,

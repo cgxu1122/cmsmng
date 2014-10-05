@@ -17,6 +17,9 @@ public interface ApkInfoService {
 
     public List<ApkInfo> queryByVo(Pagination page, ApkInfo record);
 
+    public List<ApkInfo> queryChooseListByVo(Pagination page, ApkInfo record);
+
+
     public int insert(ApkInfo record);
 
     public int update(ApkInfo record);
