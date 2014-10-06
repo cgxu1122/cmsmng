@@ -319,9 +319,11 @@ public class PartnerQueryController extends BaseController {
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
-            titleMap.put("processDate", "日期");
+            titleMap.put("statDate", "日期");
             titleMap.put("modelName", "机型名称");
-            titleMap.put("productPrsDayNum", "装机数量");
+            titleMap.put("productName", "产品名称");
+            titleMap.put("installTotalNum", "装机数量");
+
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
 
@@ -563,8 +565,7 @@ public class PartnerQueryController extends BaseController {
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
-            titleMap.put("processDate", "日期");
-            titleMap.put("deviceCode", "设备编码");
+            titleMap.put("statDate", "日期");
             titleMap.put("channelName", "仓库名称");
             titleMap.put("modelName", "机型名称");
             titleMap.put("validNum", "有效到达数量");
@@ -663,9 +664,11 @@ public class PartnerQueryController extends BaseController {
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
-            titleMap.put("processDate", "日期");
+            titleMap.put("statDate", "日期");
             titleMap.put("modelName", "机型名称");
-            titleMap.put("validNum", "有效装机数量");
+            titleMap.put("productName", "产品名称");
+            titleMap.put("validNum", "有效到达数量");
+            titleMap.put("invalidNum", "无效到达数量");
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
 

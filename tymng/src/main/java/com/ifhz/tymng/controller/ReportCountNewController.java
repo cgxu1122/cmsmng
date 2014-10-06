@@ -447,13 +447,18 @@ public class ReportCountNewController extends BaseController {
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
-            titleMap.put("processDate", "日期");
+            titleMap.put("statDate", "日期");
             titleMap.put("modelName", "机型名称");
             titleMap.put("productName", "产品名称");
             titleMap.put("groupName", "渠道组织");
             titleMap.put("channelName", "渠道名称");
             titleMap.put("installTotalNum", "装机数量");
             titleMap.put("totalNum", "装机到达数量");
+            titleMap.put("validNum", "有效到达数量");
+            titleMap.put("invalidNum", "无效到达数量");
+            titleMap.put("replaceNum", "替换数量");
+            titleMap.put("uninstallNum", "卸载数量");
+            titleMap.put("unAndReNum", "卸载并替换数量");
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
             String localFilePath = localDirCacheService.getExcelTempPath();
