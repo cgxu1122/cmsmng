@@ -34,6 +34,7 @@ function resetEvt() {
     $('#modelName').val("");
     $('#productId').val("");
     $('#productName').val("");
+    $('#channelName').val("");
     $("#channelIdCondition").val("");
 }
 
