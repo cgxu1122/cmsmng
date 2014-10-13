@@ -85,7 +85,6 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'deductionValidNum', title: '有效扣量', align: 'center', width: 150},
                 {field: 'invalidNum', title: '无效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
@@ -95,7 +94,6 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'deductionInvalidNum', title: '无效扣量', align: 'center', width: 150},
                 {field: 'replaceNum', title: '替换', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
