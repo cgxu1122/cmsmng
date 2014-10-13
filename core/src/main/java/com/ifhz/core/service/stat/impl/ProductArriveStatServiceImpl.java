@@ -108,37 +108,7 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
         if (CollectionUtils.isNotEmpty(result)) {
             for (ProductArriveStat productArriveStat : result) {
                 String ua = productArriveStat.getUa();
-                if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = null;
-                    try {
-                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productArriveStat.getGroupId());
-                    } catch (Exception e) {
-                        LOGGER.error("getByUaAndGrouId error", e);
-                    }
-                    if (modelInfo != null) {
-                        productArriveStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
-                    } else {
-                        productArriveStat.setModelName("未知(" + ua + ")");
-                    }
-                } else {
-                    productArriveStat.setModelName("未知()");
-                }
-
-                Long channelId = productArriveStat.getChannelId();
-                if (channelId != null) {
-                    ChannelInfo channelInfo = null;
-                    try {
-                        channelInfo = channelInfoCacheService.getByChannelId(channelId);
-                    } catch (Exception e) {
-                        LOGGER.error("getByChannelId error", e);
-                    }
-                    if (channelInfo != null) {
-                        productArriveStat.setChannelName(channelInfo.getChannelName());
-                    } else {
-                        productArriveStat.setModelName("未知");
-                    }
-                }
-
+                productArriveStat.setModelName(ua);
                 if (productArriveStat.getProductId() != null) {
                     ProductInfo productInfo = productInfoCacheService.getById(productArriveStat.getProductId());
                     if (productInfo != null) {

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -154,35 +155,41 @@ public class ApkInfoController extends BaseController {
             if (StringUtils.isBlank(storeLocalFilePath)) {
                 throw new Exception("上传文件保存出错，请重新操作");
             }
-            md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+            long newSize = getFileSizes(new File(storeLocalFilePath));
+            LOGGER.info("origin File Size = {}", file.getSize());
+            LOGGER.info("new    File Size = {}", newSize);
+            if (file.getSize() == newSize) {
+                md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+                ApkInfo po = new ApkInfo();
+                po.setApkName(apkName.trim());
+                String packagePath = null;
+                if (StringUtils.containsIgnoreCase(type, "2")) {
+                    packagePath = CountPkgPath;
+                } else {
+                    packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+                }
+                LOGGER.info("packagePath={}", packagePath);
+                if (StringUtils.isNotBlank(packagePath)) {
+                    po.setPackagePath(packagePath);
+                }
 
-            ApkInfo po = new ApkInfo();
-            po.setApkName(apkName.trim());
-            String packagePath = null;
-            if (StringUtils.containsIgnoreCase(type, "2")) {
-                packagePath = CountPkgPath;
+                String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
+                path = StringUtils.replace(path, "\\", "/");
+                path = StringUtils.replace(path, Store_APK_Path, "");
+                path = StringUtils.replace(path, "D:/upload", "");
+                po.setApkName(apkName.trim());
+                po.setSoftName(originFileName.trim());
+                po.setActive(JcywConstants.ACTIVE_Y);
+                po.setFtpPath(path.trim());
+                po.setDownloadUrl(path.trim());
+                po.setMd5Value(md5Value);
+                po.setType(type);
+                po.setFileUpdateTime(new Date());
+                apkInfoService.insert(po);
+                result.put("msg", "添加成功!");
             } else {
-                packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+                result.put("errorMsg", "保存失败，请重新上传！");
             }
-            if (StringUtils.isNotBlank(packagePath)) {
-                po.setPackagePath(packagePath);
-            }
-
-            String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
-            path = StringUtils.replace(path, "\\", "/");
-            path = StringUtils.replace(path, Store_APK_Path, "");
-            path = StringUtils.replace(path, "D:/upload", "");
-            po.setApkName(apkName.trim());
-            po.setSoftName(originFileName.trim());
-            po.setActive(JcywConstants.ACTIVE_Y);
-            po.setFtpPath(path.trim());
-            po.setDownloadUrl(path.trim());
-            po.setMd5Value(md5Value);
-            po.setType(type);
-            po.setFileUpdateTime(new Date());
-            apkInfoService.insert(po);
-            result.put("msg", "添加成功!");
-
         } catch (Exception e) {
             LOGGER.error("insert DeviceSystem error", e);
             result.put("errorMsg", "保存失败，请重新上传或者联系管理员！");
@@ -241,27 +248,36 @@ public class ApkInfoController extends BaseController {
                 if (StringUtils.isBlank(storeLocalFilePath)) {
                     throw new Exception("上传文件保存出错，请重新操作");
                 }
-                md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
-                String packagePath;
-                if (StringUtils.containsIgnoreCase(type, "2")) {
-                    packagePath = CountPkgPath;
+                long newSize = getFileSizes(new File(storeLocalFilePath));
+                LOGGER.info("origin File Size = {}", file.getSize());
+                LOGGER.info("new    File Size = {}", newSize);
+                if (file.getSize() == newSize) {
+                    md5Value = DesencryptUtils.md5File(new File(storeLocalFilePath));
+                    String packagePath;
+                    if (StringUtils.containsIgnoreCase(type, "2")) {
+                        packagePath = CountPkgPath;
+                    } else {
+                        packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+                    }
+                    LOGGER.info("packagePath={}", packagePath);
+                    if (StringUtils.isNotBlank(packagePath)) {
+                        apkInfo.setPackagePath(packagePath);
+                    }
+
+                    String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
+                    path = StringUtils.replace(path, "\\", "/");
+                    path = StringUtils.replace(path, Store_APK_Path, "");
+                    path = StringUtils.replace(path, "D:/upload", "");
+
+                    apkInfo.setSoftName(originFileName);
+                    apkInfo.setFtpPath(path);
+                    apkInfo.setDownloadUrl(path);
+                    apkInfo.setMd5Value(md5Value);
+                    apkInfo.setFileUpdateTime(new Date());
                 } else {
-                    packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
+                    result.put("errorMsg", "保存失败，请重新上传！");
+                    return result;
                 }
-                if (StringUtils.isNotBlank(packagePath)) {
-                    apkInfo.setPackagePath(packagePath);
-                }
-
-                String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
-                path = StringUtils.replace(path, "\\", "/");
-                path = StringUtils.replace(path, Store_APK_Path, "");
-                path = StringUtils.replace(path, "D:/upload", "");
-
-                apkInfo.setSoftName(originFileName);
-                apkInfo.setFtpPath(path);
-                apkInfo.setDownloadUrl(path);
-                apkInfo.setMd5Value(md5Value);
-                apkInfo.setFileUpdateTime(new Date());
             }
 
             apkInfo.setApkName(apkName.trim());
@@ -275,6 +291,10 @@ public class ApkInfoController extends BaseController {
         }
 
         return result;
+    }
+
+    public long getFileSizes(File file) throws Exception {//取得文件大小
+        return new FileInputStream(file).available();
     }
 
     @RequestMapping(value = "/delete", produces = {"application/json;charset=UTF-8"})

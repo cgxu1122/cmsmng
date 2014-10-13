@@ -587,7 +587,7 @@ public class PartnerQueryController extends BaseController {
 
     @RequestMapping(value = "/listProductArriveStat", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject listProductArriveStatTemp(HttpServletRequest request) {
+    public JSONObject listProductArriveStat(HttpServletRequest request) {
         /**分页*/
         String pageNum = request.getParameter("page");
         String pageSize = request.getParameter("rows");
@@ -639,7 +639,6 @@ public class PartnerQueryController extends BaseController {
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-        String groupId = request.getParameter("groupId");
         JSONObject result = new JSONObject();
         try {
             ProductArriveStat productArriveStat = new ProductArriveStat();

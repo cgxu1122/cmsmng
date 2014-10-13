@@ -107,8 +107,8 @@
             and CHANNEL_ID = #{record.channelId}
         </if>
 
-        <if test="groupId != null and groupId != ''">
-            and GROUP_ID = #{groupId}
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
         </if>
 
         <if test="record.productId != null and record.productId != ''">
