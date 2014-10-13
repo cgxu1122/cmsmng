@@ -355,7 +355,7 @@ public class PartnerQueryController extends BaseController {
         String ua = request.getParameter("ua");
         String queryType = request.getParameter("queryType");
         String count = request.getParameter("count");
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, false);
+        StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, false);
         if (StringUtils.isNotEmpty(queryType)) {
             statImeiRequest = getStatImeiRequestByQueryType(queryType, false);
         }
@@ -424,7 +424,7 @@ public class PartnerQueryController extends BaseController {
                 }
             }
             String queryType = request.getParameter("queryType");
-            StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, true);
+            StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, true);
             if (StringUtils.isNotEmpty(queryType)) {
                 statImeiRequest = getStatImeiRequestByQueryType(queryType, true);
             }
