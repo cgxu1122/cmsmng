@@ -90,6 +90,8 @@ function editrow() {
                 }
             }
         }
+        $("#updateChannelCountLabel").html(pubChlList.length);
+        $("#updateModelCountLabel").html(pubModList.length);
     }
 }
 
@@ -260,14 +262,18 @@ function selectModel(modelId, modelName) {
     var modelHtml = "<tr>" +
             "<input type='hidden' name='modelId' value='" + modelId + "'>" +
             "<td><input type='text' name='modelName' value='" + modelName + "' readonly='readonly'></td>" +
-            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addModelList.pop(" + modelId + ");'>删除</a></td>" +
+            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delAddModel(" + modelId + ");'>删除</a></td>" +
             "</tr>";
     if (!addModelList.in_array(modelId)) {
         addModelList.push(modelId);
         $('#addModelList').append(modelHtml);
     }
+    $("#addModelCountLabel").html(addModelList.length);
 }
-
+function delAddModel(modelId) {
+    addModelList.pop(modelId);
+    $("#addModelCountLabel").html(addModelList.length);
+}
 function showChannelDialog() {
     $('#channeldlg').dialog('open').dialog('setTitle', '选择渠道');
     var groupId = $('#groupId').combobox('getValue');
@@ -290,12 +296,17 @@ function selectChannel(channelId, channelName) {
     var channelHtml = "<tr>" +
             "<input type='hidden' name='channelId' value='" + channelId + "'>" +
             "<td><input type='text' name='channelName' value='" + channelName + "' readonly='readonly'></td>" +
-            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addChannelList.pop(" + channelId + ");'>删除</a></td>" +
+            "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delAddChannel(" + channelId + ");'>删除</a></td>" +
             "</tr>";
     if (!addChannelList.in_array(channelId)) {
         addChannelList.push(channelId);
         $('#addChannelList').append(channelHtml);
     }
+    $("#addChannelCountLabel").html(addChannelList.length);
+}
+function delAddChannel(channelId) {
+    addChannelList.pop(channelId);
+    $("#addChannelCountLabel").html(addChannelList.length);
 }
 
 </script>
@@ -361,6 +372,7 @@ function selectChannel(channelId, channelName) {
             <label><font color="red">*</font>选择安装仓库:</label>
             <a href="javascript:void(0)"
                onclick="showChannelDialog()">选择</a>
+            <label id="addChannelCountLabel"></label>
 
             <table id="addChannelList" style="border: solid thin">
             </table>
@@ -369,6 +381,7 @@ function selectChannel(channelId, channelName) {
             <label><font color="red">*</font>选择安装机型:</label>
             <a href="javascript:void(0)"
                onclick="showModelDialog()">选择</a>
+            <label id="addModelCountLabel"></label>
 
             <table id="addModelList" style="border: solid thin">
             </table>
@@ -399,13 +412,13 @@ function selectChannel(channelId, channelName) {
         </div>
         <div class="fitem" id="updateChannelDiv" style="margin-left:12px">
             <label>安装仓库:</label>
-
+            <label id="updateChannelCountLabel"></label>
             <table id="updateChannelList" style="border: solid thin">
             </table>
         </div>
         <div class="fitem" style="margin-left:12px" id="updateModelDiv">
             <label>安装机型:</label>
-
+            <label id="updateModelCountLabel"></label>
             <table id="updateModelList" style="border: solid thin">
             </table>
         </div>

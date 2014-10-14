@@ -89,12 +89,21 @@ function copyrow() {
                         "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
-                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addApkList.pop(" + packageApkRefList[i].apkId + ");'>删除</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delAddApk(" + packageApkRefList[i].apkId + ");'>删除</a></td>" +
                         "</tr>";
                 $('#addApkList').append(apkHtml);
             }
         }
+        $("#addApkCountLabel").html(addApkList.length);
     }
+}
+function delAddApk(apkId) {
+    addApkList.pop(apkId);
+    $("#addApkCountLabel").html(addApkList.length);
+}
+function delUpdateApk(apkId) {
+    updateApkList.pop(apkId);
+    $("#updateApkCountLabel").html(updateApkList.length);
 }
 function editrow() {
     $("#upApkList").empty();
@@ -130,11 +139,12 @@ function editrow() {
                         "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
                         "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
-                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateApkList.pop(" + packageApkRefList[i].apkId + ");'>删除</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delUpdateApk(" + packageApkRefList[i].apkId + ");'>删除</a></td>" +
                         "</tr>";
                 $('#upApkList').append(apkHtml);
             }
         }
+        $("#updateApkCountLabel").html(updateApkList.length);
     }
 }
 function saveUpdate() {
@@ -319,12 +329,13 @@ function selectApk(apkId, apkName, apkType, type) {
                 "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
                 "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
                 "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
-                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateApkList.pop(" + apkId + ");'>删除</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delUpdateApk(" + apkId + ");'>删除</a></td>" +
                 "</tr>";
         if (!updateApkList.in_array(apkId)) {
             updateApkList.push(apkId);
             $('#upApkList').append(apkHtml);
         }
+        $("#updateApkCountLabel").html(updateApkList.length);
     } else if (type == 1) {//新增
         var apkHtml = "<tr>" +
                 "<input type='hidden' name='apkId' value='" + apkId + "'>" +
@@ -335,12 +346,13 @@ function selectApk(apkId, apkName, apkType, type) {
                 "<input type='hidden' name='desktopIcon' value='" + desktopIconVal + "'>" +
                 "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveUp($(this).parent().parent())'>上移</a></td>" +
                 "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='moveDown($(this).parent().parent())'>下移</a></td>" +
-                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addApkList.pop(" + apkId + ");'>删除</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delAddApk(" + apkId + ");'>删除</a></td>" +
                 "</tr>";
         if (!addApkList.in_array(apkId)) {
             addApkList.push(apkId);
             $('#addApkList').append(apkHtml);
         }
+        $("#addApkCountLabel").html(addApkList.length);
     }
 
 }
@@ -416,6 +428,7 @@ function selectApk(apkId, apkName, apkType, type) {
             <label>选择APK:</label>
             <a href="javascript:void(0)"
                onclick="showApkDialog(1)">选择</a>
+            <label id="addApkCountLabel"></label>
 
             <table id="addApkList" style="border: solid thin">
             </table>
@@ -457,6 +470,7 @@ function selectApk(apkId, apkName, apkType, type) {
             <label>选择APK:</label>
             <a href="javascript:void(0)"
                onclick="showApkDialog(2)">选择</a>
+            <label id="updateApkCountLabel"></label>
 
             <table id="upApkList" style="border: solid thin">
             </table>
