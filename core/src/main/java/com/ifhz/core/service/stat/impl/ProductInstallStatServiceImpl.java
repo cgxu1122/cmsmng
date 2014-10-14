@@ -108,25 +108,7 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
         if (CollectionUtils.isNotEmpty(result)) {
             for (ProductInstallStat productInstallStat : result) {
                 String ua = productInstallStat.getUa();
-                if (StringUtils.isNotEmpty(ua)) {
-                    ModelInfo modelInfo = null;
-                    try {
-                        modelInfo = modelInfoCacheService.getByUaAndGrouId(ua, productInstallStat.getGroupId());
-                    } catch (Exception e) {
-                        LOGGER.error("getByUaAndGrouId error", e);
-                    }
-                    if (modelInfo != null) {
-                        productInstallStat.setModelName(modelInfo.getModelName() + "(" + ua + ")");
-                    } else {
-                        productInstallStat.setModelName("未知(" + ua + ")");
-                    }
-                } else {
-                    productInstallStat.setModelName("未知()");
-                }
-                if (productInstallStat.getGroupId() != null) {
-                    productInstallStat.setGroupName(GroupEnums.fromByValue(productInstallStat.getGroupId()).name);
-                }
-
+                productInstallStat.setModelName(ua);
                 if (productInstallStat.getProductId() != null) {
                     ProductInfo productInfo = productInfoCacheService.getById(productInstallStat.getProductId());
                     if (productInfo != null) {

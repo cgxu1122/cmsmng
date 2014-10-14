@@ -972,33 +972,33 @@ public class ReportCountNewController extends BaseController {
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
             String channelIdCondition = request.getParameter("channelIdCondition");
-            ProductInstallStat productInstallStat = new ProductInstallStat();
+            ProductArriveStat productArriveStat = new ProductArriveStat();
             if (StringUtils.isNotEmpty(channelIdCondition)) {
-                productInstallStat.setChannelIdCondition(channelIdCondition);
+                productArriveStat.setChannelIdCondition(channelIdCondition);
             }
             if (StringUtils.isNotEmpty(productId)) {
-                productInstallStat.setProductId(Long.parseLong(productId));
+                productArriveStat.setProductId(Long.parseLong(productId));
             }
             if (StringUtils.isNotEmpty(ua)) {
-                productInstallStat.setUa(ua.trim());
+                productArriveStat.setUa(ua.trim());
             }
             if (StringUtils.isNotEmpty(startDate)) {
-                productInstallStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+                productArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
             }
             if (StringUtils.isNotEmpty(endDate)) {
-                productInstallStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+                productArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
             }
             Pagination page = new Pagination();
             page.setCurrentPage(1);
             page.setPageSize(Integer.valueOf(GlobalConstants.GLOBAL_CONFIG.get(GlobalConstants.EXPORT_NUM_MAX)));
-            List<ProductInstallStat> list = productInstallStatService.queryByVo(page, productInstallStat);
+            List<ProductArriveStat> list = productArriveStatService.queryByVo(page, productArriveStat);
             if (CollectionUtils.isNotEmpty(list)) {
-                ProductInstallStat countProductInstallStat = productInstallStatService.queryCountByVo(productInstallStat);
-                list.add(countProductInstallStat);
+                ProductArriveStat countProductArriveStat = productArriveStatService.queryCountByVo(productArriveStat);
+                list.add(countProductArriveStat);
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
-            titleMap.put("processDate", "日期");
+            titleMap.put("statDate", "日期");
             titleMap.put("modelName", "机型名称");
             titleMap.put("productName", "产品名称");
             titleMap.put("groupName", "渠道组织");

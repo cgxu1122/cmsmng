@@ -438,7 +438,7 @@ function exportData() {
     <div id="channeldg"></div>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
        onclick="javascript:selectChannel();">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>

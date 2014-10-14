@@ -103,6 +103,25 @@ public class ProductArriveStatServiceImpl implements ProductArriveStatService {
     }
 
     @Override
+    public List<ProductArriveStat> querySumByVo(Pagination pagination, ProductArriveStat record) {
+        List<ProductArriveStat> result = productArriveStatAdapter.querySumByVo(pagination, record);
+        if (CollectionUtils.isNotEmpty(result)) {
+            for (ProductArriveStat productArriveStat : result) {
+                String ua = productArriveStat.getUa();
+                productArriveStat.setModelName(ua);
+                if (productArriveStat.getProductId() != null) {
+                    ProductInfo productInfo = productInfoCacheService.getById(productArriveStat.getProductId());
+                    if (productInfo != null) {
+                        productArriveStat.setProductName(productInfo.getProductName());
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public ProductArriveStat queryCountByVo(ProductArriveStat record) {
         return productArriveStatAdapter.queryCountByVo(record);
     }

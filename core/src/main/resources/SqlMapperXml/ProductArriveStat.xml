@@ -18,8 +18,6 @@
         <result column="REPLACE_NUM" property="replaceNum" jdbcType="BIGINT"/>
         <result column="UNINSTALL_NUM" property="uninstallNum" jdbcType="BIGINT"/>
         <result column="UN_AND_RE_NUM" property="unAndReNum" jdbcType="BIGINT"/>
-        <result column="deductionValidNum" property="deductionValidNum" jdbcType="BIGINT"/>
-        <result column="deductionInvalidNum" property="deductionInvalidNum" jdbcType="BIGINT"/>
 
         <result column="MD5_KEY" property="md5Key" jdbcType="VARCHAR"/>
         <result column="VERSION" property="version" jdbcType="BIGINT"/>
@@ -124,14 +122,10 @@
         stat.UNINSTALL_NUM,
         stat.UN_AND_RE_NUM,
         stat.MD5_KEY,
-        stat.VERSION,
-        stat.VALID_NUM deductionValidNum,
-        stat.INVALID_NUM deductionInvalidNum
+        stat.VERSION
         from
         <include refid="TABLE_NAME"/>
         stat
-        left join TY_PRODUCT_ARRIVE_STAT_TEMP temp
-        on stat.ID = temp.ID
         where 1=1
         <if test="record.channelIdCondition != null">
             and stat.CHANNEL_ID in (${record.channelIdCondition})
@@ -158,6 +152,50 @@
         order by stat.STAT_DATE desc
     </select>
 
+    <select id="querySumByVo" resultMap="BaseResultMap">
+        select
+        PRODUCT_ID,
+        UA,
+        STAT_DATE,
+        sum(VALID_NUM) VALID_NUM,
+        sum(INVALID_NUM) INVALID_NUM
+        from
+        <include refid="TABLE_NAME"/>
+        where 1=1
+        <if test="record.partnerId != null and record.partnerId != ''">
+            and exists (
+            select info.PRODUCT_ID from TY_PRODUCT_INFO info
+            where PARTNER_ID = #{partnerId}
+            and info.QUERY_DATA_SOURCE= 'Y'
+            and info.PRODUCT_ID = PRODUCT_ID
+            )
+        </if>
+        <if test="record.channelId != null">
+            and CHANNEL_ID = #{record.channelId}
+        </if>
+
+        <if test="record.groupId != null and record.groupId != ''">
+            and GROUP_ID = #{record.groupId}
+        </if>
+
+        <if test="record.productId != null and record.productId != ''">
+            and PRODUCT_ID = #{record.productId}
+        </if>
+        <if test="record.ua != null and record.ua != ''">
+            and UA = #{record.ua}
+        </if>
+        <if test="record.startDate != null">
+            and STAT_DATE >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null">
+            <![CDATA[
+            and STAT_DATE <= #{record.endDate}
+            ]]>
+        </if>
+        group by PRODUCT_ID,UA,STAT_DATE
+        order by STAT_DATE desc
+    </select>
+
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductArriveStat"
             resultMap="BaseResultMap">
         select
@@ -166,14 +204,10 @@
         sum(stat.INVALID_NUM) INVALID_NUM,
         sum(stat.REPLACE_NUM) REPLACE_NUM,
         sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
-        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM,
-        sum(temp.VALID_NUM) deductionValidNum,
-        sum(temp.INVALID_NUM) deductionInvalidNum
+        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
         from
         <include refid="TABLE_NAME"/>
         stat
-        left join TY_PRODUCT_ARRIVE_STAT_TEMP temp
-        on stat.ID = temp.ID
         where 1=1
         <if test="channelIdCondition != null">
             and stat.CHANNEL_ID in (${channelIdCondition})

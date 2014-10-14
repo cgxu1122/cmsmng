@@ -67,7 +67,6 @@ public final class AnalysisApkFile {
         return result;
     }
 
-
     private static String parseActivtyPath(String input) {
         if (StringUtils.isNotBlank(input)) {
             String temp = input.substring(input.indexOf("\'") + 1);

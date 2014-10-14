@@ -25,6 +25,8 @@ public interface ProductArriveStatMapper {
 
     public List<ProductArriveStat> queryByVo(Pagination pagination, @Param("record") ProductArriveStat record);
 
+    public List<ProductArriveStat> querySumByVo(Pagination pagination, @Param("record") ProductArriveStat record);
+
     public ProductArriveStat queryCountByVo(ProductArriveStat record);
 
     public long queryTotalCount(@Param(value = "startTime") Date startTime,

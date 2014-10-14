@@ -22,7 +22,7 @@
             var endDate = $('#endDate').datebox('getValue');
             var productId = $('#productId').val();
             $('#dg').datagrid({
-                url: "<%=basePath%>/hzfmng/partnerQuery/listProductArriveStatTemp",
+                url: "<%=basePath%>/hzfmng/partnerQuery/listProductArriveStat",
                 queryParams: {productId: productId, startDate: startDate, endDate: endDate}
             });
         }
@@ -34,7 +34,7 @@
                 fitColumns: true,
                 striped: true,
                 singleSelect: true,
-                url: '<%=basePath%>/hzfmng/partnerQuery/listProductArriveStatTemp',
+                url: '<%=basePath%>/hzfmng/partnerQuery/listProductArriveStat',
                 queryParams: {startDate: startDate, endDate: endDate},
                 loadMsg: '数据加载中请稍后……',
                 pagination: true,
@@ -140,7 +140,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName, groupId: groupId, count: count, queryType: queryType},
+                queryParams: {processDate: processDate, ua: ua, productId: productId, modelName: modelName, count: count, queryType: queryType},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -159,7 +159,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?queryType=3&userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&groupId=" + groupIdCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?queryType=12&userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');
@@ -177,7 +177,7 @@
             var productId = $('#productId').val();
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportProductArriveTempData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportProductArriveData?startDate=" + startDate + "&endDate=" + endDate + "&productId=" + productId,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

@@ -79,7 +79,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'deductionValidNum', title: '有效扣量', align: 'center', width: 150},
+                {field: 'deductionValidNum', title: '有效结算', align: 'center', width: 150},
                 {field: 'invalidNum', title: '无效到达', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
@@ -89,7 +89,7 @@ function initPage() {
                         }
                     }
                 },
-                {field: 'deductionInvalidNum', title: '无效扣量', align: 'center', width: 150},
+                {field: 'deductionInvalidNum', title: '无效结算', align: 'center', width: 150},
                 {field: 'replaceNum', title: '替换', align: 'center', width: 200,
                     formatter: function (value, row, index) {
                         if (row.statDate == null) {
@@ -383,7 +383,7 @@ function exportData() {
     <div id="channeldg"></div>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
        onclick="javascript:selectChannel();">确定</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#channeldlg').dialog('close')">关闭</a>

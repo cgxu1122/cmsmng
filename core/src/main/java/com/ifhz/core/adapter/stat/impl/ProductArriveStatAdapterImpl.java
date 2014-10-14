@@ -50,6 +50,12 @@ public class ProductArriveStatAdapterImpl implements ProductArriveStatAdapter {
     }
 
     @Override
+    public List<ProductArriveStat> querySumByVo(Pagination pagination, ProductArriveStat record) {
+        List<ProductArriveStat> result = productArriveStatMapper.querySumByVo(pagination, record);
+        return result == null ? Lists.<ProductArriveStat>newArrayList() : result;
+    }
+
+    @Override
     public ProductArriveStat queryCountByVo(ProductArriveStat record) {
         return productArriveStatMapper.queryCountByVo(record);
     }

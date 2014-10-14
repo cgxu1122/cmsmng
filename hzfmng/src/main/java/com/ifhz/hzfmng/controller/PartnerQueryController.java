@@ -11,7 +11,7 @@ import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.LogStat;
 import com.ifhz.core.po.PartnerInfo;
 import com.ifhz.core.po.stat.LogArriveStatTemp;
-import com.ifhz.core.po.stat.ProductArriveStatTemp;
+import com.ifhz.core.po.stat.ProductArriveStat;
 import com.ifhz.core.po.stat.ProductInstallStat;
 import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.cache.LocalDirCacheService;
@@ -26,7 +26,7 @@ import com.ifhz.core.service.partner.PartnerInfoService;
 import com.ifhz.core.service.product.ProductInfoService;
 import com.ifhz.core.service.stat.LogArriveStatTempService;
 import com.ifhz.core.service.stat.LogStatQueryService;
-import com.ifhz.core.service.stat.ProductArriveStatTempService;
+import com.ifhz.core.service.stat.ProductArriveStatService;
 import com.ifhz.core.service.stat.ProductInstallStatService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -63,7 +63,7 @@ public class PartnerQueryController extends BaseController {
     @Autowired
     private LogArriveStatTempService logArriveStatTempService;
     @Autowired
-    private ProductArriveStatTempService productArriveStatTempService;
+    private ProductArriveStatService productArriveStatService;
     @Autowired
     private ProductInstallStatService productInstallStatService;
     @Autowired
@@ -355,7 +355,7 @@ public class PartnerQueryController extends BaseController {
         String ua = request.getParameter("ua");
         String queryType = request.getParameter("queryType");
         String count = request.getParameter("count");
-        StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, false);
+        StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, false);
         if (StringUtils.isNotEmpty(queryType)) {
             statImeiRequest = getStatImeiRequestByQueryType(queryType, false);
         }
@@ -424,7 +424,7 @@ public class PartnerQueryController extends BaseController {
                 }
             }
             String queryType = request.getParameter("queryType");
-            StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, true);
+            StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, true);
             if (StringUtils.isNotEmpty(queryType)) {
                 statImeiRequest = getStatImeiRequestByQueryType(queryType, true);
             }
@@ -585,9 +585,9 @@ public class PartnerQueryController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/listProductArriveStatTemp", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/listProductArriveStat", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject listProductArriveStatTemp(HttpServletRequest request) {
+    public JSONObject listProductArriveStat(HttpServletRequest request) {
         /**分页*/
         String pageNum = request.getParameter("page");
         String pageSize = request.getParameter("rows");
@@ -598,27 +598,27 @@ public class PartnerQueryController extends BaseController {
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-        ProductArriveStatTemp productArriveStatTemp = new ProductArriveStatTemp();
+        ProductArriveStat productArriveStat = new ProductArriveStat();
         if (StringUtils.isNotEmpty(productId)) {
-            productArriveStatTemp.setProductId(Long.parseLong(productId));
+            productArriveStat.setProductId(Long.parseLong(productId));
         }
         if (StringUtils.isNotEmpty(startDate)) {
-            productArriveStatTemp.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            productArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         if (StringUtils.isNotEmpty(endDate)) {
-            productArriveStatTemp.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            productArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
         }
         PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
         if (partnerInfo != null) {
-            productArriveStatTemp.setPartnerId(partnerInfo.getPartnerId());
-            productArriveStatTemp.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+            productArriveStat.setPartnerId(partnerInfo.getPartnerId());
+            productArriveStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
         }
-        List<ProductArriveStatTemp> list = productArriveStatTempService.querySumByVo(page, productArriveStatTemp);
+        List<ProductArriveStat> list = productArriveStatService.querySumByVo(page, productArriveStat);
         if (CollectionUtils.isNotEmpty(list)) {
-            ProductArriveStatTemp countProductArriveStatTemp = productArriveStatTempService.queryCountByVo(productArriveStatTemp);
-            list.add(countProductArriveStatTemp);
+            ProductArriveStat countProductArriveStat = productArriveStatService.queryCountByVo(productArriveStat);
+            list.add(countProductArriveStat);
             if (partnerInfo != null) {
-                for (ProductArriveStatTemp productStat1 : list) {
+                for (ProductArriveStat productStat1 : list) {
                     if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
                         productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
                     } else {
@@ -633,34 +633,33 @@ public class PartnerQueryController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/exportProductArriveTempData", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/exportProductArriveData", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public JSONObject exportProductArriveTempData(HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject exportProductArriveData(HttpServletRequest request, HttpServletResponse response) {
         String productId = request.getParameter("productId");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-        String groupId = request.getParameter("groupId");
         JSONObject result = new JSONObject();
         try {
-            ProductArriveStatTemp productArriveStatTemp = new ProductArriveStatTemp();
+            ProductArriveStat productArriveStat = new ProductArriveStat();
             if (StringUtils.isNotEmpty(productId)) {
-                productArriveStatTemp.setProductId(Long.parseLong(productId));
+                productArriveStat.setProductId(Long.parseLong(productId));
             }
             if (StringUtils.isNotEmpty(startDate)) {
-                productArriveStatTemp.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+                productArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
             }
             if (StringUtils.isNotEmpty(endDate)) {
-                productArriveStatTemp.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+                productArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
             }
             PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
             if (partnerInfo != null) {
-                productArriveStatTemp.setPartnerId(partnerInfo.getPartnerId());
-                productArriveStatTemp.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+                productArriveStat.setPartnerId(partnerInfo.getPartnerId());
+                productArriveStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
             }
-            List<ProductArriveStatTemp> list = productArriveStatTempService.querySumByVo(null, productArriveStatTemp);
+            List<ProductArriveStat> list = productArriveStatService.querySumByVo(null, productArriveStat);
             if (CollectionUtils.isNotEmpty(list)) {
-                ProductArriveStatTemp countProductArriveStatTemp = productArriveStatTempService.queryCountByVo(productArriveStatTemp);
-                list.add(countProductArriveStatTemp);
+                ProductArriveStat countProductArriveStat = productArriveStatService.queryCountByVo(productArriveStat);
+                list.add(countProductArriveStat);
             }
             BaseExportModel exportModel = new BaseExportModel();
             Map<String, String> titleMap = new LinkedHashMap<String, String>();
