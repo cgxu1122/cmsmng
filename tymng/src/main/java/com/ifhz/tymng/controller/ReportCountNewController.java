@@ -564,13 +564,12 @@ public class ReportCountNewController extends BaseController {
                 titleMap.put("processDate", "日期");
                 titleMap.put("modelName", "机型名称");
                 titleMap.put("channelName", "仓库名称");
-                titleMap.put("deviceCode", "设备编码");
                 titleMap.put("imei", "IMEI号");
             } else if ("3".equals(exportType)) {
                 titleMap.put("processDate", "日期");
                 titleMap.put("modelName", "机型名称");
                 titleMap.put("productName", "产品名称");
-                titleMap.put("groupName", "渠道组织");
+                titleMap.put("channelName", "仓库名称");
                 titleMap.put("imei", "IMEI号");
             }
             exportModel.setTitleMap(titleMap);

@@ -36,6 +36,7 @@ function resetEvt() {
     $('#productName').val("");
     $('#channelName').val("");
     $("#channelIdCondition").val("");
+    $('#channeldg').datagrid("uncheckAll");
 }
 
 function initPage() {
@@ -165,7 +166,7 @@ function showIMEIDialog(statDate, ua, channelId, modelName, groupName, productId
                     }
                 },
                 {field: 'modelName', title: '机型名称', align: 'center', width: 150},
-                {field: 'groupName', title: '仓库名称', align: 'center', width: 150},
+                {field: 'channelName', title: '仓库名称', align: 'center', width: 150},
                 {field: 'productName', title: '产品名称', align: 'center', width: 150},
                 {field: 'imei', title: 'IMEI号', align: 'center', width: 200}
             ]
