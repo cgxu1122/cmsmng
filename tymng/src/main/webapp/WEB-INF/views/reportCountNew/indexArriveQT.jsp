@@ -32,6 +32,7 @@ function resetEvt() {
     $('#modelName').val("");
     $('#channelName').val("");
     $('#channelIdCondition').val("");
+    $('#channeldg').datagrid("uncheckAll");
 }
 
 function initPage() {

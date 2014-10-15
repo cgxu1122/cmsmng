@@ -63,12 +63,17 @@ function editrow() {
                 var productHtml = "<tr>" +
                         "<input type='hidden' name='productId' value='" + productInfoList[i].productId + "'>" +
                         "<td><input type='text' name='productName' value='" + productInfoList[i].productName + "' readonly='readonly'></td>" +
-                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateProductList.pop(" + productInfoList[i].productId + ");'>删除</a></td>" +
+                        "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delUpdateProduct(" + productInfoList[i].productId + ");'>删除</a></td>" +
                         "</tr>";
                 $('#upProductList').append(productHtml);
             }
         }
+        $("#updateProductCountLabel").html(updateProductList.length);
     }
+}
+function delUpdateProduct(productId) {
+    updateProductList.pop(productId);
+    $("#updateProductCountLabel").html(updateProductList.length);
 }
 function saveUpdate() {
     $('#upfm').form('submit', {
@@ -202,22 +207,24 @@ function selectProduct(productId, productName, type) {
         var productHtml = "<tr>" +
                 "<input type='hidden' name='productId' value='" + productId + "'>" +
                 "<td><input type='text' name='productName' value='" + productName + "' readonly='readonly'></td>" +
-                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();updateProductList.pop(" + productId + ");'>删除</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();delUpdateProduct(" + productId + ");'>删除</a></td>" +
                 "</tr>";
         if (!updateProductList.in_array(productId)) {
             updateProductList.push(productId);
             $('#upProductList').append(productHtml);
         }
+        $("#updateProductCountLabel").html(updateProductList.length);
     } else if (type == 1) {//新增
         var productHtml = "<tr>" +
                 "<input type='hidden' name='productId' value='" + productId + "'>" +
                 "<td><input type='text' name='productName' value='" + productName + "' readonly='readonly'></td>" +
-                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addProductList.pop(" + productId + ");'>删除</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addProductList.pop(" + productId + ");$(\"#addProductCountLabel\").html(" + addProductList.length + ");'>删除</a></td>" +
                 "</tr>";
         if (!addProductList.in_array(productId)) {
             addProductList.push(productId);
             $('#productList').append(productHtml);
         }
+        $("#addProductCountLabel").html(addProductList.length);
     }
 }
 
@@ -313,6 +320,7 @@ function importTemplateBatch(type) {
             <label>选择产品:</label>
             <a href="javascript:void(0)"
                onclick="showProductDialog(1)">选择</a>
+            <label id="addProductCountLabel"></label>
 
             <table id="productList" style="border: solid thin">
             </table>
@@ -349,6 +357,7 @@ function importTemplateBatch(type) {
             <label>选择产品:</label>
             <a href="javascript:void(0)"
                onclick="showProductDialog(2)">选择</a>
+            <label id="updateProductCountLabel"></label>
 
             <table id="upProductList" style="border: solid thin">
             </table>

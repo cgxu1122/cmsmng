@@ -57,7 +57,7 @@
                                 if (row.statDate == null) {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "','" + value + "',4)>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + value + "',4)>" + value + "</a>";
                                 }
                             }
                         },
@@ -66,7 +66,7 @@
                                 if (row.statDate == null) {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.deviceCode + "','" + value + "',5)>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + value + "',5)>" + value + "</a>";
                                 }
                             }
                         }
@@ -117,16 +117,15 @@
         var uaCur;
         var channelIdCur;
         var modelNameCur;
-        var deviceCodeCur;
         var countCur;
         var queryTypeCur;
-        function showIMEIDialog(processDate, ua, channelId, modelName, deviceCode, count, queryType) {
+        function showIMEIDialog(processDate, ua, channelId, modelName, count, queryType) {
             processDateCur = processDate;
             uaCur = ua;
             channelIdCur = channelId;
             modelNameCur = modelName;
-            deviceCodeCur = deviceCode;
             queryTypeCur = queryType;
+            countCur = count;
             $('#imeidlg').dialog('open').dialog('setTitle', 'imei列表,只显示前1000条，查看全部Imei请导出');
             $('#imeidg').datagrid({
                 width: 'auto',
@@ -135,7 +134,7 @@
                 striped: true,
                 singleSelect: true,
                 url: '<%=basePath%>/hzfmng/partnerQuery/listImei',
-                queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, deviceCode: deviceCode, count: count, queryType: queryType},
+                queryParams: {processDate: processDate, ua: ua, channelId: channelId, modelName: modelName, count: count, queryType: queryType},
                 loadMsg: '数据加载中请稍后……',
                 rownumbers: true,
                 columns: [
@@ -154,7 +153,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?queryType=3&processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&deviceCode=" + deviceCodeCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?processDate=" + processDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');

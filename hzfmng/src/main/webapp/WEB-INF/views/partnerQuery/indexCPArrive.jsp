@@ -159,7 +159,7 @@
         function exportImeiEvt() {
             $("body").showLoading();
             $.ajax({
-                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?queryType=12&userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
+                url: "<%=basePath%>/hzfmng/partnerQuery/exportImei?userType=cp&processDate=" + processDateCur + "&ua=" + uaCur + "&productId=" + productIdCur + "&modelName=" + modelNameCur + "&count=" + countCur + "&queryType=" + queryTypeCur,
                 success: function (result) {
                     $("body").hideLoading();
                     var result = eval('(' + result + ')');
