@@ -92,5 +92,6 @@
         select * from
         <include refid="TABLE_NAME"/>
         where DEVICE_CODE = #{deviceCode}
+        and ACTIVE = 'Y'
     </select>
 </mapper>
