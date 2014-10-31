@@ -128,7 +128,7 @@ public class ApiUploadServiceImpl implements ApiUploadService {
         LOGGER.info("执行DataLog保存操作 --- 开始");
         if (po != null) {
             //验证非法数据
-            if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null) {
+            if (po.getChannelId() == null || StringUtils.isBlank(po.getImei()) || po.getProcessTime() == null || StringUtils.isBlank(po.getBatchCode())) {
                 LOGGER.info("非法数据，校验不通过 , {}", JSON.toJSONString(po));
                 DeviceCommonLog.info("{}", JSON.toJSONString(po));
                 return ImeiStatus.Invalid;
@@ -146,9 +146,6 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                         po.setUa(GlobalConstants.DEFAULT_UA);
                     } else {
                         po.setUa(ModelHandler.translateUa(po.getUa()));
-                    }
-                    if (StringUtils.isBlank(po.getBatchCode())) {
-                        po.setBatchCode("未知");
                     }
                     po.setActive(CounterActive.None.value);
                     LOGGER.info("dataLogApiService.insertDeviceData");
