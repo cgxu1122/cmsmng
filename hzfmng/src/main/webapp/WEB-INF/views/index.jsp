@@ -197,6 +197,14 @@
                         </a>
                     </div>
                 </shiro:hasPermission>
+                <shiro:hasPermission name="partnerquery_qt_process">
+                    <div class="nav-item">
+                        <a href="javascript:addTab('其他渠道安装查询','<%=basePath%>/hzfmng/partnerQuery/indexQT','menu_icon_datadeal')">
+                            <span class="menu_icon_datadeal"></span>
+                            <span>其他渠道安装查询</span>
+                        </a>
+                    </div>
+                </shiro:hasPermission>
                 <shiro:hasPermission name="partnerquery_qt_arrival">
                     <div class="nav-item">
                         <a href="javascript:addTab('其他渠道到达查询','<%=basePath%>/hzfmng/partnerQuery/indexQTArrive','menu_icon_datadeal')">

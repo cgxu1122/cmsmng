@@ -225,6 +225,9 @@ public class PartnerQueryController extends BaseController {
             titleMap.put("channelName", "仓库名称");
             titleMap.put("modelName", "机型名称");
             titleMap.put("devicePrsDayNum", "装机数量");
+            if (JcywConstants.CHANNEL_GROUP_QT_ID_3 == logStat.getGroupId()) {
+                titleMap.remove("deviceCode");
+            }
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
             String localFilePath = localDirCacheService.getExcelTempPath();
