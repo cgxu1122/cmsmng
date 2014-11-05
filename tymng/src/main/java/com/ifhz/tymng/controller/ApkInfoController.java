@@ -169,10 +169,12 @@ public class ApkInfoController extends BaseController {
                     packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
                 }
                 LOGGER.info("packagePath={}", packagePath);
-                if (StringUtils.isNotBlank(packagePath)) {
-                    po.setPackagePath(packagePath);
+                if (StringUtils.isBlank(packagePath)) {
+                    result.put("errorMsg", "获取apk文件中信息出错，请检查apk文件是否为完整apk文件");
+                    return result;
                 }
 
+                po.setPackagePath(packagePath);
                 String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
                 path = StringUtils.replace(path, "\\", "/");
                 path = StringUtils.replace(path, Store_APK_Path, "");
@@ -260,10 +262,12 @@ public class ApkInfoController extends BaseController {
                         packagePath = AnalysisApkFile.parseApk(storeLocalFilePath);
                     }
                     LOGGER.info("packagePath={}", packagePath);
-                    if (StringUtils.isNotBlank(packagePath)) {
-                        apkInfo.setPackagePath(packagePath);
+                    if (StringUtils.isBlank(packagePath)) {
+                        result.put("errorMsg", "获取apk文件中信息出错，请检查apk文件是否为完整apk文件");
+                        return result;
                     }
 
+                    apkInfo.setPackagePath(packagePath);
                     String path = StringUtils.replace(storeLocalFilePath, "\\\\+", "\\");
                     path = StringUtils.replace(path, "\\", "/");
                     path = StringUtils.replace(path, Store_APK_Path, "");
