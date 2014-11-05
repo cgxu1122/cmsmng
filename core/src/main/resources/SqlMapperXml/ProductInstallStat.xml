@@ -117,8 +117,10 @@
         <include refid="TABLE_NAME"/>
         where 1=1
         <if test="record.partnerId != null and record.partnerId != ''">
-            and exists (select info.PRODUCT_ID from TY_PRODUCT_INFO info where PARTNER_ID = #{record.partnerId} and
-            info.QUERY_DATA_SOURCE= 'Y' and info.PRODUCT_ID = PRODUCT_ID)
+            and exists (select info.PRODUCT_ID from TY_PRODUCT_INFO info
+            where PARTNER_ID = #{record.partnerId}
+            and info.QUERY_DATA_SOURCE= 'Y'
+            and info.PRODUCT_ID = stat.PRODUCT_ID)
         </if>
 
         <if test="record.channelIdCondition != null">
@@ -195,7 +197,7 @@
         <if test="record.partnerId != null and record.partnerId != ''">
             and exists (
             select info.PRODUCT_ID from TY_PRODUCT_INFO info
-            where info.PARTNER_ID = #{partnerId}
+            where info.PARTNER_ID = #{record.partnerId}
             and info.QUERY_DATA_SOURCE= 'Y'
             and info.PRODUCT_ID = stat.PRODUCT_ID
             )
