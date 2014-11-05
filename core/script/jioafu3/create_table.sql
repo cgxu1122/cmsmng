@@ -129,19 +129,19 @@ create table TY_STAT_DEDUCTION  (
 );
 
 comment on column TY_STAT_DEDUCTION.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇþµÀID';
 comment on column TY_STAT_DEDUCTION.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇþµÀ×éID';
 comment on column TY_STAT_DEDUCTION.TYPE is
-'ç±»åž‹ é»˜è®¤ä¸º1ï¼Œ1ï¼šåŸºç¡€æ‰£é‡ï¼Œ2ï¼šé˜¶æ¢¯æ‰£é‡';
+'ÀàÐÍ Ä¬ÈÏÎª1£¬1£º»ù´¡¿ÛÁ¿£¬2£º½×ÌÝ¿ÛÁ¿';
 comment on column TY_STAT_DEDUCTION.BASIC_NUM is
-'æ‰£é‡åŸºç¡€æ•°å€¼';
+'¿ÛÁ¿»ù´¡ÊýÖµ';
 comment on column TY_STAT_DEDUCTION.PERCENTAGE is
-'æ‰£é‡ç™¾åˆ†æ¯”';
+'¿ÛÁ¿°Ù·Ö±È';
 comment on column TY_STAT_DEDUCTION.CREATE_TIME is
-'åˆ›å»ºæ—¶é—´';
+'´´½¨Ê±¼ä';
 comment on column TY_STAT_DEDUCTION.UPDATE_TIME is
-'ä¿®æ”¹æ—¶é—´';
+'ÐÞ¸ÄÊ±¼ä';
 
 
 

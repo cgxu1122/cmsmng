@@ -19,40 +19,40 @@ create table TY_DATA_LOG_20142  (
 );
 
 comment on table TY_DATA_LOG_20142 is
-'æ•°æ®æµæ°´è¡¨20142';
+'Êı¾İÁ÷Ë®±í20142';
 
 comment on column TY_DATA_LOG_20142.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20142.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20142.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20142.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20142.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20142.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20142.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20142.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20142.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20142.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20142.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20143 cascade constraints;
 
@@ -75,40 +75,40 @@ create table TY_DATA_LOG_20143  (
 );
 
 comment on table TY_DATA_LOG_20143 is
-'æ•°æ®æµæ°´è¡¨20143';
+'Êı¾İÁ÷Ë®±í20143';
 
 comment on column TY_DATA_LOG_20143.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20143.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20143.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20143.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20143.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20143.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20143.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20143.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20143.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20143.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20143.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20144 cascade constraints;
 
@@ -131,40 +131,40 @@ create table TY_DATA_LOG_20144  (
 );
 
 comment on table TY_DATA_LOG_20144 is
-'æ•°æ®æµæ°´è¡¨20144';
+'Êı¾İÁ÷Ë®±í20144';
 
 comment on column TY_DATA_LOG_20144.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20144.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20144.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20144.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20144.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20144.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20144.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20144.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20144.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20144.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20144.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 
 drop table TY_DATA_LOG_20151 cascade constraints;
@@ -188,40 +188,40 @@ create table TY_DATA_LOG_20151  (
 );
 
 comment on table TY_DATA_LOG_20151 is
-'æ•°æ®æµæ°´è¡¨20151';
+'Êı¾İÁ÷Ë®±í20151';
 
 comment on column TY_DATA_LOG_20151.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20151.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20151.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20151.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20151.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20151.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20151.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20151.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20151.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20151.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20151.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20152 cascade constraints;
 
@@ -244,40 +244,40 @@ create table TY_DATA_LOG_20152  (
 );
 
 comment on table TY_DATA_LOG_20152 is
-'æ•°æ®æµæ°´è¡¨20152';
+'Êı¾İÁ÷Ë®±í20152';
 
 comment on column TY_DATA_LOG_20152.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20152.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20152.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20152.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20152.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20152.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20152.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20152.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20152.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20152.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20152.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20153 cascade constraints;
 
@@ -300,40 +300,40 @@ create table TY_DATA_LOG_20153  (
 );
 
 comment on table TY_DATA_LOG_20153 is
-'æ•°æ®æµæ°´è¡¨20153';
+'Êı¾İÁ÷Ë®±í20153';
 
 comment on column TY_DATA_LOG_20153.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20153.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20153.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20153.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20153.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20153.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20153.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20153.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20153.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20153.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20153.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20154 cascade constraints;
 
@@ -356,40 +356,40 @@ create table TY_DATA_LOG_20154  (
 );
 
 comment on table TY_DATA_LOG_20154 is
-'æ•°æ®æµæ°´è¡¨20154';
+'Êı¾İÁ÷Ë®±í20154';
 
 comment on column TY_DATA_LOG_20154.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20154.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20154.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20154.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20154.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20154.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20154.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20154.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20154.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20154.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20154.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20161 cascade constraints;
 
@@ -412,40 +412,40 @@ create table TY_DATA_LOG_20161  (
 );
 
 comment on table TY_DATA_LOG_20161 is
-'æ•°æ®æµæ°´è¡¨20161';
+'Êı¾İÁ÷Ë®±í20161';
 
 comment on column TY_DATA_LOG_20161.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20161.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20161.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20161.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20161.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20161.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20161.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20161.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20161.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20161.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20161.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20162 cascade constraints;
 
@@ -468,40 +468,40 @@ create table TY_DATA_LOG_20162  (
 );
 
 comment on table TY_DATA_LOG_20162 is
-'æ•°æ®æµæ°´è¡¨20162';
+'Êı¾İÁ÷Ë®±í20162';
 
 comment on column TY_DATA_LOG_20162.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20162.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20162.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20162.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20162.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20162.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20162.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20162.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20162.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20162.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20162.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20163 cascade constraints;
 
@@ -524,40 +524,40 @@ create table TY_DATA_LOG_20163  (
 );
 
 comment on table TY_DATA_LOG_20163 is
-'æ•°æ®æµæ°´è¡¨20163';
+'Êı¾İÁ÷Ë®±í20163';
 
 comment on column TY_DATA_LOG_20163.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20163.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20163.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20163.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20163.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20163.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20163.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20163.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20163.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20163.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20163.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20164 cascade constraints;
 
@@ -580,40 +580,40 @@ create table TY_DATA_LOG_20164  (
 );
 
 comment on table TY_DATA_LOG_20164 is
-'æ•°æ®æµæ°´è¡¨20164';
+'Êı¾İÁ÷Ë®±í20164';
 
 comment on column TY_DATA_LOG_20164.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20164.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20164.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20164.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20164.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20164.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20164.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20164.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20164.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20164.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20164.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20171 cascade constraints;
 
@@ -636,40 +636,40 @@ create table TY_DATA_LOG_20171  (
 );
 
 comment on table TY_DATA_LOG_20171 is
-'æ•°æ®æµæ°´è¡¨20171';
+'Êı¾İÁ÷Ë®±í20171';
 
 comment on column TY_DATA_LOG_20171.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20171.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20171.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20171.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20171.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20171.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20171.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20171.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20171.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20171.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20171.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20172 cascade constraints;
 
@@ -692,40 +692,40 @@ create table TY_DATA_LOG_20172  (
 );
 
 comment on table TY_DATA_LOG_20172 is
-'æ•°æ®æµæ°´è¡¨20172';
+'Êı¾İÁ÷Ë®±í20172';
 
 comment on column TY_DATA_LOG_20172.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20172.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20172.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20172.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20172.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20172.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20172.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20172.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20172.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20172.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20172.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20173 cascade constraints;
 
@@ -748,40 +748,40 @@ create table TY_DATA_LOG_20173  (
 );
 
 comment on table TY_DATA_LOG_20173 is
-'æ•°æ®æµæ°´è¡¨20173';
+'Êı¾İÁ÷Ë®±í20173';
 
 comment on column TY_DATA_LOG_20173.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20173.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20173.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20173.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20173.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20173.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20173.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20173.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20173.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20173.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20173.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20174 cascade constraints;
 
@@ -804,40 +804,40 @@ create table TY_DATA_LOG_20174  (
 );
 
 comment on table TY_DATA_LOG_20174 is
-'æ•°æ®æµæ°´è¡¨20174';
+'Êı¾İÁ÷Ë®±í20174';
 
 comment on column TY_DATA_LOG_20174.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20174.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20174.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20174.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20174.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20174.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20174.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20174.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20174.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20174.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20174.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20181 cascade constraints;
 
@@ -860,40 +860,40 @@ create table TY_DATA_LOG_20181  (
 );
 
 comment on table TY_DATA_LOG_20181 is
-'æ•°æ®æµæ°´è¡¨20181';
+'Êı¾İÁ÷Ë®±í20181';
 
 comment on column TY_DATA_LOG_20181.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20181.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20181.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20181.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20181.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20181.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20181.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20181.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20181.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20181.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20181.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20182 cascade constraints;
 
@@ -916,40 +916,40 @@ create table TY_DATA_LOG_20182  (
 );
 
 comment on table TY_DATA_LOG_20182 is
-'æ•°æ®æµæ°´è¡¨20182';
+'Êı¾İÁ÷Ë®±í20182';
 
 comment on column TY_DATA_LOG_20182.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20182.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20182.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20182.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20182.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20182.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20182.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20182.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20182.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20182.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20182.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 drop table TY_DATA_LOG_20183 cascade constraints;
 
@@ -972,40 +972,40 @@ create table TY_DATA_LOG_20183  (
 );
 
 comment on table TY_DATA_LOG_20183 is
-'æ•°æ®æµæ°´è¡¨20183';
+'Êı¾İÁ÷Ë®±í20183';
 
 comment on column TY_DATA_LOG_20183.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20183.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20183.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20183.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20183.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20183.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20183.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20183.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20183.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20183.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20183.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
 
 drop table TY_DATA_LOG_20184 cascade constraints;
@@ -1029,38 +1029,38 @@ create table TY_DATA_LOG_20184  (
 );
 
 comment on table TY_DATA_LOG_20184 is
-'æ•°æ®æµæ°´è¡¨20184';
+'Êı¾İÁ÷Ë®±í20184';
 
 comment on column TY_DATA_LOG_20184.ID is
-'ä¸»é”®ID';
+'Ö÷¼üID';
 
 comment on column TY_DATA_LOG_20184.IMEI is
-'IMEIç ';
+'IMEIÂë';
 
 comment on column TY_DATA_LOG_20184.UA is
-'æ‰‹æœºUA';
+'ÊÖ»úUA';
 
 comment on column TY_DATA_LOG_20184.CHANNEL_ID is
-'æ¸ é“ID';
+'ÇşµÀID';
 
 comment on column TY_DATA_LOG_20184.DEVICE_CODE is
-'è®¾å¤‡ç¼–ç ';
+'Éè±¸±àÂë';
 
 comment on column TY_DATA_LOG_20184.GROUP_ID is
-'æ¸ é“ç»„ID';
+'ÇşµÀ×éID';
 
 comment on column TY_DATA_LOG_20184.BATCH_CODE is
-'æ‰¹æ¬¡å·';
+'Åú´ÎºÅ';
 
 comment on column TY_DATA_LOG_20184.PROCESS_TIME is
-'åŠ å·¥æ—¶é—´';
+'¼Ó¹¤Ê±¼ä';
 
 comment on column TY_DATA_LOG_20184.DEVICE_UPLOAD_TIME is
-'è®¾å¤‡ä¸Šä¼ æ—¶é—´';
+'Éè±¸ÉÏ´«Ê±¼ä';
 
 comment on column TY_DATA_LOG_20184.ACTIVE is
-'åˆ°è¾¾çŠ¶æ€';
+'µ½´ï×´Ì¬';
 
 comment on column TY_DATA_LOG_20184.COUNTER_UPLOAD_TIME is
-'è®¡æ•°å™¨ä¸Šä¼ æ—¶é—´';
+'¼ÆÊıÆ÷ÉÏ´«Ê±¼ä';
 
