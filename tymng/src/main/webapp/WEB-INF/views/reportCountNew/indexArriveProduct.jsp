@@ -73,7 +73,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',31)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.channelName + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',31)>" + value + "</a>";
                         }
                     }
                 },
@@ -82,7 +82,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',32)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.channelName + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',32)>" + value + "</a>";
                         }
                     }
                 },
@@ -91,7 +91,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',33)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.channelName + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',33)>" + value + "</a>";
                         }
                     }
                 },
@@ -100,7 +100,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',34)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.channelName + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',34)>" + value + "</a>";
                         }
                     }
                 },
@@ -109,7 +109,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',35)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.channelName + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',35)>" + value + "</a>";
                         }
                     }
                 },
@@ -118,7 +118,7 @@ function initPage() {
                         if (row.statDate == null) {
                             return value;
                         } else {
-                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',36)>" + value + "</a>";
+                            return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.channelId + "','" + row.channelName + "','" + row.modelName + "','" + row.groupName + "','" + row.productId + "','" + row.productName + "',36)>" + value + "</a>";
                         }
                     }
                 }
@@ -131,15 +131,17 @@ function initPage() {
 var statDateCur;
 var uaCur;
 var channelIdCur;
+var channelNameCur;
 var modelNameCur;
 var groupNameCur;
 var productIdCur;
 var productNameCur;
 var queryTypeCur;
-function showIMEIDialog(statDate, ua, channelId, modelName, groupName, productId, productName, queryType) {
+function showIMEIDialog(statDate, ua, channelId, channelName, modelName, groupName, productId, productName, queryType) {
     statDateCur = statDate;
     uaCur = ua;
     channelIdCur = channelId;
+    channelNameCur = channelName;
     modelNameCur = modelName;
     groupNameCur = groupName;
     productIdCur = productId;
@@ -153,7 +155,7 @@ function showIMEIDialog(statDate, ua, channelId, modelName, groupName, productId
         striped: true,
         singleSelect: true,
         url: '<%=basePath%>/tymng/reportCountNew/listImei',
-        queryParams: {processDate: statDate, ua: ua, channelId: channelId, modelName: modelName, groupName: groupName, productId: productId, productName: productName, queryType: queryType},
+        queryParams: {processDate: statDate, ua: ua, channelId: channelId, channelName: channelName, modelName: modelName, groupName: groupName, productId: productId, productName: productName, queryType: queryType},
         loadMsg: '数据加载中请稍后……',
         rownumbers: true,
         columns: [
@@ -174,7 +176,7 @@ function showIMEIDialog(statDate, ua, channelId, modelName, groupName, productId
 function exportImeiEvt() {
     $("body").showLoading();
     $.ajax({
-        url: "<%=basePath%>/tymng/reportCountNew/exportImei?exportType=3&processDate=" + statDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&modelName=" + modelNameCur + "&groupName=" + groupNameCur + "&productId=" + productIdCur + "&productName=" + productNameCur + "&queryType=" + queryTypeCur,
+        url: "<%=basePath%>/tymng/reportCountNew/exportImei?exportType=3&processDate=" + statDateCur + "&ua=" + uaCur + "&channelId=" + channelIdCur + "&channelName=" + channelNameCur + "&modelName=" + modelNameCur + "&groupName=" + groupNameCur + "&productId=" + productIdCur + "&productName=" + productNameCur + "&queryType=" + queryTypeCur,
         success: function (result) {
             $("body").hideLoading();
             var result = eval('(' + result + ')');

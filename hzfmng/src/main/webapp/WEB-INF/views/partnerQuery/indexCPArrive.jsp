@@ -53,25 +53,14 @@
                         },
                         {field: 'modelName', title: '机型名称', align: 'center', width: 300},
                         {field: 'productName', title: '产品名称', align: 'center', width: 300},
-                        {field: 'validNum', title: '有效到达数量', align: 'center', width: 200,
+                        {field: 'totalNum', title: '累计到达数量', align: 'center', width: 200,
                             formatter: function (value, row, index) {
                                 if (row.statDate == null) {
                                     return value;
                                 } else if (row.queryImeiSource == 'N') {
                                     return value;
                                 } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "','" + value + "',11)>" + value + "</a>";
-                                }
-                            }
-                        },
-                        {field: 'invalidNum', title: '无效到达数量', align: 'center', width: 200,
-                            formatter: function (value, row, index) {
-                                if (row.statDate == null) {
-                                    return value;
-                                } else if (row.queryImeiSource == 'N') {
-                                    return value;
-                                } else {
-                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "','" + value + "',12)>" + value + "</a>";
+                                    return "<a href='javascript:void(0)' onclick=javascript:showIMEIDialog('" + row.statDate + "','" + row.ua + "','" + row.productId + "','" + row.modelName + "','" + row.groupId + "','" + value + "',10)>" + value + "</a>";
                                 }
                             }
                         }

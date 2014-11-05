@@ -420,11 +420,11 @@ public class PartnerQueryController extends BaseController {
                     }
                 }
             } else {
-                if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
+               /* if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
                     result.put("ret", false);
                     result.put("errorMsg", "对不起，你没有导出此imei的权限！");
                     return result;
-                }
+                }*/
             }
             String queryType = request.getParameter("queryType");
             StatImeiRequest statImeiRequest = this.getStatImeiRequestByQueryType(queryType, true);
@@ -474,12 +474,18 @@ public class PartnerQueryController extends BaseController {
         StatImeiRequest statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, expertType);
         if ("1".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Install, expertType);
+        } else if ("3".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive_Temp, expertType);
+            statImeiRequest.setActive(QueryActive.Total);
         } else if ("4".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive_Temp, expertType);
             statImeiRequest.setActive(QueryActive.Valid);
         } else if ("5".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Log_Arrive_Temp, expertType);
             statImeiRequest.setActive(QueryActive.Invalid);
+        } else if ("10".equals(queryType)) {
+            statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive_Temp, expertType);
+            statImeiRequest.setActive(QueryActive.Total);
         } else if ("11".equals(queryType)) {
             statImeiRequest = new StatImeiRequest(ImeiQueryType.Product_Arrive_Temp, expertType);
             statImeiRequest.setActive(QueryActive.Valid);
