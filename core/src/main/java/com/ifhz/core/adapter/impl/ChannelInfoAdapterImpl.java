@@ -40,6 +40,12 @@ public class ChannelInfoAdapterImpl implements ChannelInfoAdapter {
     }
 
     @Override
+    public List<ChannelInfo> queryByVoForStat(Pagination page, ChannelInfo record) {
+        List<ChannelInfo> result = channelInfoMapper.queryByVoForStat(page, record);
+        return result == null ? Lists.<ChannelInfo>newArrayList() : result;
+    }
+
+    @Override
     public int insert(ChannelInfo record) {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());

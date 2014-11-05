@@ -17,6 +17,8 @@ public interface ChannelInfoService {
 
     public List<ChannelInfo> queryByVo(Pagination page, ChannelInfo record);
 
+    public List<ChannelInfo> queryByVoForStat(Pagination page, ChannelInfo record);
+
     public int insert(ChannelInfo record);
 
     public int update(ChannelInfo record);
