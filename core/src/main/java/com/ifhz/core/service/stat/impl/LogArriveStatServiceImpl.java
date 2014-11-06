@@ -14,7 +14,6 @@ import com.ifhz.core.service.cache.ModelInfoCacheService;
 import com.ifhz.core.service.stat.LogArriveStatService;
 import com.ifhz.core.service.stat.constants.CounterActive;
 import com.ifhz.core.service.stat.handle.ArriveStatConvertHandler;
-import com.ifhz.core.service.stat.handle.StatConvertHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -97,7 +96,7 @@ public class LogArriveStatServiceImpl implements LogArriveStatService {
     public boolean statLogArrive(DataLog record) {
         LOGGER.info("statLogArrive Stat ---------开始");
         if (record != null) {
-            String md5Key = StatConvertHandler.getMd5KeyForLogStat(record);
+            String md5Key = ArriveStatConvertHandler.getMd5KeyForLogArriveStat(record);
             LOGGER.info("LogArriveStat md5Key={}", md5Key);
             int count = 0;
             while (true) {
