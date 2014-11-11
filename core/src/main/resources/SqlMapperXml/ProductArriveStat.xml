@@ -157,6 +157,7 @@
         PRODUCT_ID,
         UA,
         STAT_DATE,
+        sum(TOTAL_NUM) TOTAL_NUM,
         sum(VALID_NUM) VALID_NUM,
         sum(INVALID_NUM) INVALID_NUM
         from
