@@ -1268,8 +1268,8 @@ create table TY_LOG_ARRIVE_STAT_TEMP  (
    CHANNEL_ID           NUMBER(15)                      not null,
    STAT_DATE            DATE                            not null,
    LAOWU_ID             NUMBER(15),
-   TOTAL_NUM            NUMBER(15)                     default 0,
    VALID_NUM            NUMBER(15)                     default 0,
+   INVALID_NUM            NUMBER(15)                   default 0,
    CREATE_TIME          DATE                           default SYSDATE,
    constraint TY_LOG_ARRIVE_STAT_TEMP primary key (ID)
 );
@@ -1285,8 +1285,8 @@ create table TY_PRODUCT_ARRIVE_STAT_TEMP  (
    GROUP_ID             NUMBER(15)                      not null,
    UA                   VARCHAR2(100)                   not null,
    STAT_DATE           DATE                            not null,
-   TOTAL_NUM            NUMBER(15)                     default 0,
    VALID_NUM            NUMBER(15)                     default 0,
+   INVALID_NUM            NUMBER(15)                   default 0,
    CREATE_TIME          DATE                           default SYSDATE,
    constraint PK_TY_PRODUCT_ARRIVE_STAT_TEMP primary key (ID)
 );

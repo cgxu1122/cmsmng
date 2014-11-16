@@ -154,6 +154,60 @@
         </if>
         ORDER BY ci.UPDATE_TIME DESC
     </select>
+
+    <select id="queryByVoForStat" parameterType="com.ifhz.core.po.ChannelInfo" resultMap="ChannelInfoResultMap">
+        select ci.*,cg.GROUP_NAME,ci2.CHANNEL_NAME as LAOWU_NAME,
+        u.LOGIN_NAME as USERNAME,u.PASSWORD,u.REAL_NAME as CONTACT,u.CELLPHONE as PHONE,u.ADDRESS as ADDRESS,
+        u2.LOGIN_NAME as MNG_NAME
+        from
+        <include refid="TABLE_NAME"/>
+        ci
+        LEFT OUTER JOIN TY_CHANNEL_GROUP cg on ci.GROUP_ID = cg.GROUP_ID
+        LEFT OUTER JOIN TY_CHANNEL_INFO ci2 on ci.LAOWU_ID = ci2.CHANNEL_ID
+        LEFT OUTER JOIN TY_USER u on ci.USER_ID = u.USER_ID
+        LEFT OUTER JOIN TY_USER u2 on ci.MNG_ID = u2.USER_ID
+        where 1=1
+        and ci.GROUP_ID != 4
+        <if test="record.parentId != null and record.parentId != ''">
+            and ci.PARENT_ID = #{record.parentId}
+        </if>
+        <if test="record.groupId != null and record.groupId != ''">
+            and ci.GROUP_ID = #{record.groupId}
+        </if>
+        <if test="record.mngId != null and record.mngId != ''">
+            and ci.MNG_ID = #{record.mngId}
+        </if>
+        <if test="record.userId != null and record.userId != ''">
+            and ci.USER_ID = #{record.userId}
+        </if>
+        <if test="record.channelName != null and record.channelName != ''">
+            and ci.CHANNEL_NAME = #{record.channelName}
+        </if>
+        <if test="record.channelNameCondition != null and record.channelNameCondition != ''">
+            and ci.CHANNEL_NAME LIKE concat(concat('%',#{record.channelNameCondition}),'%' )
+        </if>
+        <if test="record.groupIds != null and record.groupIds != ''">
+            and ci.GROUP_ID IN (${record.groupIds})
+        </if>
+        <if test="record.leaf != null and record.leaf != ''">
+            and ci.LEAF = #{record.leaf}
+        </if>
+        <if test="record.type != null and record.type != ''">
+            and ci.TYPE = #{record.type}
+        </if>
+        <if test="record.laowuId != null and record.laowuId != ''">
+            and ci.LAOWU_ID = #{record.laowuId}
+        </if>
+        <if test="record.queryImeiSource != null and record.queryImeiSource != ''">
+            and ci.QUERY_IMEI_SOURCE = #{record.queryImeiSource}
+        </if>
+        <if test="record.active != null and record.active != ''">
+            and ci.ACTIVE = #{record.active}
+        </if>
+        ORDER BY ci.UPDATE_TIME DESC
+    </select>
+
+
     <delete id="delete" parameterType="com.ifhz.core.po.ChannelInfo">
         delete from
         <include refid="TABLE_NAME"/>

@@ -216,6 +216,44 @@ public class ChannelInfoController extends BaseController {
         return result;
     }
 
+
+    @RequestMapping(value = "/listChannelForProduct", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONObject listChannelForProduct(HttpServletRequest request) {
+        /**分页*/
+        String pageNum = request.getParameter("page");
+        String pageSize = request.getParameter("rows");
+        Pagination page = new Pagination();
+        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+        //查询条件
+        String groupId = request.getParameter("groupId");
+        String groupIds = request.getParameter("groupIds");
+        String channelNameCondition = request.getParameter("channelNameCondition");
+        ChannelInfo ci = new ChannelInfo();
+        ci.setActive(JcywConstants.ACTIVE_Y);
+        if (StringUtils.isNotEmpty(groupId)) {
+            ci.setGroupId(Long.parseLong(groupId));
+        }
+        if (StringUtils.isNotEmpty(groupIds)) {
+            ci.setGroupIds(groupIds);
+        }
+        if (!StringUtils.isEmpty(channelNameCondition)) ci.setChannelNameCondition(channelNameCondition.trim());
+        //如果是地包渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        //如果是其他渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        List<ChannelInfo> list = channelInfoService.queryByVoForStat(page, ci);
+        JSONObject result = new JSONObject();
+        result.put("total", page.getTotalCount());
+        result.put("rows", list);
+        return result;
+    }
+
     @RequestMapping(value = "/listChannelByLW", produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JSONObject listChannelByLW(HttpServletRequest request) {

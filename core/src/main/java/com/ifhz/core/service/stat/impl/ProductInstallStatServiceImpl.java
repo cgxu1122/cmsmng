@@ -103,6 +103,7 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
     }
 
     @Override
+    @Log
     public List<ProductInstallStat> querySumByVo(Pagination pagination, ProductInstallStat record) {
         List<ProductInstallStat> result = productInstallStatAdapter.querySumByVo(pagination, record);
         if (CollectionUtils.isNotEmpty(result)) {

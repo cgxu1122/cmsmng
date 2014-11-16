@@ -61,6 +61,12 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
 
     @Override
     @Log
+    public List<ChannelInfo> queryByVoForStat(Pagination page, ChannelInfo record) {
+        return channelInfoAdapter.queryByVoForStat(page, record);
+    }
+
+    @Override
+    @Log
     public int insert(ChannelInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
             SysUser user = new SysUser();

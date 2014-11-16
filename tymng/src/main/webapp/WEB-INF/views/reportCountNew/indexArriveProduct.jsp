@@ -273,7 +273,7 @@ function showChannelDialog() {
         height: 'auto',
         fitColumns: true,
         striped: true,
-        url: '<%=basePath%>/tymng/channelInfo/listAll',
+        url: '<%=basePath%>/tymng/channelInfo/listChannelForProduct',
         queryParams: {},
         loadMsg: '数据加载中请稍后……',
         pagination: true,
@@ -313,7 +313,7 @@ function searchChannelEvt() {
     }
     var value = $('#searchChannelValue').val();
     $('#channeldg').datagrid({
-        url: "<%=basePath%>/tymng/channelInfo/listAll",
+        url: "<%=basePath%>/tymng/channelInfo/listChannelForProduct",
         queryParams: {channelNameCondition: value, groupIds: groupIds}
     });
 }

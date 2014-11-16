@@ -19,6 +19,8 @@ public interface ChannelInfoMapper {
 
     public List<ChannelInfo> queryByVo(Pagination page, @Param(value = "record") ChannelInfo record);
 
+    public List<ChannelInfo> queryByVoForStat(Pagination page, @Param(value = "record") ChannelInfo record);
+
     public int insert(ChannelInfo record);
 
     public int update(ChannelInfo record);

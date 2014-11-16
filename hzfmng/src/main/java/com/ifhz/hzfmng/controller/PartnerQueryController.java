@@ -676,8 +676,7 @@ public class PartnerQueryController extends BaseController {
             titleMap.put("statDate", "日期");
             titleMap.put("modelName", "机型名称");
             titleMap.put("productName", "产品名称");
-            titleMap.put("validNum", "有效到达数量");
-            titleMap.put("invalidNum", "无效到达数量");
+            titleMap.put("totalNum", "累计到达数量");
             exportModel.setTitleMap(titleMap);
             exportModel.setDataList(list);
 

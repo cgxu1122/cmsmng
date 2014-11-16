@@ -3,6 +3,7 @@ package com.ifhz.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
+import com.ifhz.core.base.commons.date.DateFormatUtils;
 import com.ifhz.core.po.DeviceInfo;
 import com.ifhz.core.service.cache.DictInfoCacheService;
 import com.ifhz.core.service.device.DeviceInfoService;
@@ -55,7 +56,7 @@ public class UpgradeApkLibController {
             }
             DeviceInfo info = deviceInfoService.queryByDeviceCode(code.trim());
             if (info != null) {
-                Date endTime = new Date();
+                Date endTime = DateFormatUtils.addMinute(new Date(), -10);
                 Date startTime;
                 if (StringUtils.equalsIgnoreCase(apkVersion.trim(), "0")) {
                     startTime = dictInfoCacheService.getSystemInitDate();

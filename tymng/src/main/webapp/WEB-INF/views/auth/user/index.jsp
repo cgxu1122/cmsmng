@@ -282,16 +282,16 @@ function selectRole() {
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="editrow()">修改用户信息</a>
                     </td>
                 </shiro:hasPermission>
-                <shiro:hasPermission name="system_user_delete">
+                <shiro:hasPermission name="system_user_disable">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="disablerow()">禁用用户</a>
                     </td>
                 </shiro:hasPermission>
-                <%--<shiro:hasPermission name="system_user_enable">--%>
+                <shiro:hasPermission name="system_user_enable">
                 <td align="center">
                     <a href="javascript:void(0)" class="easyui-linkbutton" onclick="enablerow()">启用用户</a>
                 </td>
-                <%--</shiro:hasPermission>--%>
+                </shiro:hasPermission>
                 <shiro:hasPermission name="system_user_update_pw">
                     <td align="center">
                         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="updatePassword()">修改用户密码</a>
