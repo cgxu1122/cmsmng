@@ -63,7 +63,9 @@ public class UpgradeApkLibController {
                 } else {
                     startTime = new Date(Long.parseLong(apkVersion.trim()) - 1000);
                 }
-                List<ApkVo> apkVoList = packageUpgradeService.queryApkList(info.getGroupId(), info.getChannelId(), startTime, endTime);
+//                List<ApkVo> apkVoList = packageUpgradeService.queryApkList(info.getGroupId(), info.getChannelId(), startTime, endTime);
+                // apk池 做增量更新。
+                List<ApkVo> apkVoList = packageUpgradeService.queryApkList(startTime, endTime);
                 if (CollectionUtils.isEmpty(apkVoList)) {
                     result = ApiJsonHandler.genJsonRet(ResultType.SuccNonUpgrade);
                     result.put("version", String.valueOf(endTime.getTime()));
