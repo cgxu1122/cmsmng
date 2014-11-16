@@ -149,6 +149,7 @@ public class PartnerQueryController extends BaseController {
         }
         if (JcywConstants.CHANNEL_GROUP_LW_ID_4 == logStat.getGroupId()) {
             //如果是劳务渠道合作方查询
+            logStat.setChannelId(null);
             String channelId = request.getParameter("channelId");
             if (StringUtils.isNotEmpty(channelId)) {
                 logStat.setChannelId(Long.parseLong(channelId));
