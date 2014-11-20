@@ -16,6 +16,7 @@ var updateProductList;
 function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新增');
     $('#fm').form('clear');
+    $("#addProductCountLabel").html(0);
     $('#startTime').datebox('setValue', getCurrrentDateStr());
     $.ajax({
         url: "<%=basePath%>/tymng/batchInfo/getSeqByGroupId?groupId=${groupId}",
