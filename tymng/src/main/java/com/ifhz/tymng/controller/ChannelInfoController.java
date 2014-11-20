@@ -489,6 +489,8 @@ public class ChannelInfoController extends BaseController {
         String laowuId = request.getParameter("laowuId");
         if (!StringUtils.isEmpty(laowuId) && StringUtils.isNumeric(laowuId)) {
             ci.setLaowuId(Long.parseLong(laowuId));
+        } else {
+            ci.setLaowuId(null);
         }
         String mngId = request.getParameter("mngId");
         if (!StringUtils.isEmpty(mngId) && StringUtils.isNumeric(mngId)) {

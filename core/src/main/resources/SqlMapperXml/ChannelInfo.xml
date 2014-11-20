@@ -92,6 +92,9 @@
             <if test="queryImeiSource != null">
                 QUERY_IMEI_SOURCE = #{queryImeiSource},
             </if>
+            <if test="laowuId == null">
+                LAOWU_ID = null,
+            </if>
             <if test="laowuId != null">
                 LAOWU_ID = #{laowuId},
             </if>

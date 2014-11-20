@@ -186,6 +186,7 @@ function showLaowuDialog(type, upLaowuId) {
         ]
     });
 }
+
 function searchLaowuEvt() {
     var value = $('#searchLaowuValue').val();
     $('#laowudg').datagrid({
@@ -203,7 +204,15 @@ function selectLaowu(laowuId, laowuName, type) {
     }
     $('#laowudlg').dialog('close');
 }
-
+function clearLaowu(type) {
+    if (type == 2) {//修改
+        $("#upLaowuId").val("");
+        $("#upLaowuName").val("");
+    } else if (type == 1) {//新增
+        $("#laowuId").val("");
+        $("#laowuName").val("");
+    }
+}
 
 function showMngDialog(type, upMngId) {
     $('#mngdlg').dialog('open').dialog('setTitle', '选择负责人');
@@ -353,6 +362,7 @@ function expandAll() {
             <input type="hidden" id="laowuId" name="laowuId">
             <input type="text" id="laowuName" name="laowuName" readonly="readonly">
             <a href="javascript:void(0)" onclick="showLaowuDialog(1)">选择劳务公司</a>
+            <a href="javascript:void(0)" onclick="clearLaowu(1)">清空</a>
         </div>
     </form>
 </div>
@@ -405,6 +415,7 @@ function expandAll() {
             <input type="text" name="laowuName" id="upLaowuName" readonly="readonly">
             <a href="javascript:void(0)"
                onclick="javascript:showLaowuDialog(2,$('#upLaowuId').val())">选择劳务公司</a>
+            <a href="javascript:void(0)" onclick="clearLaowu(2)">清空</a>
         </div>
     </form>
 </div>
