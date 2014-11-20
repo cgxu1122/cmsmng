@@ -84,6 +84,9 @@
         UPDATE
         <include refid="TABLE_NAME"/>
         <set>
+            <if test="loginName != null and loginName != ''">
+                LOGIN_NAME = #{loginName},
+            </if>
             <if test="realName != null and realName != ''">
                 REAL_NAME = #{realName},
             </if>

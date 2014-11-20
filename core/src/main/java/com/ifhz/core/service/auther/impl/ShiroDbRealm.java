@@ -114,10 +114,10 @@ public class ShiroDbRealm extends AuthorizingRealm {
                 throw new CaptchaException("验证码错误");
             }
             // 查询登陆用户
-            SysUser user = sysUserService.getByLoginName(loginName);
+            SysUser user = sysUserService.getByLoginName(loginName.trim());
             LOGGER.info("login_user:{}", JSON.toJSONString(user));
             // 进行密码校验
-            if (user != null && user.getPassword().equals(password) && StringUtils.equalsIgnoreCase(user.getActive(), Active.Y.dbValue)) {
+            if (user != null && user.getPassword().trim().equals(password) && StringUtils.equalsIgnoreCase(user.getActive(), Active.Y.dbValue)) {
                 Long roleId = user.getRoleId();
                 SysRole role = sysRoleService.getById(roleId);
                 AdminRoleType type = AdminRoleType.User;

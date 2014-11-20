@@ -39,6 +39,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int insert(SysUser record) {
+        record.setLoginName(record.getLoginName().trim());
+        record.setPassword(record.getPassword().trim());
         return sysUserAdapter.insert(record);
     }
 
@@ -46,6 +48,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Log
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int update(SysUser record) {
+        record.setLoginName(record.getLoginName().trim());
+        record.setPassword(record.getPassword().trim());
         return sysUserAdapter.update(record);
     }
 

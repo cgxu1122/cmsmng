@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.ifhz.api.constants.ResultType;
 import com.ifhz.api.utils.ApiJsonHandler;
 import com.ifhz.core.po.DeviceInfo;
+import com.ifhz.core.po.DeviceSwitch;
 import com.ifhz.core.po.DeviceSystem;
 import com.ifhz.core.service.device.DeviceInfoService;
 import com.ifhz.core.service.device.DeviceSystemService;
+import com.ifhz.core.service.stat.DeviceSwitchService;
 import com.ifhz.core.utils.HostsHandle;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -36,6 +38,8 @@ public class DeviceUpgradeController {
     private DeviceSystemService deviceSystemService;
     @Resource(name = "deviceInfoService")
     private DeviceInfoService deviceInfoService;
+    @Resource
+    private DeviceSwitchService deviceSwitchService;
 
 
     @RequestMapping(value = "/getDeviceVersion.do", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
@@ -69,6 +73,19 @@ public class DeviceUpgradeController {
             if (result == null) {
                 result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             }
+
+            boolean switchKey = false;
+            try {
+                DeviceSwitch deviceSwitch = deviceSwitchService.get(code);
+                if (deviceSwitch != null && deviceSwitch.getStatus() == 1) {
+                    switchKey = true;
+                    deviceSwitch.setStatus(0);
+                    deviceSwitchService.update(deviceSwitch);
+                }
+            } catch (Exception e) {
+                LOGGER.error("get DeviceSwitch error", e);
+            }
+            result.put("switchKey", switchKey);
         } catch (Exception e) {
             result = ApiJsonHandler.genJsonRet(ResultType.Fail);
             LOGGER.error("getDeviceVersion error ", e);

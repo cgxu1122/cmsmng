@@ -112,6 +112,7 @@
                 <value>classpath:SqlMapperXml/ProductArriveStatTemp.xml</value>
                 <value>classpath:SqlMapperXml/ProductInstallStat.xml</value>
                 <value>classpath:SqlMapperXml/StatDeduction.xml</value>
+                <value>classpath:SqlMapperXml/DeviceSwitch.xml</value>
             </list>
         </property>
     </bean>
@@ -266,6 +267,11 @@
     </bean>
     <bean id="statDeductionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.ifhz.core.mapper.stat.StatDeductionMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="deviceSwitchMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.ifhz.core.mapper.stat.DeviceSwitchMapper"/>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 

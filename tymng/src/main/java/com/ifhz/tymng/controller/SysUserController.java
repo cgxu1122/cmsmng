@@ -152,6 +152,8 @@ public class SysUserController extends BaseController {
         }
         user.setCreateTime(new Date());
         String password = StringUtils.trim(user.getPassword());
+        String loginName = StringUtils.trim(user.getLoginName());
+        user.setLoginName(loginName);
         user.setPassword(password);
         user.setActive(Active.Y.dbValue);
         sysUserService.insert(user);

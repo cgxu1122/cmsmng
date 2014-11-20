@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ifhz.core.mapper.stat.DeviceSwitchMapper">
+
+    <sql id="TABLE_NAME">TY_DEVICE_SWITCH</sql>
+
+    <resultMap id="BaseResultMap" type="com.ifhz.core.po.DeviceSwitch">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="DEVICE_CODE" property="deviceCode" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        where DEVICE_CODE = #{deviceCode}
+    </select>
+
+    <insert id="insert" parameterType="com.ifhz.core.po.DeviceSwitch">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT SEQ_DEVICE_SWITCH.CURRVAL FROM DUAL
+        </selectKey>
+        insert into
+        <include refid="TABLE_NAME"/>
+        ( ID,DEVICE_CODE,STATUS)
+        values
+        (SEQ_DEVICE_SWITCH.nextval,#{deviceCode},#{status})
+    </insert>
+
+
+    <update id="update" parameterType="com.ifhz.core.po.DeviceSwitch">
+        update
+        <include refid="TABLE_NAME"/>
+        <set>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+        </set>
+        where DEVICE_CODE = #{deviceCode}
+    </update>
+
+    <select id="queryByVo" resultMap="BaseResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+    </select>
+
+    <delete id="delete" parameterType="com.ifhz.core.po.DeviceSwitch">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where DEVICE_CODE = #{deviceCode}
+    </delete>
+</mapper>

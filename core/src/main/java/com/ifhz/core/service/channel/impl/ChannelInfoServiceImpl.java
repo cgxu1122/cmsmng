@@ -70,10 +70,10 @@ public class ChannelInfoServiceImpl implements ChannelInfoService {
     public int insert(ChannelInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
             SysUser user = new SysUser();
-            user.setLoginName(record.getUsername());
-            user.setPassword(record.getPassword());
+            user.setLoginName(StringUtils.trim(record.getUsername()));
+            user.setPassword(StringUtils.trim(record.getPassword()));
             user.setAddress(record.getAddress());
-            user.setRealName(record.getUsername());
+            user.setRealName(StringUtils.trim(record.getUsername()));
             user.setCellPhone(record.getPhone());
             user.setActive(Active.Y.dbValue);
             if (JcywConstants.CHANNEL_GROUP_TY_ID_1.equals(record.getGroupId())) {

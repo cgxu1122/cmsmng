@@ -47,9 +47,9 @@ public class PartnerInfoServiceImpl implements PartnerInfoService {
     public int insert(PartnerInfo record) {
         if (StringUtils.isNotEmpty(record.getUsername()) && StringUtils.isNotEmpty(record.getPassword())) {
             SysUser user = new SysUser();
-            user.setLoginName(record.getUsername());
-            user.setRealName(record.getUsername());
-            user.setPassword(record.getPassword());
+            user.setLoginName(StringUtils.trim(record.getUsername()));
+            user.setRealName(StringUtils.trim(record.getUsername()));
+            user.setPassword(StringUtils.trim(record.getPassword()));
             user.setActive(Active.Y.dbValue);
             user.setRoleId(UserConstants.CP_QUERY);
             sysUserService.insert(user);
