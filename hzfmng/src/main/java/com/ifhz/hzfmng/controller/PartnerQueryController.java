@@ -322,7 +322,15 @@ public class PartnerQueryController extends BaseController {
             PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
             if (partnerInfo != null) {
                 productStat.setPartnerId(partnerInfo.getPartnerId());
-                productStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+                Date sdate = DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT);
+                Date maxQueryDate = productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId());
+                if (maxQueryDate != null) {
+                    if (sdate == null) {
+                        productStat.setStartDate(maxQueryDate);
+                    } else if (sdate != null && maxQueryDate.after(sdate)) {
+                        productStat.setStartDate(maxQueryDate);
+                    }
+                }
             }
             List<ProductInstallStat> list = productInstallStatService.querySumByVo(null, productStat);
             if (CollectionUtils.isNotEmpty(list)) {
@@ -629,7 +637,15 @@ public class PartnerQueryController extends BaseController {
         PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
         if (partnerInfo != null) {
             productArriveStat.setPartnerId(partnerInfo.getPartnerId());
-            productArriveStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+            Date sdate = DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT);
+            Date maxQueryDate = productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId());
+            if (maxQueryDate != null) {
+                if (sdate == null) {
+                    productArriveStat.setStartDate(maxQueryDate);
+                } else if (sdate != null && maxQueryDate.after(sdate)) {
+                    productArriveStat.setStartDate(maxQueryDate);
+                }
+            }
         }
         List<ProductArriveStat> list = productArriveStatService.querySumByVo(page, productArriveStat);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -672,7 +688,15 @@ public class PartnerQueryController extends BaseController {
             PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
             if (partnerInfo != null) {
                 productArriveStat.setPartnerId(partnerInfo.getPartnerId());
-                productArriveStat.setStartDate(productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId()));
+                Date sdate = DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT);
+                Date maxQueryDate = productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId());
+                if (maxQueryDate != null) {
+                    if (sdate == null) {
+                        productArriveStat.setStartDate(maxQueryDate);
+                    } else if (sdate != null && maxQueryDate.after(sdate)) {
+                        productArriveStat.setStartDate(maxQueryDate);
+                    }
+                }
             }
             List<ProductArriveStat> list = productArriveStatService.querySumByVo(null, productArriveStat);
             if (CollectionUtils.isNotEmpty(list)) {
