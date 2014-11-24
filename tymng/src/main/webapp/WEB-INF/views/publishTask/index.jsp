@@ -6,12 +6,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/common/header.jsp" %>
 <title>Demo</title>
+<link href="<%=basePath %>/plug/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="<%=basePath %>/plug/ztree/js/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
     initPage();
 });
 var addModelList;
 var addChannelList;
+var setting = {
+    check: {
+        enable: true,
+        chkStyle: "checkbox",
+        chkboxType: { "Y": "s", "N": "s" }
+    },
+    data: {
+        simpleData: {
+            enable: true
+        }
+    }
+};
+var zNodes = {};
+
 function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新增');
     $('#fm').form('clear');
@@ -32,6 +48,7 @@ function addrow() {
         }
     });
     $('#effectTime').datebox('setValue', getCurrrentDateStr());
+    $("#addChannelCountLabel").html(0);
 }
 function saverow() {
     $('#fm').form('submit', {
@@ -277,17 +294,28 @@ function delAddModel(modelId) {
 function showChannelDialog() {
     $('#channeldlg').dialog('open').dialog('setTitle', '选择渠道');
     var groupId = $('#groupId').combobox('getValue');
-    $('#tt').tree({
-        checkbox: true,
-        cascadeCheck: false,
-        url: "<%=basePath%>/tymng/channelInfo/listTreeAll?groupId=" + groupId
+    var zNodes;
+    $.ajax({
+        type: 'POST',
+        url: '<%=basePath%>/tymng/channelInfo/listChannelTree',
+        dataType: "json",
+        data: {groupId: groupId},
+        ContentType: "application/json; charset=utf-8",
+        success: function (data) {
+            zNodes = data;
+            $.fn.zTree.init($("#treeboxbox_tree"), setting, zNodes);
+        },
+        error: function (msg) {
+            alert("加载失败");
+        }
     });
 }
 function selectTreeChannels() {
-    var nodes = $('#tt').tree('getChecked');
+    var treeObj = $.fn.zTree.getZTreeObj("treeboxbox_tree");
+    var nodes = treeObj.getCheckedNodes(true);
     for (var i = 0; i < nodes.length; i++) {
         if (nodes[i].id != -1) {
-            selectChannel(nodes[i].id, nodes[i].text);
+            selectChannel(nodes[i].id, nodes[i].name);
         }
     }
     $('#channeldlg').dialog('close')
@@ -497,25 +525,7 @@ function delAddChannel(channelId) {
      data-options="iconCls:'icon-save',resizable:true"
      closed="true"
      buttons="#channeldlg-buttons">
-    <%-- <div>
-         <div>
-             <table>
-                 <tr>
-                     <td>
-                         <input type="text" name="searchChannelValue" id="searchChannelValue" placeholder="渠道/仓库名称"/>
-                         <input type="hidden" name="parentIdCondition" id="parentIdCondition"/>
-                     </td>
-                     <td align="center">
-                         <a id="searchChannelbtn" href="javascript:void(0)" class="easyui-linkbutton"
-                            iconCls="icon-search"
-                            onclick="searchChannelEvt()">查询</a>
-                     </td>
-                 </tr>
-             </table>
-         </div>
-     </div>--%>
-    <%--<div id="channeldg" region="center"></div>--%>
-    <ul id="tt"></ul>
+    <div id="treeboxbox_tree" class="ztree"></div>
 </div>
 <div id="channeldlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"

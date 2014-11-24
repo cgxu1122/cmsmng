@@ -2,12 +2,14 @@ package com.ifhz.tymng.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.ifhz.core.base.BaseController;
 import com.ifhz.core.base.commons.constants.JcywConstants;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.ChannelInfo;
 import com.ifhz.core.po.auth.SysUser;
 import com.ifhz.core.service.auther.SysUserService;
+import com.ifhz.core.service.auther.jsonBean.TreeNode;
 import com.ifhz.core.service.channel.ChannelGroupService;
 import com.ifhz.core.service.channel.ChannelInfoService;
 import com.ifhz.core.shiro.utils.CurrentUserUtil;
@@ -155,6 +157,57 @@ public class ChannelInfoController extends BaseController {
         jo.put("state", "open");
         JSONArray result = new JSONArray();
         result.add(jo);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/listChannelTree", produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public JSONArray listChannelTree(HttpServletRequest request) {
+        JSONArray result = new JSONArray();
+        List<TreeNode> treeNodeList = Lists.newArrayList();
+        //查询条件
+        String groupId = request.getParameter("groupId");
+        ChannelInfo ci = new ChannelInfo();
+        ci.setActive(JcywConstants.ACTIVE_Y);
+        ci.setGroupId(Long.parseLong(groupId));
+        ci.setParentId(JcywConstants.CHANNEL_ROOT_PARENT_ID);
+        //如果是地包渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        //如果是其他渠道的负责人登录，则进行数据过滤
+        if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId) && CurrentUserUtil.isManager()) {
+            ci.setMngId(CurrentUserUtil.getUserId());
+        }
+        JSONObject jo = new JSONObject();
+        TreeNode parent = new TreeNode();
+        parent.setId(JcywConstants.CHANNEL_ROOT_PARENT_ID);
+        if (JcywConstants.CHANNEL_GROUP_TY_ID_1.toString().equals(groupId)) {
+            parent.setName("天音渠道");
+        } else if (JcywConstants.CHANNEL_GROUP_DB_ID_2.toString().equals(groupId)) {
+            parent.setName("地包渠道");
+        } else if (JcywConstants.CHANNEL_GROUP_QT_ID_3.toString().equals(groupId)) {
+            parent.setName("其他渠道");
+        }
+        parent.setOpen(true);
+        parent.setChecked(false);
+
+        List<ChannelInfo> list = channelInfoService.queryByVo(null, ci);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (ChannelInfo channelInfo : list) {
+                TreeNode node = new TreeNode();
+                node.setId(channelInfo.getChannelId());
+                node.setParentId(channelInfo.getParentId());
+                node.setName(channelInfo.getChannelName());
+                node.setOpen(true);
+                node.setChecked(false);
+
+                result.add(node);
+            }
+            result.add(parent);
+        }
+
         return result;
     }
 
