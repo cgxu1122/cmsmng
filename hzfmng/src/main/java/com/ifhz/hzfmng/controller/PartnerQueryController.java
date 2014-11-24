@@ -275,8 +275,12 @@ public class PartnerQueryController extends BaseController {
             if (maxQueryDate != null) {
                 if (sdate == null) {
                     productStat.setStartDate(maxQueryDate);
-                } else if (sdate != null && maxQueryDate.after(sdate)) {
-                    productStat.setStartDate(maxQueryDate);
+                } else if (sdate != null) {
+                    if (maxQueryDate.after(sdate)) {
+                        productStat.setStartDate(maxQueryDate);
+                    } else {
+                        productStat.setStartDate(maxQueryDate);
+                    }
                 }
             }
         }
