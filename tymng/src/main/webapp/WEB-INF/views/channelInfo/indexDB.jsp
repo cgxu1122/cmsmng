@@ -230,7 +230,8 @@ function showMngDialog(type, upMngId) {
         columns: [
             [
                 {field: 'userId', title: '负责人id', align: 'center', width: 80},
-                {field: 'loginName', title: '用户名', align: 'center', width: 150},
+                {field: 'loginName', title: '用户名', align: 'center', width: 100},
+                {field: 'realName', title: '姓名', align: 'center', width: 100},
                 {field: 'action', title: '操作', align: 'center', width: 100,
                     formatter: function (value, row, index) {
                         return "<a href='javascript:void(0)' onclick=javascript:selectMng('" + row.userId + "','" + row.loginName + "','" + type + "')>选择</a>";
