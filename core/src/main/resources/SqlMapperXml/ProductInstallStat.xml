@@ -115,6 +115,7 @@
     <select id="queryByVo" resultMap="BaseResultMap">
     select * from
         <include refid="TABLE_NAME"/>
+        stat
         where 1=1
         <if test="record.partnerId != null and record.partnerId != ''">
             and exists (select info.PRODUCT_ID from TY_PRODUCT_INFO info
@@ -124,56 +125,69 @@
         </if>
 
         <if test="record.channelIdCondition != null">
-            and CHANNEL_ID in (${record.channelIdCondition})
+            and stat.CHANNEL_ID in (${record.channelIdCondition})
         </if>
 
         <if test="record.productId != null and record.productId != ''">
-            and PRODUCT_ID = #{record.productId}
+            and stat.PRODUCT_ID = #{record.productId}
         </if>
         <if test="record.ua != null and record.ua != ''">
-            and UA = #{record.ua}
+            and stat.UA = #{record.ua}
         </if>
         <if test="record.startDate != null">
-            and STAT_DATE >= #{record.startDate}
+            and stat.STAT_DATE >= #{record.startDate}
         </if>
         <if test="record.endDate != null">
             <![CDATA[
-            and STAT_DATE <= #{record.endDate}
+            and stat.STAT_DATE <= #{record.endDate}
             ]]>
         </if>
-        order by STAT_DATE desc
+        order by stat.STAT_DATE desc
     </select>
 
 
     <select id="queryCountByVo" parameterType="com.ifhz.core.po.stat.ProductInstallStat"
             resultMap="BaseResultMap">
     select
-        sum(INSTALL_TOTAL_NUM) INSTALL_TOTAL_NUM,
-        sum(TOTAL_NUM) TOTAL_NUM,
-        sum(VALID_NUM) VALID_NUM,
-        sum(INVALID_NUM) INVALID_NUM,
-        sum(REPLACE_NUM) REPLACE_NUM,
-        sum(UNINSTALL_NUM) UNINSTALL_NUM,
-        sum(UN_AND_RE_NUM) UN_AND_RE_NUM
+        sum(stat.INSTALL_TOTAL_NUM) INSTALL_TOTAL_NUM,
+        sum(stat.TOTAL_NUM) TOTAL_NUM,
+        sum(stat.VALID_NUM) VALID_NUM,
+        sum(stat.INVALID_NUM) INVALID_NUM,
+        sum(stat.REPLACE_NUM) REPLACE_NUM,
+        sum(stat.UNINSTALL_NUM) UNINSTALL_NUM,
+        sum(stat.UN_AND_RE_NUM) UN_AND_RE_NUM
         from
         <include refid="TABLE_NAME"/>
+        stat
         where 1=1
-        <if test="channelIdCondition != null">
-            and CHANNEL_ID in (${channelIdCondition})
+        <if test="partnerId != null and partnerId != ''">
+            and exists (
+            select info.PRODUCT_ID from TY_PRODUCT_INFO info
+            where info.PARTNER_ID = #{partnerId}
+            and info.QUERY_DATA_SOURCE= 'Y'
+            and info.PRODUCT_ID = stat.PRODUCT_ID
+            )
+        </if>
+        <if test="channelId != null">
+            and stat.CHANNEL_ID = #{channelId}
+        </if>
+
+        <if test="groupId != null and groupId != ''">
+            and stat.GROUP_ID = #{groupId}
         </if>
 
         <if test="productId != null and productId != ''">
-            and PRODUCT_ID = #{productId}
+            and stat.PRODUCT_ID = #{productId}
         </if>
         <if test="ua != null and ua != ''">
-            and UA = #{ua}
+            and stat.UA = #{ua}
         </if>
         <if test="startDate != null">
-            and STAT_DATE >= #{startDate}
+            and stat.STAT_DATE >= #{startDate}
         </if>
         <if test="endDate != null">
             <![CDATA[
-            and STAT_DATE <= #{endDate}
+            and stat.STAT_DATE <= #{endDate}
             ]]>
         </if>
     </select>
