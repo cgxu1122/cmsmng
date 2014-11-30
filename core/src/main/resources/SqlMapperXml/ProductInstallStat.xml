@@ -168,6 +168,10 @@
             and info.PRODUCT_ID = stat.PRODUCT_ID
             )
         </if>
+
+        <if test="channelIdCondition != null">
+            and stat.CHANNEL_ID in (${channelIdCondition})
+        </if>
         <if test="channelId != null">
             and stat.CHANNEL_ID = #{channelId}
         </if>
