@@ -16,15 +16,16 @@ $(document).ready(function () {
 function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新增');
     $('#fm').form('clear');
-    var data = $('#groupId').combobox('getData');
-    $("#groupId ").combobox('select', data[0].value);
-    $('#groupId').combobox({
-        onChange: function (newValue, oldValue) {
-            if (newValue != oldValue) {
-                $("#channelId").val("");
-                $("#channelName").val("");
-                reloadTree(newValue);
-            }
+    $("#dlg input[name=groupIdRadio]:first").attr('checked', 'true');
+    var oldValue = $("#dlg input[name=groupIdRadio]:first").val();
+    $("#groupIdHidden").val(oldValue);
+    $("#dlg input[name=groupIdRadio]").click(function () {
+        var newValue = $(this).val();
+        $("#groupIdHidden").val(newValue);
+        if (newValue != oldValue) {
+            $("#channelId").val("");
+            $("#channelName").val("");
+            reloadTree(newValue);
         }
     });
 }
@@ -52,15 +53,16 @@ function editrow() {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
         $('#upfm').form('clear');
         $('#upfm').form('load', row);
-        $("#upGroupIdHidden").val(row.groupId);
-        $('#upGroupId').combobox({
-            onChange: function (newValue, oldValue) {
-                $("#upGroupIdHidden").val(newValue);
-                if (newValue != oldValue) {
-                    $("#upChannelId").val("");
-                    $("#upChannelName").val("");
-                    reloadTree(newValue);
-                }
+        var oldValue = row.groupId;
+        $("#updatedlg input[name=upGroupIdRadio][value=" + oldValue + "]").attr('checked', 'true');
+        $("#upGroupIdHidden").val(oldValue);
+        $("#updatedlg input[name=upGroupIdRadio]").click(function () {
+            var newValue = $(this).val();
+            $("#upGroupIdHidden").val(newValue);
+            if (newValue != oldValue) {
+                $("#upChannelId").val("");
+                $("#upChannelName").val("");
+                reloadTree(newValue);
             }
         });
     }
@@ -102,9 +104,10 @@ function delrow() {
 
 function searchEvt() {
     var value = $('#searchValue').val();
+    var searchChannelName = $('#searchChannelName').val();
     $('#dg').datagrid({
         url: "<%=basePath%>/tymng/deviceInfo/list",
-        queryParams: {deviceCodeCondition: value}
+        queryParams: {deviceCodeCondition: value, channelNameCondition: searchChannelName}
     });
 }
 
@@ -143,7 +146,7 @@ function initPage() {
 function showChannelDialog(type, upChannelId) {
     var groupId = 1;
     if (type == 1) {
-        var selectGroupId = $("#groupId").combobox("getValue");
+        var selectGroupId = $("#groupIdHidden").val();
         if (selectGroupId == "") {
             $.messager.alert('错误', "请先选择渠道组织!");
             return;
@@ -236,6 +239,9 @@ function selectChannel(channelId, channelName, type) {
                 <td>
                     <input type="text" name="searchValue" id="searchValue" placeholder="设备编码"/>
                 </td>
+                <td>
+                    <input type="text" name="searchChannelName" id="searchChannelName" placeholder="渠道名称"/>
+                </td>
                 <td align="center">
                     <a id="searchbtn" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"
                        onclick="searchEvt()">查询</a>
@@ -271,21 +277,20 @@ function selectChannel(channelId, channelName, type) {
             <label><font color="red">*</font>设备编码:</label>
             <input id="deviceCode" name="deviceCode" class="easyui-validatebox" required="true" maxlength="50">
         </div>
-        <div class="fitem" style="margin-left:55px">
-            <label><font color="red">*</font>渠道组织:</label>
-            <select class="easyui-combobox" name="groupId" id="groupId" style="width:150px;">
-                <option value="1">天音渠道</option>
-                <option value="2">地包渠道</option>
-                <option value="3">其他渠道</option>
-            </select>
-        </div>
         <div class="fitem">
             <label><font color="red">*</font>设备所属仓库/渠道:</label>
             <input id="channelId" name="channelId" type="hidden">
             <input id="channelName" name="channelName" readonly="readonly">
             <a href="javascript:void(0)" onclick="showChannelDialog(1)">选择所属仓库/渠道</a>
         </div>
+        <input type="hidden" name="groupId" id="groupIdHidden"/>
     </form>
+    <div class="fitem" style="margin-left:55px">
+        <label><font color="red">*</font>渠道组织:</label>
+        <input type="radio" name="groupIdRadio" value="1">天音渠道
+        <input type="radio" name="groupIdRadio" value="2">地包渠道
+        <input type="radio" name="groupIdRadio" value="3">其他渠道
+    </div>
 </div>
 <div id="dlg-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saverow()">保存</a>
@@ -304,15 +309,6 @@ function selectChannel(channelId, channelName, type) {
             <input type="text" name="deviceCode" class="easyui-validatebox" required="true"
                     >
         </div>
-        <div class="fitem" style="margin-left:55px">
-            <label><font color="red">*</font>渠道组织:</label>
-            <input type="hidden" name="upGroupIdHidden" id="upGroupIdHidden"/>
-            <select class="easyui-combobox" name="groupId" id="upGroupId" style="width:150px;">
-                <option value="1">天音渠道</option>
-                <option value="2">地包渠道</option>
-                <option value="3">其他渠道</option>
-            </select>
-        </div>
         <div class="fitem">
             <label><font color="red">*</font>设备所属仓库/渠道:</label>
             <input id="upChannelId" name="channelId" type="hidden">
@@ -320,7 +316,14 @@ function selectChannel(channelId, channelName, type) {
             <a href="javascript:void(0)"
                onclick="showChannelDialog(2,$('#upChannelId').val())">选择所属仓库/渠道</a>
         </div>
+        <input type="hidden" name="groupId" id="upGroupIdHidden"/>
     </form>
+    <div class="fitem" style="margin-left:55px">
+        <label><font color="red">*</font>渠道组织:</label>
+        <input type="radio" name="upGroupIdRadio" value="1">天音渠道
+        <input type="radio" name="upGroupIdRadio" value="2">地包渠道
+        <input type="radio" name="upGroupIdRadio" value="3">其他渠道
+    </div>
 </div>
 <div id="update-buttons" style="text-align: center;">
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUpdate()">确定</a>

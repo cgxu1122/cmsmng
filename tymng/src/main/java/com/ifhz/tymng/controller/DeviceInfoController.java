@@ -44,9 +44,11 @@ public class DeviceInfoController extends BaseController {
         if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
         //查询条件
         String deviceCodeCondition = request.getParameter("deviceCodeCondition");
+        String channelNameCondition = request.getParameter("channelNameCondition");
         DeviceInfo di = new DeviceInfo();
         di.setActive(JcywConstants.ACTIVE_Y);
         di.setDeviceCodeCondition(deviceCodeCondition);
+        di.setChannelNameCondition(channelNameCondition);
         List<DeviceInfo> list = deviceInfoService.queryByVo(page, di);
         JSONObject result = new JSONObject();
         result.put("total", page.getTotalCount());
