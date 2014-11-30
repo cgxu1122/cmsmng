@@ -55,7 +55,6 @@ function editrow() {
     if (row) {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
         $('#upfm').form('clear');
-        $('#upfm').form('load', row);
         $("#updatedlg input[name=upGroupIdRadio]").each(function () {
             $(this).attr("checked", false);
         });
@@ -70,6 +69,7 @@ function editrow() {
             }
         });
         $("#updatedlg input[name=upGroupIdRadio][value=" + upoldValue + "]").click();
+        $('#upfm').form('load', row);
     }
 }
 function saveUpdate() {
