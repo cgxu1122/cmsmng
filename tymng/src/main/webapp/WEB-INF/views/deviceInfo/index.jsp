@@ -16,7 +16,9 @@ $(document).ready(function () {
 function addrow() {
     $('#dlg').dialog('open').dialog('setTitle', '新增');
     $('#fm').form('clear');
-    $("#dlg input[name=groupIdRadio]:first").attr('checked', 'true');
+    $("#dlg input[name=groupIdRadio]").each(function () {
+        $(this).attr("checked", false);
+    });
     var oldValue = $("#dlg input[name=groupIdRadio]:first").val();
     $("#groupIdHidden").val(oldValue);
     $("#dlg input[name=groupIdRadio]").click(function () {
@@ -28,6 +30,7 @@ function addrow() {
             reloadTree(newValue);
         }
     });
+    $("#dlg input[name=groupIdRadio]:first").click();
 }
 function saverow() {
     $('#fm').form('submit', {
@@ -53,18 +56,20 @@ function editrow() {
         $('#updatedlg').dialog('open').dialog('setTitle', '修改');
         $('#upfm').form('clear');
         $('#upfm').form('load', row);
-        var oldValue = row.groupId;
-        $("#updatedlg input[name=upGroupIdRadio][value=" + oldValue + "]").attr('checked', 'true');
-        $("#upGroupIdHidden").val(oldValue);
+        $("#updatedlg input[name=upGroupIdRadio]").each(function () {
+            $(this).attr("checked", false);
+        });
+        var upoldValue = row.groupId;
         $("#updatedlg input[name=upGroupIdRadio]").click(function () {
             var newValue = $(this).val();
             $("#upGroupIdHidden").val(newValue);
-            if (newValue != oldValue) {
+            if (newValue != upoldValue) {
                 $("#upChannelId").val("");
                 $("#upChannelName").val("");
                 reloadTree(newValue);
             }
         });
+        $("#updatedlg input[name=upGroupIdRadio][value=" + upoldValue + "]").click();
     }
 }
 function saveUpdate() {
