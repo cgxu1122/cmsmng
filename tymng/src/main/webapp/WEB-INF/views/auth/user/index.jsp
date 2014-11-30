@@ -386,12 +386,12 @@ function selectRole() {
                 <input id="realNameUp" name="realName" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem" style="margin-left:25px">
-                <label><font color="red">*</font>手机:</label>
-                <input id="cellphoneUp" name="cellPhone" class="easyui-numberbox" required="true" validType="digits">
+                <label>手机:</label>
+                <input id="cellphoneUp" name="cellPhone" class="easyui-numberbox" validType="digits">
             </div>
             <div class="fitem" style="margin-left:25px">
-                <label><font color="red">*</font>地址:</label>
-                <input id="addressUp" name="address" class="easyui-validatebox" required="true">
+                <label>地址:</label>
+                <input id="addressUp" name="address" class="easyui-validatebox">
             </div>
             <div class="fitem" style="margin-left:26px">
                 <label><font color="red">*</font>角色:</label>

@@ -193,18 +193,6 @@ function showChannelDialog(type, upChannelId) {
     });
 }
 function reloadTree(groupId) {
-    /* $('#tt').tree({
-     url: "
-    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId,
-     onClick: function (node) {
-     $('#parentIdCondition').val(node.id);
-     searchChannelEvt();
-     },
-     onBeforeExpand: function (node, param) {
-     $('#tt').tree('options').url = "
-    <%=basePath%>/tymng/channelInfo/listTree?groupId=" + groupId + "&parentIdCondition=" + node.id;
-     }
-     });*/
     //需求改为：不加树结构，默认全部展现出来
     $('#searchGroupIdValue').val(groupId);
     searchChannelEvt();
