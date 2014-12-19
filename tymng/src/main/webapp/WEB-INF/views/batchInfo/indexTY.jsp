@@ -220,7 +220,7 @@ function selectProduct(productId, productName, type) {
         var productHtml = "<tr>" +
                 "<input type='hidden' name='productId' value='" + productId + "'>" +
                 "<td><input type='text' name='productName' value='" + productName + "' readonly='readonly'></td>" +
-                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addProductList.pop(" + productId + ");$(\"#addProductCountLabel\").html(" + addProductList.length + ");'>删除</a></td>" +
+                "<td><a href='javascript:void(0)' class='easyui-linkbutton' onclick='javascript:$(this).parent().parent().remove();addProductList.pop(" + productId + ");$(\"#addProductCountLabel\").html(addProductList.length);'>删除</a></td>" +
                 "</tr>";
         if (!addProductList.in_array(productId)) {
             addProductList.push(productId);
