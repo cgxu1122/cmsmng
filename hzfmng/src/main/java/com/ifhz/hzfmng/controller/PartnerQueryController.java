@@ -615,55 +615,61 @@ public class PartnerQueryController extends BaseController {
     @ResponseBody
     public JSONObject listProductArriveStat(HttpServletRequest request) {
         /**分页*/
-        String pageNum = request.getParameter("page");
-        String pageSize = request.getParameter("rows");
-        Pagination page = new Pagination();
-        if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
-        if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
-        //查询条件
-        String productId = request.getParameter("productId");
-        String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
-        ProductArriveStat productArriveStat = new ProductArriveStat();
-        if (StringUtils.isNotEmpty(productId)) {
-            productArriveStat.setProductId(Long.parseLong(productId));
-        }
-        if (StringUtils.isNotEmpty(startDate)) {
-            productArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        if (StringUtils.isNotEmpty(endDate)) {
-            productArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
-        }
-        PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
-        if (partnerInfo != null) {
-            productArriveStat.setPartnerId(partnerInfo.getPartnerId());
-            Date sdate = DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT);
-            Date maxQueryDate = productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId());
-            if (maxQueryDate != null) {
-                if (sdate == null) {
-                    productArriveStat.setStartDate(maxQueryDate);
-                } else if (sdate != null && maxQueryDate.after(sdate)) {
-                    productArriveStat.setStartDate(maxQueryDate);
-                }
+        JSONObject result = null;
+        try {
+            String pageNum = request.getParameter("page");
+            String pageSize = request.getParameter("rows");
+            Pagination page = new Pagination();
+            if (!StringUtils.isEmpty(pageNum)) page.setCurrentPage(Integer.valueOf(pageNum));
+            if (!StringUtils.isEmpty(pageSize)) page.setPageSize(Integer.valueOf(pageSize));
+            //查询条件
+            String productId = request.getParameter("productId");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            ProductArriveStat productArriveStat = new ProductArriveStat();
+            if (StringUtils.isNotBlank(productId)) {
+                productArriveStat.setProductId(Long.parseLong(productId));
             }
-        }
-        List<ProductArriveStat> list = productArriveStatService.querySumByVo(page, productArriveStat);
-        if (CollectionUtils.isNotEmpty(list)) {
-            ProductArriveStat countProductArriveStat = productArriveStatService.queryCountByVo(productArriveStat);
-            list.add(countProductArriveStat);
+            if (StringUtils.isNotEmpty(startDate)) {
+                productArriveStat.setStartDate(DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            if (StringUtils.isNotEmpty(endDate)) {
+                productArriveStat.setEndDate(DateFormatUtils.parse(endDate, GlobalConstants.DATE_FORMAT_DPT));
+            }
+            PartnerInfo partnerInfo = partnerInfoService.getPartnerInfoByUserId(CurrentUserUtil.getUserId());
             if (partnerInfo != null) {
-                for (ProductArriveStat productStat1 : list) {
-                    if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
-                        productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
-                    } else {
-                        productStat1.setQueryImeiSource("Y");
+                productArriveStat.setPartnerId(partnerInfo.getPartnerId());
+                Date sdate = DateFormatUtils.parse(startDate, GlobalConstants.DATE_FORMAT_DPT);
+                Date maxQueryDate = productInfoService.getMaxQueryDateByPartnerId(partnerInfo.getPartnerId());
+                if (maxQueryDate != null) {
+                    if (sdate == null) {
+                        productArriveStat.setStartDate(maxQueryDate);
+                    } else if (sdate != null && maxQueryDate.after(sdate)) {
+                        productArriveStat.setStartDate(maxQueryDate);
                     }
                 }
             }
+            List<ProductArriveStat> list = productArriveStatService.querySumByVo(page, productArriveStat);
+            if (CollectionUtils.isNotEmpty(list)) {
+                ProductArriveStat countProductArriveStat = productArriveStatService.queryCountByVo(productArriveStat);
+                list.add(countProductArriveStat);
+                if (partnerInfo != null) {
+                    for (ProductArriveStat productStat1 : list) {
+                        if (!sysUserService.checkAdminMng(CurrentUserUtil.getUserId())) {
+                            productStat1.setQueryImeiSource(partnerInfo.getQueryImeiSource());
+                        } else {
+                            productStat1.setQueryImeiSource("Y");
+                        }
+                    }
+                }
+            }
+            result = new JSONObject();
+            result.put("total", page.getTotalCount());
+            result.put("rows", list);
+        } catch (Exception e) {
+            LOGGER.error("listProductArriveStat error", e);
+        } finally {
         }
-        JSONObject result = new JSONObject();
-        result.put("total", page.getTotalCount());
-        result.put("rows", list);
         return result;
     }
 

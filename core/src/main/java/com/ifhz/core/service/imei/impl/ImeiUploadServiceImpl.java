@@ -138,6 +138,7 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
                         dataLog.setChannelId(channelId);
                         dataLog.setGroupId(channelInfo.getGroupId());
                         dataLog.setDeviceUploadTime(new Date());
+                        LOGGER.info("dataLog={}", JSON.toJSONString(dataLog));
                         if (validExcelData(dataLog)) {
                             status = apiUploadService.saveDeviceDataLog(dataLog);
                         } else {
@@ -177,24 +178,31 @@ public class ImeiUploadServiceImpl implements ImeiUploadService {
     private boolean validExcelData(DataLog dataLog) {
         //验证非法数据
         if (StringUtils.isBlank(dataLog.getImei())) {
+            LOGGER.info("imei invalid");
             return false;
         }
         if (StringUtils.isBlank(dataLog.getUa())) {
+            LOGGER.info("ua invalid");
             return false;
         }
         if (StringUtils.isBlank(dataLog.getBatchCode())) {
+            LOGGER.info("batchCode invalid");
             return false;
         }
         if (StringUtils.isBlank(dataLog.getDeviceCode())) {
+            LOGGER.info("deviceCode invalid");
             return false;
         }
         if (modelInfoAdapter.getByGroupIdAndUa(dataLog.getGroupId(), dataLog.getUa()) == null) {
+            LOGGER.info("ModelInfo is null");
             return false;
         }
         if (batchInfoAdapter.queryByGroupIdAndBatchCode(dataLog.getGroupId(), dataLog.getBatchCode()) == null) {
+            LOGGER.info("BatchInfo is null");
             return false;
         }
         if (deviceInfoAdapter.queryByDeviceCode(dataLog.getDeviceCode()) == null) {
+            LOGGER.info("DeviceInfo is null");
             return false;
         }
 
