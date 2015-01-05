@@ -49,4 +49,14 @@ public class SysRoleResRef implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "SysRoleResRef{" +
+                "id=" + id +
+                ", roleId=" + roleId +
+                ", resourceId=" + resourceId +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

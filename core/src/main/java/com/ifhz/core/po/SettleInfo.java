@@ -100,4 +100,20 @@ public class SettleInfo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "SettleInfo{" +
+                "settleId=" + settleId +
+                ", modelName='" + modelName + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", price=" + price +
+                ", remark='" + remark + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", createBy=" + createBy +
+                ", modelNameCondition='" + modelNameCondition + '\'' +
+                '}';
+    }
 }

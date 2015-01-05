@@ -271,4 +271,36 @@ public class ProductInstallStat implements Serializable {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+
+    @Override
+    public String toString() {
+        return "ProductInstallStat{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", channelId=" + channelId +
+                ", groupId=" + groupId +
+                ", ua='" + ua + '\'' +
+                ", statDate=" + statDate +
+                ", createTime=" + createTime +
+                ", installTotalNum=" + installTotalNum +
+                ", totalNum=" + totalNum +
+                ", validNum=" + validNum +
+                ", invalidNum=" + invalidNum +
+                ", replaceNum=" + replaceNum +
+                ", uninstallNum=" + uninstallNum +
+                ", unAndReNum=" + unAndReNum +
+                ", md5Key='" + md5Key + '\'' +
+                ", version=" + version +
+                ", modelName='" + modelName + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", batchCode='" + batchCode + '\'' +
+                ", partnerId=" + partnerId +
+                ", channelIdCondition='" + channelIdCondition + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", queryImeiSource='" + queryImeiSource + '\'' +
+                '}';
+    }
 }

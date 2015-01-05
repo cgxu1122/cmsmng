@@ -89,4 +89,19 @@ public class DeviceSystem {
     public void setEffectiveTime(Date effectiveTime) {
         this.effectiveTime = effectiveTime;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceSystem{" +
+                "systemId=" + systemId +
+                ", version='" + version + '\'' +
+                ", ftpPath='" + ftpPath + '\'' +
+                ", downloadUrl='" + downloadUrl + '\'' +
+                ", md5Value='" + md5Value + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", effectiveTime=" + effectiveTime +
+                ", versionCondition='" + versionCondition + '\'' +
+                '}';
+    }
 }

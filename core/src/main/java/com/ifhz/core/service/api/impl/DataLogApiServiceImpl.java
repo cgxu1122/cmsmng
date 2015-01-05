@@ -51,7 +51,6 @@ public class DataLogApiServiceImpl implements DataLogApiService {
 
     @Override
     @Log
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public int updateCounterData(DataLog record) {
         if (record.getCounterUploadTime() == null) {
             record.setCounterUploadTime(new Date());

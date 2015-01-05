@@ -103,4 +103,20 @@ public class StatDeduction implements Serializable {
     public void setChannelName(String channelName) {
         this.channelName = channelName;
     }
+
+    @Override
+    public String toString() {
+        return "StatDeduction{" +
+                "id=" + id +
+                ", channelId=" + channelId +
+                ", groupId=" + groupId +
+                ", type=" + type +
+                ", basicNum=" + basicNum +
+                ", percentage=" + percentage +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", channelNameCondition='" + channelNameCondition + '\'' +
+                ", channelName='" + channelName + '\'' +
+                '}';
+    }
 }

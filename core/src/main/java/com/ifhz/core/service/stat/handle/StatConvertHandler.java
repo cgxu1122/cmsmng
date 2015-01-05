@@ -78,7 +78,7 @@ public class StatConvertHandler {
         StringBuffer buffer = new StringBuffer();
         buffer.append(dataLog.getUa());
         buffer.append(",");
-        buffer.append(dataLog.getGroupId());
+        buffer.append(dataLog.getChannelId());
         buffer.append(",");
         buffer.append(productId);
         buffer.append(",");

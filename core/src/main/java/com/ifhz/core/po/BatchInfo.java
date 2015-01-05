@@ -117,4 +117,22 @@ public class BatchInfo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "BatchInfo{" +
+                "batchId=" + batchId +
+                ", batchCode='" + batchCode + '\'' +
+                ", groupId=" + groupId +
+                ", startTime=" + startTime +
+                ", batchProductName='" + batchProductName + '\'' +
+                ", batchProductNum=" + batchProductNum +
+                ", active='" + active + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", batchCodeCondition='" + batchCodeCondition + '\'' +
+                ", productInfoList=" + productInfoList +
+                ", groupName='" + groupName + '\'' +
+                '}';
+    }
 }

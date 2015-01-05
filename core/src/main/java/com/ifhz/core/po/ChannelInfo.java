@@ -224,4 +224,34 @@ public class ChannelInfo {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    @Override
+    public String toString() {
+        return "ChannelInfo{" +
+                "channelId=" + channelId +
+                ", parentId=" + parentId +
+                ", groupId=" + groupId +
+                ", mngId=" + mngId +
+                ", userId=" + userId +
+                ", channelName='" + channelName + '\'' +
+                ", desc='" + desc + '\'' +
+                ", leaf='" + leaf + '\'' +
+                ", laowuId=" + laowuId +
+                ", queryImeiSource='" + queryImeiSource + '\'' +
+                ", type='" + type + '\'' +
+                ", active='" + active + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", groupIds='" + groupIds + '\'' +
+                ", channelNameCondition='" + channelNameCondition + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", laowuName='" + laowuName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", phone='" + phone + '\'' +
+                ", mngName='" + mngName + '\'' +
+                '}';
+    }
 }

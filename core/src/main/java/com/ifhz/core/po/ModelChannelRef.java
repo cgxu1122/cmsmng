@@ -43,4 +43,14 @@ public class ModelChannelRef {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "ModelChannelRef{" +
+                "modelId=" + modelId +
+                ", groupId=" + groupId +
+                ", channelId=" + channelId +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

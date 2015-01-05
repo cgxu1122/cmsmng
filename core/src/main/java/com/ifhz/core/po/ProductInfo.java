@@ -117,4 +117,22 @@ public class ProductInfo {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "ProductInfo{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", partnerId=" + partnerId +
+                ", queryDataSource='" + queryDataSource + '\'' +
+                ", queryStartTime=" + queryStartTime +
+                ", active='" + active + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", productNameCondition='" + productNameCondition + '\'' +
+                ", partnerName='" + partnerName + '\'' +
+                ", userId=" + userId +
+                ", hasAuth=" + hasAuth +
+                '}';
+    }
 }

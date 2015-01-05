@@ -143,4 +143,23 @@ public class SysUser implements Serializable {
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "userId=" + userId +
+                ", roleId=" + roleId +
+                ", loginName='" + loginName + '\'' +
+                ", realName='" + realName + '\'' +
+                ", cellPhone='" + cellPhone + '\'' +
+                ", address='" + address + '\'' +
+                ", active='" + active + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", lastLoginTime=" + lastLoginTime +
+                ", roleName='" + roleName + '\'' +
+                ", searchValue='" + searchValue + '\'' +
+                ", roleIdList=" + roleIdList +
+                '}';
+    }
 }

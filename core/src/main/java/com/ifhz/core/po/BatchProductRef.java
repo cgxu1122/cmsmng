@@ -53,4 +53,15 @@ public class BatchProductRef {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "BatchProductRef{" +
+                "batchId=" + batchId +
+                ", batchCode='" + batchCode + '\'' +
+                ", productId=" + productId +
+                ", createTime=" + createTime +
+                ", productName='" + productName + '\'' +
+                '}';
+    }
 }

@@ -107,4 +107,21 @@ public class PartnerInfo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "PartnerInfo{" +
+                "partnerId=" + partnerId +
+                ", userId=" + userId +
+                ", partnerName='" + partnerName + '\'' +
+                ", queryImeiSource='" + queryImeiSource + '\'' +
+                ", exportImeiSource='" + exportImeiSource + '\'' +
+                ", active='" + active + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", partnerNameCondition='" + partnerNameCondition + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

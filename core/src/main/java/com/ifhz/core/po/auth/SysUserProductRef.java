@@ -49,4 +49,13 @@ public class SysUserProductRef implements Serializable {
         this.createTime = createTime;
     }
 
+    @Override
+    public String toString() {
+        return "SysUserProductRef{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", productId=" + productId +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

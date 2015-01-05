@@ -146,4 +146,24 @@ public class LogArriveStatTemp implements Serializable {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+
+    @Override
+    public String toString() {
+        return "LogArriveStatTemp{" +
+                "id=" + id +
+                ", ua='" + ua + '\'' +
+                ", groupId=" + groupId +
+                ", channelId=" + channelId +
+                ", statDate=" + statDate +
+                ", laowuId=" + laowuId +
+                ", createTime=" + createTime +
+                ", validNum=" + validNum +
+                ", invalidNum=" + invalidNum +
+                ", modelName='" + modelName + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

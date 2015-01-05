@@ -3,8 +3,10 @@ package com.ifhz.tymng.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ifhz.core.base.page.Pagination;
+import com.ifhz.core.po.DataLog;
 import com.ifhz.core.po.DeviceSwitch;
 import com.ifhz.core.po.auth.SysUser;
+import com.ifhz.core.service.api.DataLogApiService;
 import com.ifhz.core.service.auther.SysUserService;
 import com.ifhz.core.service.stat.DeviceSwitchService;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,6 +37,35 @@ public class DeviceSwitchController {
     private DeviceSwitchService deviceSwitchService;
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private DataLogApiService dataLogApiService;
+
+
+    @RequestMapping(value = "/queryDataLog.do", produces = {"application/json;charset=UTF-8"})
+    public
+    @ResponseBody
+    JSONObject queryDataLog(@RequestParam(value = "imei", required = true) String imei) {
+        LOGGER.info("receive msg -----------------------------start");
+        JSONObject result = new JSONObject();
+        try {
+            if (StringUtils.isBlank(imei)) {
+                result.put("ret", false);
+                result.put("msg", "参数错误");
+                return result;
+            }
+            DataLog dataLog = dataLogApiService.getByImei(imei);
+            result.put("ret", true);
+            result.put("data", dataLog);
+        } catch (Exception e) {
+            result.put("ret", false);
+            LOGGER.error("queryDataLog error ", e);
+        } finally {
+            LOGGER.info("returnObj={}", result);
+        }
+
+        return result;
+    }
+
 
     @RequestMapping(value = "/update.do", produces = {"application/json;charset=UTF-8"})
     public

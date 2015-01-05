@@ -104,4 +104,20 @@ public class SysRole implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "SysRole{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", parentId=" + parentId +
+                ", fullPath='" + fullPath + '\'' +
+                ", levels=" + levels +
+                ", rootId=" + rootId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", canDel=" + canDel +
+                ", parentRoleName='" + parentRoleName + '\'' +
+                '}';
+    }
 }

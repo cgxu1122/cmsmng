@@ -249,4 +249,33 @@ public class LogArriveStat implements Serializable {
     public void setChannelIdCondition(String channelIdCondition) {
         this.channelIdCondition = channelIdCondition;
     }
+
+    @Override
+    public String toString() {
+        return "LogArriveStat{" +
+                "id=" + id +
+                ", ua='" + ua + '\'' +
+                ", groupId=" + groupId +
+                ", channelId=" + channelId +
+                ", statDate=" + statDate +
+                ", laowuId=" + laowuId +
+                ", createTime=" + createTime +
+                ", totalNum=" + totalNum +
+                ", validNum=" + validNum +
+                ", invalidNum=" + invalidNum +
+                ", replaceNum=" + replaceNum +
+                ", uninstallNum=" + uninstallNum +
+                ", unAndReNum=" + unAndReNum +
+                ", deductionValidNum=" + deductionValidNum +
+                ", deductionInvalidNum=" + deductionInvalidNum +
+                ", md5Key='" + md5Key + '\'' +
+                ", version=" + version +
+                ", modelName='" + modelName + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", channelIdCondition='" + channelIdCondition + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

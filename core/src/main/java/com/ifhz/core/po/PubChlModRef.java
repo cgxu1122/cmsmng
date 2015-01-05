@@ -128,5 +128,22 @@ public class PubChlModRef {
         this.active = active;
     }
 
-
+    @Override
+    public String toString() {
+        return "PubChlModRef{" +
+                "id=" + id +
+                ", publishId=" + publishId +
+                ", groupId=" + groupId +
+                ", channelId=" + channelId +
+                ", packageId=" + packageId +
+                ", modelId=" + modelId +
+                ", pkgType='" + pkgType + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", active='" + active + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", modelName='" + modelName + '\'' +
+                '}';
+    }
 }

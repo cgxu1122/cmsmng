@@ -172,4 +172,27 @@ public class ProductArriveStatTemp implements Serializable {
     public void setInvalidNum(Long invalidNum) {
         this.invalidNum = invalidNum;
     }
+
+    @Override
+    public String toString() {
+        return "ProductArriveStatTemp{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", channelId=" + channelId +
+                ", groupId=" + groupId +
+                ", ua='" + ua + '\'' +
+                ", statDate=" + statDate +
+                ", createTime=" + createTime +
+                ", validNum=" + validNum +
+                ", invalidNum=" + invalidNum +
+                ", modelName='" + modelName + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", partnerId=" + partnerId +
+                ", queryImeiSource='" + queryImeiSource + '\'' +
+                '}';
+    }
 }

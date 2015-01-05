@@ -276,4 +276,36 @@ public class LogStat implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "LogStat{" +
+                "id=" + id +
+                ", ua='" + ua + '\'' +
+                ", modelName='" + modelName + '\'' +
+                ", groupId=" + groupId +
+                ", channelId=" + channelId +
+                ", batchCode='" + batchCode + '\'' +
+                ", deviceCode='" + deviceCode + '\'' +
+                ", processDate=" + processDate +
+                ", laowuId=" + laowuId +
+                ", createTime=" + createTime +
+                ", devicePrsDayNum=" + devicePrsDayNum +
+                ", deviceUpdDayNum=" + deviceUpdDayNum +
+                ", prsActiveTotalNum=" + prsActiveTotalNum +
+                ", prsActiveValidNum=" + prsActiveValidNum +
+                ", prsActiveInvalidNum=" + prsActiveInvalidNum +
+                ", prsInvalidReplaceNum=" + prsInvalidReplaceNum +
+                ", prsInvalidUninstallNum=" + prsInvalidUninstallNum +
+                ", prsInvalidUnAndReNum=" + prsInvalidUnAndReNum +
+                ", md5Key='" + md5Key + '\'' +
+                ", version=" + version +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", processType=" + processType +
+                ", channelIdCondition='" + channelIdCondition + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", queryImeiSource='" + queryImeiSource + '\'' +
+                '}';
+    }
 }

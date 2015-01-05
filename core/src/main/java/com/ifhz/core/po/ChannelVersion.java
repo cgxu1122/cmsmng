@@ -32,21 +32,6 @@ public class ChannelVersion {
     private Date updateTime;
 
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("ChannelVersion{");
-        sb.append("versionId=").append(versionId);
-        sb.append(", channelId=").append(channelId);
-        sb.append(", md5Value='").append(md5Value).append('\'');
-        sb.append(", path='").append(path).append('\'');
-        sb.append(", version='").append(version).append('\'');
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append('}');
-        return sb.toString();
-    }
-
-
     public String getVersion() {
         return version;
     }
@@ -101,5 +86,18 @@ public class ChannelVersion {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ChannelVersion{" +
+                "versionId=" + versionId +
+                ", channelId=" + channelId +
+                ", md5Value='" + md5Value + '\'' +
+                ", path='" + path + '\'' +
+                ", version='" + version + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

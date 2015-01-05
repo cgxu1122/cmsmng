@@ -64,7 +64,6 @@ public class ApiUploadServiceImpl implements ApiUploadService {
     //手机imei|手机ua|手机到达状态
     @Override
     @Log
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public boolean saveCounterDataLog(DataLog po) {
         if (po != null) {
             //抛弃非法数据
@@ -82,11 +81,22 @@ public class ApiUploadServiceImpl implements ApiUploadService {
                     dataLog.setCounterUploadTime(po.getCounterUploadTime());
                     dataLog.setActive(po.getActive());
                     LOGGER.info("计数器数据执行更新操作");
-                    dataLogApiService.updateCounterData(dataLog);
+                    int count = 0;
+                    while (count < 5) {
+                        int t = dataLogApiService.updateCounterData(dataLog);
+                        if (t == 1) {
+                            LOGGER.info("updateCounterData success, DataLog更新后数据={}", JSON.toJSONString(dataLog));
+                            break;
+                        } else {
+                            LOGGER.info("updateCounterData failure, DataLog更新后数据={}", JSON.toJSONString(dataLog));
+                        }
+                        count++;
+                    }
                     type = TempLogType.UnStat;
                     CounterTempLog counterTempLog = counterTempLogAdapter.queryByImei(po.getImei());
-                    LOGGER.info("CounterTempLog中没有找到对应数据，CounterTempLog={},DataLog={}", JSON.toJSONString(counterTempLog), JSON.toJSONString(po));
+                    LOGGER.info("CounterTempLog={},DataLog={}", JSON.toJSONString(counterTempLog), JSON.toJSONString(dataLog));
                     if (counterTempLog == null) {
+                        LOGGER.info("CounterTempLog中没有找到对应数据");
                         CounterTempLog tempLog = new CounterTempLog();
                         tempLog.setImei(po.getImei());
                         tempLog.setUa(ModelHandler.translateUa(po.getUa()));

@@ -92,4 +92,18 @@ public class SysResource implements Serializable {
     public int hashCode() {
         return resourceId.hashCode();
     }
+
+
+    @Override
+    public String toString() {
+        return "SysResource{" +
+                "resourceId=" + resourceId +
+                ", parentId=" + parentId +
+                ", resName='" + resName + '\'' +
+                ", resUrl='" + resUrl + '\'' +
+                ", fullPath='" + fullPath + '\'' +
+                ", levels=" + levels +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

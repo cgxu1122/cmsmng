@@ -107,4 +107,21 @@ public class ModelInfo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "ModelInfo{" +
+                "modelId=" + modelId +
+                ", ua='" + ua + '\'' +
+                ", groupId=" + groupId +
+                ", modelName='" + modelName + '\'' +
+                ", tagNum=" + tagNum +
+                ", tagPrice=" + tagPrice +
+                ", active='" + active + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", groupName='" + groupName + '\'' +
+                ", modelNameCondition='" + modelNameCondition + '\'' +
+                '}';
+    }
 }

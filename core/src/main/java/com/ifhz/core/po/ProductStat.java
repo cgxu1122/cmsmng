@@ -254,4 +254,34 @@ public class ProductStat implements Serializable {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "ProductStat{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", groupId=" + groupId +
+                ", ua='" + ua + '\'' +
+                ", modelName='" + modelName + '\'' +
+                ", processDate=" + processDate +
+                ", batchCode='" + batchCode + '\'' +
+                ", createTime=" + createTime +
+                ", productPrsDayNum=" + productPrsDayNum +
+                ", productUpdDayNum=" + productUpdDayNum +
+                ", prsActiveTotalNum=" + prsActiveTotalNum +
+                ", prsActiveValidNum=" + prsActiveValidNum +
+                ", prsActiveInvalidNum=" + prsActiveInvalidNum +
+                ", prsInvalidReplaceNum=" + prsInvalidReplaceNum +
+                ", prsInvalidUninstallNum=" + prsInvalidUninstallNum +
+                ", prsInvalidUnAndReNum=" + prsInvalidUnAndReNum +
+                ", version=" + version +
+                ", md5Key='" + md5Key + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", groupName='" + groupName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", partnerId=" + partnerId +
+                ", queryImeiSource='" + queryImeiSource + '\'' +
+                '}';
+    }
 }

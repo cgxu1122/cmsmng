@@ -39,4 +39,13 @@ public class DeviceSwitch implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "DeviceSwitch{" +
+                "id=" + id +
+                ", deviceCode='" + deviceCode + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
