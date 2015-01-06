@@ -4,6 +4,7 @@ import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.ProductInstallStat;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,12 @@ public interface ProductInstallStatMapper {
     public int insert(ProductInstallStat record);
 
     public int update(ProductInstallStat record);
+
+    public int delete(Long id);
+
+    public List<ProductInstallStat> queryForPage(Pagination pagination, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    public long queryForPageTotalCount(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     public ProductInstallStat getById(Long id);
 

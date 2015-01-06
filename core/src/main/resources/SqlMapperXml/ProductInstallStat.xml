@@ -100,6 +100,30 @@
         and VERSION = #{version}
     </update>
 
+
+    <delete id="delete">
+        delete from
+        <include refid="TABLE_NAME"/>
+        where ID = #{id}
+    </delete>
+
+    <select id="queryForPage" resultMap="BaseResultMap">
+        select * from
+        <include refid="TABLE_NAME"/>
+        stat
+        where 1=1
+        and stat.STAT_DATE BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="queryForPageTotalCount" resultType="long">
+        select count(0)
+        from
+        <include refid="TABLE_NAME"/>
+        stat
+        where 1=1
+        and stat.STAT_DATE BETWEEN #{startTime} AND #{endTime}
+    </select>
+
     <select id="getById" resultMap="BaseResultMap">
     select * from
         <include refid="TABLE_NAME"/>

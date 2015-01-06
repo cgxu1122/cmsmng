@@ -20,6 +20,8 @@ public interface ProductInstallStatService {
 
     public boolean statProductInstall(DataLog record);
 
+    public boolean statProductInstallTemp(DataLog record);
+
     public boolean statProductArrive(DataLog record);
 
     public List<ProductInstallStat> queryByVo(Pagination pagination, ProductInstallStat record);

@@ -3,6 +3,7 @@ package com.ifhz.core.adapter.stat;
 import com.ifhz.core.base.page.Pagination;
 import com.ifhz.core.po.stat.ProductInstallStat;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +17,12 @@ public interface ProductInstallStatAdapter {
     public int insert(ProductInstallStat record);
 
     public int update(ProductInstallStat record);
+
+    public int delete(Long id);
+
+    public List<ProductInstallStat> queryForPage(Pagination pagination, Date startTime, Date endTime);
+
+    public long queryForPageTotalCount(Date startTime, Date endTime);
 
     public ProductInstallStat getById(Long id);
 

@@ -290,6 +290,90 @@ public class ProductInstallStatServiceImpl implements ProductInstallStatService 
         return true;
     }
 
+
+    @Log
+    public boolean statProductInstallTemp(DataLog record) {
+        LOGGER.info("statProductInstall Stat ---------开始");
+        if (StringUtils.isNotBlank(record.getBatchCode())) {
+            List<Long> productIdList = batchProductRefAdapter.queryProductIdList(record.getBatchCode());
+            LOGGER.info("BatchCode={},productIdList={}", record.getBatchCode(), JSON.toJSONString(productIdList));
+            if (CollectionUtils.isNotEmpty(productIdList)) {
+                for (Long productId : productIdList) {
+                    String md5Key = StatConvertHandler.getMd5KeyForProductStat(record, productId);
+                    if (StringUtils.isNotBlank(md5Key)) {
+                        int count = 1;
+                        while (true) {
+                            count++;
+                            int num = 0;
+                            ProductInstallStat productInstallStat = productInstallStatAdapter.getByMd5Key(md5Key);
+                            LOGGER.info("source productInstallStat={}", JSON.toJSONString(productInstallStat));
+                            if (productInstallStat == null) {
+                                productInstallStat = StatConvertHandler.initProductInstallStat(record, productId);
+                                productInstallStat.setMd5Key(md5Key);
+                                productInstallStat.setInstallTotalNum(productInstallStat.getInstallTotalNum() + 1);
+                                if (record.getCounterUploadTime() != null && record.getActive() != null && record.getActive() != 0) {
+                                    productInstallStat.setTotalNum(productInstallStat.getTotalNum() + 1);
+                                    if (record.getActive() == CounterActive.Valid.value) {
+                                        productInstallStat.setValidNum(productInstallStat.getValidNum() + 1);
+                                    } else if (record.getActive() == CounterActive.Invalid_Replace.value) {
+                                        productInstallStat.setInvalidNum(productInstallStat.getInvalidNum() + 1);
+                                        productInstallStat.setReplaceNum(productInstallStat.getReplaceNum() + 1);
+                                    } else if (record.getActive() == CounterActive.Invalid_Uninstall.value) {
+                                        productInstallStat.setInvalidNum(productInstallStat.getInvalidNum() + 1);
+                                        productInstallStat.setUninstallNum(productInstallStat.getUninstallNum() + 1);
+                                    } else if (record.getActive() == CounterActive.Invalid_Re_And_Un.value) {
+                                        productInstallStat.setInvalidNum(productInstallStat.getInvalidNum() + 1);
+                                        productInstallStat.setUnAndReNum(productInstallStat.getUnAndReNum() + 1);
+                                    }
+                                }
+                                try {
+                                    LOGGER.info("target productInstallStat={}", JSON.toJSONString(productInstallStat));
+                                    num = productInstallStatAdapter.insert(productInstallStat);
+                                } catch (Exception e) {
+                                    LOGGER.error("LogStat insert error", e);
+                                    continue;
+                                }
+                                if (num == 1) {
+                                    LOGGER.info("productInstallStat insert success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(record));
+                                    break;
+                                }
+                            } else {
+                                productInstallStat.setInstallTotalNum(productInstallStat.getInstallTotalNum() + 1);
+                                if (record.getCounterUploadTime() != null && record.getActive() != null && record.getActive() != 0) {
+                                    productInstallStat.setTotalNum(productInstallStat.getTotalNum() + 1);
+                                    if (record.getActive() == CounterActive.Valid.value) {
+                                        productInstallStat.setValidNum(productInstallStat.getValidNum() + 1);
+                                    } else if (record.getActive() == CounterActive.Invalid_Replace.value) {
+                                        productInstallStat.setInvalidNum(productInstallStat.getInvalidNum() + 1);
+                                        productInstallStat.setReplaceNum(productInstallStat.getReplaceNum() + 1);
+                                    } else if (record.getActive() == CounterActive.Invalid_Uninstall.value) {
+                                        productInstallStat.setInvalidNum(productInstallStat.getInvalidNum() + 1);
+                                        productInstallStat.setUninstallNum(productInstallStat.getUninstallNum() + 1);
+                                    } else if (record.getActive() == CounterActive.Invalid_Re_And_Un.value) {
+                                        productInstallStat.setInvalidNum(productInstallStat.getInvalidNum() + 1);
+                                        productInstallStat.setUnAndReNum(productInstallStat.getUnAndReNum() + 1);
+                                    }
+                                }
+                                LOGGER.info("target productInstallStat={}", JSON.toJSONString(productInstallStat));
+                                num = productInstallStatAdapter.update(productInstallStat);
+                            }
+                            if (num == 1) {
+                                LOGGER.info("productInstallStat update success,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(record));
+                                break;
+                            }
+                            if (count == 10) {
+                                LOGGER.info("productInstallStat update failure,  md5Key={}, dataLog={}", md5Key, JSON.toJSONString(record));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        LOGGER.info("statProductInstall Stat ---------结束");
+        return true;
+    }
+
     @Override
     @Log
     public boolean statProductArrive(DataLog record) {

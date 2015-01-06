@@ -8,6 +8,7 @@ import com.ifhz.core.po.stat.ProductInstallStat;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +31,22 @@ public class ProductInstallStatAdapterImpl implements ProductInstallStatAdapter 
     @Override
     public int update(ProductInstallStat record) {
         return productInstallStatMapper.update(record);
+    }
+
+    @Override
+    public int delete(Long id) {
+        return productInstallStatMapper.delete(id);
+    }
+
+    @Override
+    public List<ProductInstallStat> queryForPage(Pagination pagination, Date startTime, Date endTime) {
+        List<ProductInstallStat> result = productInstallStatMapper.queryForPage(pagination, startTime, endTime);
+        return result == null ? Lists.<ProductInstallStat>newArrayList() : result;
+    }
+
+    @Override
+    public long queryForPageTotalCount(Date startTime, Date endTime) {
+        return productInstallStatMapper.queryForPageTotalCount(startTime, endTime);
     }
 
     @Override
